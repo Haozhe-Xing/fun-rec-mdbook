@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh1"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="380" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">特征空间：碎片化 vs 统一序列</text>
+
+  <!-- Left: DLRM -->
+  <rect x="30" y="60" width="350" height="290" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh1)"/>
+  <text x="205" y="88" font-size="15" font-weight="700" fill="#ef4444" text-anchor="middle">传统 DLRM（碎片化）</text>
+  <rect x="60" y="105" width="120" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+  <text x="120" y="130" font-size="13" fill="#1e293b" text-anchor="middle">Sparse 特征</text>
+  <rect x="230" y="105" width="120" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+  <text x="290" y="130" font-size="13" fill="#1e293b" text-anchor="middle">Dense 特征</text>
+  <rect x="60" y="170" width="120" height="38" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="120" y="194" font-size="12" fill="#1e293b" text-anchor="middle">Embedding</text>
+  <rect x="230" y="170" width="120" height="38" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="290" y="194" font-size="12" fill="#1e293b" text-anchor="middle">特征交叉</text>
+  <rect x="145" y="235" width="120" height="38" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="205" y="259" font-size="12" fill="#1e293b" text-anchor="middle">MLP</text>
+  <rect x="90" y="300" width="240" height="34" rx="8" fill="#fef9ec" stroke="#f59e0b"/>
+  <text x="210" y="322" font-size="12" fill="#1e293b" text-anchor="middle">Concat → 异构模块拼接</text>
+  <line x1="120" y1="145" x2="120" y2="170" stroke="#64748b" marker-end="url(#arr)"/>
+  <line x1="290" y1="145" x2="290" y2="170" stroke="#64748b" marker-end="url(#arr)"/>
+  <line x1="120" y1="208" x2="205" y2="235" stroke="#64748b" marker-end="url(#arr)"/>
+  <line x1="290" y1="208" x2="205" y2="235" stroke="#64748b" marker-end="url(#arr)"/>
+  <line x1="205" y1="273" x2="210" y2="300" stroke="#64748b" marker-end="url(#arr)"/>
+
+  <!-- Right: GR -->
+  <rect x="420" y="60" width="350" height="290" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh1)"/>
+  <text x="595" y="88" font-size="15" font-weight="700" fill="#10b981" text-anchor="middle">Generative Recommender（统一）</text>
+  <g>
+    <rect x="450" y="110" width="44" height="34" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+    <rect x="502" y="110" width="44" height="34" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+    <rect x="554" y="110" width="44" height="34" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+    <rect x="606" y="110" width="44" height="34" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+    <text x="472" y="132" font-size="11" fill="#1e293b" text-anchor="middle">Φ₀</text>
+    <text x="524" y="132" font-size="11" fill="#1e293b" text-anchor="middle">a₀</text>
+    <text x="576" y="132" font-size="11" fill="#1e293b" text-anchor="middle">Φ₁</text>
+    <text x="628" y="132" font-size="11" fill="#1e293b" text-anchor="middle">a₁</text>
+    <text x="690" y="132" font-size="13" fill="#64748b" text-anchor="middle">…</text>
+  </g>
+  <line x1="472" y1="144" x2="472" y2="180" stroke="#64748b"/>
+  <line x1="524" y1="144" x2="524" y2="180" stroke="#64748b"/>
+  <line x1="576" y1="144" x2="576" y2="180" stroke="#64748b"/>
+  <line x1="628" y1="144" x2="628" y2="180" stroke="#64748b"/>
+  <rect x="450" y="185" width="234" height="44" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="567" y="212" font-size="13" fill="#1e293b" text-anchor="middle">单一 Transformer 端到端</text>
+  <line x1="567" y1="229" x2="567" y2="262" stroke="#64748b" marker-end="url(#arr)"/>
+  <rect x="450" y="267" width="234" height="40" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="567" y="292" font-size="12" fill="#1e293b" text-anchor="middle">自动学复杂交互（Σ Seq）</text>
+  <text x="595" y="335" font-size="11" fill="#64748b" text-anchor="middle">limₙ→∞ 𝓕_GR ≈ 𝓕_DLRM</text>
+</svg>

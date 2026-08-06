@@ -1,0 +1,49 @@
+<svg width="800" height="380" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrD" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="shD" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="380" fill="#f8f9fc" rx="12"/>
+
+  <!-- title -->
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">推荐系统中的偏差：来源 → 结果 → 闭环放大</text>
+
+  <!-- Data bias box -->
+  <rect x="30" y="70" width="220" height="150" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shD)"/>
+  <text x="140" y="96" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">数据偏差 (收集阶段)</text>
+  <text x="140" y="122" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 选择偏差 (MNAR)</text>
+  <text x="140" y="144" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 曝光偏差</text>
+  <text x="140" y="166" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 从众偏差</text>
+  <text x="140" y="188" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 位置偏差</text>
+
+  <!-- Result bias box -->
+  <rect x="290" y="70" width="220" height="150" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shD)"/>
+  <text x="400" y="96" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ef4444">结果偏差 (推荐结果)</text>
+  <text x="400" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 流行度偏差</text>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">  (富者愈富 / 马太效应)</text>
+  <text x="400" y="178" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 不公平性</text>
+  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">  (系统性歧视)</text>
+
+  <!-- Model in middle -->
+  <rect x="550" y="100" width="120" height="90" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shD)"/>
+  <text x="610" y="140" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">有偏模型</text>
+  <text x="610" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#dbeafe">放大数据偏差</text>
+
+  <!-- arrows data->model, model->result -->
+  <line x1="250" y1="145" x2="548" y2="145" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrD)"/>
+  <line x1="510" y1="160" x2="370" y2="150" stroke="#ef4444" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <!-- feedback loop -->
+  <path d="M400,220 C400,300 120,300 120,225" fill="none" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrD)"/>
+  <text x="230" y="300" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#d97706">反馈闭环：推荐结果 → 新交互 → 新训练数据，偏差被滚雪球放大</text>
+
+  <line x1="40" y1="350" x2="760" y2="350" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="369" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">用 IPS 重新加权 或 PAL 解耦位置，可切断这一放大链条</text>
+</svg>

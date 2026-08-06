@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh9"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="380" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Group LayerNorm：分组独立归一化</text>
+
+  <!-- Left standard LN -->
+  <rect x="40" y="60" width="350" height="290" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh9)"/>
+  <text x="215" y="86" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">标准全局 LayerNorm</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="60" y="105" width="80" height="30" rx="6" fill="#e8ecff" stroke="#4A6CF7"/><text x="100" y="125">Age</text>
+    <rect x="150" y="105" width="80" height="30" rx="6" fill="#e8ecff" stroke="#4A6CF7"/><text x="190" y="125">City</text>
+    <rect x="60" y="145" width="80" height="30" rx="6" fill="#fef9ec" stroke="#f59e0b"/><text x="100" y="165">Seq₁</text>
+    <rect x="150" y="145" width="80" height="30" rx="6" fill="#fef9ec" stroke="#f59e0b"/><text x="190" y="165">Seq₂</text>
+    <rect x="60" y="185" width="80" height="30" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="100" y="205">Cand₁</text>
+    <rect x="150" y="185" width="80" height="30" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="190" y="205">Cand₂</text>
+  </g>
+  <rect x="245" y="140" width="120" height="40" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="305" y="165" font-size="11" fill="#1e293b" text-anchor="middle">全局 μ,σ,γ,β</text>
+  <text x="215" y="245" font-size="11" fill="#ef4444" text-anchor="middle">✗ Age 被过度放大（[-1,1]）</text>
+  <text x="215" y="268" font-size="11" fill="#ef4444" text-anchor="middle">✗ Seq 被过度压缩（[-5,5]）</text>
+  <text x="215" y="291" font-size="11" fill="#ef4444" text-anchor="middle">✗ 语义混淆（同维异义）</text>
+  <text x="215" y="325" font-size="11" fill="#64748b" text-anchor="middle">所有 token 共享分布假设</text>
+
+  <!-- Right GLN -->
+  <rect x="410" y="60" width="350" height="290" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh9)"/>
+  <text x="585" y="86" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">Group LayerNorm (GLN)</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="430" y="105" width="80" height="28" rx="6" fill="#e8ecff" stroke="#4A6CF7"/><text x="470" y="124">G1 User</text>
+    <rect x="520" y="105" width="80" height="28" rx="6" fill="#e8ecff" stroke="#4A6CF7"/><text x="560" y="124">G2 Seq</text>
+    <rect x="610" y="105" width="80" height="28" rx="6" fill="#e8ecff" stroke="#4A6CF7"/><text x="650" y="124">G3 RT</text>
+    <rect x="430" y="150" width="80" height="28" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="470" y="169">G4 Cand</text>
+  </g>
+  <rect x="430" y="200" width="260" height="34" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="560" y="222" font-size="11" fill="#1e293b" text-anchor="middle">每组独立 μ,σ,γ,β</text>
+  <text x="585" y="262" font-size="11" fill="#10b981" text-anchor="middle">✓ 分布对齐（同组语义近）</text>
+  <text x="585" y="285" font-size="11" fill="#10b981" text-anchor="middle">✓ 语义独立（同维异义不混）</text>
+  <text x="585" y="320" font-size="11" fill="#64748b" text-anchor="middle">开销可忽略，承认「有控制的异构性」</text>
+</svg>

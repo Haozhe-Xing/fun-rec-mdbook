@@ -1,0 +1,34 @@
+<svg width="800" height="280" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow9i" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="280" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">自主推理范式演进：从模仿到自主</text>
+
+  <g font-family="Arial" font-size="13" text-anchor="middle">
+    <rect x="30" y="80" width="230" height="140" rx="12" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow9i)"/>
+    <text x="145" y="110" font-weight="bold" fill="#4A6CF7">OneRec-Think</text>
+    <text x="145" y="135" font-size="12" fill="#64748b">模仿学习</text>
+    <text x="145" y="155" font-size="12" fill="#64748b">人工模板 + 教师知识</text>
+    <text x="145" y="178" font-size="11" fill="#64748b">结构化思考框架</text>
+    <text x="145" y="200" font-size="11" fill="#64748b">「学会思考」</text>
+
+    <rect x="285" y="80" width="230" height="140" rx="12" fill="#fef3cd" stroke="#f59e0b" stroke-width="2" filter="url(#shadow9i)"/>
+    <text x="400" y="110" font-weight="bold" fill="#d97706">RecZero</text>
+    <text x="400" y="135" font-size="12" fill="#64748b">纯强化学习</text>
+    <text x="400" y="155" font-size="12" fill="#64748b">无模板·无教师</text>
+    <text x="400" y="178" font-size="11" fill="#64748b">自主探索推理策略</text>
+    <text x="400" y="200" font-size="11" fill="#64748b">「独立摸索」</text>
+
+    <rect x="540" y="80" width="230" height="140" rx="12" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow9i)"/>
+    <text x="655" y="110" font-weight="bold" fill="#16a34a">RecOne</text>
+    <text x="655" y="135" font-size="12" fill="#64748b">混合范式</text>
+    <text x="655" y="155" font-size="12" fill="#64748b">少量冷启动 + RL</text>
+    <text x="655" y="178" font-size="11" fill="#64748b">有根基的灵活性</text>
+    <text x="655" y="200" font-size="11" fill="#64748b">「先框架后精进」</text>
+  </g>
+
+  <text x="400" y="258" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">核心：监督提供「语言」，强化提供「智慧」——两者互补而非对立</text>
+</svg>

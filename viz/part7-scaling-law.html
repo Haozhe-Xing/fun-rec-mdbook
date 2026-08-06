@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Scaling Law 交互曲线 · 推荐</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  #curve{width:100%;height:auto;background:#0f172a;border-radius:8px;}
+  .slider{margin-top:14px;}
+  .slider label{font-size:12px;color:var(--c-light);}
+  .slider input{width:100%;}
+  .readout{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+  .chip{background:#0f172a;border-radius:8px;padding:8px 12px;font-size:13px;}
+  .chip b{color:var(--c-success);}
+  .chip.ne b{color:var(--c-warn);}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>📈 推荐系统 Scaling Law：算力 → 性能</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>Scaling 曲线（对数坐标）</h3>
+    <svg id="curve" viewBox="0 0 400 300">
+      <line x1="45" y1="270" x2="385" y2="270" stroke="#64748b"/>
+      <line x1="45" y1="270" x2="45" y2="20" stroke="#64748b"/>
+      <text x="215" y="295" font-size="11" fill="#94a3b8" text-anchor="middle">训练计算量 C (PetaFLOPs/day, log)</text>
+      <text x="16" y="150" font-size="11" fill="#94a3b8" text-anchor="middle" transform="rotate(-90 16 150)">性能</text>
+      <!-- HR@100 curve (green, increasing) -->
+      <path id="hrCurve" d="" fill="none" stroke="#10b981" stroke-width="2.5"/>
+      <!-- NE curve (orange, decreasing) -->
+      <path id="neCurve" d="" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+      <circle id="hrDot" cx="45" cy="270" r="6" fill="#10b981"/>
+      <circle id="neDot" cx="45" cy="270" r="6" fill="#f59e0b"/>
+      <text x="375" y="40" font-size="10" fill="#10b981" text-anchor="end">HR@100 ↑</text>
+      <text x="375" y="60" font-size="10" fill="#f59e0b" text-anchor="end">NE ↓</text>
+    </svg>
+    <div class="slider">
+      <label>拖动调节计算量（对数）：<span id="clabel">10³</span> PetaFLOPs/day</label>
+      <input type="range" id="cslider" min="3" max="5.5" step="0.05" value="3"/>
+      <div class="readout">
+        <div class="chip">HR@100 = <b id="hrval">0.15</b></div>
+        <div class="chip ne">NE = <b id="neval">0.549</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前场景状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>公式</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+// HR@100 = 0.15 + 0.0195 ln C ; NE = 0.549 - 0.0053 ln C
+const HR0=0.15, HRk=0.0195, NE0=0.549, NEk=0.0053;
+function hr(c){ return HR0 + HRk*Math.log(c); }
+function ne(c){ return NE0 - NEk*Math.log(c); }
+
+const scenes = [
+  { name:"① 小规模实验 C=10³", c:1e3,
+    desc:"起点：几千 PetaFLOPs/day 的小规模实验。模型已能学到基础排序/召回能力，但远未到 Scaling 甜蜜区。",
+    why:"Meta 用小规模实验拟合 Scaling Law，再外推大规模性能，避免盲目烧钱。" },
+  { name:"② 中等规模 C=10⁴", c:1e4,
+    desc:"计算量增一个数量级。按幂律，HR@100 约 +4.5pp，NE 约 −1.2pp。性能稳定、可预测地提升。",
+    why:"证明推荐遵循与 LLM 同构的 Scaling Law，打破「推荐是例外」的迷思。" },
+  { name:"③ 接近 GPT-3 规模 C=10⁵", c:1e5,
+    desc:"十万 PetaFLOPs/day，接近 GPT-3 训练规模。三个数量级内幂律关系稳定成立。",
+    why:"可放心用小规模外推大模型，大幅降低研发盲目性与碳排放。" },
+  { name:"④ 万亿参数部署 C=10⁵·⁵", c:Math.pow(10,5.5),
+    desc:"最大配置：8192 序列、1024 维、24 层 HSTU，总参 1.5 万亿，部署服务数十亿用户，排序指标双位数提升。",
+    why:"Scaling Law 让「推荐基础模型」成为可能——预训练大模型再跨场景微调。" },
+];
+
+let cur = 0, timer = null;
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+const slider = document.getElementById("cslider");
+const clabel = document.getElementById("clabel");
+const hrval = document.getElementById("hrval");
+const neval = document.getElementById("neval");
+const hrDot = document.getElementById("hrDot");
+const neDot = document.getElementById("neDot");
+
+// precompute curve paths in svg coords. x: log10(c) 3..5.5 -> 45..385 ; y: HR 0.1..0.9 ; NE 0.3..0.7
+function xOf(c){ return 45 + (Math.log10(c)-3)/(5.5-3)*(385-45); }
+function yHR(v){ return 270 - (v-0.1)/(0.9-0.1)*(270-20); }
+function yNE(v){ return 270 - (v-0.3)/(0.7-0.3)*(270-20); }
+let hrPath="", nePath="";
+for(let lc=3; lc<=5.5001; lc+=0.1){
+  const c=Math.pow(10,lc);
+  const X=xOf(c);
+  hrPath += (hrPath?" L":"M")+X.toFixed(1)+" "+yHR(hr(c)).toFixed(1);
+  nePath += (nePath?" L":"M")+X.toFixed(1)+" "+yNE(ne(c)).toFixed(1);
+}
+document.getElementById("hrCurve").setAttribute("d", hrPath);
+document.getElementById("neCurve").setAttribute("d", nePath);
+
+function updateReadout(c){
+  const h=hr(c), n=ne(c);
+  hrval.textContent = h.toFixed(4);
+  neval.textContent = n.toFixed(4);
+  hrDot.setAttribute("cx", xOf(c)); hrDot.setAttribute("cy", yHR(h));
+  neDot.setAttribute("cx", xOf(c)); neDot.setAttribute("cy", yNE(n));
+  clabel.textContent = c>=1e5 ? c.toExponential(1) : Math.round(c).toLocaleString();
+}
+
+function render(){
+  if(cur < scenes.length){
+    const s = scenes[cur];
+    slider.value = Math.log10(s.c).toFixed(2);
+    updateReadout(s.c);
+    stateEl.innerHTML = "<h3>当前场景状态</h3><p><span class='k'>场景：</span>"+s.name+"</p><p>"+s.desc+"</p><p><span class='k'>意义：</span>"+s.why+"</p>";
+    codePre.innerHTML = "<span class='hl'>HR@100 = 0.15 + 0.0195·ln C</span>\nNE = 0.549 − 0.0053·ln C\n# 幂律：每增 10×，HR+4.5pp / NE−1.2pp";
+    foot.textContent = "场景 "+(cur+1)+" / "+scenes.length+" — "+s.name;
+  }
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<scenes.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=scenes.length-1){stopAuto();return;} next(); },2000); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+slider.addEventListener("input", ()=>{
+  cur = scenes.length; // custom explore mode
+  const c = Math.pow(10, parseFloat(slider.value));
+  updateReadout(c);
+  stateEl.innerHTML = "<h3>当前场景状态</h3><p><span class='k'>自由探索：</span>你调节了计算量到 "+clabel.textContent+" PetaFLOPs/day。</p><p>观察 HR@100 与 NE 如何沿幂律曲线移动——性能随算力可预测提升，这正是 Scaling Law 的核心。</p>";
+  codePre.innerHTML = "HR@100 = " + hr(c).toFixed(4) + "\nNE = " + ne(c).toFixed(4) + "\n# 由 L = L0 + β·ln C 直接算出";
+  foot.textContent = "自由探索模式 — 拖动滑块改变计算量";
+});
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

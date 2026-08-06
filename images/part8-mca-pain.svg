@@ -1,0 +1,46 @@
+<svg width="800" height="340" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a8p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s8p" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">传统级联架构（MCA）的三大结构性困境</text>
+
+  <!-- pain 1 -->
+  <rect x="40" y="62" width="220" height="170" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s8p)"/>
+  <text x="150" y="92" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#4A6CF7">① 计算碎片化</text>
+  <text x="150" y="120" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">算力耗在通信/存储</text>
+  <text x="150" y="140" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">而非模型计算</text>
+  <text x="150" y="166" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">GPU 利用率远低于</text>
+  <text x="150" y="186" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">大语言模型</text>
+  <text x="150" y="212" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">召回/排序/重排 各自部署</text>
+
+  <!-- pain 2 -->
+  <rect x="290" y="62" width="220" height="170" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2" filter="url(#s8p)"/>
+  <text x="400" y="92" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ef4444">② 优化目标冲突</text>
+  <text x="400" y="120" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">召回优化相关性</text>
+  <text x="400" y="140" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">排序优化点击率</text>
+  <text x="400" y="166" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">各自为战 → 全局次优</text>
+  <text x="400" y="186" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">误差逐层累积</text>
+  <text x="400" y="212" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">模型结构差异致不一致</text>
+
+  <!-- pain 3 -->
+  <rect x="540" y="62" width="220" height="170" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s8p)"/>
+  <text x="650" y="92" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#d97706">③ 与前沿脱节</text>
+  <text x="650" y="120" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">阶段割裂阻碍</text>
+  <text x="650" y="140" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">Scaling Law 应用</text>
+  <text x="650" y="166" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">强化学习对齐等</text>
+  <text x="650" y="186" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">前沿技术难直接引入</text>
+  <text x="650" y="212" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">信息在阶段间不断损失</text>
+
+  <line x1="260" y1="147" x2="288" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#a8p)"/>
+  <line x1="510" y1="147" x2="538" y2="147" stroke="#64748b" stroke-width="2" marker-end="url(#a8p)"/>
+
+  <rect x="90" y="258" width="620" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+  <text x="400" y="286" text-anchor="middle" font-family="Arial" font-size="13.5" fill="#1e293b">端到端生成式架构：用统一神经网络直接生成结果，</text>
+  <text x="400" y="306" text-anchor="middle" font-family="Arial" font-size="13.5" fill="#1e293b">消除信息损失、目标冲突与计算碎片化 — 三大场景共同的解法</text>
+</svg>

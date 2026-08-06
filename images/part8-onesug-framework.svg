@@ -1,0 +1,48 @@
+<svg width="800" height="370" viewBox="0 0 800 370" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a84" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s84" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="370" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">OneSug：查询补全的端到端条件文本生成</text>
+
+  <!-- a: PRE -->
+  <rect x="30" y="58" width="240" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s84)"/>
+  <text x="150" y="82" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">(a) PRE 前缀增强</text>
+  <text x="150" y="106" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">BGE 提取 e_p</text>
+  <text x="150" y="124" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">检索共现查询</text>
+  <text x="150" y="142" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">e* = (1−w)e_p</text>
+  <text x="150" y="160" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">     + w·ē_q  (w=0.5)</text>
+  <text x="150" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#10b981">缓解短前缀歧义</text>
+
+  <!-- b: encoder-decoder -->
+  <rect x="280" y="58" width="240" height="150" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s84)"/>
+  <text x="400" y="82" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#d97706">(b) Encoder-Decoder</text>
+  <text x="400" y="106" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">x_u = [CLS] e* [SEP]</text>
+  <text x="400" y="124" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">      H_p [SEP] H_u [SEP] U</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">BART / mT5 序列到序列</text>
+  <text x="400" y="168" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">自回归生成子词</text>
+  <text x="400" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#10b981">Beam K=32 + 长度归一化</text>
+
+  <!-- c: RWR -->
+  <rect x="530" y="58" width="240" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s84)"/>
+  <text x="650" y="82" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">(c) RWR 排序策略</text>
+  <text x="650" y="106" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">六级交互反馈</text>
+  <text x="650" y="124" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">L1 Order 2.0</text>
+  <text x="650" y="140" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">L3 Click 1.0 ... L6 0.0</text>
+  <text x="650" y="160" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">r = λ·e^{pi}</text>
+  <text x="650" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#10b981">DPO + 奖励加权 + δ 边界</text>
+
+  <line x1="270" y1="133" x2="278" y2="133" stroke="#64748b" stroke-width="2" marker-end="url(#a84)"/>
+  <line x1="520" y1="133" x2="528" y2="133" stroke="#64748b" stroke-width="2" marker-end="url(#a84)"/>
+
+  <!-- bottom goal -->
+  <rect x="60" y="240" width="680" height="96" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+  <text x="400" y="268" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">统一生成式：P(Query | Prefix, UserContext)</text>
+  <text x="400" y="294" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">绕过多阶段链路（Trie 10⁸→10⁴→10²→16）</text>
+  <text x="400" y="318" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">避免前序性能瓶颈限制后序上界 · 全局优化 · 100ms 实时约束</text>
+</svg>

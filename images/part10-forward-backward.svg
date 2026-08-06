@@ -1,0 +1,45 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="arrow10b2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <filter id="shadow10b" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">前向扩散与反向去噪（以用户交互向量为例）</text>
+
+  <!-- forward -->
+  <g font-family="Arial" font-size="12" text-anchor="middle">
+    <rect x="40" y="80" width="90" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="85" y="108" fill="#1e293b">x₀</text><text x="85" y="128" font-size="11" fill="#64748b">原始交互</text>
+    <rect x="160" y="80" width="90" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="205" y="108" fill="#1e293b">xₜ</text><text x="205" y="128" font-size="11" fill="#64748b">部分加噪</text>
+    <rect x="280" y="80" width="90" height="60" rx="8" fill="#cdd6f4" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="325" y="108" fill="#1e293b">x_T</text><text x="325" y="128" font-size="11" fill="#64748b">近纯噪声</text>
+  </g>
+  <line x1="130" y1="110" x2="156" y2="110" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10b)"/>
+  <line x1="250" y1="110" x2="276" y2="110" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10b)"/>
+  <text x="185" y="160" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">前向扩散 q(xₜ|xₜ₋₁) 逐步加高斯噪声</text>
+
+  <!-- backward -->
+  <g font-family="Arial" font-size="12" text-anchor="middle">
+    <rect x="470" y="80" width="90" height="60" rx="8" fill="#cdd6f4" stroke="#10b981" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="515" y="108" fill="#1e293b">x_T</text><text x="515" y="128" font-size="11" fill="#64748b">噪声</text>
+    <rect x="590" y="80" width="90" height="60" rx="8" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="635" y="108" fill="#1e293b">xₜ</text><text x="635" y="128" font-size="11" fill="#64748b">去噪</text>
+    <rect x="710" y="80" width="90" height="60" rx="8" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow10b)"/>
+    <text x="755" y="108" fill="#1e293b">x₀</text><text x="755" y="128" font-size="11" fill="#64748b">恢复交互</text>
+  </g>
+  <line x1="560" y1="110" x2="586" y2="110" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow10b2)"/>
+  <line x1="680" y1="110" x2="706" y2="110" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow10b2)"/>
+  <text x="615" y="160" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#16a34a">反向去噪 p_θ(xₜ₋₁|xₜ) 学习恢复</text>
+
+  <rect x="0" y="240" width="800" height="60" fill="#1e293b"/>
+  <text x="400" y="266" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">xₜ = √ᾱₜ·x₀ + √(1−ᾱₜ)·ε,  ε∼N(0,I)   ← 任意 t 可直接采样</text>
+  <text x="400" y="290" text-anchor="middle" font-family="Arial" font-size="12" fill="#cbd5e1">推荐特殊设计：噪声尺度 s 限制最大强度，推理可从中途 x_T' 出发保留个性化</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg width="800" height="310" viewBox="0 0 800 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">featureSign 的 64 位布局</title>
+  <desc id="desc">featureSign 高 32 位保存 slotId，低 32 位保存字符串哈希、整数值或桶编号。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#64748b" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="800" height="310" rx="16" fill="#f8f9fc"/>
+  <text x="400" y="40" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="20" font-weight="700" fill="#1e293b">featureSign：把“特征类型”和“具体取值”装进一个 64 位 key</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="85" width="320" height="105" rx="12" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="400" y="85" width="320" height="105" rx="12" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+  </g>
+  <text x="240" y="118" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#3347b0">高 32 位：slotId</text>
+  <text x="240" y="149" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">表示“这是什么类型的特征”</text>
+  <text x="240" y="173" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">SEX / CITY / AD_ID / AD_ECPM</text>
+
+  <text x="560" y="118" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#047857">低 32 位：取值编号</text>
+  <text x="560" y="149" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">表示“这个特征具体取什么值”</text>
+  <text x="560" y="173" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">hash("男") / 整数 4 / 桶编号 2</text>
+
+  <text x="80" y="221" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">bit 63</text>
+  <text x="387" y="221" text-anchor="end" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">bit 32</text>
+  <text x="413" y="221" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">bit 31</text>
+  <text x="720" y="221" text-anchor="end" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">bit 0</text>
+
+  <rect x="120" y="246" width="560" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="400" y="270" text-anchor="middle" font-family="Courier New, monospace" font-size="14" fill="#1e293b">featureSign = (slotId &lt;&lt; 32) | value_id</text>
+</svg>

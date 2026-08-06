@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr17" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh17"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Cross-Request KV Caching</text>
+
+  <!-- Stage I -->
+  <rect x="40" y="60" width="360" height="120" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh17)"/>
+  <text x="220" y="84" font-size="13" font-weight="700" fill="#4A6CF7" text-anchor="middle">Stage I · S-side（每请求一次）</text>
+  <rect x="60" y="98" width="320" height="36" rx="8" fill="#f0f4ff" stroke="#4A6CF7"/>
+  <text x="220" y="121" font-size="11.5" fill="#1e293b" text-anchor="middle">处理所有 S-tokens → 缓存 K/V</text>
+  <text x="220" y="160" font-size="11" fill="#64748b" text-anchor="middle">与候选数 C 无关，复杂度 O(L_S)</text>
+
+  <!-- Stage II -->
+  <rect x="40" y="200" width="360" height="140" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh17)"/>
+  <text x="220" y="224" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">Stage II · NS-side（每候选）</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="60" y="238" width="100" height="30" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="110" y="257">Cand₁ NS</text>
+    <rect x="170" y="238" width="100" height="30" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="220" y="257">Cand₂ NS</text>
+    <rect x="280" y="238" width="100" height="30" rx="6" fill="#fef2f2" stroke="#ef4444"/><text x="330" y="257">Cand₃ NS</text>
+  </g>
+  <text x="220" y="290" font-size="11" fill="#1e293b" text-anchor="middle">用缓存的 S-side K/V 做 Cross-Attention</text>
+  <text x="220" y="318" font-size="11" fill="#64748b" text-anchor="middle">只重算 NS 的 QKV：O(L_S + C·L_NS) ≈ O(1)</text>
+
+  <!-- arrow down to next request -->
+  <line x1="220" y1="340" x2="220" y2="360" stroke="#64748b" marker-end="url(#arr17)"/>
+  <rect x="430" y="200" width="330" height="140" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh17)"/>
+  <text x="595" y="224" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">跨请求复用</text>
+  <text x="595" y="255" font-size="11.5" fill="#1e293b" text-anchor="middle">首次请求：算完整序列 KV 并缓存</text>
+  <text x="595" y="282" font-size="11.5" fill="#1e293b" text-anchor="middle">后续请求：仅算新增 ΔL 个事件 KV</text>
+  <text x="595" y="312" font-size="11" fill="#64748b" text-anchor="middle">序列计算从 O(L_S) 降到 O(ΔL_S)</text>
+  <text x="595" y="335" font-size="10.5" fill="#64748b" text-anchor="middle">append-only 序列，刷新场景收益大</text>
+
+  <text x="400" y="385" font-size="12" fill="#64748b" text-anchor="middle">统一 Transformer 计算图是前提：分离架构两模块输入/参数不同，中间表示无法跨候选复用</text>
+</svg>

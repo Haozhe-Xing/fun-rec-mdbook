@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh10"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="380" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">MTGR 的 Dynamic Masking</text>
+
+  <!-- mask matrix 8x8 -->
+  <rect x="40" y="55" width="320" height="320" rx="10" fill="#ffffff" stroke="#e8ecff" filter="url(#sh10)"/>
+  <g font-size="9" fill="#64748b" text-anchor="middle">
+    <text x="82.5" y="78">age</text><text x="112.5" y="78">ctr</text><text x="142.5" y="78">seq1</text><text x="172.5" y="78">seq2</text><text x="202.5" y="78">rt1</text><text x="232.5" y="78">rt2</text><text x="262.5" y="78">t1</text><text x="292.5" y="78">t2</text><text x="322.5" y="78">t3</text>
+    <text x="62" y="100">age</text><text x="62" y="130">ctr</text><text x="62" y="160">seq1</text><text x="62" y="190">seq2</text><text x="62" y="220">rt1</text><text x="62" y="250">rt2</text><text x="62" y="280">t1</text><text x="62" y="310">t2</text><text x="62" y="340">t3</text>
+  </g>
+  <g>
+    <!-- static (User + Seq) all visible columns: rows age,ctr,seq1,seq2 visible to all -->
+    <!-- We'll fill: User(age,ctr) and Seq(seq1,seq2) columns all white -->
+    <rect x="70" y="85" width="25" height="25" fill="#10b981"/>
+    <rect x="100" y="85" width="25" height="25" fill="#10b981"/>
+    <rect x="130" y="85" width="25" height="25" fill="#10b981"/>
+    <rect x="160" y="85" width="25" height="25" fill="#10b981"/>
+    <rect x="70" y="115" width="25" height="25" fill="#10b981"/>
+    <rect x="100" y="115" width="25" height="25" fill="#10b981"/>
+    <rect x="130" y="115" width="25" height="25" fill="#10b981"/>
+    <rect x="160" y="115" width="25" height="25" fill="#10b981"/>
+    <rect x="70" y="145" width="25" height="25" fill="#10b981"/>
+    <rect x="100" y="145" width="25" height="25" fill="#10b981"/>
+    <rect x="130" y="145" width="25" height="25" fill="#10b981"/>
+    <rect x="160" y="145" width="25" height="25" fill="#10b981"/>
+    <rect x="70" y="175" width="25" height="25" fill="#10b981"/>
+    <rect x="100" y="175" width="25" height="25" fill="#10b981"/>
+    <rect x="130" y="175" width="25" height="25" fill="#10b981"/>
+    <rect x="160" y="175" width="25" height="25" fill="#10b981"/>
+    <!-- RealTime rows causal partial: rt1 row visible to rt1,t1,t2,t3; rt2 to rt2,t1.. (timestamp) -->
+    <rect x="190" y="205" width="25" height="25" fill="#10b981"/>
+    <rect x="220" y="205" width="25" height="25" fill="#10b981"/>
+    <rect x="250" y="205" width="25" height="25" fill="#10b981"/>
+    <rect x="280" y="205" width="25" height="25" fill="#10b981"/>
+    <rect x="310" y="205" width="25" height="25" fill="#10b981"/>
+    <rect x="190" y="235" width="25" height="25" fill="#10b981"/>
+    <rect x="250" y="235" width="25" height="25" fill="#10b981"/>
+    <rect x="280" y="235" width="25" height="25" fill="#10b981"/>
+    <rect x="310" y="235" width="25" height="25" fill="#10b981"/>
+    <!-- candidates diagonal -->
+    <rect x="250" y="265" width="25" height="25" fill="#10b981"/>
+    <rect x="280" y="295" width="25" height="25" fill="#10b981"/>
+    <rect x="310" y="325" width="25" height="25" fill="#10b981"/>
+  </g>
+  <text x="200" y="375" font-size="10" fill="#64748b" text-anchor="middle">白=可见 灰=不可见</text>
+
+  <!-- rules -->
+  <rect x="400" y="55" width="360" height="320" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh10)"/>
+  <text x="580" y="85" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">三条规则（动态生成）</text>
+  <g font-size="12" fill="#1e293b">
+    <text x="420" y="125" font-size="13" font-weight="700" fill="#4A6CF7">规则1 · 静态序列全可见</text>
+    <text x="420" y="147" font-size="11.5">User / Seq 列全白，对所有 token 可见</text>
+    <text x="420" y="185" font-size="13" font-weight="700" fill="#f59e0b">规则2 · 动态序列按因果</text>
+    <text x="420" y="207" font-size="11.5">RT 间下三角；RT→Cand 按时间戳动态</text>
+    <text x="420" y="245" font-size="13" font-weight="700" fill="#ef4444">规则3 · 候选相互独立</text>
+    <text x="420" y="267" font-size="11.5">Cand blocks 间对角 mask，仅自己可见</text>
+  </g>
+  <rect x="420" y="295" width="320" height="60" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="580" y="318" font-size="11.5" fill="#1e293b" text-anchor="middle">训练防信息泄露（RT₂ 不泄露给早于它的 Cand）</text>
+  <text x="580" y="340" font-size="11.5" fill="#1e293b" text-anchor="middle">推理同请求候选并行（RT 仅含请求前交互）</text>
+</svg>

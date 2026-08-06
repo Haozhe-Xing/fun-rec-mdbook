@@ -1,0 +1,41 @@
+<svg width="800" height="380" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a82" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s82" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="380" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">OneRec-V1：Encoder-Decoder 端到端生成</text>
+
+  <!-- encoder four pathways -->
+  <rect x="30" y="56" width="330" height="168" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s82)"/>
+  <text x="195" y="80" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">编码器：四通路理解用户</text>
+  <text x="50" y="104" font-family="Arial" font-size="12" fill="#1e293b">① 静态特征  hu ∈ R^{1×d}</text>
+  <text x="50" y="126" font-family="Arial" font-size="12" fill="#1e293b">② 短期行为  hs ∈ R^{20×d}  (L_s=20)</text>
+  <text x="50" y="148" font-family="Arial" font-size="12" fill="#1e293b">③ 正反馈    hp ∈ R^{256×d} (L_p=256)</text>
+  <text x="50" y="170" font-family="Arial" font-size="12" fill="#1e293b">④ 超长期    hl ∈ R^{128×d}</text>
+  <text x="50" y="196" font-family="Arial" font-size="11.5" fill="#64748b">分层 K-means 压缩 + QFormer 128 查询</text>
+  <text x="50" y="214" font-family="Courier New" font-size="11.5" fill="#64748b">z_enc = Enc([hu;hs;hp;hl])</text>
+
+  <line x1="360" y1="140" x2="408" y2="140" stroke="#64748b" stroke-width="2.5" marker-end="url(#a82)"/>
+
+  <!-- decoder -->
+  <rect x="413" y="56" width="357" height="168" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s82)"/>
+  <text x="591" y="80" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">解码器：自回归生成语义 ID</text>
+  <text x="433" y="104" font-family="Arial" font-size="12" fill="#1e293b">输入： [BOS] + 目标物品 SID 序列</text>
+  <text x="433" y="126" font-family="Arial" font-size="12" fill="#64748b">每层 = 因果自注意力 + 交叉注意力 + MoE</text>
+  <text x="433" y="148" font-family="Courier New" font-size="11.5" fill="#64748b">d^(i+1)=d^(i)+CausalAttn(d^(i))</text>
+  <text x="433" y="168" font-family="Courier New" font-size="11.5" fill="#64748b">d^(i+1)=d^(i+1)+CrossAttn(d^(i+1),z_enc)</text>
+  <text x="433" y="190" font-family="Courier New" font-size="11.5" fill="#64748b">d^(i+1)=d^(i+1)+MoE(RMSNorm(d^(i+1)))</text>
+  <text x="433" y="214" font-family="Courier New" font-size="11.5" fill="#10b981">L_NTP = −Σ log P(s^{j+1}|s_{&lt;j})</text>
+
+  <!-- reward system band -->
+  <rect x="30" y="246" width="740" height="108" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s82)"/>
+  <text x="50" y="272" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">奖励系统：突破「模仿天花板」</text>
+  <text x="50" y="298" font-family="Arial" font-size="12" fill="#1e293b">① P-Score：SIM 多塔学个性化偏好（CTR/LTR/VTR）</text>
+  <text x="50" y="320" font-family="Arial" font-size="12" fill="#1e293b">② 格式奖励：合法优势=1、丢弃非法 → 缓解挤压效应</text>
+  <text x="50" y="342" font-family="Arial" font-size="12" fill="#1e293b">③ SIR 工业对齐：病毒内容降权 α∈(0,1)（曝光 −9.59%）→ ECPO 对齐</text>
+</svg>

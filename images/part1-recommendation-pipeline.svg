@@ -1,0 +1,43 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh2" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">工业级推荐系统：三阶段漏斗式流水线</text>
+
+  <!-- Stage 1 召回 -->
+  <rect x="60" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="160" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">① 召回</text>
+  <text x="160" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">亿级 → 千级</text>
+  <text x="160" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">追求速度 + 覆盖度</text>
+  <text x="160" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">模型简单、特征少</text>
+
+  <!-- Stage 2 排序 -->
+  <rect x="300" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">② 排序</text>
+  <text x="400" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">千级 → 百级</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">追求预测精度</text>
+  <text x="400" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">深度模型融合全特征</text>
+
+  <!-- Stage 3 重排 -->
+  <rect x="540" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="640" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">③ 重排</text>
+  <text x="640" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">百级 → 最终列表</text>
+  <text x="640" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">追求体验</text>
+  <text x="640" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">多样性 / 新颖性 / 业务</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="130" x2="296" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow2)"/>
+  <line x1="500" y1="130" x2="536" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow2)"/>
+
+  <!-- Funnel notes -->
+  <text x="400" y="240" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">每一阶段解决的问题不同，但目标一致：从「可能相关」逐步筛选到「最优匹配」</text>
+  <rect x="120" y="262" width="560" height="44" rx="8" fill="#fef9ec" stroke="#d97706" stroke-width="1.5"/>
+  <text x="400" y="289" text-anchor="middle" font-family="Arial" font-size="13" fill="#92400e">召回求全 · 排序求准 · 重排求体验 — 三个阶段缺一不可，共同构成判别式推荐骨架</text>
+</svg>

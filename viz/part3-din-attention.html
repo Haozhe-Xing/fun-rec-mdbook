@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>DIN 注意力激活 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .cand{display:inline-block;background:var(--c-primary);color:#fff;font-size:14px;font-weight:700;padding:6px 14px;border-radius:8px;margin-bottom:14px;}
+  .hist{display:flex;flex-direction:column;gap:8px;}
+  .item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:#0f172a;border:1px solid #334155;transition:all .35s;}
+  .item .name{font-size:13px;min-width:90px;}
+  .item .bar{height:10px;border-radius:5px;background:#334155;flex:1;overflow:hidden;}
+  .item .bar > span{display:block;height:100%;background:var(--c-cell);transition:width .4s, background .4s;}
+  .item .w{font-size:11px;color:var(--c-light);width:42px;text-align:right;font-family:"Courier New",monospace;}
+  .item.on{border-color:var(--c-success);box-shadow:0 0 0 2px rgba(16,185,129,.3);}
+  .item.on .bar > span{background:var(--c-success);}
+  .item.dim{opacity:.45;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>💡 DIN 局部激活：同一用户、不同候选，聚光灯打在不同历史上</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>用户历史 & 候选广告</h3>
+    <div class="cand" id="cand">候选：机械键盘</div>
+    <div class="hist" id="hist"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const HIST = [
+  {name:"显卡", rel:0.95},
+  {name:"游戏鼠标", rel:0.90},
+  {name:"跑鞋", rel:0.15},
+  {name:"小说", rel:0.10},
+  {name:"机械键盘", rel:0.80}
+];
+const stages = [
+  { cand:"机械键盘", weights:[0.95,0.90,0.15,0.10,0.80],
+    desc:"候选是「机械键盘」。激活单元给数码类历史（显卡、游戏鼠标、键盘本身）打高分，运动/小说类被打低分。兴趣向量聚焦在数码兴趣上。",
+    code:["# 候选 = 机械键盘","v_A = embed(机械键盘)","for e_j in history:","  w_j = ffn(e_j, v_A)   # 不 Softmax","v_U = Σ w_j · e_j   # 聚焦数码"],
+    hl:1 },
+  { cand:"跑步袜", weights:[0.10,0.12,0.92,0.08,0.10],
+    desc:"候选换成「跑步袜」。聚光灯立刻转移——跑鞋历史被高亮（权重 0.92），数码类全暗下去。同一用户，兴趣表示因候选而彻底改变。",
+    code:["# 候选 = 跑步袜","v_A = embed(跑步袜)","for e_j in history:","  w_j = ffn(e_j, v_A)","v_U = Σ w_j · e_j   # 聚焦运动"],
+    hl:1 },
+  { cand:"悬疑小说", weights:[0.08,0.10,0.10,0.93,0.05],
+    desc:"候选是「悬疑小说」。小说历史被激活（权重 0.93），其余压低。三次切换清晰展示：兴趣向量不是固定的，而是随候选动态生成。",
+    code:["# 候选 = 悬疑小说","v_A = embed(悬疑小说)","for e_j in history:","  w_j = ffn(e_j, v_A)","v_U = Σ w_j · e_j   # 聚焦阅读"],
+    hl:1 },
+  { cand:"（对比）基准池化", weights:[0.20,0.20,0.20,0.20,0.20],
+    desc:"对比基准模型：所有历史平均池化，权重恒为 1/5，与候选无关。无论推什么，用户向量都不变——这正是 DIN 要解决的瓶颈。",
+    code:["# 基准：固定平均池化","v_U = mean(e_1..e_H)  # 与候选无关","# DIN 改进：","# v_U 随候选 A 动态变化"],
+    hl:3 }
+];
+
+let cur = 0, timer = null;
+const candEl = document.getElementById("cand");
+const histEl = document.getElementById("hist");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+
+function render(){
+  const s = stages[cur];
+  candEl.textContent = "候选：" + s.cand;
+  histEl.innerHTML = "";
+  HIST.forEach((h, i)=>{
+    const w = s.weights[i];
+    const d = document.createElement("div");
+    d.className = "item" + (w>=0.5 ? " on" : (w<0.2 ? " dim" : ""));
+    const pct = Math.round(w*100);
+    d.innerHTML = "<span class='name'>"+escapeHtml(h.name)+"</span>"+
+                  "<span class='bar'><span style='width:"+pct+"%'></span></span>"+
+                  "<span class='w'>"+w.toFixed(2)+"</span>";
+    histEl.appendChild(d);
+  });
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>候选：</span>"+s.cand+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — 候选："+s.cand;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },2000); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

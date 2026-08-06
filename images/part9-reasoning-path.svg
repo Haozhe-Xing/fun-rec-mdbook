@@ -1,0 +1,38 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9f" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow9f" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">显式推理链：从用户兴趣到推荐决策</text>
+
+  <g font-family="Arial" font-size="13" text-anchor="middle">
+    <rect x="30" y="80" width="210" height="80" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow9f)"/>
+    <text x="135" y="108" font-weight="bold" fill="#4A6CF7">用户画像推理</text>
+    <text x="135" y="132" font-size="12" fill="#64748b">从 ID 序列归纳</text>
+    <text x="135" y="150" font-size="12" fill="#64748b">兴趣分布（归纳）</text>
+
+    <rect x="295" y="80" width="210" height="80" rx="10" fill="#fef3cd" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow9f)"/>
+    <text x="400" y="108" font-weight="bold" fill="#d97706">候选评估推理</text>
+    <text x="400" y="132" font-size="12" fill="#64748b">用户→物品匹配</text>
+    <text x="400" y="150" font-size="12" fill="#64748b">三段论（演绎）</text>
+
+    <rect x="560" y="80" width="210" height="80" rx="10" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow9f)"/>
+    <text x="665" y="108" font-weight="bold" fill="#16a34a">端到端推理推荐</text>
+    <text x="665" y="132" font-size="12" fill="#64748b">生成推理 + ID</text>
+    <text x="665" y="150" font-size="12" fill="#64748b">反事实·多目标</text>
+  </g>
+
+  <line x1="240" y1="120" x2="291" y2="120" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow9f)"/>
+  <line x1="505" y1="120" x2="556" y2="120" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow9f)"/>
+
+  <!-- demo box -->
+  <rect x="30" y="190" width="740" height="86" rx="10" fill="#1e293b" filter="url(#shadow9f)"/>
+  <text x="48" y="216" font-family="Arial" font-size="12" fill="#94a3b8">推理演示：</text>
+  <text x="48" y="238" font-family="Arial" font-size="12" fill="#e2e8f0">兴趣围绕国际关系与军事动态；候选聚焦新型 J-35 战机首秀 → 高度相关 → 推荐 &lt;item_a_5083&gt;…</text>
+  <text x="48" y="262" font-family="Arial" font-size="12" fill="#94a3b8">可解释、可审查、可被产品迭代；不像判别式黑箱只输出打分。</text>
+</svg>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>生成式检索 · Beam Search 解码</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .tree{position:relative;margin-top:8px;}
+  .lvl{display:flex;justify-content:space-around;margin-bottom:34px;position:relative;}
+  .tok{border-radius:10px;padding:10px 12px;text-align:center;min-width:62px;background:var(--c-cell);transition:all .35s;border:2px solid transparent;font-size:13px;}
+  .tok.on{background:rgba(74,108,247,.22);border-color:var(--c-primary);}
+  .tok.green{background:rgba(16,185,129,.22);border-color:var(--c-success);}
+  .tok.warn{background:rgba(245,158,11,.20);border-color:var(--c-warn);}
+  .tok.dead{opacity:.32;border-color:var(--c-cell);}
+  .tok small{display:block;font-size:10.5px;color:var(--c-light);margin-top:3px;}
+  .lvl-label{font-size:12px;color:var(--c-light);margin:2px 0 6px;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌳 生成式检索：价值引导的 Trie Beam Search</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>逐层解码树</h3>
+    <div class="tree" id="tree"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"根节点：查询 + 用户上下文", layer:"L0",
+    desc:"模型拿到用户查询（如「红色连衣裙」）与用户画像、行为序列，作为生成的条件。此时尚未生成任何语义 ID Token，解码树只有一个根。",
+    code:["# 生成式检索：输入条件","ctx = [Query, User, Seq]","# 根节点：尚未展开","beam = [ root ]  # 空序列"],
+    hl:0,
+    toks:[ {t:"根", cls:"on", v:"条件"} ] },
+
+  { name:"第 ① 层 L1（类目）", layer:"L1",
+    desc:"从 Trie 前缀树的有效子节点采样（已按地域/定向/预算过滤）。各分支经 HTE 评估价值：类目「服装」价值高，被保留并扩大束宽；「数码」与用户无关注被剪枝。",
+    code:["# 仅从 Trie 有效子节点采样","for tok in trie.children(root):","    v = HTE(tok, ctx)      # 价值","    if v < thr: prune(tok)  # 剪枝","# 高价值分支束宽放大"],
+    hl:1,
+    toks:[
+      {t:"服装 2341", cls:"green", v:"v=0.82"},
+      {t:"数码 1002", cls:"dead", v:"剪枝"},
+      {t:"食品 3005", cls:"dead", v:"剪枝"} ] },
+
+  { name:"第 ② 层 L2（子类目）", layer:"L2",
+    desc:"在「服装」下展开。子节点「女装-裙装」价值最高（与「连衣裙」强相关），束宽扩至 21.7 深度探索；「男装」价值低，束宽收缩但仍保留最低探索。",
+    code:["# 在父节点下展开 L2","for tok in trie.children(服装):","    v = HTE(tok, ctx)","    B_next = max(B_min,","      B_base·exp((v-v̄)/τ))"],
+    hl:0,
+    toks:[
+      {t:"女装-裙 567", cls:"green", v:"v=0.86 束宽↑"},
+      {t:"男装 512", cls:"warn", v:"v=0.40 束宽↓"},
+      {t:"童装 588", cls:"dead", v:"剪枝"} ] },
+
+  { name:"第 ③ 层 L3 + OPQ（独特性）", layer:"L3",
+    desc:"最细粒度。「韩版连衣裙」胜出，再经 OPQ 补 2 层残差编码（品牌/价格），得到完整 5 层语义 ID。该序列经 Trie 校验确为真实有效广告，未被过滤。",
+    code:["# 生成完整 5 层 SID","sid = [2341, 567, 89,","       142, 201]","if sid in valid_SID_set:","    items.append(map(sid))"],
+    hl:0,
+    toks:[
+      {t:"韩版裙 89", cls:"green", v:"v=0.91 ✓"},
+      {t:"T恤 102", cls:"dead", v:"剪枝"},
+      {t:"牛仔裤 233", cls:"dead", v:"剪枝"} ] },
+
+  { name:"✅ 输出有效广告列表", layer:"OUT",
+    desc:"所有通过 Trie 约束与价值门槛的分支映射为真实商品/广告，输出端到端生成的候选列表。无效候选（地域不符、预算耗尽、定向不匹配）在解码早期就被剔除——有效候选占比 40%→95%，延迟 150→80ms。",
+    code:["# 端到端生成式检索完成","final = filter_valid(items)","# 有效占比 40%→95%","# 延迟 150ms→80ms","display(final[:K])"],
+    hl:0,
+    toks:[
+      {t:"广告A ✓", cls:"green", v:"红裙/Zara"},
+      {t:"广告B ✓", cls:"green", v:"红裙/无牌"},
+      {t:"广告C ✗", cls:"dead", v:"地域不符"} ] }
+];
+
+let cur = 0, timer = null;
+const tree = document.getElementById("tree");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  tree.innerHTML = "";
+  const s = stages[cur];
+  const lab = document.createElement("div");
+  lab.className = "lvl-label";
+  lab.textContent = "层：" + s.layer + " — " + s.name;
+  tree.appendChild(lab);
+  const row = document.createElement("div");
+  row.className = "lvl";
+  s.toks.forEach((tk)=>{
+    const d = document.createElement("div");
+    d.className = "tok " + tk.cls;
+    d.innerHTML = tk.t + "<small>" + tk.v + "</small>";
+    row.appendChild(d);
+  });
+  tree.appendChild(row);
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1800); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

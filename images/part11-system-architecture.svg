@@ -1,0 +1,40 @@
+<svg width="800" height="380" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="ae" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="380" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">离线「生产」与在线「服务」通过存储层解耦</text>
+  <rect x="40" y="80" width="330" height="80" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="205" y="116" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#10b981">离线系统</text>
+  <text x="205" y="134" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">特征工程 / 训练 / 向量</text>
+  <text x="205" y="175" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">产出模型 + 特征</text>
+  <line x1="205" y1="180" x2="205" y2="215" stroke="#10b981" stroke-width="2" marker-end="url(#ag)"/>
+  <rect x="40" y="220" width="330" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="205" y="251" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">存储层 (共享)</text>
+  <text x="205" y="269" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">PG / Redis / 共享目录 / ES</text>
+  <line x1="370" y1="255" x2="430" y2="255" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="430" y="220" width="330" height="70" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="595" y="251" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#4A6CF7">在线系统</text>
+  <text x="595" y="269" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">请求 → 召回 → 排序 → 重排</text>
+  <line x1="595" y1="220" x2="595" y2="180" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="430" y="80" width="330" height="80" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="595" y="116" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#4A6CF7">前端应用</text>
+  <text x="595" y="134" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Vue 3 五页面</text>
+  <line x1="595" y1="80" x2="595" y2="60" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)" stroke-dasharray="4 3"/>
+  <text x="595" y="55" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">用户行为反馈</text>
+  <rect x="0" y="350" width="800" height="30" fill="#1e293b" opacity="0.06" rx="0 0 12 12"/>
+</svg>

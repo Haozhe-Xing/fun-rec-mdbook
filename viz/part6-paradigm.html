@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>判别式 → 生成式范式对比 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .cand{display:flex;align-items:center;gap:10px;margin:8px 0;}
+  .cand .box{width:54px;height:34px;border-radius:6px;background:var(--c-cell);display:flex;align-items:center;justify-content:center;font-size:12px;}
+  .cand .bar{height:14px;border-radius:7px;background:var(--c-primary);transition:width .4s;}
+  .cand.green .box{background:var(--c-success);}
+  .cand.warn .box{background:var(--c-warn);}
+  .seq{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .tok{width:60px;height:60px;border-radius:10px;background:var(--c-cell);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .35s;}
+  .tok.on{background:var(--c-success);transform:scale(1.05);}
+  .tok.known{background:#334155;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔄 判别式 → 生成式范式对比</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>可视化面板</h3>
+    <div id="viz"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 判别式：候选打分", mode:"disc",
+    desc:"判别式推荐把推荐视为「对候选集打分」。给定用户与候选物品，模型逐一计算正向交互概率 Score=f(u,i,c)，再按分数排序择优。",
+    code:["# 判别式：逐候选打分","for i in candidates:","    score[i] = f(user, i, ctx)","ranked = sort(score, desc)","display(ranked[:K])  # 只排序，不创造"],
+    hl:1 },
+  { name:"② 判别式局限：级联信息损失", mode:"disc",
+    desc:"多阶段级联（召回→排序→重排）各阶段目标不一致，且召回误杀的优质物品后续永远看不到。原子 ID 词表爆炸、新物品无泛化。",
+    code:["# 级联的信息损失","recall  -> 千级 (可能误杀)","rank    -> 百级","rerank  -> 十级","# 被召回丢弃的物品","# 后续阶段永不可见 ⚠️"],
+    hl:4 },
+  { name:"③ 生成式：输入历史序列", mode:"gen",
+    desc:"生成式推荐不再对候选打分，而是把用户历史交互序列当作「上下文」，学习其生成概率 pθ(i₁:T | u,c)，直接生成结果。",
+    code:["# 生成式：序列生成","history = [i1, i2, i3]  # 已知","context = user, ctx","# 不枚举候选，直接建模分布","p = p_theta(items | history, u, c)"],
+    hl:4 },
+  { name:"④ 生成式：自回归解码", mode:"gen",
+    desc:"模型从左到右逐 token 解码：第 t 个物品依赖之前已生成的 token。一次前向即可产出整条序列，无需多阶段级联。",
+    code:["# 自回归解码","for t in 1..T:","    i_t = argmax p_theta(i_t|i_<t, u, c)","# 信息沿时间回流","seq = [i1, i2, i3, ...]"],
+    hl:1 },
+  { name:"⑤ 范式对比总结", mode:"both",
+    desc:"判别式问「这个物品该被推荐吗？」（局部择优）；生成式问「用户接下来会交互哪些？」（全局创造）。前者成熟稳定，后者端到端、潜力大。",
+    code:["# 判别式","Score = f(u, i, c)        # 择优","# 生成式","[I1..Ik] = g(u, c)        # 创造","# 目标: 端到端 + 语义ID"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const viz = document.getElementById("viz");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  const s = stages[cur];
+  // visual
+  viz.innerHTML = "";
+  if(s.mode==="disc"){
+    const items=[["i₁",0.62,""],["i₂",0.91,"green"],["i₃",0.30,""],["i₄",0.48,""],["i₅",0.75,""]];
+    items.forEach(([n,v,cls])=>{
+      const row=document.createElement("div");
+      row.className="cand "+cls;
+      row.innerHTML=`<div class='box'>${n}</div><div class='bar' style='width:${v*100}px'></div><span style='font-size:11px;color:#94a3b8'>${v}</span>`;
+      viz.appendChild(row);
+    });
+    const note=document.createElement("p");
+    note.style.cssText="font-size:12px;color:#94a3b8;margin-top:14px;";
+    note.textContent="每个候选独立打分，最高分（绿）胜出——但候选集由召回预先决定。";
+    viz.appendChild(note);
+  } else if(s.mode==="gen"){
+    const known=cur>=2?["i₁","i₂","i₃"]:[];
+    const seq=[["i₁",cur>=3],["i₂",cur>=3],["i₃",cur>=3],["i₄",cur>=4],["i₅",cur>=4]];
+    const wrap=document.createElement("div");wrap.className="seq";
+    seq.forEach(([t,on])=>{
+      const d=document.createElement("div");
+      d.className="tok "+(on?"on":"known");
+      d.textContent=t;
+      wrap.appendChild(d);
+    });
+    viz.appendChild(wrap);
+    const note=document.createElement("p");
+    note.style.cssText="font-size:12px;color:#94a3b8;margin-top:14px;";
+    note.textContent="绿色 token 为已生成；模型直接「创作」序列，不依赖预定义候选集。";
+    viz.appendChild(note);
+  } else {
+    const wrap=document.createElement("div");wrap.style.cssText="display:flex;gap:24px;flex-wrap:wrap;";
+    wrap.innerHTML=`
+      <div><div style="font-size:12px;color:#94a3b8;margin-bottom:6px;">判别式</div>
+        <div class="bar" style="width:90px;"></div><span style="font-size:11px;color:#94a3b8">f(u,i,c) 择优</span></div>
+      <div><div style="font-size:12px;color:#94a3b8;margin-bottom:6px;">生成式</div>
+        <div class="seq"><div class="tok on">i₁</div><div class="tok on">i₂</div><div class="tok on">i₃</div></div></div>`;
+    viz.appendChild(wrap);
+  }
+  // state
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  // code
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

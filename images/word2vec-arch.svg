@@ -1,0 +1,49 @@
+<svg width="800" height="340" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">两种架构：Skip-gram 与 CBOW</text>
+
+  <!-- Skip-gram panel -->
+  <rect x="40" y="58" width="330" height="250" rx="12" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="205" y="84" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">Skip-gram</text>
+  <text x="205" y="104" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">用中心词预测上下文词</text>
+
+  <rect x="160" y="120" width="90" height="40" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="205" y="145" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">中心词 w_t</text>
+
+  <rect x="160" y="185" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="205" y="210" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">投影向量 v_wt</text>
+
+  <rect x="120" y="255" width="170" height="40" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="205" y="280" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Softmax → 上下文概率</text>
+
+  <line x1="205" y1="160" x2="205" y2="183" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="205" y1="225" x2="205" y2="253" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- CBOW panel -->
+  <rect x="430" y="58" width="330" height="250" rx="12" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="595" y="84" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981">CBOW</text>
+  <text x="595" y="104" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">用上下文词预测中心词</text>
+
+  <rect x="510" y="120" width="170" height="40" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="595" y="145" text-anchor="middle" font-family="Arial" font-size="12" fill="#065f46">多个上下文词（平均）</text>
+
+  <rect x="550" y="185" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="595" y="210" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">上下文向量</text>
+
+  <rect x="510" y="255" width="170" height="40" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="595" y="280" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Softmax → 中心词概率</text>
+
+  <line x1="595" y1="160" x2="595" y2="183" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="595" y1="225" x2="595" y2="253" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="400" y="330" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">推荐中 Skip-gram 更常用：对低频/长尾物品更友好，且可直接用于序列建模</text>
+</svg>

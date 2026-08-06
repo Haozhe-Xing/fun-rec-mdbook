@@ -1,0 +1,34 @@
+<svg width="800" height="360" viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="ae" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="360" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">FunRec 电影推荐系统：浏览器中的完整交互闭环</text>
+  <rect x="300" y="60" width="200" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="91" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">用户 (浏览器)</text>
+  <text x="400" y="109" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">浏览 / 搜索 / 评分</text>
+  <line x1="400" y1="130" x2="400" y2="175" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="280" y="180" width="240" height="60" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="206" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">推荐系统 (在线)</text>
+  <text x="400" y="224" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">召回 → 排序 → 重排</text>
+  <line x1="400" y1="240" x2="400" y2="275" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="280" y="280" width="240" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="304" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">存储层 + 离线训练</text>
+  <text x="400" y="322" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">PG / Redis / ES / 模型</text>
+  <text x="640" y="215" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">用户行为反馈</text>
+  <line x1="520" y1="210" x2="540" y2="210" stroke="#f59e0b" stroke-width="2" marker-end="url(#aw)" stroke-dasharray="4 3"/>
+</svg>

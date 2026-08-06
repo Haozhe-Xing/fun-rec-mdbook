@@ -1,0 +1,59 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1e293b"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">模型结构：中心词向量表 W 与上下文向量表 Wᶜ 不在同一空间</text>
+
+  <!-- one-hot x_t -->
+  <text x="80" y="70" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">one-hot x_t</text>
+  <rect x="64" y="80" width="32" height="18" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1"/>
+  <rect x="64" y="98" width="32" height="18" rx="3" fill="#4A6CF7" stroke="#1e293b" stroke-width="1"/>
+  <rect x="64" y="116" width="32" height="18" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1"/>
+  <rect x="64" y="134" width="32" height="18" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1"/>
+  <rect x="64" y="152" width="32" height="18" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1"/>
+
+  <!-- W center table -->
+  <rect x="170" y="70" width="110" height="130" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <line x1="225" y1="70" x2="225" y2="200" stroke="#4A6CF7" stroke-width="1" opacity="0.5"/>
+  <line x1="170" y1="135" x2="280" y2="135" stroke="#4A6CF7" stroke-width="1" opacity="0.5"/>
+  <text x="225" y="225" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">中心词向量表 W ∈ ℝ^{V×D}</text>
+
+  <!-- v_wt -->
+  <text x="350" y="70" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">v_wt</text>
+  <rect x="334" y="80" width="32" height="18" rx="3" fill="#4A6CF7" stroke="#1e293b" stroke-width="1"/>
+  <rect x="334" y="98" width="32" height="18" rx="3" fill="#4A6CF7" stroke="#1e293b" stroke-width="1"/>
+  <rect x="334" y="116" width="32" height="18" rx="3" fill="#4A6CF7" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- W^c context table -->
+  <rect x="470" y="70" width="110" height="130" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <line x1="525" y1="70" x2="525" y2="200" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+  <line x1="470" y1="135" x2="580" y2="135" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+  <text x="525" y="225" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#10b981">上下文向量表 Wᶜ ∈ ℝ^{V×D}</text>
+
+  <!-- softmax output -->
+  <rect x="660" y="70" width="90" height="130" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="676" y="86" width="58" height="10" rx="2" fill="#ef4444"/>
+  <rect x="676" y="104" width="34" height="10" rx="2" fill="#94a3b8"/>
+  <rect x="676" y="122" width="46" height="10" rx="2" fill="#94a3b8"/>
+  <rect x="676" y="140" width="26" height="10" rx="2" fill="#94a3b8"/>
+  <rect x="676" y="158" width="52" height="10" rx="2" fill="#94a3b8"/>
+  <rect x="676" y="176" width="38" height="10" rx="2" fill="#94a3b8"/>
+  <text x="705" y="225" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Softmax</text>
+  <text x="705" y="245" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">上下文词概率</text>
+
+  <!-- arrows -->
+  <line x1="96" y1="107" x2="168" y2="135" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="280" y1="135" x2="332" y2="107" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="366" y1="107" x2="468" y2="135" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="135" x2="658" y2="135" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="400" y="290" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">v_wt = x_tᵀ · W（查表）；与 Wᶜ 各行做点积经 Softmax 得到上下文词概率</text>
+  <text x="400" y="308" text-anchor="middle" font-family="Arial" font-size="11" fill="#f59e0b">⚠ 中心词向量 v 与 上下文向量 vᶜ 分属两个不同向量空间，不可直接比较</text>
+</svg>

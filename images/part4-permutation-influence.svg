@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="400" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">排列变异影响：相同物品、不同顺序 → 不同用户行为</text>
+
+  <!-- arrangement 1 -->
+  <rect x="40" y="60" width="380" height="110" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
+  <text x="60" y="84" font-size="13" font-weight="700" fill="#ef4444">排列 [A, B, C]</text>
+  <g>
+    <rect x="60" y="96" width="80" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/><text x="100" y="123" text-anchor="middle" font-size="12" fill="#fff">A 贵</text>
+    <rect x="160" y="96" width="80" height="44" rx="8" fill="#4A6CF7" stroke="#3b56c4" stroke-width="1.5"/><text x="200" y="123" text-anchor="middle" font-size="12" fill="#fff">B 平价</text>
+    <rect x="260" y="96" width="80" height="44" rx="8" fill="#10b981" stroke="#0c8f6a" stroke-width="1.5"/><text x="300" y="123" text-anchor="middle" font-size="12" fill="#fff">C 平价</text>
+  </g>
+  <circle cx="380" cy="118" r="20" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="380" y="124" text-anchor="middle" font-size="18" fill="#ef4444" font-weight="700">✕</text>
+  <text x="60" y="160" font-size="11.5" fill="#64748b">先看高价 A，阈值被抬高 → 无购买欲望</text>
+
+  <!-- arrangement 2 -->
+  <rect x="380" y="60" width="380" height="110" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="84" font-size="13" font-weight="700" fill="#0c8f6a">排列 [B, A, C]</text>
+  <g>
+    <rect x="400" y="96" width="80" height="44" rx="8" fill="#4A6CF7" stroke="#3b56c4" stroke-width="1.5"/><text x="440" y="123" text-anchor="middle" font-size="12" fill="#fff">B 平价</text>
+    <rect x="500" y="96" width="80" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/><text x="540" y="123" text-anchor="middle" font-size="12" fill="#fff">A 贵</text>
+    <rect x="600" y="96" width="80" height="44" rx="8" fill="#10b981" stroke="#0c8f6a" stroke-width="1.5"/><text x="640" y="123" text-anchor="middle" font-size="12" fill="#fff">C 平价</text>
+  </g>
+  <circle cx="720" cy="118" r="20" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+  <text x="720" y="124" text-anchor="middle" font-size="18" fill="#0c8f6a" font-weight="700">✓</text>
+  <text x="400" y="160" font-size="11.5" fill="#64748b">先看平价 B，A 显得「相对便宜」→ 购买 A</text>
+
+  <!-- takeaway -->
+  <rect x="40" y="200" width="720" height="0"/>
+  <line x1="220" y1="180" x2="560" y2="180" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="400" y="210" text-anchor="middle" font-size="13" fill="#1e293b">顺序改变了用户对价值的<tspan fill="#ea580c" font-weight="700">相对感知</tspan> —— 这正是 PRS 把「排列」当作一等优化目标的动机。</text>
+
+  <g font-size="11" fill="#64748b">
+    <rect x="300" y="245" width="14" height="14" rx="3" fill="#f97316"/><text x="320" y="256">A = 贵价品</text>
+    <rect x="430" y="245" width="14" height="14" rx="3" fill="#4A6CF7"/><text x="450" y="256">B = 平价品</text>
+    <rect x="560" y="245" width="14" height="14" rx="3" fill="#10b981"/><text x="580" y="256">C = 平价品</text>
+  </g>
+</svg>

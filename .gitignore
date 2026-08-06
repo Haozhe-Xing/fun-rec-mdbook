@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+.vscode/
+.workbuddy/
+outputs/
+book/
+AGENT_BRIEF.md
+*.swp
+*.tmp

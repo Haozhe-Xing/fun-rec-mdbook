@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="420" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Deep 部分：Embedding + DNN 实现泛化</text>
+
+  <!-- Sparse categorical features -->
+  <rect x="40" y="70" width="170" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow3)"/>
+  <text x="125" y="92" text-anchor="middle" font-size="12.5" fill="#1e293b" font-weight="600">稀疏类别特征</text>
+  <text x="125" y="112" text-anchor="middle" font-size="11" fill="#64748b">用户ID / 物品ID</text>
+
+  <line x1="210" y1="98" x2="278" y2="98" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- Embedding -->
+  <rect x="290" y="64" width="150" height="68" rx="8" fill="#10b981" filter="url(#shadow3)"/>
+  <text x="365" y="92" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">Embedding</text>
+  <text x="365" y="113" text-anchor="middle" font-size="11" fill="#ffffff">稀疏→稠密向量</text>
+
+  <line x1="440" y1="98" x2="498" y2="98" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- Dense vectors -->
+  <rect x="510" y="70" width="250" height="56" rx="8" fill="#e6f7f1" stroke="#10b981" stroke-width="2"/>
+  <text x="635" y="92" text-anchor="middle" font-size="12" fill="#1e293b">稠密向量（语义相近靠拢）</text>
+  <text x="635" y="111" text-anchor="middle" font-size="11" fill="#64748b">《三体》≈《流浪地球》≠《熊出没》</text>
+
+  <!-- DNN layers -->
+  <rect x="190" y="170" width="110" height="50" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow3)"/>
+  <text x="245" y="200" text-anchor="middle" font-size="13" fill="#4A6CF7" font-weight="700">Dense L1</text>
+  <rect x="340" y="170" width="110" height="50" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow3)"/>
+  <text x="395" y="200" text-anchor="middle" font-size="13" fill="#4A6CF7" font-weight="700">Dense L2</text>
+  <rect x="490" y="170" width="110" height="50" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow3)"/>
+  <text x="545" y="200" text-anchor="middle" font-size="13" fill="#4A6CF7" font-weight="700">Dense L3</text>
+
+  <line x1="635" y1="98" x2="635" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+  <line x1="635" y1="150" x2="600" y2="170" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+  <line x1="300" y1="195" x2="338" y2="195" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+  <line x1="450" y1="195" x2="488" y2="195" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- deep logit -->
+  <rect x="360" y="260" width="160" height="54" rx="8" fill="#1e293b"/>
+  <text x="440" y="283" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">deep_logit</text>
+  <text x="440" y="303" text-anchor="middle" font-size="11" fill="#cbd5e1">自动学高阶非线性</text>
+
+  <line x1="545" y1="220" x2="470" y2="258" stroke="#64748b" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- note: generalization -->
+  <rect x="120" y="340" width="560" height="58" rx="8" fill="#e8ecff"/>
+  <text x="400" y="364" text-anchor="middle" font-size="12.5" fill="#1e293b">泛化：未见过 A+C 组合时，靠向量语义相邻做归纳推广</text>
+  <text x="400" y="385" text-anchor="middle" font-size="11.5" fill="#64748b">代价：可解释性弱，高频强规则不如 Wide 查表"记得牢"</text>
+</svg>

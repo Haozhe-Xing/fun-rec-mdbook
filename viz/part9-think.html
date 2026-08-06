@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>推荐中的思考与推理 · 演进演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .node{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:8px;background:var(--c-cell);transition:all .35s;font-size:14px;}
+  .node.on{background:var(--c-primary);color:#fff;font-weight:600;}
+  .node.done{background:rgba(74,108,247,.25);}
+  .node .tag{font-family:"Courier New",monospace;font-size:12px;opacity:.8;margin-left:auto;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 推荐模型推理能力演进：从隐式预测到显式思考</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>能力演进路径</h3>
+    <div id="path"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>关键机制</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 语义鸿沟", tag:"Gap",
+    desc:"推荐的协同语义（离散 ID）与 LLM 的语言语义之间存在鸿沟。把 item_12345 直接喂给 LLM 是词表外符号，无法关联预训练知识；用标题替换 ID 又丢失协同信号。",
+    code:["# 推荐侧","x = item_12345   # 协同语义, OOV for LLM","# LLM 侧","text = '塞尔达传说' # 语言语义","# 鸿沟: 二者无法对齐"],
+    hl:0 },
+  { name:"② LC-Rec / PLUM：认识物品", tag:"Align",
+    desc:"用层次化 RQ-VAE 把物品编码为语义索引（如 <A37><B12><C5><D8>），并通过三层对齐任务把协同语义注入 LLM。PLUM 进一步融合多模态与协同信号，工业级落地 YouTube。",
+    code:["# 语义索引构建","z = RQVAE(concat(text, visual, audio, cf))","sid = argmin_k ||r_i - v^k||^2","# 对齐: 序列预测 / ID↔文本 / 推荐导向","llm.align(sid, text)"],
+    hl:1 },
+  { name:"③ OneRec-Think：学会思考", tag:"Scaffold",
+    desc:"三阶段框架：物品对齐 → 推理激活（推理脚手架）→ 推理增强（GRPO）。模型先生成结构化推理链（分析用户→评估候选→生成推荐），再输出语义 ID，可解释、可审查。",
+    code:["# 三阶段","align_items(llm, sid)","activate_reasoning(scaffold)","enhance_reasoning(grpo, reward)","# 输出: 推理 + <item_a_5083>..."],
+    hl:2 },
+  { name:"④ RecZero：独立摸索", tag:"RL",
+    desc:"抛弃人工模板与教师示范，纯强化学习让模型自主演化推理。Think-before-Recommendation 模板只定步骤顺序，内容留给模型探索；奖励 r=−|y_true−y_pred| 反向塑造推理。",
+    code:["# 结构化框架 + 自由内容","prompt = [instr, H_u, M_i, template]","# 模板: analyze user / item / match / rate","r = -abs(y_true - y_pred)","grpo_update(rollouts)"],
+    hl:3 },
+  { name:"⑤ RecOne + 端到端推理推荐", tag:"Hybrid",
+    desc:"RecOne 用少量冷启动样本初始化推理能力，再用 RL 自主精进，兼顾效率与性能上界。模型具备反事实推理、多目标权衡，成为主动的智能助手而非被动过滤器。",
+    code:["# 混合范式","sft_coldstart(traces)  # 小样本高质量","rl_refine(grpo)         # 自主优化","# 推理深度自适应 / 多样性 / 场景迁移","rec = reason_then_recommend(H_u)"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const pathEl = document.getElementById("path");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  pathEl.innerHTML = "";
+  stages.forEach((s, i)=>{
+    const d = document.createElement("div");
+    d.className = "node" + (i===cur?" on":(i<cur?" done":""));
+    d.innerHTML = "<span>"+s.name+"</span><span class='tag'>"+s.tag+"</span>";
+    pathEl.appendChild(d);
+  });
+  const s = stages[cur];
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },2000); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

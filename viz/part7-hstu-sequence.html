@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>HSTU 序列变换演示 · 交互</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  /* visual */
+  .seq{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center;}
+  .tok{width:62px;height:54px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center;background:var(--c-cell);transition:all .35s;border:2px solid transparent;}
+  .tok.phi{background:#1e3a8a;border-color:#3b82f6;}
+  .tok.act{background:#78350f;border-color:#f59e0b;}
+  .tok.on{box-shadow:0 0 0 3px rgba(74,108,247,.6);transform:translateY(-4px);}
+  .tok.pred{background:#064e3b;border-color:var(--c-success);}
+  .tok.dim{opacity:.35;}
+  .arrow{color:var(--c-light);font-size:13px;margin:18px 0;text-align:center;}
+  /* state + code */
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔁 HSTU 序列变换：从行为历史到行为预测</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>序列可视化</h3>
+    <div class="seq" id="seq"></div>
+    <div class="arrow" id="arrow"></div>
+    <div class="seq" id="seq2"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前步骤状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const seqData = ["Φ₀ 科技A","a₀ 点赞","Φ₁ 美食B","a₁ 收藏","Φ₂ 科技C","a₂ 点击","Φ₃ 候选?"];
+const stages = [
+  { name:"① 原始行为历史", focus:0,
+    desc:"用户小明的历史是一连串「内容 + 反馈」：看了科技A（点赞）、美食B（收藏）、科技C（点击）。传统 DLRM 把每条当独立样本打分。",
+    code:["# 原始曝光日志","history = [科技A:点赞, 美食B:收藏,","           科技C:点击]","# DLRM: 每条样本独立前向"],
+    hl:0,
+    arrow:"", seq2:[] },
+  { name:"② 交织序列组织 (GR)", focus:1,
+    desc:"Generative Recommender 把内容与行为交替写成一条统一序列 [Φ₀,a₀,Φ₁,a₁,...]。所有信息编码进 token 序列，由单一 Transformer 处理。",
+    code:["seq = [Φ₀, a₀, Φ₁, a₁, Φ₂, a₂, Φ₃]","# 内容 token 与行为 token 交织","# 序列总长 n = 2·n_c"],
+    hl:1,
+    arrow:"内容 Φ 与行为 a 交替出现", seq2:[] },
+  { name:"③ Causal Mask（因果）", focus:2,
+    desc:"自回归训练用 causal mask：位置 i 只能 attend 0..i-1。模型被迫学因果结构（过去→现在），不能偷看未来，抑制对稀疏特征的过拟合。",
+    code:["mask = lower_triangular(n)  # 下三角","# 位置 i 只看到 0..i-1","# 引入因果归纳偏置"],
+    hl:1,
+    arrow:"每个位置只看左侧历史", seq2:[] },
+  { name:"④ Pointwise Aggregation", focus:3,
+    desc:"HSTU 用 SiLU 逐元素聚合替代 Softmax Attention：A(X)V = φ₂(QKᵀ+rab)⊙V。不做全局归一化，权重可累加 >1，保留兴趣的「绝对强度」（用户B比A更爱科技）。",
+    code:["# 非 softmax 归一化","attn = silu(Q@K.T + rab) * V","# rab: 相对时间偏置","# 绝对强度被保留"],
+    hl:1,
+    arrow:"SiLU 聚合，保留绝对兴趣强度", seq2:[] },
+  { name:"⑤ 候选位置预测行为 (target-aware)", focus:4,
+    desc:"在候选位置 Φ₃ 后预测行为 a₃（会点击吗？看多久？）。这是 target-aware：模型先看到候选内容，再预测行为反馈——排序任务 = p(aᵢ|历史, Φᵢ)。",
+    code:["# 在候选位置算 loss","a_hat = model(seq, pos=Φ₃)","# 预测: 点击 / 时长 / 点赞","# target-aware 建模"],
+    hl:1,
+    arrow:"在 Φ₃ 后预测行为 a₃", seq2:["Φ₃ 候选?","a₃ ?"] },
+  { name:"⑥ 一次前向 = n_c 个监督信号", focus:5,
+    desc:"自回归下，序列一次前向同时预测所有行为（a₀ 在 Φ₀ 后、a₁ 在 Φ₁ 后…）。n_c 次预测共享计算，训练效率提升约 n_c 倍——这就是 Scale 的关键。",
+    code:["# 一次前向产 n_c 个监督信号","losses = [L(a₀|Φ₀), L(a₁|Φ₁), ...]","# 训练提速 ~ n_c 倍","# 同等算力可训复杂数百倍模型"],
+    hl:3,
+    arrow:"所有行为位置并行预测", seq2:[] },
+];
+
+let cur = 0, timer = null;
+const seqEl = document.getElementById("seq");
+const seq2El = document.getElementById("seq2");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+const arrowEl = document.getElementById("arrow");
+
+function tokClass(i, stageIdx){
+  // base class by type
+  let base = seqData[i].startsWith("Φ") ? "tok phi" : "tok act";
+  if(stageIdx === 4 && i === 6) base = "tok pred"; // 候选
+  return base;
+}
+
+function render(){
+  const s = stages[cur];
+  seqEl.innerHTML = "";
+  seqData.forEach((t, i)=>{
+    const d = document.createElement("div");
+    let cls = tokClass(i, cur);
+    if(i === s.focus && cur >= 1) cls += " on";
+    if(cur >= 1 && i > s.focus && cur < 5) cls += " dim";
+    d.className = cls;
+    d.textContent = t;
+    seqEl.appendChild(d);
+  });
+  arrowEl.textContent = s.arrow || "";
+  seq2El.innerHTML = "";
+  s.seq2.forEach(t=>{
+    const d = document.createElement("div");
+    d.className = "tok " + (t.startsWith("a") ? "pred" : "phi");
+    d.textContent = t;
+    seq2El.appendChild(d);
+  });
+  stateEl.innerHTML = "<h3>当前步骤状态</h3><p><span class='k'>步骤：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

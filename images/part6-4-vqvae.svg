@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="av" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/></marker>
+    <filter id="sv" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="800" height="360" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">VQ-VAE：编码器 → 量化 → 解码器</text>
+
+  <!-- encoder -->
+  <rect x="40" y="130" width="120" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sv)"/>
+  <text x="100" y="158" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">编码器 fθ</text>
+  <text x="100" y="178" text-anchor="middle" font-size="11" fill="#64748b">x → z_e</text>
+
+  <!-- codebook -->
+  <rect x="230" y="110" width="150" height="110" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sv)"/>
+  <text x="305" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#f59e0b">码本 E</text>
+  <g font-size="11" fill="#1e293b" text-anchor="middle">
+    <text x="305" y="158">e₁ [1,1]</text>
+    <text x="305" y="178">e₂ [0,0]</text>
+    <text x="305" y="198">… K 个码字</text>
+  </g>
+  <text x="305" y="218" text-anchor="middle" font-size="10" fill="#64748b">最近邻搜索</text>
+
+  <!-- quantized -->
+  <rect x="450" y="130" width="120" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sv)"/>
+  <text x="510" y="158" text-anchor="middle" font-size="13" font-weight="600" fill="#10b981">z_q = e_{k*}</text>
+  <text x="510" y="178" text-anchor="middle" font-size="11" fill="#64748b">离散索引 k*</text>
+
+  <!-- decoder -->
+  <rect x="640" y="130" width="120" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sv)"/>
+  <text x="700" y="158" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">解码器 gφ</text>
+  <text x="700" y="178" text-anchor="middle" font-size="11" fill="#64748b">z_q → x̂</text>
+
+  <line x1="160" y1="165" x2="226" y2="165" stroke="#4A6CF7" stroke-width="2" marker-end="url(#av)"/>
+  <line x1="380" y1="165" x2="446" y2="165" stroke="#4A6CF7" stroke-width="2" marker-end="url(#av)"/>
+  <line x1="570" y1="165" x2="636" y2="165" stroke="#4A6CF7" stroke-width="2" marker-end="url(#av)"/>
+
+  <!-- loss boxes -->
+  <g font-size="11" text-anchor="middle">
+    <rect x="40" y="250" width="170" height="50" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/><text x="125" y="272" fill="#1e293b">L_recon ‖x−x̂‖²</text><text x="125" y="290" fill="#64748b">重建质量</text>
+    <rect x="315" y="250" width="170" height="50" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/><text x="400" y="272" fill="#1e293b">L_codebook</text><text x="400" y="290" fill="#64748b">更新码本 E</text>
+    <rect x="590" y="250" width="170" height="50" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/><text x="675" y="272" fill="#1e293b">L_commit (β)</text><text x="675" y="290" fill="#64748b">约束编码器</text>
+  </g>
+  <text x="400" y="335" text-anchor="middle" font-size="12" fill="#64748b">直通估计器（STE）：前向离散、反向近似恒等，梯度穿过敏感量化。</text>
+</svg>

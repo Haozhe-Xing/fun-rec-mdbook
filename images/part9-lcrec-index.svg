@@ -1,0 +1,55 @@
+<svg width="800" height="360" viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow9b" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="360" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">LC-Rec：层次化残差量化（RQ）构建语义索引</text>
+
+  <!-- Text embed -->
+  <rect x="40" y="70" width="150" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow9b)"/>
+  <text x="115" y="98" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">LLM 文本编码</text>
+  <text x="115" y="118" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">e ∈ R^d</text>
+
+  <!-- RQ-VAE -->
+  <rect x="240" y="60" width="170" height="80" rx="8" fill="#4A6CF7" filter="url(#shadow9b)"/>
+  <text x="325" y="95" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#ffffff">RQ-VAE 量化</text>
+  <text x="325" y="118" text-anchor="middle" font-family="Arial" font-size="12" fill="#e8ecff">H 层残差量化</text>
+
+  <line x1="190" y1="100" x2="236" y2="100" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow9b)"/>
+
+  <!-- Levels -->
+  <g font-family="Courier New" font-size="14" text-anchor="middle">
+    <rect x="470" y="55" width="120" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="530" y="82" fill="#1e293b">&lt;a_5&gt;</text>
+    <text x="530" y="105" font-family="Arial" font-size="11" fill="#64748b">粗·类别</text>
+
+    <rect x="470" y="115" width="120" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="530" y="142" fill="#1e293b">&lt;b_2&gt;</text>
+    <text x="530" y="165" font-family="Arial" font-size="11" fill="#64748b">子类别</text>
+
+    <rect x="470" y="175" width="120" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="530" y="202" fill="#1e293b">&lt;c_6&gt;</text>
+    <text x="530" y="225" font-family="Arial" font-size="11" fill="#64748b">细粒度</text>
+
+    <rect x="470" y="235" width="120" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="530" y="262" fill="#1e293b">&lt;d_7&gt;</text>
+    <text x="530" y="285" font-family="Arial" font-size="11" fill="#64748b">个体特征</text>
+  </g>
+  <line x1="410" y1="100" x2="466" y2="77" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow9b)"/>
+
+  <!-- prefix sharing -->
+  <text x="650" y="130" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">前缀共享</text>
+  <text x="650" y="152" text-anchor="middle" font-family="Courier New" font-size="11" fill="#1e293b">&lt;a_5&gt;&lt;b_2&gt;…</text>
+  <text x="650" y="172" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">相似物品</text>
+  <text x="650" y="190" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">共享前缀</text>
+  <path d="M590,77 C620,90 620,120 610,135" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow9b)"/>
+
+  <line x1="40" y1="305" x2="760" y2="305" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="326" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">c_i = argmin_k ‖r_i − v^i_k‖²,   r_{i+1} = r_i − v^i_{c_i}   →   索引序列 [c_1,c_2,…,c_H]</text>
+</svg>

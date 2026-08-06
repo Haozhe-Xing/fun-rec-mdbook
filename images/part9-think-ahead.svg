@@ -1,0 +1,36 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9h" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1e293b"/>
+    </marker>
+    <filter id="shadow9h" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">Think-Ahead：把密集推理从关键路径剥离</text>
+
+  <!-- async -->
+  <rect x="30" y="70" width="360" height="200" rx="12" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow9h)"/>
+  <text x="210" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">异步推理预计算</text>
+  <text x="210" y="122" font-family="Arial" font-size="12" fill="#64748b">用户产生新行为时触发</text>
+  <rect x="55" y="138" width="310" height="36" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.2"/>
+  <text x="210" y="161" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">AsyncThink → M 条推理路径</text>
+  <rect x="55" y="184" width="310" height="36" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.2"/>
+  <text x="210" y="207" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">每条对应候选集 C_i（预算~500ms）</text>
+  <rect x="55" y="230" width="310" height="32" rx="8" fill="#f0f4ff" stroke="#4A6CF7" stroke-width="1.2"/>
+  <text x="210" y="251" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">缓存到实时特征存储</text>
+
+  <!-- online -->
+  <rect x="410" y="70" width="360" height="200" rx="12" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow9h)"/>
+  <text x="590" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#16a34a">轻量在线选择</text>
+  <text x="590" y="122" font-family="Arial" font-size="12" fill="#64748b">请求到来时快速打分</text>
+  <rect x="435" y="138" width="310" height="36" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.2"/>
+  <text x="590" y="161" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">从 ∪ C_j 择优（10–20ms）</text>
+  <rect x="435" y="184" width="310" height="36" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.2"/>
+  <text x="590" y="207" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">轻量 ranking 模型</text>
+  <rect x="435" y="230" width="310" height="32" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.2"/>
+  <text x="590" y="251" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">P99 &lt; 150ms（快手上线）</text>
+
+  <line x1="390" y1="155" x2="406" y2="155" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arrow9h)"/>
+</svg>
