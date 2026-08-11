@@ -7,10 +7,17 @@
     <img alt="Language" src="https://img.shields.io/badge/Language-中文-16a34a?style=flat-square">
     <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square">
     <img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square">
+    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a>
   </p>
 
   <p>
     一本系统讲解推荐系统技术演进的开源书：从传统级联架构，到生成式推荐、推理式推荐与端到端推荐系统实战。
+  </p>
+
+  <p>
+    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><strong>📖 在线阅读</strong></a>
+    ·
+    <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub 仓库</a>
   </p>
 </div>
 
@@ -19,6 +26,8 @@
 ## 这是什么?
 
 **《深度推荐算法实践》** 是一本面向推荐系统学习者与工程实践者的开源电子书，内容重写自 Datawhale 开源项目 [fun-rec](https://github.com/datawhalechina/fun-rec)。
+
+> 📖 **在线阅读**：访问 [https://haozhe-xing.github.io/fun-rec-mdbook/](https://haozhe-xing.github.io/fun-rec-mdbook/) 阅读最新版本。
 
 本书围绕推荐系统的两条核心主线展开：
 
