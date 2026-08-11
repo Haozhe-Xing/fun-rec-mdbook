@@ -6,7 +6,7 @@
 
 # 协同语义与语言语义的统一
 
-> 📝 **Before You Continue:** 请先读完 [1.1](./../part1-introduction/what-is-recommender.md) 的两种范式与能力演进、[5.3](./../part5-trends/generative-trend.md) 的 TIGER 语义 ID 与 OneRec 端到端生成。本章是那根「语义 ID」线索的深化——不止「生成」，还要让 LLM **理解**这些 ID。
+> 📝 **Before You Continue:** 请先读完 [1.1](./../part1-introduction/recommender-system-basics.md) 的两种范式与能力演进、[5.3](./../part5-trends/generative-trend.md) 的 TIGER 语义 ID 与 OneRec 端到端生成。本章是那根「语义 ID」线索的深化——不止「生成」，还要让 LLM **理解**这些 ID。
 
 当推荐系统遇上大语言模型（LLM），表面看是「天作之合」：LLM 强大的语言理解与生成能力，似乎天然适合做推荐。但现实泼了一盆冷水——这二者说着**两种完全不同的「语言」**。推荐系统靠用户行为数据构建**协同语义**（collaborative semantics），而 LLM 理解的是文本中的**语言语义**（language semantics）。这道鸿沟不跨过去，再强的 LLM 也只是一个看不懂推荐世界的「外行」。
 

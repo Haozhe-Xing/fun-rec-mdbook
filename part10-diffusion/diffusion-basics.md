@@ -6,7 +6,7 @@
 
 # 推荐中的扩散模型基础
 
-> 📝 **Before You Continue:** 建议先读 [1.1](./../part1-introduction/what-is-recommender.md) 的两种范式、[5.3](./../part5-trends/generative-trend.md) 的生成式范式演进。本章是扩散模型在推荐落地的「技术铺垫」，后续 10.2/10.3 的具体方法都建立在此。
+> 📝 **Before You Continue:** 建议先读 [1.1](./../part1-introduction/recommender-system-basics.md) 的两种范式、[5.3](./../part5-trends/generative-trend.md) 的生成式范式演进。本章是扩散模型在推荐落地的「技术铺垫」，后续 10.2/10.3 的具体方法都建立在此。
 
 在 [5.3](./../part5-trends/generative-trend.md) 我们已从架构层面讨论过扩散模型与 Transformer 的互补关系。本节系统回顾扩散模型的**核心技术原理**，并重点讨论将其用于推荐时的**特殊考量与设计选择**。理论基础主要来自 **DDPM**，而推荐应用以 **DiffRec** 为代表性工作。
 

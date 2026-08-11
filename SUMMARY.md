@@ -5,7 +5,7 @@
 # 上篇 · 判别式推荐主线
 
 * [推荐系统全景](part1-introduction/README.md)
-  * [推荐系统是什么](part1-introduction/what-is-recommender.md)
+  * [推荐系统是什么](part1-introduction/recommender-system-basics.md)
   * [本书概览与技术地图](part1-introduction/book-overview.md)
   * [特征与 Embedding 入门](part1-introduction/feature-embedding-basics.md)
 

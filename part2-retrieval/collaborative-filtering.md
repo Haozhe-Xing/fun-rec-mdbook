@@ -6,7 +6,7 @@
 
 # 协同过滤
 
-> 📝 **Before You Continue:** 请先读完 [Part 1 的 1.1](./../part1-introduction/what-is-recommender.md) 关于「召回是三阶段漏斗起点」的论述，以及 [1.2](./../part1-introduction/book-overview.md) 中「召回：从亿到千」的脉络。本章是召回层最经典的方法家族。
+> 📝 **Before You Continue:** 请先读完 [Part 1 的 1.1](./../part1-introduction/recommender-system-basics.md) 关于「召回是三阶段漏斗起点」的论述，以及 [1.2](./../part1-introduction/book-overview.md) 中「召回：从亿到千」的脉络。本章是召回层最经典的方法家族。
 
 当你打开电商 App，系统如何判断「你还可能喜欢什么」？最朴素也最强大的直觉来自**协同过滤（Collaborative Filtering, CF）**：利用「人」与「物」群体的集体行为来推断个人偏好——喜欢同一个东西的人，口味往往相似；被同一群人喜欢的东西，性质往往相近。
 

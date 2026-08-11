@@ -6,7 +6,7 @@
 
 # 端到端生成式推荐
 
-> 📝 **Before You Continue:** 本章假设你已理解 [1.1](./../part1-introduction/what-is-recommender.md) 的两种范式与端到端生成动机，并熟悉 [2.3](./../part2-retrieval/two-tower.md) 中**语义 ID** 的初步概念。本章把它推向工业级落地。
+> 📝 **Before You Continue:** 本章假设你已理解 [1.1](./../part1-introduction/recommender-system-basics.md) 的两种范式与端到端生成动机，并熟悉 [2.3](./../part2-retrieval/two-tower.md) 中**语义 ID** 的初步概念。本章把它推向工业级落地。
 
 传统多阶段级联架构（MCA）在推荐场景中暴露出最尖锐的矛盾：海量算力消耗在**通信与存储**而非模型计算，GPU 利用率远低于大语言模型；各阶段目标分散，模型结构差异导致建模不一致；级联结构更阻碍了 **Scaling Law**、强化学习对齐等先进技术的应用。
 
@@ -24,7 +24,7 @@
 
 ## 8.1.0 为什么需要端到端生成式推荐
 
-推荐系统长期运行在「召回—预排序—排序—重排」的漏斗上。但正如 [1.1](./../part1-introduction/what-is-recommender.md) 所述，级联架构有三个挥之不去的痛点，在推荐场景下尤为突出：
+推荐系统长期运行在「召回—预排序—排序—重排」的漏斗上。但正如 [1.1](./../part1-introduction/recommender-system-basics.md) 所述，级联架构有三个挥之不去的痛点，在推荐场景下尤为突出：
 
 ![传统级联架构的三大结构性困境](../images/part8-mca-pain.svg)
 

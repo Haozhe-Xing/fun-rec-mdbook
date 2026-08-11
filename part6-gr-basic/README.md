@@ -46,7 +46,7 @@
 
 ## 前置知识
 
-- 已读完 **Part 1**（[1.1](./../part1-introduction/what-is-recommender.md) 的两种范式、[1.2](./../part1-introduction/book-overview.md) 技术地图）
+- 已读完 **Part 1**（[1.1](./../part1-introduction/recommender-system-basics.md) 的两种范式、[1.2](./../part1-introduction/book-overview.md) 技术地图）
 - 已读完 **Part 2**（[2.3](./../part2-retrieval/two-tower.md) 双塔的内积与向量空间直觉）
 - 具备基础的线性代数（矩阵、内积）、概率（softmax、KL 散度）与神经网络常识
 

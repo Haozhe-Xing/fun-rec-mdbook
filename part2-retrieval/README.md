@@ -50,7 +50,7 @@
 
 ## 前置知识
 
-- 已读完 **Part 1**（尤其是 [1.1](./../part1-introduction/what-is-recommender.md) 的三阶段漏斗与 [1.2](./../part1-introduction/book-overview.md) 的技术地图）
+- 已读完 **Part 1**（尤其是 [1.1](./../part1-introduction/recommender-system-basics.md) 的三阶段漏斗与 [1.2](./../part1-introduction/book-overview.md) 的技术地图）
 - 具备基础的线性代数（向量内积、矩阵）、概率（softmax、余弦相似度）与神经网络常识
 - 了解 Python 与 Embedding 的基本概念
 
