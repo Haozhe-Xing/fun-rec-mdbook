@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>生成式推荐系统实战 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">🚀 Part 11: 生成式推荐系统实战</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">从零搭建一个可运行的工业级电影推荐系统，贯通离线训练、在线推理、前端交互与容器部署。</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 6 节 · ⏱️ Estimated 3–4 weeks · 🎯 Target: 把离散算法整合为一个端到端可服务的推荐系统</p>
+</div>
+<p>前面的章节分别讲解了召回、排序、重排等核心算法模块。但论文里的模型跑得通，不等于能在真实场景里部署——这是几乎所有推荐系统学习者都会遇到的断层。本部分用一个<strong>端到端的电影推荐系统</strong>项目，把分散的算法串成一个能跑、能服务、能部署的完整系统，回答「如何从零构建一个生产级推荐系统」这个工程问题。</p>
+<hr />
+<h2 id="章节"><a class="header" href="#章节">章节</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>章节</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>11.1</strong></td><td>项目引言与目标</td><td>厘清离线评估与在线部署的鸿沟，明确技术选型与学习路径</td></tr>
+<tr><td><strong>11.2</strong></td><td>系统架构设计</td><td>离线与在线解耦，漏斗式「召回→排序→重排」经典结构</td></tr>
+<tr><td><strong>11.3</strong></td><td>离线流水线</td><td>特征工程、YoutubeDNN/DeepFM 训练、向量生成、特征上线与模型部署</td></tr>
+<tr><td><strong>11.4</strong></td><td>在线流水线</td><td>冷启动（UCB）、多路召回（Snake Merge）、DeepFM 排序、多样性重排</td></tr>
+<tr><td><strong>11.5</strong></td><td>前端与交互</td><td>Vue 3 五页面、Pinia 状态、搜索防抖、评分驱动的数据闭环</td></tr>
+<tr><td><strong>11.6</strong></td><td>部署与运维</td><td>Docker Compose 一键编排五服务，健康检查与排障</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="读完本-part-你将能够"><a class="header" href="#读完本-part-你将能够">读完本 Part 你将能够</a></h2>
+<ul>
+<li>🟢 <strong>描述</strong>离线系统与在线系统的职责边界，以及二者如何通过存储层解耦</li>
+<li>🟢 <strong>解释</strong>漏斗式架构为何必需：召回用轻模型筛候选、排序用重模型精打分</li>
+<li>🟡 <strong>实现</strong> YoutubeDNN 召回与 DeepFM 排序的训练闭环，并理解物品向量预计算的意义</li>
+<li>🟡 <strong>设计</strong>冷启动策略（UCB 探索 + 偏好类型 + 热门兜底）与多路召回的融合（Snake Merge）</li>
+<li>🔴 <strong>部署</strong> 一个包含 PostgreSQL/Redis/Elasticsearch/后端/前端的多容器系统，并能排查常见问题</li>
+<li>🟢 <strong>完成</strong> 各节的分层练习题，巩固工程实现要点</li>
+</ul>
+<hr />
+<h2 id="关键概念"><a class="header" href="#关键概念">关键概念</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>章节</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>离线 vs 在线</td><td>11.2</td><td>推荐系统工程的基本边界，质量与延迟的取舍</td></tr>
+<tr><td>漏斗式架构（召回→排序→重排）</td><td>11.2</td><td>工业推荐的主干骨架</td></tr>
+<tr><td>物品向量预计算</td><td>11.3</td><td>在线毫秒级向量检索的前提</td></tr>
+<tr><td>冷启动 / UCB</td><td>11.4</td><td>解决「无行为新用户」的探索-利用平衡</td></tr>
+<tr><td>多路召回 + Snake Merge</td><td>11.4</td><td>用融合弥补单策略覆盖不足</td></tr>
+<tr><td>数据闭环</td><td>11.5</td><td>前端行为反馈驱动特征更新与推荐优化</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="前置条件"><a class="header" href="#前置条件">前置条件</a></h2>
+<ul>
+<li>已读完 <a href="./project-intro.html">1.1</a> 的三阶段流水线认知，理解召回/排序/重排分工</li>
+<li>了解 <a href="./project-architecture.html">2.3</a> 双塔（YoutubeDNN）与 <a href="./project-architecture.html">3.x</a> 排序模型（DeepFM）的基本原理</li>
+<li>具备 Python、基础神经网络与 SQL 常识；了解 Docker 基本概念更佳</li>
+</ul>
+<blockquote>
+<p>本项目代码位于 <code>datawhalechina/fun-rec</code> 仓库的 <code>web_project/</code> 目录，可边读边运行。</p>
+</blockquote>
+<hr />
+<h2 id="给本-part-的建议"><a class="header" href="#给本-part-的建议">给本 Part 的建议</a></h2>
+<ol>
+<li><strong>先跑通再抠细节。</strong> 用 Docker Compose 一键启动完整项目，建立整体直觉。</li>
+<li><strong>抓住「离线与在线的边界」。</strong> 这是工程系统的核心认知框架。</li>
+<li><strong>关注那些论文里没有的环节</strong>：特征如何跨系统传递、模型如何不停服更新、冷启动如何降级。</li>
+</ol>
+<hr />
+<p>Let's build it! 🛠️</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part10-diffusion/diffusion-application.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/project-intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part10-diffusion/diffusion-application.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/project-intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>精准偏好预测 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">📘 Part 3: 精准偏好预测（排序）</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">深入工业级排序模型的深度泛化主战场，从记忆泛化到多目标、多场景的精细化建模。</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 5 节 · ⏱️ Estimated 2 weeks · 🎯 Target: 掌握精排深度模型的设计动机与结构差异</p>
+</div>
+<p>召回阶段把亿级物品收缩到千级候选后，<strong>排序（Ranking）</strong> 接手了最关键的"精准打分"任务。它的目标是对每一个候选计算最接近真实偏好的预测分数（通常是点击率、转化率等），再按分数排出最优序列。排序是深度网络泛化能力的主战场——本 Part 的五个章节，沿着"如何让模型更强、更灵活、更贴合业务"的脉络，逐层递进。</p>
+<p>本 Part 不急于堆砌模型名，而是始终追问一件事：<strong>每个新模型解决了前一个方法的什么不足？</strong> 只有带着"动机"去读，才能在面对真实业务时知道该选哪个模型。</p>
+<hr />
+<h2 id="本章涵盖"><a class="header" href="#本章涵盖">本章涵盖</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>章节</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>3.1</strong></td><td>Wide &amp; Deep</td><td>用"线性记忆 + 深度泛化"联合训练，奠定排序基础框架</td></tr>
+<tr><td><strong>3.2</strong></td><td>特征交叉</td><td>从 FM 二阶交叉，经 DeepFM、xDeepFM，走向自动高阶交叉</td></tr>
+<tr><td><strong>3.3</strong></td><td>序列建模</td><td>DIN 按候选动态激活历史；DIEN 显式建模兴趣时序演化</td></tr>
+<tr><td><strong>3.4</strong></td><td>多目标优化</td><td>MMoE、PLE 平衡多目标；ESMM 用全空间建模化解依赖偏差</td></tr>
+<tr><td><strong>3.5</strong></td><td>多场景建模</td><td>多塔与动态权重适配多场景分布差异，兼顾共性与特性</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>解释</strong> Wide &amp; Deep 中"记忆"与"泛化"的分工，及其联合训练的意义</li>
+<li>🟢 <strong>区分</strong> FM 二阶交叉、xDeepFM 向量级高阶交叉、AutoInt 自适应交叉的动机差异</li>
+<li>🟡 <strong>说明</strong> DIN 的局部激活如何突破"固定长度用户向量"瓶颈，DIEN 如何进一步建模兴趣演化</li>
+<li>🟡 <strong>辨析</strong> 多任务（同场景多目标）与多场景（不同场景同目标）的本质区别与建模策略</li>
+<li>🔴 <strong>设计</strong> 在"点击率 × 转化率"等存在依赖关系或跷跷板冲突的业务中，选用合适的多目标/多场景结构</li>
+<li>🟡 <strong>定位</strong> 本章每个模型在"解决前一方法不足"链条上的位置</li>
+</ul>
+<hr />
+<h2 id="核心概念"><a class="header" href="#核心概念">核心概念</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>章节</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>记忆 vs 泛化 / 联合训练</td><td>3.1</td><td>排序深度模型的基础设计哲学</td></tr>
+<tr><td>因子分解交叉（FM）参数共享</td><td>3.2</td><td>缓解稀疏与参数爆炸的核心技巧</td></tr>
+<tr><td>向量级 / 自适应高阶交叉</td><td>3.2</td><td>让模型自动捕获任意阶特征交互</td></tr>
+<tr><td>局部激活（注意力）</td><td>3.3</td><td>用户兴趣随候选动态变化的建模关键</td></tr>
+<tr><td>兴趣演化 / 会话建模</td><td>3.3</td><td>把静态"物品袋"升级为动态序列</td></tr>
+<tr><td>负迁移 / 跷跷板 / 门控</td><td>3.4</td><td>多目标冲突与缓解机制</td></tr>
+<tr><td>全空间建模（样本选择偏差）</td><td>3.4</td><td>化解 CVR 依赖关系带来的训练偏差</td></tr>
+<tr><td>场景私有/共享参数 / 动态调制</td><td>3.5</td><td>跨场景迁移时兼顾共性与差异</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="前置知识"><a class="header" href="#前置知识">前置知识</a></h2>
+<ul>
+<li>读过 <strong>Part 1</strong>（推荐系统范式与三阶段流水线）与 <strong>Part 2</strong>（召回算法家族）</li>
+<li>已读 <a href="../part1-introduction/feature-embedding-basics.html">1.3 特征与 Embedding 入门</a>，理解 Sparse / Dense、分桶与 Embedding 查表；并了解 MLP、激活函数、反向传播</li>
+<li>知道 CTR（点击率）、CVR（转化率）等业务指标的大致含义</li>
+</ul>
+<blockquote>
+<p>本 Part 是 Part 2 召回的自然下游——候选已就绪，接下来我们学习如何"精准打分"。</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>带着"动机"读每个模型。</strong> 遇到新模型先问：它解决了前一层方法的什么不足？结构差异在哪？</li>
+<li><strong>公式服务于直觉。</strong> 先理解"为什么这样设计"，再看数学表达；公式只是设计思想的精确写法。</li>
+<li><strong>对比着读 Advanced 章节。</strong> 3.2 与 3.3 模型密集、结构相似，用表格横向对比能事半功倍。</li>
+<li><strong>动手跑交互演示。</strong> 3.2 与 3.3 各有一个交互式 HTML，用"下一步"直观感受高阶交叉与注意力激活的过程。</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part2-retrieval/streaming-index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part3-ranking/wide-and-deep.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part2-retrieval/streaming-index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part3-ranking/wide-and-deep.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

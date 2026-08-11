@@ -1,0 +1,860 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>特征与 Embedding 入门 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~65 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="特征与-embedding-入门"><a class="header" href="#特征与-embedding-入门">特征与 Embedding 入门</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 请先读完 <a href="./recommender-system-basics.html">1.1</a> 的用户—物品—场景三元组与 <a href="./book-overview.html">1.2</a> 的技术地图。你需要会读基础 C++，并知道哈希函数能把字符串稳定映射为整数；不要求机器学习背景。</p>
+</blockquote>
+<p>推荐系统最终处理的不是抽象的“用户兴趣”，而是一组具体字段：<code>性别=男</code>、<code>城市=北京</code>、<code>广告ID=10001</code>、<code>预估点击率=0.073</code>。业务代码认识这些字段，但神经网络只接受数字张量。两者之间缺少一座桥。</p>
+<p>这座桥就是<strong>特征处理</strong>。它把原始业务字段变成 <code>slotId + featureSign + value</code>，再由模型服务把无语义的编号查成可学习的 <strong>Embedding 向量</strong>。这条链路看似只是数据格式转换，却决定了模型能看见什么、怎样泛化，以及训练与线上是否一致。</p>
+<hr />
+<h2 id="130-从业务字段到模型输入"><a class="header" href="#130-从业务字段到模型输入">1.3.0 从业务字段到模型输入</a></h2>
+<p>一个排序请求通常同时包含四类信息：</p>
+<div class="table-wrapper"><table><thead><tr><th>类别</th><th>典型字段</th><th>回答的问题</th></tr></thead><tbody>
+<tr><td><strong>用户信息</strong></td><td>用户 ID、性别、年龄、城市</td><td>这个人是谁？长期偏好是什么？</td></tr>
+<tr><td><strong>物品信息</strong></td><td>广告 ID、视频 ID、类目、作者</td><td>当前候选是什么？</td></tr>
+<tr><td><strong>上下文信息</strong></td><td>时间、网络、设备、候选位置</td><td>这次请求发生在什么场景？</td></tr>
+<tr><td><strong>连续数值</strong></td><td>预估 CTR、eCPM、质量分、时长</td><td>某个信号具体有多强？</td></tr>
+</tbody></table>
+</div>
+<p>这些可被模型利用的信息统称为<strong>特征（Feature）</strong>。但原始值不能原样送进模型：字符串无法参加矩阵乘法；业务 ID 的数字大小没有语义；不同连续值的量纲又可能相差数十亿倍。</p>
+<p><img src="../images/part1-feature-to-embedding-pipeline.svg" alt="从业务字段到 Embedding 与预测分的完整流程" /></p>
+<p>上图给出了完整职责边界：业务服务负责特征生成，模型服务负责查 Embedding、组合特征并完成网络计算。二者通过稳定的特征协议连接。</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 特征处理不是“把东西变成数字”这么简单。它要同时保留<strong>类别身份、数值大小和工程稳定性</strong>，并确保离线训练与在线预测看到的是同一种表达。</p>
+</blockquote>
+<hr />
+<h2 id="131-三元组slotid--featuresign--value"><a class="header" href="#131-三元组slotid--featuresign--value">1.3.1 三元组：<code>slotId / featureSign / value</code></a></h2>
+<p>工业系统常把一条特征整理为如下记录：</p>
+<pre><code class="language-cpp">struct FeatureInfo {
+  int slotId;              // 特征属于哪个字段或特征组
+  int64_t featureSign;     // 具体取值的查表 key
+  float value;             // 数值或权重
+};
+</code></pre>
+<p>三个字段各管一件事：</p>
+<div class="table-wrapper"><table><thead><tr><th>字段</th><th>含义</th><th>图书馆类比</th></tr></thead><tbody>
+<tr><td><code>slotId</code></td><td>这是什么类型的特征</td><td>哪个书架</td></tr>
+<tr><td><code>featureSign</code></td><td>这个具体取值的编号</td><td>书架上哪本书的索引号</td></tr>
+<tr><td><code>value</code></td><td>这次使用它的数值或权重</td><td>这本书本次被使用的强度</td></tr>
+</tbody></table>
+</div>
+<p>例如，用户性别为“男”时，可以表达为：</p>
+<pre><code class="language-cpp">FeatureInfo sex_feature{
+  .slotId = SEX,
+  .featureSign = gen_feasign_string(SEX, "男"),
+  .value = 1.0F
+};
+</code></pre>
+<p>它可以读成：“去 <code>SEX</code> 书架，找到‘男’这个取值对应的条目，本次权重为 <code>1.0</code>。”</p>
+<p>连续特征的分工不同。若预估点击率为 <code>0.073</code>：</p>
+<pre><code class="language-cpp">FeatureInfo ctr_feature{
+  .slotId = AD_ETR_DENSE,
+  .featureSign = 1,
+  .value = 0.073F
+};
+</code></pre>
+<p>这里 <code>featureSign=1</code> 只是固定占位，真实信息放在 <code>value</code> 中。先记住这个对照：</p>
+<div class="table-wrapper"><table><thead><tr><th>特征表达</th><th><code>featureSign</code> 放什么</th><th><code>value</code> 放什么</th><th>信息主要在哪里</th></tr></thead><tbody>
+<tr><td>离散 / 分桶</td><td>类别或桶的编号</td><td>通常为 <code>1.0</code></td><td><code>featureSign</code></td></tr>
+<tr><td>Dense 连续</td><td>固定 key，常用 <code>1</code></td><td>归一化后的真实数值</td><td><code>value</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> <code>featureSign</code> 应被视为不透明的 64 位 key。若用 <code>uint64_t</code> 生成、再存入 <code>int64_t</code>，最高位为 1 时在常见二进制补码实现中会显示为负数。只要下游按相同位模式查表通常没有问题，但不要对它做大小比较、<code>abs()</code> 或带符号取模。</p>
+</blockquote>
+<hr />
+<h2 id="132-featuresign-如何生成"><a class="header" href="#132-featuresign-如何生成">1.3.2 <code>featureSign</code> 如何生成</a></h2>
+<p>一种常见设计，是把 <code>slotId</code> 放进高 32 位，把具体取值的编号放进低 32 位：</p>
+<p><img src="../images/part1-feature-sign-layout.svg" alt="featureSign 的高低 32 位布局" /></p>
+<p>这样，即使两个字段的低位编号碰巧相同，只要 <code>slotId</code> 不同，最终 key 仍然不同。</p>
+<h3 id="字符串取值先哈希再拼接"><a class="header" href="#字符串取值先哈希再拼接">字符串取值：先哈希，再拼接</a></h3>
+<pre><code class="language-cpp">static uint64_t gen_feasign_string(
+    uint64_t slot_id,
+    const std::string&amp; value) {
+  const uint32_t value_hash = gen_hash_new(value.data(), value.size());
+  const uint64_t slot_bits = (slot_id &lt;&lt; 32) &amp; 0xffffffff00000000ULL;
+  return slot_bits | value_hash;
+}
+</code></pre>
+<p>这段代码分三步：</p>
+<ol>
+<li><code>gen_hash_new</code> 把字符串稳定映射为 32 位整数。</li>
+<li><code>slot_id &lt;&lt; 32</code> 把特征类型移到高 32 位。</li>
+<li>按位或 <code>|</code> 把高位类型与低位取值合成一个 key。</li>
+</ol>
+<p>例如 <code>SEX=男</code> 与 <code>AGE_BUCKET=20</code> 的低位哈希即使都等于 <code>111</code>，最终 key 仍分别是 <code>[SEX][111]</code> 与 <code>[AGE_BUCKET][111]</code>。<strong>Slot 分段把不同字段隔离开了。</strong></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> <code>featureSign</code> 像“班级号 + 学号”。学号只在班级内部区分学生；高位的班级号让不同班级的相同学号不冲突。</p>
+</blockquote>
+<h3 id="整数取值能直接编码就不要哈希"><a class="header" href="#整数取值能直接编码就不要哈希">整数取值：能直接编码就不要哈希</a></h3>
+<p>如果取值本来就是小整数，例如网络类型 <code>4</code>、星期 <code>2</code> 或桶编号 <code>7</code>，可以直接放进低 32 位：</p>
+<pre><code class="language-cpp">static uint64_t gen_feasign_int32(
+    uint64_t slot_id,
+    uint32_t value) {
+  const uint64_t slot_bits = (slot_id &lt;&lt; 32) &amp; 0xffffffff00000000ULL;
+  return slot_bits | value;
+}
+</code></pre>
+<p>只要取值能被 32 位无符号整数完整表示，这种编码没有额外的哈希冲突。因此，小枚举和桶编号应优先使用整数版本。</p>
+<h3 id="哈希冲突是取舍不是异常"><a class="header" href="#哈希冲突是取舍不是异常">哈希冲突是取舍，不是异常</a></h3>
+<p>字符串被压进 32 位空间后，冲突无法避免。低 32 位只有 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span></span></span></span> 个位置；根据生日悖论，一个 slot 内约有 <strong>7.7 万个不同取值</strong>时，出现至少一次冲突的概率就超过 50%。</p>
+<div class="table-wrapper"><table><thead><tr><th>Slot 示例</th><th>基数数量级</th><th>冲突影响</th></tr></thead><tbody>
+<tr><td><code>SEX</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></td><td>几乎可忽略</td></tr>
+<tr><td><code>CITY</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></td><td>通常可忽略</td></tr>
+<tr><td><code>AD_ID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></td><td>会出现少量冲突</td></tr>
+<tr><td><code>GUID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></td><td>大量冲突不可避免</td></tr>
+</tbody></table>
+</div>
+<p>两个不同取值发生冲突后，会共享同一条 Embedding，模型无法再区分它们。为什么工业系统仍常用这种 <strong>Feature Hashing</strong>？因为它换来了无状态、可扩展的特征生成：不需要维护巨大的字符串词表，新取值也能立即得到 key。</p>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>收益：</strong> 无需中心词表，新增取值天然可处理，线上服务可水平扩展。</li>
+<li><strong>代价：</strong> 少量语义混淆，无法从 key 反查原值，高基数特征更难调试。</li>
+<li><strong>缓解：</strong> 增大哈希空间、使用双哈希、过滤低频值，或为关键高基数 slot 维护独立词表。</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="133-为什么需要-embedding"><a class="header" href="#133-为什么需要-embedding">1.3.3 为什么需要 Embedding</a></h2>
+<p>这是本章最容易混淆、也最关键的一点：</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> <strong><code>featureSign</code> 是查 Embedding 的 key，不是 Embedding 本身。</strong> 它负责稳定地指出“是哪一个类别”，但不负责表达这个类别与其他类别的关系。</p>
+</blockquote>
+<p>二者的区别如下：</p>
+<div class="table-wrapper"><table><thead><tr><th>对象</th><th>示例</th><th>是否训练</th><th>本质</th></tr></thead><tbody>
+<tr><td><code>featureSign</code></td><td><code>500111</code></td><td>否</td><td>稳定、离散的索引 key</td></tr>
+<tr><td>Embedding</td><td><code>[0.12, -0.03, 0.88, 0.21]</code></td><td>是</td><td>模型从数据中学习的向量参数</td></tr>
+<tr><td>Embedding Table</td><td><code>key → vector</code></td><td>是</td><td>按 key 保存和更新向量的参数表</td></tr>
+</tbody></table>
+</div>
+<h3 id="从-one-hot-到-embedding"><a class="header" href="#从-one-hot-到-embedding">从 One-Hot 到 Embedding</a></h3>
+<p>假设 <code>CITY</code> 只有“北京、上海、深圳”三个取值。最直接的编码是 One-Hot：</p>
+<pre><code class="language-text">北京 -&gt; [1, 0, 0]
+上海 -&gt; [0, 1, 0]
+深圳 -&gt; [0, 0, 1]
+</code></pre>
+<p>One-Hot 有两个性质：第一，它不会错误地制造大小关系；第二，不同类别彼此等距。但当广告 ID 有 1000 万种取值时，一个样本需要逻辑上占据 1000 万维空间，而且向量中只有一个位置为 1。直接把这种超高维稀疏向量送进网络，参数量和计算量都难以接受。</p>
+<p>Embedding 层可以看成一个大矩阵 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span></span></span></span></span>。One-Hot 向量乘以矩阵，本质上就是从 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 中选择一行：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.3263em;vertical-align:-1.5763em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.75em;"><span style="top:-1.4237em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mord text mtight"><span class="mord mtight"> </span><span class="mord cjk_fallback mtight">维</span><span class="mord mtight"> One-Hot</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.75em;"><span class="svg-align" style="top:-2.102em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMinYMin slice'><path d='M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13  35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688  0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7 -331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z'/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMidYMin slice'><path d='M199572 214 c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14  53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3  11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0 -5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z'/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMaxYMin slice'><path d='M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3  28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237 -174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z'/></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.898em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5763em;"><span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8991em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>因此工程上不必真的构造 One-Hot。只需传入类别对应的 <code>featureSign</code>，直接查出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。这既节省计算，又让模型能通过训练把行为相似的类别拉到相近的向量区域。</p>
+<h3 id="为什么不能直接把-featuresign-当-embedding"><a class="header" href="#为什么不能直接把-featuresign-当-embedding">为什么不能直接把 <code>featureSign</code> 当 Embedding</a></h3>
+<p>假设有三个广告：</p>
+<pre><code class="language-text">运动鞋广告 -&gt; featureSign = 105
+篮球广告   -&gt; featureSign = 980001
+婴儿奶粉   -&gt; featureSign = 106
+</code></pre>
+<p>若直接把 sign 当成一个标量输入，模型会得到荒谬的几何关系：运动鞋 <code>105</code> 与奶粉 <code>106</code> 的距离只有 1，而与语义更接近的篮球 <code>980001</code> 相距近百万。这个距离完全由编号或哈希偶然决定，不代表用户行为相似度。</p>
+<p>直接使用 sign 还有四个问题：</p>
+<ol>
+<li><strong>虚假的顺序关系。</strong> <code>500222 &gt; 500111</code> 不代表某个类别“更大”或“更好”。</li>
+<li><strong>虚假的距离关系。</strong> 两个哈希值接近，不代表两个类别相似；相差很远也不代表不相似。</li>
+<li><strong>无法学习类别语义。</strong> sign 是固定整数，不会在反向传播中朝“更像篮球”或“更像运动鞋”的方向移动。</li>
+<li><strong>数值精度风险。</strong> 64 位 sign 若转成 <code>float32</code>，超过 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">24</span></span></span></span></span></span></span></span></span></span></span></span> 后很多相邻整数无法被精确区分，不同 key 可能被舍入成同一个浮点数。</li>
+</ol>
+<p>Embedding 则为每个 key 提供一组<strong>可训练参数</strong>。若观看篮球内容的用户经常点击运动鞋广告，训练会让这两个类别的向量逐渐靠近；奶粉广告的向量则可能位于另一片区域。类别之间的距离由数据学习，而不是由哈希值决定。</p>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> “把 sign 转成 8 维二进制、十进制拆位或做归一化”仍然不是 Embedding。这些操作只是以另一种方式暴露任意编号，不能产生可学习的类别语义。正确做法是把 sign 当索引，查询独立的可训练向量。</p>
+</blockquote>
+<h3 id="一次完整的查表过程"><a class="header" href="#一次完整的查表过程">一次完整的查表过程</a></h3>
+<p>假设 <code>SEX=男</code> 生成 <code>featureSign=500111</code>，Embedding 表当前保存：</p>
+<pre><code class="language-text">E[500111] = [ 0.12, -0.03, 0.45]
+E[500222] = [-0.21,  0.34, 0.08]
+</code></pre>
+<p>前向传播时，模型用 <code>500111</code> 查出第一行 <code>[0.12, -0.03, 0.45]</code>。若本次预测误差反向传播到这个特征，只更新 <code>E[500111]</code> 及相关网络参数，而不会把整数 <code>500111</code> 改掉。</p>
+<p>这说明两者职责严格分离：</p>
+<pre><code class="language-text">featureSign：稳定定位参数，训练前后保持不变
+Embedding：承载可学习语义，会随训练持续更新
+</code></pre>
+<h3 id="同一取值为什么共用一条-embedding"><a class="header" href="#同一取值为什么共用一条-embedding">同一取值为什么共用一条 Embedding</a></h3>
+<p>两个用户都具有 <code>SEX=男</code>，就会生成相同的 <code>featureSign</code>，进而查询同一条 Embedding。这不会让两个用户变得无法区分，因为模型看到的是多个 slot 的组合：</p>
+<div class="table-wrapper"><table><thead><tr><th>用户</th><th>性别</th><th>年龄桶</th><th>城市</th><th>GUID</th></tr></thead><tbody>
+<tr><td>A</td><td>男</td><td>20–24</td><td>北京</td><td><code>abc</code></td></tr>
+<tr><td>B</td><td>男</td><td>35–39</td><td>深圳</td><td><code>xyz</code></td></tr>
+</tbody></table>
+</div>
+<p>共享反而带来泛化能力：所有男性用户的样本共同更新“男性”这条参数，而年龄、城市、身份等其他特征继续保留个体差异。</p>
+<h3 id="embedding-维度由谁决定"><a class="header" href="#embedding-维度由谁决定">Embedding 维度由谁决定</a></h3>
+<p>维度不由 C++ 特征生成代码决定，而由模型配置决定，通常按 slot 或特征组设置：</p>
+<div class="table-wrapper"><table><thead><tr><th>Slot</th><th>可能的基数</th><th>常见维度思路</th></tr></thead><tbody>
+<tr><td><code>SEX</code></td><td>3</td><td>2–4 维通常足够</td></tr>
+<tr><td><code>CITY</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></td><td>可从 8 维起试</td></tr>
+<tr><td><code>AD_ID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></td><td>常在 8–32 维间权衡</td></tr>
+<tr><td><code>GUID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></td><td>维度乘基数会形成内存黑洞，需谨慎</td></tr>
+</tbody></table>
+</div>
+<p>维度越大，表示能力越强，但内存、通信和计算成本也越高；数据不足时还更容易过拟合。它是模型容量与系统成本之间的超参数，而不是“基数越大就无限加维度”。</p>
+<hr />
+<h2 id="134-离散特征与-dense-特征如何编码"><a class="header" href="#134-离散特征与-dense-特征如何编码">1.3.4 离散特征与 Dense 特征如何编码</a></h2>
+<p>离散与 Dense 都可以装进 <code>slotId + featureSign + value</code>，但两条路径中“真正承载信息的字段”完全不同：</p>
+<p><img src="../images/part1-sparse-dense-encoding.svg" alt="离散特征与 Dense 特征的两条编码路径" /></p>
+<p>离散特征用 <code>featureSign</code> 选择“哪一行参数”；Dense 特征通常固定 sign，用 <code>value</code> 决定“同一组参数放大多少”。</p>
+<div class="table-wrapper"><table><thead><tr><th>对比项</th><th>离散特征（Sparse / Categorical）</th><th>Dense 特征（Continuous / Numerical）</th></tr></thead><tbody>
+<tr><td>回答的问题</td><td>是哪一类？</td><td>具体是多少？</td></tr>
+<tr><td>典型值</td><td>北京、男、广告 10001、网络类型 4</td><td>CTR 0.073、时长 3600 秒、金额 57 元</td></tr>
+<tr><td>算术关系</td><td>通常没有大小和距离意义</td><td>加减、大小和差值通常有意义</td></tr>
+<tr><td>信息位置</td><td><code>featureSign</code></td><td><code>value</code></td></tr>
+<tr><td>常见模型处理</td><td>按 sign 查 Embedding</td><td>直接输入或投影为向量</td></tr>
+</tbody></table>
+</div>
+<h3 id="离散特征编码是哪一个类别"><a class="header" href="#离散特征编码是哪一个类别">离散特征：编码“是哪一个类别”</a></h3>
+<p><strong>离散特征</strong>的取值来自有限或可枚举集合。它们的数字形式只是身份，不应被解释为连续大小。例如网络类型 <code>4</code> 并不意味着它是网络类型 <code>2</code> 的两倍；广告 ID <code>10002</code> 也不比 <code>10001</code> 更优。</p>
+<p>一条离散特征通常经过五步：</p>
+<ol>
+<li><strong>规范化原始值。</strong> 统一编码、大小写、空格和缺失值，例如把空城市映射为 <code>__UNKNOWN__</code>。</li>
+<li><strong>选择 slot。</strong> <code>CITY</code>、<code>SEX</code>、<code>AD_ID</code> 各有独立的 <code>slotId</code>。</li>
+<li><strong>生成 sign。</strong> 字符串先哈希，小整数可直接编码到低 32 位。</li>
+<li><strong>设置权重。</strong> 单值类别通常令 <code>value=1.0</code>。</li>
+<li><strong>查 Embedding。</strong> 模型用 sign 选择参数表中的一行。</li>
+</ol>
+<h4 id="例-1字符串类别-sex男"><a class="header" href="#例-1字符串类别-sex男">例 1：字符串类别 <code>SEX=男</code></a></h4>
+<p>假设 <code>SEX</code> 的 <code>slotId=12</code>，并假设 <code>hash("男")=0x3A91F20B</code>，那么：</p>
+<pre><code class="language-text">高 32 位：slotId = 12       -&gt; 0x0000000C00000000
+低 32 位：hash("男")        -&gt; 0x000000003A91F20B
+最终 sign                    -&gt; 0x0000000C3A91F20B
+</code></pre>
+<p>业务服务生成：</p>
+<pre><code class="language-cpp">const std::string normalized_sex = user.sex.empty()
+    ? "__UNKNOWN__"
+    : user.sex;
+
+features.emplace_back(
+    SEX,
+    gen_feasign_string(SEX, normalized_sex),
+    1.0F);
+</code></pre>
+<p>模型侧的处理可写成：</p>
+<pre><code class="language-text">embedding = E_SEX[0x0000000C3A91F20B]
+          = [0.12, -0.03, 0.45]
+output    = 1.0 × embedding
+          = [0.12, -0.03, 0.45]
+</code></pre>
+<p>这里 <code>value=1.0</code> 只表示“该类别本次出现”。真正区分男、女、未知的是不同的 sign，以及它们各自对应的 Embedding。</p>
+<h4 id="例-2整数枚举-apn_type4"><a class="header" href="#例-2整数枚举-apn_type4">例 2：整数枚举 <code>APN_TYPE=4</code></a></h4>
+<p>网络类型本来就是小整数，无需先转字符串再哈希：</p>
+<pre><code class="language-cpp">features.emplace_back(
+    APN_TYPE,
+    gen_feasign_int32(APN_TYPE, 4),
+    1.0F);
+</code></pre>
+<p>它会生成 <code>[APN_TYPE][4]</code>。与字符串版本相比，这种方式更直观，也不会引入额外的 32 位哈希冲突。</p>
+<h4 id="多值离散特征如何处理"><a class="header" href="#多值离散特征如何处理">多值离散特征如何处理</a></h4>
+<p>“用户兴趣标签”可能同时包含 <code>篮球、跑步、摄影</code>。这时一个 slot 会产生多条 sign：</p>
+<pre><code class="language-text">[INTEREST][hash(篮球)]  value=1.0
+[INTEREST][hash(跑步)]  value=1.0
+[INTEREST][hash(摄影)]  value=1.0
+</code></pre>
+<p>模型查出三条 Embedding 后，通常做 <code>sum</code>、<code>mean</code>、加权池化或注意力聚合。若标签数量变化很大，<code>mean</code> 可以避免“标签越多，向量范数越大”的偏差；若不同标签重要性不同，可以把业务权重放进 <code>value</code>。</p>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>优点：</strong> 不制造虚假顺序，参数可按类别独立学习，也能通过向量空间共享行为模式。</li>
+<li><strong>成本：</strong> 高基数 slot 会产生大表；低频类别的向量训练不足。</li>
+<li><strong>关键检查：</strong> 同一业务值在离线与在线必须得到完全相同的 sign。</li>
+</ul>
+</blockquote>
+<h3 id="dense-特征编码具体数值是多少"><a class="header" href="#dense-特征编码具体数值是多少">Dense 特征：编码“具体数值是多少”</a></h3>
+<p><strong>Dense 特征</strong>是有连续大小意义的数值。<code>CTR=0.08</code> 确实比 <code>CTR=0.02</code> 大，播放 100 秒也通常比播放 10 秒更长。编码时应保留这种数值关系，而不是为每个小数创建一条独立 Embedding。</p>
+<p>Dense 特征在不同框架里有两种常见实现：</p>
+<ol>
+<li><strong>直接标量输入。</strong> 把归一化后的 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 与其他向量拼接，再送入 MLP。</li>
+<li><strong>统一 slot 协议。</strong> 使用固定 <code>featureSign=1</code> 查一条参数向量 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>，输出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>。</li>
+</ol>
+<p>本章工程采用第二种。它在数学上等价于把一维标量通过无偏置线性层投影到 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> 维：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord text"><span class="mord">dense_vector</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span></span></span></span></span></p>
+<p>一条 Dense 特征通常经过四步：</p>
+<ol>
+<li><strong>校验与兜底。</strong> 处理缺失、<code>NaN</code>、<code>inf</code> 和非法负值。</li>
+<li><strong>变换与归一化。</strong> 根据分布选择直接使用、<code>log1p</code>、Min-Max、Z-Score 或分位变换。</li>
+<li><strong>固定 sign。</strong> 该 slot 统一使用 <code>featureSign=1</code>，表示只需一组投影参数。</li>
+<li><strong>把数值放入 value。</strong> <code>value=x</code>，模型计算 <code>x × E[1]</code>。</li>
+</ol>
+<h4 id="例-1已经归一化的-ctr0073"><a class="header" href="#例-1已经归一化的-ctr0073">例 1：已经归一化的 <code>CTR=0.073</code></a></h4>
+<p>CTR 本身位于 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>，可以先直接使用：</p>
+<pre><code class="language-cpp">double ctr = ad.estimated_ctr;
+if (!std::isfinite(ctr)) ctr = 0.0;
+ctr = std::clamp(ctr, 0.0, 1.0);
+
+features.emplace_back(
+    AD_ETR_DENSE,
+    1,
+    static_cast&lt;float&gt;(ctr));
+</code></pre>
+<p>假设这个 slot 的固定参数向量为：</p>
+<pre><code class="language-text">W = E_AD_ETR_DENSE[1] = [0.40, -0.20, 0.10]
+</code></pre>
+<p>那么该样本送给上层网络的向量为：</p>
+<pre><code class="language-text">0.073 × W = [0.0292, -0.0146, 0.0073]
+</code></pre>
+<p>另一个样本若 <code>CTR=0.20</code>，仍查同一条 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>，但输出变为 <code>[0.08, -0.04, 0.02]</code>。因此 Dense 路径保留了“0.20 比 0.073 大”的连续关系。</p>
+<h4 id="例-2长尾播放时长-watch_seconds3600"><a class="header" href="#例-2长尾播放时长-watch_seconds3600">例 2：长尾播放时长 <code>watch_seconds=3600</code></a></h4>
+<p>时长常呈长尾分布。直接把 <code>3600</code> 放进 <code>value</code> 会让它的量级远大于 CTR 等特征。可以先做 <code>log1p</code>：</p>
+<pre><code class="language-cpp">double seconds = watch_seconds;
+if (!std::isfinite(seconds) || seconds &lt; 0.0) seconds = 0.0;
+seconds = std::min(seconds, 86400.0);  // 顶部截断为 24 小时
+
+const float encoded = static_cast&lt;float&gt;(std::log1p(seconds));
+features.emplace_back(WATCH_TIME_DENSE, 1, encoded);
+</code></pre>
+<p><code>3600</code> 秒被压缩为约 <code>8.19</code>，既保留“更长”的单调关系，也降低极端值对梯度和其他特征的支配。</p>
+<blockquote>
+<p>📝 <strong>Note:</strong> Dense slot 中的 <code>E[1]</code> 有时也被口头称为“Embedding”，但它与离散类别 Embedding 的角色不同。离散 Embedding 是“每个类别一行”；Dense slot 只有固定的一行，本质上是一组可学习的投影权重。</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> Dense 特征不能不加检查地塞进 <code>value</code>。时间戳、金额、次数等大量级值会淹没其他特征并放大梯度。必须先做量纲压缩与异常值处理。</p>
+</blockquote>
+<p>常见处理方式：</p>
+<div class="table-wrapper"><table><thead><tr><th>方法</th><th>形式</th><th>适用场景</th></tr></thead><tbody>
+<tr><td><code>log1p</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></td><td>长尾正值：次数、时长、金额、eCPM</td></tr>
+<tr><td>Min-Max</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mclose">)</span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mclose">)</span></span></span></span></td><td>取值范围稳定且已知</td></tr>
+<tr><td>Z-Score</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">μ</span><span class="mclose">)</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span></td><td>近似正态分布</td></tr>
+<tr><td>分位归一化</td><td>映射到经验 CDF</td><td>分布不规则、离群值多</td></tr>
+<tr><td>直接使用</td><td>不变</td><td>本身已在 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>，如概率值</td></tr>
+</tbody></table>
+</div>
+<p>无论采用哪种方式，都要明确 <code>NaN</code>、<code>inf</code>、缺失值和异常负值的兜底规则。<code>min/max/\mu/\sigma</code>、分位点和截断阈值也必须在离线训练与在线服务之间共享。</p>
+<h3 id="bucket落在哪个区间"><a class="header" href="#bucket落在哪个区间">Bucket：落在哪个区间</a></h3>
+<p><strong>分桶特征</strong>先把连续值切成区间，再把桶编号当类别：</p>
+<pre><code class="language-cpp">static uint32_t cut_bucket(double value, uint32_t width) {
+  return static_cast&lt;uint32_t&gt;(value / width);
+}
+</code></pre>
+<p>若 <code>eCPM=57</code>、桶宽为 <code>20</code>，则桶编号为 <code>2</code>。最终表达为 <code>[AD_ECPM][2]</code>，<code>value=1.0</code>。</p>
+<p>这不是 dense 特征。它表达的是“落在哪个区间”，每个桶都有独立 Embedding，因此可以学习非单调的区间效应。</p>
+<p>原始 <code>cut_bucket</code> 仍有三个工程陷阱：</p>
+<ol>
+<li><strong>负值：</strong> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 内的值截断后可能悄悄落到 0 桶；更小的负值转无符号整数时可能超出可表示范围，不能依赖其结果。</li>
+<li><strong><code>NaN</code> / <code>inf</code>：</strong> 转整数没有可用语义，可能触发未定义行为。</li>
+<li><strong>桶宽为 0：</strong> 除零后结果无效。</li>
+</ol>
+<p>更安全的实现应先校验参数、钳制异常值，并设置顶桶：</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdint&gt;
+#include &lt;stdexcept&gt;
+
+uint32_t safe_cut_bucket(
+    double value,
+    double width,
+    uint32_t max_bucket) {
+  if (!std::isfinite(width) || width &lt;= 0.0) {
+    throw std::invalid_argument("bucket width must be positive");
+  }
+  if (!std::isfinite(value) || value &lt; 0.0) {
+    value = 0.0;  // ← KEY LINE: 异常输入统一兜底
+  }
+
+  const double raw_bucket = std::floor(value / width);
+  const double capped = std::min(raw_bucket,
+                                 static_cast&lt;double&gt;(max_bucket));
+  return static_cast&lt;uint32_t&gt;(capped);
+}
+</code></pre>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>等宽分桶：</strong> 实现简单，但长尾分布常让大多数样本挤在前几个桶。</li>
+<li><strong>等频分桶：</strong> 每桶样本更均衡，但依赖稳定的分位点统计。</li>
+<li><strong>对数分桶：</strong> 适合跨多个数量级的正值，能兼顾头部与长尾。</li>
+<li><strong>顶桶截断：</strong> 防止极端值制造大量只出现一两次的稀疏桶。</li>
+</ul>
+</blockquote>
+<h3 id="分桶与-dense-为什么常同时使用"><a class="header" href="#分桶与-dense-为什么常同时使用">分桶与 Dense 为什么常同时使用</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>维度</th><th>分桶离散</th><th>Dense 连续</th></tr></thead><tbody>
+<tr><td><code>featureSign</code></td><td>桶编号</td><td>固定 key</td></tr>
+<tr><td><code>value</code></td><td><code>1.0</code></td><td>真实归一化值</td></tr>
+<tr><td>参数条数</td><td>每桶一条</td><td>整个 slot 一条</td></tr>
+<tr><td>擅长</td><td>非线性、区间效应</td><td>精确大小、连续变化</td></tr>
+<tr><td>局限</td><td>桶内无分辨力，边界不连续</td><td>单个线性缩放难表示复杂非单调关系</td></tr>
+</tbody></table>
+</div>
+<p>两者并用不是无意义重复。分桶告诉模型“处在哪个区间”，dense 告诉模型“准确是多少”。它们从不同角度表达同一个业务量。</p>
+<hr />
+<h2 id="135-embedding-表与工程边界"><a class="header" href="#135-embedding-表与工程边界">1.3.5 Embedding 表与工程边界</a></h2>
+<h3 id="表大小由唯一取值数决定"><a class="header" href="#表大小由唯一取值数决定">表大小由唯一取值数决定</a></h3>
+<p>Embedding 表的主体内存可以粗略估算为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Memory</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3521em;vertical-align:-1.3021em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">4</span><span class="mord text"><span class="mord"> bytes</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> 是该 slot 的唯一 <code>featureSign</code> 数，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是 Embedding 维度。实际系统还要计算哈希表元数据、key、指针和优化器状态；Adam 等优化器还可能额外保存一到两组同尺寸状态。</p>
+<p>表大小不直接取决于请求量。十亿用户都只有三种性别时，<code>SEX</code> slot 仍只需要少量条目；但 <code>GUID</code> 本身接近“一用户一取值”，它的规模就会随用户增长。</p>
+<h3 id="准入淘汰与-oov"><a class="header" href="#准入淘汰与-oov">准入、淘汰与 OOV</a></h3>
+<p>高基数 slot 会持续产生新 key，生产系统必须限制表增长：</p>
+<div class="table-wrapper"><table><thead><tr><th>机制</th><th>典型策略</th><th>解决的问题</th></tr></thead><tbody>
+<tr><td><strong>准入</strong></td><td>出现次数达到阈值后才建表项</td><td>过滤一次性噪声与超长尾取值</td></tr>
+<tr><td><strong>淘汰</strong></td><td>连续若干天未出现则删除</td><td>清理失活用户、下线广告</td></tr>
+<tr><td><strong>OOV</strong></td><td>零向量、默认桶或延迟建表</td><td>处理表中尚不存在的新 key</td></tr>
+</tbody></table>
+</div>
+<p>“查询不到 key 时会发生什么”必须在加新特征前确认。若下游默认“随机初始化并立即写入”，一个高基数特征可能在短时间内撑大参数表；若返回零向量，则冷启动阶段该特征没有贡献，需要依赖其他可泛化特征。</p>
+<h3 id="embedding-如何训练"><a class="header" href="#embedding-如何训练">Embedding 如何训练</a></h3>
+<p>Embedding 是推荐模型的一部分，与上层网络联合训练：</p>
+<ol>
+<li>前向传播根据 <code>featureSign</code> 查询向量。</li>
+<li>多个向量与 dense 特征拼接或池化。</li>
+<li>DNN 输出点击率、转化率或排序分。</li>
+<li>预测误差反向传播，同时更新 Embedding 与网络参数。</li>
+</ol>
+<p>只有被训练样本覆盖到的 key 才能得到有效更新。只出现一两次的长尾特征，其向量接近随机初始值，既占内存又可能引入噪声——这正是频次准入存在的原因。</p>
+<h3 id="离线与在线一致性"><a class="header" href="#离线与在线一致性">离线与在线一致性</a></h3>
+<p>这是特征工程中最隐蔽、也最常见的事故来源。训练样本与线上请求必须严格对齐：</p>
+<ul>
+<li>哈希算法、种子和字符串编码；</li>
+<li><code>slotId</code> 枚举值及候选位置偏移；</li>
+<li>分桶边界、桶宽与顶桶；</li>
+<li>归一化统计量；</li>
+<li>缺失值、异常值和大小写规则；</li>
+<li>字符串 <code>trim</code>、拼接顺序和分隔符。</li>
+</ul>
+<p>这类错误往往不会崩溃。服务仍能返回分数，监控也可能全绿，只是模型查到了“错误但合法”的参数，导致线上效果悄悄下降。</p>
+<blockquote>
+<p>⚡ <strong>Pro Tip:</strong> 把改哈希、改 slot、改桶边界视为“换模型”，而不是普通代码热更新。优先让离线与在线共用同一份特征库；上线前抽取真实请求，逐字段对比两侧生成的三元组。</p>
+</blockquote>
+<hr />
+<h2 id="136-完整案例给广告增加一个-ecpm-特征"><a class="header" href="#136-完整案例给广告增加一个-ecpm-特征">1.3.6 完整案例：给广告增加一个 eCPM 特征</a></h2>
+<p>假设业务已有 <code>ad.ecpm</code>，我们希望同时保留它的精确大小与非线性区间效应。合理做法是创建两个不同的 slot：</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdint&gt;
+#include &lt;vector&gt;
+
+struct FeatureInfo {
+  uint32_t slot_id;
+  uint64_t feature_sign;
+  float value;
+};
+
+enum Slot : uint32_t {
+  AD_ECPM_BUCKET = 101,
+  AD_ECPM_DENSE = 102
+};
+
+uint64_t make_int_sign(uint32_t slot_id, uint32_t value_id) {
+  return (static_cast&lt;uint64_t&gt;(slot_id) &lt;&lt; 32) | value_id;
+}
+
+uint32_t safe_bucket(double value,
+                     double width,
+                     uint32_t max_bucket) {
+  if (!std::isfinite(value) || value &lt; 0.0) value = 0.0;
+  if (!std::isfinite(width) || width &lt;= 0.0) return 0;
+  const double bucket = std::floor(value / width);
+  return static_cast&lt;uint32_t&gt;(
+      std::min(bucket, static_cast&lt;double&gt;(max_bucket)));
+}
+
+void append_ecpm_features(double raw_ecpm,
+                          std::vector&lt;FeatureInfo&gt;&amp; output) {
+  const double clean_ecpm =
+      (!std::isfinite(raw_ecpm) || raw_ecpm &lt; 0.0) ? 0.0 : raw_ecpm;
+
+  const uint32_t bucket = safe_bucket(clean_ecpm, 20.0, 100);
+  output.push_back({
+      AD_ECPM_BUCKET,
+      make_int_sign(AD_ECPM_BUCKET, bucket),
+      1.0F
+  });
+
+  const float dense_value =
+      static_cast&lt;float&gt;(std::log1p(clean_ecpm));
+  output.push_back({
+      AD_ECPM_DENSE,
+      1,
+      dense_value
+  });
+}
+</code></pre>
+<p>输入 <code>raw_ecpm=57</code> 时，两条特征分别表达：</p>
+<div class="table-wrapper"><table><thead><tr><th>Slot</th><th><code>featureSign</code></th><th><code>value</code></th><th>模型获得的信息</th></tr></thead><tbody>
+<tr><td><code>AD_ECPM_BUCKET</code></td><td><code>[slot][2]</code></td><td><code>1.0</code></td><td>eCPM 落在第 2 桶</td></tr>
+<tr><td><code>AD_ECPM_DENSE</code></td><td><code>1</code></td><td><code>log1p(57)</code></td><td>经压缩后的精确大小</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>表达力：</strong> 分桶捕捉非线性，dense 保留连续变化，两者互补。</li>
+<li><strong>参数成本：</strong> 分桶 slot 最多 101 条参数；dense slot 只有一条向量。</li>
+<li><strong>一致性要求：</strong> 离线侧必须使用同样的桶宽、顶桶、<code>log1p</code> 与异常兜底。</li>
+<li><strong>上线检查：</strong> 对正常值、负值、<code>NaN</code>、极大值分别做三元组快照测试。</li>
+</ul>
+</blockquote>
+<p>新增真实特征时，可以按下面清单逐项确认：</p>
+<ul>
+<li><input disabled="" type="checkbox"/>
+它是类别、连续值，还是需要“分桶 + dense”双表达？</li>
+<li><input disabled="" type="checkbox"/>
+字符串的编码、大小写、<code>trim</code> 与拼接规则是否固定？</li>
+<li><input disabled="" type="checkbox"/>
+小整数是否可以直接编码，避免不必要的哈希？</li>
+<li><input disabled="" type="checkbox"/>
+Dense 值的量级、归一化和异常兜底是否明确？</li>
+<li><input disabled="" type="checkbox"/>
+分桶应使用等宽、等频还是对数边界？是否设置顶桶？</li>
+<li><input disabled="" type="checkbox"/>
+唯一取值规模与 Embedding 内存能否接受？</li>
+<li><input disabled="" type="checkbox"/>
+高基数 slot 是否受准入和淘汰规则约束？</li>
+<li><input disabled="" type="checkbox"/>
+OOV 时模型服务返回什么？</li>
+<li><input disabled="" type="checkbox"/>
+离线训练与在线服务是否复用相同逻辑和配置？</li>
+<li><input disabled="" type="checkbox"/>
+上线前是否完成逐字段一致性对比？</li>
+</ul>
+<hr />
+<h2 id="-common-mistakes-in-13"><a class="header" href="#-common-mistakes-in-13">⚠️ Common Mistakes in 1.3</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>把 <code>featureSign</code> 当 Embedding</td><td>“把哈希值转成浮点数直接喂给 DNN”</td><td>编号制造虚假顺序与距离，64 位整数转 <code>float32</code> 还会丢失 key 精度</td><td>用 sign 查独立、可训练的向量</td></tr>
+<tr><td>2</td><td>认为哈希不会冲突</td><td>高基数 GUID 使用 32 位哈希却不监控</td><td>不同取值会共享参数</td><td>估算基数与冲突，必要时扩位或过滤</td></tr>
+<tr><td>3</td><td>Dense 原值直接入模</td><td>时间戳写入 <code>value</code></td><td>量级过大，淹没其他特征并放大梯度</td><td>归一化、钳制并统一统计量</td></tr>
+<tr><td>4</td><td>分桶前不校验</td><td>对负值、<code>NaN</code>、<code>inf</code> 直接转 <code>uint32_t</code></td><td>产生错误桶或不可依赖的行为</td><td>检查有限性、非负性与桶宽</td></tr>
+<tr><td>5</td><td>不设置顶桶</td><td>极端值持续制造新桶</td><td>参数稀疏且表规模失控</td><td><code>min(bucket, MAX_BUCKET)</code></td></tr>
+<tr><td>6</td><td>在线离线各写一套逻辑</td><td>Python 与 C++ 桶边界不同</td><td>查到错误但合法的 Embedding，难以报警</td><td>共用库/配置并做特征 diff</td></tr>
+<tr><td>7</td><td>忽略 OOV 行为</td><td>新 key 自动写表却没有准入</td><td>高基数特征迅速撑大内存</td><td>上线前确认 OOV、准入与淘汰</td></tr>
+<tr><td>8</td><td>对有符号 sign 做算术</td><td>对负数 <code>featureSign</code> 调 <code>abs()</code> 分片</td><td>改变位模式或触发边界问题</td><td>按无符号 key/字节串处理</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>特征三元组</td><td><code>slotId</code> 管类型，<code>featureSign</code> 管取值，<code>value</code> 管数值/权重</td><td>是业务服务与模型服务的协议</td></tr>
+<tr><td>Feature Hashing</td><td>字符串稳定映射到有限 key 空间，冲突不可避免</td><td>换来无词表、可扩展的在线处理</td></tr>
+<tr><td>Embedding</td><td>sign 只负责索引；Embedding 是按监督信号训练的向量</td><td>让类别关系由数据学习，而不是由哈希编号决定</td></tr>
+<tr><td>Sparse</td><td>规范化类别 → 生成 sign → <code>value=1.0</code> → 查独立向量</td><td>表达“是哪一类”，不制造虚假大小关系</td></tr>
+<tr><td>Dense</td><td>校验/变换数值 → 固定 sign → 数值写入 <code>value</code> → 投影</td><td>保留“具体是多少”及连续变化</td></tr>
+<tr><td>分桶</td><td>连续值先切区间，再作为类别查表</td><td>捕捉非线性区间效应</td></tr>
+<tr><td>表规模</td><td>由唯一 key 数 × 维度决定</td><td>高基数特征必须考虑内存治理</td></tr>
+<tr><td>工程一致性</td><td>哈希、slot、桶、归一化、缺失值规则必须对齐</td><td>防止“服务正常但效果下降”的静默事故</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1：为什么不能直接把 <code>featureSign</code> 当作 Embedding？</strong></p>
+<blockquote>
+<p>A：因为 sign 只是任意编号，数值大小和距离都没有业务语义，而且 64 位 sign 转成 <code>float32</code> 还可能丢失精度。Embedding 是按 sign 查询的一组独立可训练参数，类别之间的相似性由点击、转化等数据学习，而不是由哈希值决定。</p>
+</blockquote>
+<p><strong>Q2：为什么 Dense 特征也需要一个 <code>featureSign</code>？</strong></p>
+<blockquote>
+<p>A：在统一的 slot 协议中，它仍需定位该 slot 的一组权重。固定 key 意味着所有样本共享这组参数，再由不同 <code>value</code> 缩放。</p>
+</blockquote>
+<p><strong>Q3：一个连续值应该选分桶还是 Dense？</strong></p>
+<blockquote>
+<p>A：需要精确大小与连续变化时用 dense；关系明显非线性或需要区间效应时用分桶。重要特征常同时使用两种表达。</p>
+</blockquote>
+<p><strong>Q4：Embedding 表为什么不会随请求量线性增长？</strong></p>
+<blockquote>
+<p>A：重复出现的相同 sign 会复用同一条参数。它随“唯一取值数”增长；只有 GUID、广告 ID 等高基数 slot 才可能接近用户或物品规模。</p>
+</blockquote>
+<p><strong>Q5：改桶宽为什么通常需要重训模型？</strong></p>
+<blockquote>
+<p>A：桶宽改变后，同一个业务值会查到不同 key，对应的旧 Embedding 语义已经错位。规则变化必须与新模型一起发布。</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>Chapter 2.3</strong>（双塔模型）会把用户与物品的多组 Embedding 聚合成两侧向量，再用于大规模检索。</li>
+<li><strong>Chapter 3.1</strong>（Wide &amp; Deep）会把离散 Embedding 与连续特征送入 Deep 部分，建立排序模型的泛化能力。</li>
+<li><strong>Chapter 3.2</strong>（特征交叉）会进一步研究不同特征 Embedding 之间如何发生二阶与高阶交互。</li>
+<li><strong>Chapter 6.4</strong>（Codebook 量化与语义 ID）会展示另一种离散表示：让物品 ID 本身带上层次化语义。</li>
+<li><strong>Part 11</strong>（生成式推荐系统实战）会把离线特征生成、在线特征服务与模型部署串成完整工程链路。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>请按顺序完成。后面的题目会逐渐加入规模、异常值与一致性约束。</p>
+<hr />
+<p><strong>Problem 1.3.1 — 三元组分工</strong> 🟢 Easy</p>
+<p>给定 <code>CITY=北京</code> 与 <code>estimated_ctr=0.08</code>，分别说明它们的关键信息应该放在 <code>featureSign</code> 还是 <code>value</code> 中。</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> 城市是类别，CTR 是连续数值，两者表达目标不同。</p>
+<p><strong>Answer:</strong> <code>CITY=北京</code> 的类别身份放在 <code>featureSign</code>，<code>value</code> 通常为 <code>1.0</code>；CTR 使用固定 sign，把 <code>0.08</code> 放在 <code>value</code>。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Sparse 回答“是哪一类”。</li>
+<li>Dense 回答“具体是多少”。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.2 — 判断 key 与向量</strong> 🟢 Easy</p>
+<p>假设 <code>hash("男") = hash("20") = 111</code>。<code>SEX=男</code> 与 <code>AGE_BUCKET=20</code> 是否会得到相同的 <code>featureSign</code>？又能否把最终 sign 直接当作模型向量？</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> 完整 key 由高 32 位 slot 与低 32 位取值编号共同构成；key 只负责定位参数，不表达类别语义。</p>
+<p><strong>Answer:</strong> 两个 sign 不相同，分别是 <code>[SEX][111]</code> 与 <code>[AGE_BUCKET][111]</code>，因为高位 slot 不同。二者都不能直接作为模型向量，必须在各自 slot 的参数表中查询可训练 Embedding。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Slot 隔离了不同字段。</li>
+<li>哈希冲突只需在同一 slot 内讨论。</li>
+<li>sign 的数值距离没有业务意义，不能代替 Embedding。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.3 — 选择表达方式</strong> 🟡 Medium</p>
+<p>你要加入“近 30 天购买金额”，分布极度长尾，既希望保留金额大小，又怀疑不同消费区间存在非单调效应。请设计特征表达。</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> 单一表达无法同时兼顾连续精度与自由的区间效应。</p>
+<p><strong>Answer:</strong> 创建两个 slot：一个对金额做 <code>log1p</code> 后作为 dense；另一个使用对数分桶或离线等频边界作为 sparse 桶特征。两侧统一异常值、边界与顶桶配置。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Dense 保留连续大小。</li>
+<li>分桶捕捉非线性。</li>
+<li>Check：离线和在线对同一金额应输出完全一致的三元组。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.4 — 定位静默故障</strong> 🔴 Hard</p>
+<p>新模型离线 AUC 正常，上线后服务无报错，但效果显著下降。排查发现离线 Python 使用 <code>value.strip().lower()</code> 后哈希，在线 C++ 直接对原字符串哈希。解释原因并设计修复与防复发方案。</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> 两侧对同一业务值生成了不同 key，因此线上查到的不是训练时更新过的参数。</p>
+<p><strong>Answer:</strong> 统一字符串规范化和哈希实现，重建训练样本并重训模型；上线前用同一批真实请求分别执行离线与在线特征逻辑，逐字段 diff <code>slotId/featureSign/value</code>。把规范化规则与哈希种子放在共享库或同一份版本化配置中。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>这是特征错位，不是模型结构问题。</li>
+<li>旧模型不能直接适配新 key。</li>
+<li>Check：一致性测试应覆盖空格、大小写、空值和非 ASCII 字符。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: 估算高基数特征的成本</strong></p>
+<p>某 <code>AD_ID</code> slot 有 5000 万个活跃 key，Embedding 维度为 16，使用 FP32。只计算向量本体需要多少内存？若训练时还保存两份同尺寸优化器状态，总量至少是多少？再说明实际部署为什么还会更大。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>先计算 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">50</span><span class="mord"><span class="mpunct">,</span></span><span class="mord">000</span><span class="mord"><span class="mpunct">,</span></span><span class="mord">000</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 字节，再乘以参数本体与优化器状态的份数。不要忘记哈希表 key、指针、对齐与装载因子。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/book-overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part2-retrieval/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/book-overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part2-retrieval/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>快速候选召回 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h1 style="color: white; margin: 0 0 8px 0;" font-size: 1.7rem;>📗 Part 2: 快速候选召回</h1>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">推荐流水线的第一道闸门——在毫秒之间，从亿级物品库筛出千级候选。</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 5 节 · ⏱️ Estimated 2 weeks · 🎯 Target: 掌握从统计共现到向量检索的召回算法家族</p>
+</div>
+<p>召回是「召回—排序—重排」三阶段漏斗的起点。它要在毫秒级延迟内，从亿级全量物品中快速筛出千级候选——奉行「宁可错杀，不可放过」，目标是<strong>覆盖</strong>而非精准。一个召回器即使效果平庸，只要漏掉了真正相关的物品，后序的排序与重排也无能为力。</p>
+<p>本部分沿技术演进展开五个章节：从最经典的<strong>协同过滤</strong>出发，到把序列建模思想迁移进推荐的<strong>向量召回（I2I）</strong>，再到用深度网络实现高效检索的<strong>双塔模型（U2I）</strong>，继而关注被前几种方法忽略的<strong>序列/时序信息</strong>（序列召回），最后跳出「模型内部压缩」的思路，用<strong>流式索引</strong>保留全量历史兴趣。它们共同构成了工业界召回层的方法图谱。</p>
+<hr />
+<h2 id="本章涵盖"><a class="header" href="#本章涵盖">本章涵盖</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>章节</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>2.1</strong></td><td>协同过滤</td><td>基于「用户—物品」共现统计：从 ItemCF 物品相似度，经 Swing 工业优化、UserCF 用户视角，到矩阵分解开启向量化</td></tr>
+<tr><td><strong>2.2</strong></td><td>向量召回 (I2I)</td><td>把 Word2Vec 序列建模迁移到推荐：从 Item2Vec 直接迁移，到 EGES 融合属性，再到 Airbnb 融入业务目标</td></tr>
+<tr><td><strong>2.3</strong></td><td>双塔模型 (U2I)</td><td>用户与物品分别编码为向量，以 FM、DSSM、YouTubeDNN 为代表，实现高效向量检索</td></tr>
+<tr><td><strong>2.4</strong></td><td>序列召回</td><td>关注时序信息：MIND 用多向量表示多元兴趣，SDM 分离长短期偏好并以门控动态融合</td></tr>
+<tr><td><strong>2.5</strong></td><td>流式索引召回</td><td>跳出模型内部压缩：Trinity 用聚类统计保留全量兴趣，Streaming VQ 让索引实时适应分布</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>区分</strong>基于邻域的协同过滤（ItemCF / UserCF）与基于模型的矩阵分解，说清各自面对稀疏性的优劣</li>
+<li>🟢 <strong>解释</strong> Swing 如何利用二部图结构过滤噪声，以及 EGES 如何用眼注意力解决冷启动</li>
+<li>🟡 <strong>推导</strong> FM 二阶交互项的 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">kn</span><span class="mclose">)</span></span></span></span> 化简，并说明它如何被重新组织为双塔内积形式</li>
+<li>🟡 <strong>对比</strong> 双塔模型与序列召回（MIND / SDM）在「用户表示」上的根本差异：单一向量 vs 多向量 / 长短期融合</li>
+<li>🔴 <strong>分析</strong> Trinity 与 Streaming VQ 如何用聚类统计与流式索引解决「兴趣遗忘」与「索引时效」问题</li>
+<li>🔴 完成 5 章共 25+ 道分层练习题，巩固从共现到向量检索的全链路</li>
+</ul>
+<hr />
+<h2 id="核心概念"><a class="header" href="#核心概念">核心概念</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>章节</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>物品/用户相似度、共现矩阵</td><td>2.1</td><td>协同过滤的基石，工业召回要道</td></tr>
+<tr><td>Swing score、Surprise</td><td>2.1</td><td>面向工业鲁棒性与互补商品的相似度优化</td></tr>
+<tr><td>隐向量、低秩假设</td><td>2.1</td><td>从统计走向表示学习的转折点</td></tr>
+<tr><td>Skip-Gram、序列建模</td><td>2.2</td><td>把「句子=行为序列」的思想用于 I2I 召回</td></tr>
+<tr><td>商品特定注意力 (EGES)</td><td>2.2</td><td>用属性解决冷启动的关键机制</td></tr>
+<tr><td>双塔、内积检索、ANN</td><td>2.3</td><td>高效 U2I 召回的工程骨架</td></tr>
+<tr><td>多兴趣胶囊 (MIND)、门控融合 (SDM)</td><td>2.4</td><td>捕捉多元兴趣与时效性的序列召回</td></tr>
+<tr><td>聚类直方图、VQ 索引、EMA</td><td>2.5</td><td>流式索引召回的统计与实时更新基础</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="前置知识"><a class="header" href="#前置知识">前置知识</a></h2>
+<ul>
+<li>已读完 <strong>Part 1</strong>（尤其是 <a href="./../part1-introduction/recommender-system-basics.html">1.1</a> 的三阶段漏斗与 <a href="./../part1-introduction/book-overview.html">1.2</a> 的技术地图）</li>
+<li>具备基础的线性代数（向量内积、矩阵）、概率（softmax、余弦相似度）与神经网络常识</li>
+<li>了解 Python 与 Embedding 的基本概念</li>
+</ul>
+<blockquote>
+<p>召回层方法偏「轻量、覆盖导向」，复杂度大多可控；但向量化方法（矩阵分解、双塔、序列）需要你熟悉 Embedding 与梯度下降。</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>先理解「动机」再抠公式。</strong> 每个方法都为了解决前一个方法的某个局限——例如 ItemCF 被热门物品主导，于是有了 Swing；共现稀疏，于是有了矩阵分解。</li>
+<li><strong>抓住「用户/物品如何被表示」这条主线。</strong> 从 CF 的 ID 共现，到 MF 的隐向量，到双塔的独立编码，再到序列召回的多向量，表示越来越精细。</li>
+<li><strong>注意召回的检索效率。</strong> 凡是能在线上离线预计算物品向量（双塔、I2I）的方法，往往最容易规模化。</li>
+<li><strong>配合可视化练习。</strong> 每章的交互式 HTML 与 SVG 都值得亲手点一遍，把抽象公式落到「候选池如何收缩」的直觉上。</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/feature-embedding-basics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part2-retrieval/collaborative-filtering.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/feature-embedding-basics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part2-retrieval/collaborative-filtering.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

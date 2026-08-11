@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>系统架构设计 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~22 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="系统架构设计"><a class="header" href="#系统架构设计">系统架构设计</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 请先读完 <a href="./project-intro.html">11.1</a> 的技术选型与离/在线差异。本节把那些选型落到组件与数据流上，建立系统的宏观心智模型。</p>
+</blockquote>
+<p>生产级推荐系统由多个子系统协同工作。本节介绍整体设计、核心组件，以及数据如何在组件之间流转。这是后面所有实现章节的「地图」。</p>
+<p>读完本章，你将能够：</p>
+<ul>
+<li>描述<strong>离线系统</strong>（生产）与<strong>在线系统</strong>（服务）的职责边界与解耦方式</li>
+<li>指出版局架构图中数据存储层、离线流水线、在线流水线、前端四类组件</li>
+<li>解释离线数据流（CSV → 特征/模型 → 共享目录 + Redis）与在线数据流（请求 → 召回 → 排序 → 重排 → 组装）</li>
+<li>说清四个关键设计决策：漏斗架构、多路召回融合、冷启动处理、特征存储计算分离</li>
+<li>完成 4 道分层练习题</li>
+</ul>
+<hr />
+<h2 id="1120-离线与在线系统"><a class="header" href="#1120-离线与在线系统">11.2.0 离线与在线系统</a></h2>
+<p>工业级推荐架构可划分为两部分：<strong>离线系统</strong>与<strong>在线系统</strong>。</p>
+<p><strong>离线系统</strong>负责「生产」：处理全量历史数据、训练模型、计算物品向量与相似度矩阵。计算时间充裕（小时级甚至天级），追求模型质量而非响应速度，产出模型文件、向量索引、特征字典等。</p>
+<p><strong>在线系统</strong>负责「服务」：接收实时请求、调用模型、组装推荐结果并返回。响应时间有限（百毫秒级），需在质量与延迟间平衡，依赖离线产出的模型与特征。</p>
+<p>离线系统定期运行（每天/每周），将产出写入共享存储；在线系统从共享存储加载。两者通过<strong>存储层解耦</strong>：离线可用更复杂算法、更大体量；在线专注低延迟服务。</p>
+<p><img src="../images/part11-system-architecture.svg" alt="离线「生产」与在线「服务」通过存储层解耦，离线产出模型与特征供在线加载" /></p>
+<p>下面用交互演示直观感受离线「生产」与在线「消费」之间的数据与模型流转：从原始评分数据出发，经特征工程、训练、向量预计算，落到存储层，再被在线服务加载并用于实时推理。点击「下一步」观察每一步的产出物如何交接。</p>
+<iframe src="../viz/part11-offline-online.html?embed&vizId=part11-offline-online" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>注意第五步「存储层交接」：离线写出的 <code>active.json</code> 版本指针与物品向量，正是在线加载阶段的输入——这层解耦让离线可从容重训、在线可毫秒级服务。</p>
+<hr />
+<h2 id="1121-整体架构与核心组件"><a class="header" href="#1121-整体架构与核心组件">11.2.1 整体架构与核心组件</a></h2>
+<p>系统由四类核心组件构成，下面逐一展开。</p>
+<p><img src="../images/part11-architecture-components.svg" alt="电影推荐系统完整架构：数据存储层 + 离线流水线 + 在线流水线 + 前端应用" /></p>
+<h3 id="数据存储层"><a class="header" href="#数据存储层">数据存储层</a></h3>
+<ul>
+<li><strong>PostgreSQL（业务数据库）</strong>：存用户表（性别/年龄/职业）、电影表（标题/类型/年份/海报）、评分表（评分+时间戳）。</li>
+<li><strong>Redis（特征缓存）</strong>：存在线推理所需实时特征——用户画像 <code>user:{id}:profile</code>、行为序列 <code>user:{id}:history</code>、物品向量索引。</li>
+<li><strong>共享文件目录</strong>：存模型文件（user_model、ranking_model）、物品向量矩阵（item_embeddings.npy）、特征编码字典（vocab_dict.pkl）。</li>
+<li><strong>Elasticsearch（搜索引擎）</strong>：对电影标题、类型、演员建倒排索引，支撑搜索。</li>
+</ul>
+<h3 id="离线流水线"><a class="header" href="#离线流水线">离线流水线</a></h3>
+<p>按顺序执行：特征工程 → 召回模型训练（YoutubeDNN）→ 排序模型训练（DeepFM）→ 模型部署 → 特征上线。详见 <a href="./offline-pipeline.html">11.3</a>。</p>
+<h3 id="在线流水线"><a class="header" href="#在线流水线">在线流水线</a></h3>
+<p>每个请求依次经过：冷启动检测 → 多路召回 → 精准排序 → 多样性重排 → 结果组装。详见 <a href="./online-pipeline.html">11.4</a>。</p>
+<h3 id="前端应用"><a class="header" href="#前端应用">前端应用</a></h3>
+<p>基于 Vue 3，含首页、电影详情页、搜索页、个人中心四个核心页面（<a href="./frontend.html">11.5</a>）。</p>
+<hr />
+<h2 id="1122-离线数据流"><a class="header" href="#1122-离线数据流">11.2.2 离线数据流</a></h2>
+<p>离线流水线把原始评分数据转化为在线可用的模型与特征：</p>
+<p><img src="../images/part11-offline-flow.svg" alt="离线数据流：从原始 CSV 经特征工程、训练，最终写入共享目录与 Redis" /></p>
+<ol>
+<li><strong>特征工程</strong>：从原始评分提取训练特征（用户/物品/行为序列）。</li>
+<li><strong>召回模型训练</strong>：训练 YoutubeDNN 双塔，学用户/物品向量映射。</li>
+<li><strong>排序模型训练</strong>：训练 DeepFM，学用户-物品对点击概率。</li>
+<li><strong>模型部署</strong>：将模型文件写入共享目录供在线加载。</li>
+<li><strong>特征上线</strong>：将用户画像、行为序列、物品信息写入 Redis。</li>
+</ol>
+<p>离线产出物与在线需求的对应关系，是理解整个系统的关键——离线「想清楚怎么算」，在线「快速取来用」。</p>
+<hr />
+<h2 id="1123-在线数据流"><a class="header" href="#1123-在线数据流">11.2.3 在线数据流</a></h2>
+<p>在线流水线处理每个用户请求，以「打开首页」为例：</p>
+<p><img src="../images/part11-online-flow.svg" alt="在线数据流：一次推荐请求的完整链路，目标延迟控制在 200 毫秒内" /></p>
+<ol>
+<li><strong>冷启动检测</strong>：判断是否为新用户（历史行为少于阈值），新用户走冷启动，否则走正常流程。</li>
+<li><strong>多路召回</strong>：并行执行 YoutubeDNN 向量召回、物品相似度召回、偏好类目召回。</li>
+<li><strong>精准排序</strong>：用 DeepFM 对候选 CTR 预估、按分排序。</li>
+<li><strong>多样性重排</strong>：打散策略，避免连续同类/同年电影。</li>
+<li><strong>结果组装</strong>：查库补全标题、海报等，组装前端响应。</li>
+</ol>
+<p>整个流程目标延迟控制在 <strong>200 毫秒</strong>以内。</p>
+<hr />
+<h2 id="1124-关键设计决策"><a class="header" href="#1124-关键设计决策">11.2.4 关键设计决策</a></h2>
+<h3 id="召回与排序分离漏斗架构"><a class="header" href="#召回与排序分离漏斗架构">召回与排序分离（漏斗架构）</a></h3>
+<p>理论上可训练一个模型对全库直接打分，但性能不可行：假设库有 10 万部电影，每次请求都排序模型推理，即使每次 1ms 也需 100 秒。</p>
+<p>因此采用<strong>漏斗式架构</strong>：召回阶段用轻模型快速筛数百候选，排序阶段用复杂模型对这数百候选精确打分。</p>
+<p><img src="../images/part11-funnel.svg" alt="漏斗架构：亿级物品经召回缩小到数百，再经排序缩到数十" /></p>
+<h3 id="多路召回与融合snake-merge"><a class="header" href="#多路召回与融合snake-merge">多路召回与融合（Snake Merge）</a></h3>
+<p>单一召回策略有局限：向量召回可能漏掉模型未捕捉的相关性；协同过滤对新/小众电影覆盖不足；热门推荐缺乏个性化。融合多种策略取长补短。本项目用 <strong>Snake Merge（蛇形合并）</strong>：从各路轮流取候选，确保每路都有代表进入排序。</p>
+<h3 id="冷启动处理"><a class="header" href="#冷启动处理">冷启动处理</a></h3>
+<p>新用户缺乏行为，协同过滤与向量召回失效。本项目设计独立冷启动流程：①交互次数阈值检测；②若设偏好类型，优先推这些类型的优质电影；③否则用热门或 UCB 探索；④随行为积累过渡到正常流程。</p>
+<h3 id="特征存储与计算分离"><a class="header" href="#特征存储与计算分离">特征存储与计算分离</a></h3>
+<p>在线推理对延迟敏感。若每次请求都从 PostgreSQL 查历史行为，数据库成瓶颈。故将高频特征预计算写入 Redis：用户画像注册/更新时写，行为序列每次评分后更新，物品向量离线批量写。Redis 读延迟通常 &lt;1ms，比数据库快 1–2 个数量级。</p>
+<blockquote>
+<p><strong>Analysis:</strong> 四个决策共同指向一个原则——<strong>把重活放离线、把快活放在线、把热点放内存</strong>。漏斗解决算力、融合解决覆盖、冷启动解决零样本、存储分离解决延迟。</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-112"><a class="header" href="#-common-mistakes-in-112">⚠️ Common Mistakes in 11.2</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>单模型全库打分</td><td>「直接用一个模型排全库」</td><td>10万候选 × 推理 = 百秒级，不可服务</td><td>漏斗：召回缩候选、排序精打分</td></tr>
+<tr><td>2</td><td>离线在线特征不一致</td><td>离线用新编码器、在线用旧</td><td>训练-服务错位，效果骤降</td><td>共享同一 vocab_dict/编码器</td></tr>
+<tr><td>3</td><td>每请求查数据库特征</td><td>实时查 PG 历史行为</td><td>数据库成延迟瓶颈</td><td>高频特征预写 Redis</td></tr>
+<tr><td>4</td><td>单路召回</td><td>只用向量召回</td><td>覆盖不足、小众/新片漏召</td><td>多路召回 + Snake Merge 融合</td></tr>
+<tr><td>5</td><td>冷启动与正常流混一</td><td>无差异对待新用户</td><td>新用户体验差、推荐崩</td><td>独立冷启动检测与三级策略</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>离线/在线解耦</td><td>离线生产、在线服务，存储层衔接</td><td>质量与延迟的工程平衡</td></tr>
+<tr><td>四类组件</td><td>PG/Redis/共享目录/ES + 离线/在线/前端</td><td>系统的物理拼图</td></tr>
+<tr><td>离线数据流</td><td>CSV→特征→训练→部署+上线</td><td>训练时关注点</td></tr>
+<tr><td>在线数据流</td><td>请求→召回→排序→重排→组装</td><td>服务时关注点（&lt;200ms）</td></tr>
+<tr><td>四个设计决策</td><td>漏斗/融合/冷启动/存储分离</td><td>工程可行性的根基</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: 离线周期跑、在线实时用，会不会「模型过期」？</strong></p>
+<blockquote>
+<p>A: 会，这是工业常态。本项目靠版本指针（active.json）做无感知热更新（见 11.3），离线重训后切换指针即可，无需停服。</p>
+</blockquote>
+<p><strong>Q2: 为什么物品向量离线算、用户向量在线算？</strong></p>
+<blockquote>
+<p>A: 物品库相对静态、数量大，离线一次性算好入库；用户每次请求才确定，必须在线现算。离线建库 + 在线查，正是双塔可规模化的关键（见 2.3）。</p>
+</blockquote>
+<p><strong>Q3: Snake Merge 和简单按分合并有何不同？</strong></p>
+<blockquote>
+<p>A: 按分合并易让某路（如向量召回）霸榜；Snake Merge 轮流取，保证各路代表都进排序，提升多样性与覆盖。</p>
+</blockquote>
+<h3 id="-前后关联"><a class="header" href="#-前后关联">🔗 前后关联</a></h3>
+<ul>
+<li><strong>11.1</strong> 的技术选型在此落成组件与数据流。</li>
+<li><strong>11.3</strong> 深入离线流水线的每一步实现。</li>
+<li><strong>11.4</strong> 深入在线流水线的每一步实现。</li>
+<li><strong>2.3（双塔）</strong>、<strong>3.x（DeepFM）</strong> 是召回、排序模型的算法依据。</li>
+<li><strong>4.2（多样性重排）</strong> 解释了重排阶段打散策略的理论动机。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.2.1 — 画出数据流</strong> 🟢 Easy</p>
+<p>用一句话描述：离线训练好的 <code>item_embeddings.npy</code> 从哪个组件产生、被哪个组件消费、用在在线哪个阶段？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> 由离线流水线「模型部署」写入共享目录；在线流水线的召回服务（<code>RecallResourceManager</code>）加载它；用于 YoutubeDNN / 物品相似度召回的向量检索阶段。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>离线产出、在线消费的经典例子。</li>
+<li>体现「存储层解耦」。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.2.2 — 漏斗的算力账</strong> 🟢 Easy</p>
+<p>库有 5 万部电影，召回用轻模型（每候选 0.1ms）筛 200 候选，排序用重模型（每候选 1ms）对 200 候选打分。若直接全库排序需多久？漏斗方案需多久？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> 直接全库排序 = 50000 × 1ms = 50 秒。漏斗 = 召回 50000×0.1ms = 5 秒 + 排序 200×1ms = 0.2 秒 ≈ 5.2 秒。若召回可在预建索引上更快（远小于 5 秒），漏斗优势更明显。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>漏斗把「全库重模型」降为「全库轻模型 + 子集重模型」。</li>
+<li>实际召回走向量索引，几乎不遍历全库（见 2.3.4）。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.2.3 — 为何特征存 Redis</strong> 🟡 Medium</p>
+<p>产品经理主张「用户特征直接查 PostgreSQL 就行，省得维护 Redis」。请指出风险，并量化说明为何 Redis 更合适。</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> 每次推荐请求都要读用户画像+行为序列，若查 PG（典型几 ms~十几 ms），叠加召回/排序/重排后易超 200ms 预算；且 PG 并发高时成瓶颈。Redis 内存读 &lt;1ms，比 PG 快 1–2 个数量级，且支持 List/Hash 自然表达历史序列与画像。代价是多维护一份缓存与一致性，但延迟收益远超成本。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>在线特征「高频、低延迟、结构简单」→ 内存库天然契合。</li>
+<li>PG 适合持久业务数据，不适合热路径特征读取。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: 给架构提一个改进</strong> 🔴 Hard</p>
+<p>基于本架构，提出一个在生产环境中可显著提升推荐质量或稳定性的改进点（如特征实时更新、模型 A/B、在线学习），说明它解决什么问题、需要改动哪一层（150 字内）。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>可选：①实时特征管道——用户评分后近实时更新 Redis 行为序列（而非仅离线批量），提升新鲜度，改动离线「特征上线」+ 在线写回；②模型 A/B——<code>active.json</code> 扩展为多版本分流，改动在线资源加载；③向量检索升级 FAISS——库超百万时替换暴力内积，改动召回服务。任选其一论证即可。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/project-intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/offline-pipeline.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/project-intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/offline-pipeline.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
