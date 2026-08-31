@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PRM 个性化重排 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#f97316; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+    --c-blue:#4A6CF7;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .item{display:flex;align-items:center;gap:10px;padding:8px 10px;margin:6px 0;border-radius:10px;background:var(--c-cell);transition:all .3s;}
+  .item .pos{width:22px;height:22px;border-radius:50%;background:#475569;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto;}
+  .item .name{width:64px;font-weight:700;font-size:13px;flex:0 0 auto;}
+  .item .rel{font-size:11px;color:var(--c-light);flex:0 0 auto;width:54px;}
+  .item .bar{height:10px;border-radius:5px;background:var(--c-blue);transition:width .4s;}
+  .item .plabel{font-size:10px;color:var(--c-light);width:120px;}
+  .item.attn{outline:2px solid var(--c-primary);}
+  .item.out{background:rgba(16,185,129,.18);outline:2px solid var(--c-success);}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(249,115,22,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔶 PRM：Transformer 逐步生成个性化列表</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>列表状态（位置 / 物品 / 个性化 PV）</h3>
+    <div id="list"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+// 5 个候选物品：精排相关性 rel + 个性化向量 pv（来自预训练CTR隐藏层）
+const items = [
+  {id:"i1", name:"科幻片", rel:0.92, pv:0.30},
+  {id:"i2", name:"纪录片", rel:0.85, pv:0.88},
+  {id:"i3", name:"喜剧片", rel:0.80, pv:0.55},
+  {id:"i4", name:"动作片", rel:0.74, pv:0.62},
+  {id:"i5", name:"动画",   rel:0.68, pv:0.40}
+];
+// 最终重排概率（Softmax 输出，体现个性化调整后顺序）
+const outProb = {i1:0.18, i2:0.34, i3:0.22, i4:0.16, i5:0.10};
+const finalOrder = Object.keys(outProb).sort((a,b)=>outProb[b]-outProb[a]);
+
+const stages = [
+  { name:"① 初始排序列表", code:["# 初始列表 S（按精排 rel 降序）","S = [i1, i2, i3, i4, i5]","# 每个物品带精排相关性 rel","# 但顺序是「通用」的，未融入用户"], hl:1,
+    desc:"精排交出一列按相关性降序的候选。位置 1~5 仅由 rel 决定，对所有用户一致——这是「通用」列表，尚未个性化。" },
+  { name:"② 输入层：融合 PV 与位置", code:["E = [x_j ; pv_j] + pe_j","# x_j: 物品特征","# pv_j: 预训练CTR隐藏层→个性化","# pe_j: 位置嵌入","# 拼接 + 注入位置"], hl:0,
+    desc:"为每个物品拼接「物品特征 x_j + 个性化向量 pv_j」，再加位置嵌入 pe_j。pv 来自预训练 CTR 模型的隐藏层激活，承载用户 u 对该物品的偏好——这是 PRM 个性化的核心。" },
+  { name:"③ 编码层：Transformer 自注意力", code:["for block in Nx_blocks:","  h = MultiHeadAttention(E)","  h = FFN(h) + residual","# 每个物品关注所有其他物品","# 逐层提炼高阶相互影响"], hl:1,
+    desc:"堆叠的 Transformer 编码器块里，每个物品通过多头自注意力关注列表中所有其他物品（含自己），逐层聚合跨物品、长距离的相互影响，输出融合全局上下文的高级表示 F。" },
+  { name:"④ 输出层：Dense → Softmax", code:["logit = Wf · F + bf","prob = softmax(logit)","# 归一化 + 隐式相对关系","# 整列相对概率"], hl:1,
+    desc:"对每个物品的高级表示施加线性变换得 logit，再经 Softmax 转为概率分布。Softmax 让每个物品的概率取决于它与全列表的相对比较——天然建模物品间相对重要性。" },
+  { name:"⑤ 最终个性化列表", code:["order = argsort(prob, desc)","display(reranked)","# 顺序由「对该用户」的概率决定","# 千人千面"], hl:0,
+    desc:"按 Softmax 概率重排得到最终列表。注意 i2（纪录片）虽 rel 不是最高，却因 pv 极高被提前——这正是「对这位用户」的最优排列，与初始通用列表不同。" }
+];
+let cur = 0, timer = null;
+
+function render(){
+  const s = stages[cur];
+  const listEl = document.getElementById("list");
+  listEl.innerHTML = "";
+  // 决定展示顺序与样式
+  let order, mode;
+  if(cur <= 0){ order = items.map(x=>x.id); mode = "init"; }
+  else if(cur === 4){ order = finalOrder; mode = "final"; }
+  else { order = items.map(x=>x.id); mode = "mid"; }
+  order.forEach((id, idx) => {
+    const it = items.find(x=>x.id===id);
+    const d = document.createElement("div");
+    let cls = "item";
+    if(mode==="final") cls += " out";
+    if(mode==="mid" && cur===2) cls += " attn";
+    const prob = outProb[id];
+    const probTxt = (mode==="final"||mode==="mid") ? ` · P=${prob.toFixed(2)}` : "";
+    d.innerHTML = `<div class="pos">${idx+1}</div>`+
+                  `<div class="name">${it.name}</div>`+
+                  `<div class="rel">rel=${it.rel.toFixed(2)}</div>`+
+                  `<div class="bar" style="width:${Math.round(it.pv*90)}px"></div>`+
+                  `<div class="plabel">PV=${it.pv.toFixed(2)}${probTxt}</div>`;
+    listEl.appendChild(d);
+  });
+  document.getElementById("state").innerHTML =
+    `<h3>当前阶段状态</h3><p><span class="k">阶段：</span>${s.name}</p><p>${s.desc}</p>`;
+  document.getElementById("codepre").innerHTML =
+    s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  document.getElementById("foot").textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

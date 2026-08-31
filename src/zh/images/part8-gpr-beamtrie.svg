@@ -1,0 +1,54 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a89" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s89" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="400" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">价值引导的 Trie Beam Search：解码中内嵌约束与价值</text>
+
+  <!-- trie tree -->
+  <rect x="30" y="58" width="300" height="300" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s89)"/>
+  <text x="180" y="82" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">Trie 前缀树（约束过滤）</text>
+  <circle cx="180" cy="120" r="14" fill="#4A6CF7"/>
+  <text x="180" y="124" text-anchor="middle" font-family="Arial" font-size="11" fill="#fff">·</text>
+  <line x1="180" y1="134" x2="110" y2="190" stroke="#64748b" stroke-width="2"/>
+  <line x1="180" y1="134" x2="260" y2="190" stroke="#64748b" stroke-width="2"/>
+  <circle cx="110" cy="200" r="16" fill="#10b981"/>
+  <text x="110" y="204" text-anchor="middle" font-family="Arial" font-size="11" fill="#fff">23</text>
+  <circle cx="260" cy="200" r="16" fill="#cbd5e1"/>
+  <text x="260" y="204" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">91</text>
+  <line x1="110" y1="216" x2="75" y2="276" stroke="#64748b" stroke-width="2"/>
+  <line x1="110" y1="216" x2="155" y2="276" stroke="#64748b" stroke-width="2"/>
+  <circle cx="75" cy="288" r="16" fill="#10b981"/>
+  <text x="75" y="292" text-anchor="middle" font-family="Arial" font-size="11" fill="#fff">456</text>
+  <circle cx="155" cy="288" r="16" fill="#cbd5e1"/>
+  <text x="155" y="292" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">512</text>
+  <text x="115" y="320" font-family="Arial" font-size="11" fill="#10b981">✓ 有效广告 A/B</text>
+  <text x="115" y="340" font-family="Arial" font-size="11" fill="#64748b">✗ 91 地域不符剔除</text>
+
+  <line x1="330" y1="208" x2="378" y2="208" stroke="#64748b" stroke-width="2.5" marker-end="url(#a89)"/>
+
+  <!-- value-guided beam -->
+  <rect x="383" y="58" width="387" height="300" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s89)"/>
+  <text x="576" y="82" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#d97706">价值引导：动态束宽 + 剪枝</text>
+  <text x="403" y="108" font-family="Arial" font-size="11.5" fill="#1e293b">每层候选只从 Trie 子节点采样</text>
+  <text x="403" y="128" font-family="Courier New" font-size="11" fill="#64748b">search W³ → |X_valid|</text>
+  <text x="403" y="152" font-family="Arial" font-size="11.5" fill="#1e293b">B_next(a^l) = max(B_min,</text>
+  <text x="403" y="170" font-family="Courier New" font-size="11" fill="#64748b">   B_base · exp((v^l−v̄)/τ))</text>
+
+  <!-- beam rows -->
+  <rect x="403" y="186" width="347" height="26" rx="6" fill="#10b981" opacity="0.25"/>
+  <text x="413" y="204" font-family="Arial" font-size="11.5" fill="#1e293b">分支① 高价值 v=0.8 → 束宽扩至 21.7</text>
+  <rect x="403" y="220" width="200" height="26" rx="6" fill="#f59e0b" opacity="0.25"/>
+  <text x="413" y="238" font-family="Arial" font-size="11.5" fill="#1e293b">分支② v=0.45 → 束宽 6.8</text>
+  <rect x="403" y="254" width="347" height="26" rx="6" fill="#ef4444" opacity="0.18"/>
+  <text x="413" y="272" font-family="Arial" font-size="11.5" fill="#1e293b">分支③ 低价值/不合法 → 早剪枝</text>
+
+  <text x="403" y="306" font-family="Arial" font-size="11.5" fill="#1e293b">效果：延迟 150→80ms (−47%)</text>
+  <text x="403" y="328" font-family="Arial" font-size="11.5" fill="#1e293b">有效候选 40%→95% · Top-1 +3.2%</text>
+  <text x="403" y="350" font-family="Arial" font-size="11" fill="#64748b">高价值分支深探，低价值早收</text>
+</svg>

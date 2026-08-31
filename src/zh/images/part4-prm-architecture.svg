@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
+  </defs>
+
+  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">PRM 整体架构：输入 → Transformer 编码 → 列表级 Softmax</text>
+
+  <!-- initial list -->
+  <rect x="250" y="50" width="300" height="34" rx="8" fill="#f8f9fc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="72" text-anchor="middle" font-size="12.5" fill="#1e293b">初始排序列表 S = [i₁, i₂, …, iₙ]（带精排分数）</text>
+  <line x1="400" y1="84" x2="400" y2="104" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- input layer -->
+  <rect x="160" y="106" width="480" height="90" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#ea580c">① 输入层：E = [xⱼ ; pvⱼ] + peⱼ</text>
+  <g font-size="11.5" fill="#1e293b">
+    <rect x="185" y="136" width="120" height="26" rx="6" fill="#e8ecff"/><text x="245" y="153" text-anchor="middle">物品特征 xⱼ</text>
+    <rect x="320" y="136" width="120" height="26" rx="6" fill="#fde68a"/><text x="380" y="153" text-anchor="middle">个性化 pvⱼ</text>
+    <rect x="455" y="136" width="120" height="26" rx="6" fill="#dcfce7"/><text x="515" y="153" text-anchor="middle">位置嵌入 peⱼ</text>
+    <text x="400" y="184" text-anchor="middle" font-size="11" fill="#64748b">拼接物品与个性化 + 注入位置 → 序列表示 E</text>
+  </g>
+  <line x1="400" y1="196" x2="400" y2="216" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- encoding layer -->
+  <rect x="160" y="218" width="480" height="120" rx="8" fill="#eef2ff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="238" text-anchor="middle" font-size="13" font-weight="700" fill="#4A6CF7">② 编码层：堆叠 Transformer 编码器块</text>
+  <g>
+    <rect x="250" y="248" width="300" height="30" rx="6" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="400" y="267" text-anchor="middle" font-size="11.5" fill="#1e293b">多头自注意力：每个物品关注所有其他物品</text>
+    <rect x="250" y="284" width="300" height="30" rx="6" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5"/>
+    <text x="400" y="303" text-anchor="middle" font-size="11.5" fill="#1e293b">前馈网络 + 残差（× Nₓ 层，逐层提炼高阶依赖）</text>
+  </g>
+  <text x="400" y="330" text-anchor="middle" font-size="11" fill="#64748b">输出 Fᴺˣ：融合特征 + 个性化 + 全局上下文</text>
+  <line x1="400" y1="338" x2="400" y2="358" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- output layer -->
+  <rect x="160" y="360" width="480" height="90" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="380" text-anchor="middle" font-size="13" font-weight="700" fill="#0c8f6a">③ 输出层：Dense → Softmax → 重排概率</text>
+  <g font-size="11.5" fill="#1e293b">
+    <rect x="200" y="390" width="160" height="26" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/><text x="280" y="407" text-anchor="middle">线性映射为 logit</text>
+    <rect x="440" y="390" width="160" height="26" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/><text x="520" y="407" text-anchor="middle">Softmax 相对概率</text>
+    <text x="400" y="438" text-anchor="middle" font-size="11" fill="#64748b">按概率重排 → 个性化列表</text>
+  </g>
+
+  <!-- PV callout -->
+  <line x1="575" y1="149" x2="650" y2="149" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+  <rect x="650" y="120" width="130" height="58" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="715" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">PV 来源</text>
+  <text x="715" y="158" text-anchor="middle" font-size="10" fill="#64748b">预训练 CTR</text>
+  <text x="715" y="172" text-anchor="middle" font-size="10" fill="#64748b">隐藏层激活</text>
+</svg>

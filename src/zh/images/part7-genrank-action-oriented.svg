@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh5"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Action-Oriented：序列长度减半</text>
+
+  <!-- Left HSTU interleaving -->
+  <rect x="40" y="60" width="350" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh5)"/>
+  <text x="215" y="88" font-size="14" font-weight="700" fill="#4A6CF7" text-anchor="middle">HSTU 交织序列 (2n)</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="60" y="110" width="56" height="36" rx="8" fill="#e8ecff" stroke="#4A6CF7"/><text x="88" y="133">Φ₀</text>
+    <rect x="130" y="110" width="56" height="36" rx="8" fill="#fef9ec" stroke="#f59e0b"/><text x="158" y="133">a₀</text>
+    <rect x="200" y="110" width="56" height="36" rx="8" fill="#e8ecff" stroke="#4A6CF7"/><text x="228" y="133">Φ₁</text>
+    <rect x="270" y="110" width="56" height="36" rx="8" fill="#fef9ec" stroke="#f59e0b"/><text x="298" y="133">a₁</text>
+    <rect x="60" y="160" width="56" height="36" rx="8" fill="#e8ecff" stroke="#4A6CF7"/><text x="88" y="183">Φ₂</text>
+    <rect x="130" y="160" width="56" height="36" rx="8" fill="#fef9ec" stroke="#f59e0b"/><text x="158" y="183">a₂</text>
+    <rect x="200" y="160" width="56" height="36" rx="8" fill="#e8ecff" stroke="#4A6CF7"/><text x="228" y="183">Φ₃</text>
+    <rect x="270" y="160" width="56" height="36" rx="8" fill="#fef9ec" stroke="#f59e0b"/><text x="298" y="183">a₃</text>
+  </g>
+  <text x="215" y="230" font-size="12" fill="#64748b" text-anchor="middle">物品(token) 与 行为(token) 平等各占一位</text>
+  <text x="215" y="255" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">长度 = 2n_c，attention O(4n²)</text>
+  <text x="215" y="290" font-size="12" fill="#64748b" text-anchor="middle">e = φ(Φ) 单独 ｜ φ(a) 单独</text>
+  <text x="215" y="330" font-size="12" fill="#64748b" text-anchor="middle">候选用 mask action M 占位</text>
+
+  <!-- arrow -->
+  <line x1="405" y1="210" x2="445" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arr5)"/>
+  <text x="425" y="200" font-size="11" fill="#10b981" text-anchor="middle">融合</text>
+
+  <!-- Right GenRank -->
+  <rect x="450" y="60" width="310" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh5)"/>
+  <text x="605" y="88" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">GenRank 行为导向 (n)</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="475" y="110" width="96" height="36" rx="8" fill="#f0fdf4" stroke="#10b981"/><text x="523" y="133">a₀⁽Φ⁰⁾</text>
+    <rect x="475" y="155" width="96" height="36" rx="8" fill="#f0fdf4" stroke="#10b981"/><text x="523" y="178">a₁⁽Φ¹⁾</text>
+    <rect x="475" y="200" width="96" height="36" rx="8" fill="#f0fdf4" stroke="#10b981"/><text x="523" y="223">a₂⁽Φ²⁾</text>
+    <rect x="475" y="245" width="96" height="36" rx="8" fill="#f0fdf4" stroke="#10b981"/><text x="523" y="268">a₃⁽Φ³⁾</text>
+  </g>
+  <text x="605" y="305" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">长度 = n_c，attention 减 75%</text>
+  <text x="605" y="335" font-size="12" fill="#64748b" text-anchor="middle">e = φ(x) + φ(a) 同空间融合</text>
+
+  <text x="400" y="388" font-size="12" fill="#64748b" text-anchor="middle">仅此一项训练加速 78.7%，AUC 几乎无损</text>
+</svg>

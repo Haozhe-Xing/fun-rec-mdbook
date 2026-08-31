@@ -1,0 +1,37 @@
+<svg width="800" height="260" viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <filter id="sh3" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="260" fill="#f8f9fc" rx="12"/>
+
+  <!-- Context input: user history sequence -->
+  <rect x="40" y="70" width="180" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh3)"/>
+  <text x="130" y="100" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">用户历史</text>
+  <text x="130" y="124" text-anchor="middle" font-family="Courier New" font-size="13" fill="#4A6CF7">[Iₐ, Iʙ, Iᴄ, …]</text>
+  <text x="130" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">行为序列 + 场景</text>
+  <text x="130" y="172" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">作为上下文</text>
+
+  <!-- Generative model -->
+  <rect x="310" y="65" width="180" height="130" rx="10" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#sh3)"/>
+  <text x="400" y="108" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#ffffff">生成模型</text>
+  <text x="400" y="134" text-anchor="middle" font-family="Courier New" font-size="13" fill="#d1fae5">Transformer</text>
+  <text x="400" y="158" text-anchor="middle" font-family="Arial" font-size="12" fill="#d1fae5">自回归解码</text>
+
+  <!-- Output: item sequence -->
+  <rect x="580" y="70" width="180" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh3)"/>
+  <text x="670" y="100" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">推荐序列</text>
+  <text x="670" y="124" text-anchor="middle" font-family="Courier New" font-size="13" fill="#4A6CF7">[Ī₁, Ī₂, …]</text>
+  <text x="670" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">直接「创作」</text>
+  <text x="670" y="172" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">无需逐候选打分</text>
+
+  <line x1="220" y1="130" x2="306" y2="130" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow3)"/>
+  <line x1="490" y1="130" x2="576" y2="130" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow3)"/>
+
+  <rect x="0" y="220" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="244" text-anchor="middle" font-family="Courier New" font-size="14" fill="#94a3b8">生成式:  [I₁, I₂, …] = g(User, Context)  →  端到端统一模型替代多阶段级联</text>
+</svg>

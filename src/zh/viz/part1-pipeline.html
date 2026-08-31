@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>三阶段推荐流水线 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  /* visual */
+  .funnel{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px;}
+  .tier{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center;transition:all .35s;}
+  .dot{width:16px;height:16px;border-radius:50%;background:var(--c-cell);transition:all .3s;}
+  .dot.on{background:var(--c-primary);}
+  .dot.green{background:var(--c-success);}
+  .dot.warn{background:var(--c-warn);}
+  .tier-label{font-size:12px;color:var(--c-light);margin-top:4px;}
+  .count{font-family:"Courier New",monospace;color:var(--c-success);font-weight:bold;}
+  /* state + code */
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔻 推荐流水线：从亿级到一份列表</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>候选池可视化</h3>
+    <div class="funnel" id="funnel"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 全量物品库", count:1e8, color:"cell",
+    desc:"平台拥有上亿物品，但用户只会看到极少数。推荐系统的任务是从这里精准捞出你感兴趣的内容。",
+    code:["# 候选池：全量物品库","items = load_all_items()  # ~1e8 个","# 无法为每个用户逐一打分 —— 成本爆炸"],
+    hl:0 },
+  { name:"② 召回 Recall", count:2e3, color:"on",
+    desc:"快速、低成本地从上亿物品中筛出几千个「可能相关」的候选。模型简单、特征少，奉行「宁可错杀，不可放过」。",
+    code:["candidates = recall(user, items)","# 协同过滤 / 双塔 / 序列召回","# 亿级 → 千级","assert len(candidates) ~ 1e3"],
+    hl:1 },
+  { name:"③ 排序 Ranking", count:2e2, color:"green",
+    desc:"用最复杂的深度模型，融合用户/物品/场景全特征，对每个候选计算精确预测分数，按分排序后取百级。",
+    code:["scores = [rank(u, i, c) for i in candidates]","ranked = sort_by_score(scores)","# 千级 → 百级","top = ranked[:200]"],
+    hl:1 },
+  { name:"④ 重排 Re-ranking", count:10, color:"warn",
+    desc:"对高分列表做最终优化：插入多样性、新颖性、业务规则（广告/运营），避免同质化审美疲劳。",
+    code:["final = rerank(top, user)","# MMR / DPP / 个性化重排","# 兼顾相关性 + 体验","display(final[:10])"],
+    hl:1 },
+  { name:"✅ 最终推荐列表", count:10, color:"warn",
+    desc:"一份平衡了相关性、多样性与业务目标的个性化列表，毫秒级送达用户。三阶段漏斗完成。",
+    code:["# 完整流水线","final = rerank(rank(recall(u, items)), u)","# 亿级 → 10 条，效率与效果兼得"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const funnel = document.getElementById("funnel");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function dotClass(stageIdx){
+  if(stageIdx < cur) return "dot " + (stages[stageIdx].color==="cell"?"":"on");
+  if(stageIdx === cur) return "dot " + stages[stageIdx].color;
+  return "dot";
+}
+
+function render(){
+  // funnel: show all 5 tiers, sizes shrink
+  funnel.innerHTML = "";
+  const maxDots = 40;
+  stages.forEach((s, i)=>{
+    const wrap = document.createElement("div");
+    wrap.style.textAlign="center";
+    const row = document.createElement("div");
+    row.className="tier";
+    const ratio = (s.count/1e8)**0.22;
+    const n = Math.max(3, Math.round(maxDots * ratio));
+    for(let k=0;k<n;k++){
+      const d=document.createElement("div");
+      d.className = dotClass(i) + (i===cur?" on":"");
+      if(i<cur) d.className="dot on";
+      if(i===cur) d.className="dot "+s.color;
+      row.appendChild(d);
+    }
+    const lab=document.createElement("div");
+    lab.className="tier-label";
+    const cnt = s.count>=1e8 ? "≈1亿" : s.count>=1e3 ? (s.count/1e3)+"k" : s.count;
+    lab.innerHTML = s.name + " · <span class='count'>"+cnt+"</span>";
+    if(i===cur) lab.style.color = "#fff";
+    wrap.appendChild(row); wrap.appendChild(lab);
+    funnel.appendChild(wrap);
+  });
+
+  // state
+  const s = stages[cur];
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  // code with highlight
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1800); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

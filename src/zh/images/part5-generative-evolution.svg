@@ -1,0 +1,45 @@
+<svg width="800" height="340" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrGE" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <filter id="shGE" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">生成式推荐的三条演进路径</text>
+
+  <!-- Path 1: generative recall -->
+  <rect x="40" y="70" width="230" height="210" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shGE)"/>
+  <text x="155" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">① 生成式召回</text>
+  <text x="155" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">输入统一化 + 语义输出</text>
+  <rect x="60" y="145" width="190" height="40" rx="6" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.2"/>
+  <text x="155" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">HSTU</text>
+  <rect x="60" y="195" width="190" height="40" rx="6" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.2"/>
+  <text x="155" y="220" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">TIGER (语义 ID)</text>
+
+  <!-- Path 2: generative ranking -->
+  <rect x="285" y="70" width="230" height="210" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#shGE)"/>
+  <text x="400" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">② 生成式排序</text>
+  <text x="400" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">自回归引入排序阶段</text>
+  <rect x="305" y="145" width="190" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="400" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">GenRank (动作导向)</text>
+  <rect x="305" y="195" width="190" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="400" y="220" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">MTGR (样本聚合)</text>
+
+  <!-- Path 3: e2e -->
+  <rect x="530" y="70" width="230" height="210" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shGE)"/>
+  <text x="645" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981">③ 端到端生成</text>
+  <text x="645" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">单模型替代全流程</text>
+  <rect x="550" y="145" width="190" height="55" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.2"/>
+  <text x="645" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#065f46">OneRec</text>
+  <text x="645" y="190" text-anchor="middle" font-family="Arial" font-size="10" fill="#065f46">会话级 + MoE + IPA</text>
+
+  <line x1="270" y1="175" x2="283" y2="175" stroke="#10b981" stroke-width="2" marker-end="url(#arrGE)"/>
+  <line x1="515" y1="175" x2="528" y2="175" stroke="#10b981" stroke-width="2" marker-end="url(#arrGE)"/>
+
+  <rect x="0" y="300" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="324" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">演进方向：单点序列预测 → 统一生成 → 端到端会话生成</text>
+</svg>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>判别式级联 vs 生成式端到端 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-red:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .flow{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+  .node{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:14px;transition:all .35s;border:1px solid transparent;}
+  .node.cas{background:#1e293b;border-color:#334155;}
+  .node.cas.cur{background:rgba(74,108,247,.22);border-color:var(--c-primary);}
+  .node.gen{background:#1e293b;border-color:#334155;}
+  .node.gen.cur{background:rgba(16,185,129,.22);border-color:var(--c-success);}
+  .badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#0f172a;color:var(--c-light);}
+  .hidden{opacity:.28;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(16,185,129,.25);display:block;border-left:3px solid var(--c-success);padding-left:8px;}
+  #code .hlb{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔁 判别式级联 vs 生成式端到端</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>架构流水线</h3>
+    <div class="flow" id="flow">
+      <div class="node cas" id="n1"><span class="badge">级联①</span> 召回 Recall：亿级 → 千级</div>
+      <div class="node cas" id="n2"><span class="badge">级联②</span> 排序 Ranking：千级 → 百级</div>
+      <div class="node cas" id="n3"><span class="badge">级联③</span> 重排 Re-ranking：百级 → 10</div>
+      <div class="node gen" id="n4"><span class="badge">生成</span> 单一生成模型：直接生成会话列表</div>
+    </div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>核心公式</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 召回 Recall（判别式级联）",
+    arch:"cas", node:0,
+    desc:"快速从亿级物品筛出千级候选；模型简单、特征少，奉行「宁可错杀不可放过」。问题：召回淘汰的优质物品，后续阶段永远看不到——信息损失。",
+    code:["candidates = recall(user, items)","# 亿级 → 千级","# 目标不一致起点：优化相关性"],
+    hl:0, cls:"hlb" },
+  { name:"② 排序 Ranking（判别式级联）",
+    arch:"cas", node:1,
+    desc:"用最复杂深度模型对每个候选精确打分。问题：优化的是点击率等单一目标，与召回的相关性、重排的多样性各自为战——目标不一致。",
+    code:["scores = [rank(u,i,c) for i in candidates]","ranked = sort_by_score(scores)","# 千级 → 百级","# 算力碎片化：独立模型"],
+    hl:0, cls:"hlb" },
+  { name:"③ 重排 Re-ranking（判别式级联）",
+    arch:"cas", node:2,
+    desc:"对高分列表插入多样性/业务规则得到最终 10 条。三阶段完成，但级联带来信息损失、目标不一致、算力碎片化三重痛点。",
+    code:["final = rerank(ranked, user)","display(final[:10])","# 级联完成，但三痛点并存","# 各阶段模型无法联合优化"],
+    hl:0, cls:"hlb" },
+  { name:"④ 生成式端到端（单一模型）",
+    arch:"gen", node:3,
+    desc:"把用户历史序列作上下文，用 Transformer/MoE 直接解码出整个会话列表。一个模型替代召回→排序→重排，统一优化、无信息损失、算力集中。",
+    code:["list = generative_model(user_history)","# 单模型替代三阶段","# [I_1..I_k] = g(U,C)","# 无级联信息损失 / 目标统一"],
+    hl:0, cls:"hl" }
+];
+
+let cur = 0, timer = null;
+const flow = document.getElementById("flow");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  // nodes
+  [...flow.children].forEach((n,i)=>{
+    n.classList.remove("cur","hidden");
+    if(i === stages[cur].node){ n.classList.add("cur"); }
+    else if(stages[cur].arch==="gen" && i<3){ n.classList.add("hidden"); }
+    else if(stages[cur].arch==="cas" && i===3){ n.classList.add("hidden"); }
+  });
+  const s = stages[cur];
+  const acc = s.arch==="gen" ? "var(--c-success)" : "var(--c-primary)";
+  stateEl.innerHTML = "<h3>当前阶段状态</h3>" +
+    "<p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='"+s.cls+"'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },2200); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

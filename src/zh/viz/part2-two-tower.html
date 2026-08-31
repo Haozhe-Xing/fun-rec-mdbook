@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>双塔召回检索 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  /* visual: two towers */
+  .towers{display:flex;gap:14px;align-items:stretch;margin-top:8px;}
+  .tower{flex:1;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:10px;text-align:center;transition:all .35s;}
+  .tower.active{border-color:var(--c-primary);box-shadow:0 0 0 2px rgba(74,108,247,.4);}
+  .tower.online{background:#0f172a;}
+  .tower.offline{background:#0f172a;}
+  .tw-head{font-size:12px;font-weight:700;margin-bottom:6px;}
+  .tw-box{background:#1e293b;border-radius:6px;padding:5px;margin:4px 0;font-size:11px;color:var(--c-light);}
+  .tw-vec{background:var(--c-primary);color:#fff;border-radius:6px;padding:6px;margin-top:6px;font-family:"Courier New",monospace;font-size:12px;}
+  .tw-vec.item{background:var(--c-success);}
+  .ann{margin-top:10px;background:#0f172a;border:1px dashed #334155;border-radius:10px;padding:10px;font-size:11px;color:var(--c-light);}
+  .ann .vec{display:inline-block;background:#1e293b;border-radius:4px;padding:2px 5px;margin:2px;font-family:"Courier New",monospace;font-size:10px;}
+  .ann .vec.hit{background:var(--c-success);color:#fff;}
+  .dot-center{text-align:center;margin:8px 0;font-family:"Courier New",monospace;color:var(--c-warn);font-weight:bold;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗼 双塔召回：离线建库 → 实时检索</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="inline-controls" id="inlineCtrl">
+    <button id="prev2" class="sec">◀ 上一步</button>
+    <button id="next2">下一步 ▶</button>
+    <button id="auto2" class="sec">⏯ 自动播放</button>
+    <button id="reset2" class="sec">↺ 重置</button>
+  </div>
+  <div class="panel">
+    <h3>双塔与向量索引</h3>
+    <div class="towers">
+      <div class="tower online" id="twU">
+        <div class="tw-head" style="color:var(--c-primary)">用户塔 (在线)</div>
+        <div class="tw-box">用户画像</div>
+        <div class="tw-box">行为序列</div>
+        <div class="tw-box">DNN</div>
+        <div class="tw-vec" id="uvec">u = ?</div>
+      </div>
+      <div class="tower offline" id="twI">
+        <div class="tw-head" style="color:var(--c-success)">物品塔 (离线)</div>
+        <div class="tw-box">物品ID/类目</div>
+        <div class="tw-box">属性特征</div>
+        <div class="tw-box">DNN</div>
+        <div class="tw-vec item">v 已入库</div>
+      </div>
+    </div>
+    <div class="dot-center" id="ip">⟨u, v⟩ = ?</div>
+    <div class="ann" id="ann">
+      <div style="margin-bottom:6px;color:var(--c-light)">ANN 向量索引（离线预计算）</div>
+    </div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+const stages = [
+  { name:"① 离线：物品塔建库",
+    desc:"物品塔批量处理全量物品，把每个物品编码为向量 v，L2 归一化后写入 ANN 索引。这一步与具体用户无关，可 daily/hourly 离线重算。",
+    code:["# 离线批量编码物品","for item in all_items:","    v = item_tower(item)","    v = l2_normalize(v)","    ann_index.add(v, item_id)"],
+    hl:1, u:"?", ip:"待用户上线", annHit:[] },
+  { name:"② 在线：用户塔实时编码",
+    desc:"一位用户发起请求，用户塔用其画像与行为序列实时算用户向量 u，并 L2 归一化。物品侧完全不动——这是双塔「分而治之」的核心。",
+    code:["# 在线实时编码用户","u = user_tower(user_features)","u = l2_normalize(u)","# 物品向量不重算"],
+    hl:1, u:"[0.42, 0.81, 0.39]", ip:"⟨u,v⟩ 待检索", annHit:[] },
+  { name:"③ 检索：ANN 近邻 Top-K",
+    desc:"用归一化内积（等价于欧式距离）在 ANN 索引中检索最相似的 K 个物品向量，毫秒级返回候选。无需遍历全库逐一算分。",
+    code:["# ANN 近邻检索 (等价欧式距离)","candidates = ann_index.search(u, top_k=200)","# 1e8 物品 → 200 候选"],
+    hl:1, u:"[0.42, 0.81, 0.39]", ip:"相似度排序", annHit:[0,1,2,3] },
+  { name:"④ 重排 & 温度调节",
+    desc:"用温度系数 τ 缩放相似度分布，控制召回集中度；随后交排序/重排阶段。τ 小则集中、τ 大则分散。双塔召回完成。",
+    code:["score = <u, v> / tau   # 温度系数","recall_out = candidates_by_score","# 交排序/重排阶段"],
+    hl:1, u:"[0.42, 0.81, 0.39]", ip:"s = ⟨u,v⟩/τ", annHit:[0,1,2] },
+  { name:"✅ 召回候选已生成",
+    desc:"一份由双塔内积检索出的千/百级候选集，已交下游排序。物品塔全程未重算——这正是它能在高 QPS 亿级库上服务的原因。",
+    code:["# 完整双塔召回","cand = ann_search(user_tower(u), index)","# 离线建库 + 在线检索 = 高效 U2I"],
+    hl:0, u:"[0.42, 0.81, 0.39]", ip:"完成", annHit:[0,1,2] }
+];
+
+const itemVecs = ["v₁","v₂","v₃","v₄","v₅","v₆","v₇","v₈"];
+let cur = 0, timer = null;
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+const uvecEl = document.getElementById("uvec");
+const ipEl = document.getElementById("ip");
+const annEl = document.getElementById("ann");
+const twU = document.getElementById("twU");
+const twI = document.getElementById("twI");
+
+function render(){
+  const s = stages[cur];
+  // user tower activity
+  twU.classList.toggle("active", cur>=1);
+  twI.classList.toggle("active", cur===0);
+  uvecEl.textContent = "u = " + s.u;
+  ipEl.textContent = (cur===0 ? "⟨u,v⟩ = ?" : "⟨u,v⟩ " + s.ip);
+  // ann index
+  let html = '<div style="margin-bottom:6px;color:var(--c-light)">ANN 向量索引（离线预计算）</div>';
+  itemVecs.forEach((v,i)=>{
+    const hit = s.annHit.includes(i);
+    html += '<span class="vec'+(hit?' hit':'')+'">'+v+'</span>';
+  });
+  if(cur>=2) html += '<div style="margin-top:6px;color:var(--c-success)">▲ 命中 Top-K 候选</div>';
+  annEl.innerHTML = html;
+
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

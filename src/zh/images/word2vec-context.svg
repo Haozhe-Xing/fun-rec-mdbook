@@ -1,0 +1,44 @@
+<svg width="800" height="250" viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="250" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">分布假说：一个词的意义由它常伴随的词决定</text>
+
+  <!-- sentence row -->
+  <!-- Tom (outside) -->
+  <rect x="49" y="90" width="90" height="40" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="94" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">Tom</text>
+  <!-- the (ctx) -->
+  <rect x="151" y="90" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="196" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">the</text>
+  <!-- cat (ctx) -->
+  <rect x="253" y="90" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="298" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">cat</text>
+  <!-- loves (center) -->
+  <rect x="355" y="90" width="90" height="40" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="115" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">loves</text>
+  <!-- the (ctx) -->
+  <rect x="457" y="90" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="502" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">the</text>
+  <!-- dog (ctx) -->
+  <rect x="559" y="90" width="90" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="604" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">dog</text>
+  <!-- today (outside) -->
+  <rect x="661" y="90" width="90" height="40" rx="8" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="706" y="115" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">today</text>
+
+  <!-- window bracket -->
+  <path d="M151,142 H649 M151,142 V152 M649,142 V152" stroke="#10b981" stroke-width="2" fill="none"/>
+  <text x="400" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">滑动窗口 m = 2（中心词左右各 2 个词为上下文）</text>
+
+  <line x1="400" y1="180" x2="400" y2="205" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="220" y="208" width="360" height="30" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="228" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">这些共现词共同塑造「loves」的语义向量</text>
+</svg>

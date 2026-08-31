@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s17" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="a17" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="380" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">多任务 vs 多场景：本质区别</text>
+
+  <!-- LEFT multitask -->
+  <rect x="40" y="60" width="340" height="290" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s17)"/>
+  <rect x="40" y="60" width="340" height="32" rx="8" fill="#4A6CF7"/>
+  <text x="210" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">多任务（同场景 · 多目标）</text>
+
+  <rect x="150" y="110" width="120" height="36" rx="8" fill="#e8ecff"/>
+  <text x="210" y="133" text-anchor="middle" font-size="12" fill="#1e293b">同一条样本</text>
+
+  <line x1="210" y1="146" x2="150" y2="190" stroke="#64748b" stroke-width="2" marker-end="url(#a17)"/>
+  <line x1="210" y1="146" x2="270" y2="190" stroke="#64748b" stroke-width="2" marker-end="url(#a17)"/>
+
+  <rect x="90" y="194" width="120" height="44" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2"/>
+  <text x="150" y="221" text-anchor="middle" font-size="12" fill="#1e293b">塔1 CTR</text>
+  <rect x="270" y="194" width="120" height="44" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2"/>
+  <text x="330" y="221" text-anchor="middle" font-size="12" fill="#1e293b">塔2 CVR</text>
+
+  <text x="210" y="290" text-anchor="middle" font-size="11.5" fill="#64748b">一条样本 → 多目标</text>
+  <text x="210" y="310" text-anchor="middle" font-size="11.5" fill="#64748b">共享分布</text>
+
+  <!-- RIGHT multiscenario -->
+  <rect x="420" y="60" width="340" height="290" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s17)"/>
+  <rect x="420" y="60" width="340" height="32" rx="8" fill="#10b981"/>
+  <text x="590" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">多场景（异分布 · 同目标）</text>
+
+  <rect x="450" y="108" width="90" height="34" rx="8" fill="#e6f7f1" stroke="#10b981" stroke-width="2"/>
+  <text x="495" y="130" text-anchor="middle" font-size="11.5" fill="#1e293b">场景A</text>
+  <rect x="560" y="108" width="90" height="34" rx="8" fill="#e6f7f1" stroke="#10b981" stroke-width="2"/>
+  <text x="605" y="130" text-anchor="middle" font-size="11.5" fill="#1e293b">场景B</text>
+  <rect x="670" y="108" width="70" height="34" rx="8" fill="#e6f7f1" stroke="#10b981" stroke-width="2"/>
+  <text x="705" y="130" text-anchor="middle" font-size="11" fill="#1e293b">…</text>
+
+  <line x1="495" y1="142" x2="495" y2="186" stroke="#64748b" stroke-width="2" marker-end="url(#a17)"/>
+  <line x1="605" y1="142" x2="605" y2="186" stroke="#64748b" stroke-width="2" marker-end="url(#a17)"/>
+
+  <rect x="470" y="190" width="240" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="590" y="217" text-anchor="middle" font-size="12" fill="#1e293b">各自塔 → 同目标 CTR</text>
+
+  <text x="590" y="288" text-anchor="middle" font-size="11.5" fill="#64748b">不同样本 → 同目标</text>
+  <text x="590" y="308" text-anchor="middle" font-size="11.5" fill="#64748b">分布不同 · 需共享共性+保留特性</text>
+</svg>

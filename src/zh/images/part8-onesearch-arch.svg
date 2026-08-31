@@ -1,0 +1,52 @@
+<svg width="800" height="390" viewBox="0 0 800 390" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a86" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s86" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="390" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">OneSearch：编码查询+用户上下文 → 自回归生成商品 SID</text>
+
+  <!-- encoder input -->
+  <rect x="30" y="58" width="300" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s86)"/>
+  <text x="180" y="82" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">编码器输入（异构序列）</text>
+  <text x="50" y="106" font-family="Arial" font-size="11.5" fill="#1e293b">[BOS] UserID(10)</text>
+  <text x="50" y="126" font-family="Arial" font-size="11.5" fill="#1e293b">Query 文本 + SID(5)</text>
+  <text x="50" y="146" font-family="Arial" font-size="11.5" fill="#1e293b">历史查询序列</text>
+  <text x="50" y="166" font-family="Arial" font-size="11.5" fill="#1e293b">短期点击 SID 序列</text>
+  <text x="50" y="190" font-family="Arial" font-size="11.5" fill="#10b981">+ Q-Former 长期(128) [EOS]</text>
+
+  <line x1="330" y1="133" x2="378" y2="133" stroke="#64748b" stroke-width="2.5" marker-end="url(#a86)"/>
+
+  <!-- encoder -->
+  <rect x="383" y="58" width="120" height="150" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s86)"/>
+  <text x="443" y="100" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#d97706">BART</text>
+  <text x="443" y="122" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Encoder</text>
+  <text x="443" y="148" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">Z_enc =</text>
+  <text x="443" y="164" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">Enc([UserID;</text>
+  <text x="443" y="180" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b"> e_q;SID_q;</text>
+  <text x="443" y="196" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b"> Seq;Q_long])</text>
+
+  <line x1="503" y1="133" x2="551" y2="133" stroke="#64748b" stroke-width="2.5" marker-end="url(#a86)"/>
+
+  <!-- decoder steps -->
+  <rect x="556" y="58" width="214" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s86)"/>
+  <text x="663" y="82" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">解码器：逐 Token 生成</text>
+  <text x="576" y="106" font-family="Courier New" font-size="11" fill="#1e293b">0: [BOS]        → L1=3856</text>
+  <text x="576" y="126" font-family="Courier New" font-size="11" fill="#1e293b">1: [BOS,3856]   → L2=724</text>
+  <text x="576" y="146" font-family="Courier New" font-size="11" fill="#1e293b">2: [..,724]     → L3=385</text>
+  <text x="576" y="166" font-family="Courier New" font-size="11" fill="#1e293b">3: [..,385]     → OPQ1=142</text>
+  <text x="576" y="186" font-family="Courier New" font-size="11" fill="#1e293b">4: [..,142]     → OPQ2=201</text>
+  <text x="663" y="206" text-anchor="middle" font-family="Arial" font-size="11" fill="#10b981">Beam Search + 约束过滤</text>
+
+  <!-- bottom PARS -->
+  <rect x="30" y="232" width="740" height="128" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s86)"/>
+  <text x="50" y="258" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">PARS 偏好感知奖励系统</text>
+  <text x="50" y="284" font-family="Arial" font-size="12" fill="#1e293b">多阶段 SFT：① 语义内容对齐 → ② 共现同步 → ③ 用户个性化</text>
+  <text x="50" y="308" font-family="Arial" font-size="12" fill="#1e293b">自适应奖励：六级反馈 (搜索下单2.0/点击1.0/曝光0.5…)，对数平滑 CTR·CVR</text>
+  <text x="50" y="334" font-family="Arial" font-size="12" fill="#1e293b">三塔 SIM：RScore = λ₁CTR+λ₂CVR+λ₃CTCVR + <tspan fill="#ef4444" font-weight="bold">10·λ₄·S_Rel</tspan></text>
+  <text x="50" y="354" font-family="Arial" font-size="11.5" fill="#64748b">相关性权重 ×10 → 先保相关性，再优化个性化（避免相关性漂移）</text>
+</svg>

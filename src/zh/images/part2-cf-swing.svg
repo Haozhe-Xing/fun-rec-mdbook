@@ -1,0 +1,57 @@
+<svg width="800" height="340" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Swing：二部图上的「特异性」共现</text>
+
+  <!-- users column -->
+  <text x="120" y="70" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">用户 (User)</text>
+  <circle cx="120" cy="130" r="30" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="135" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">A</text>
+  <circle cx="120" cy="230" r="30" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="235" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">B</text>
+
+  <!-- items column -->
+  <text x="400" y="70" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">物品 (Item)</text>
+  <circle cx="400" cy="110" r="30" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="115" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#065f46">h</text>
+  <circle cx="400" cy="175" r="30" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="180" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#065f46">t</text>
+  <circle cx="400" cy="240" r="30" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="245" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#065f46">p</text>
+
+  <!-- edges user A to items -->
+  <line x1="148" y1="122" x2="372" y2="112" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="148" y1="140" x2="378" y2="168" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="148" y1="150" x2="372" y2="232" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- edges user B to items -->
+  <line x1="148" y1="222" x2="372" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="148" y1="240" x2="378" y2="172" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="148" y1="248" x2="372" y2="238" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- highlight swing substructure [A,h,B] and [A,p,B] -->
+  <path d="M120,130 Q260,40 400,110" fill="none" stroke="#f59e0b" stroke-width="0" />
+  <rect x="252" y="60" width="96" height="26" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="300" y="77" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">[A,h,B] swing</text>
+  <rect x="252" y="270" width="96" height="26" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="300" y="287" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">[A,p,B] swing</text>
+
+  <!-- right: score box -->
+  <rect x="560" y="90" width="220" height="170" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="670" y="118" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Swing 分数</text>
+  <text x="670" y="148" text-anchor="middle" font-family="Courier New" font-size="12" fill="#1e293b">s(h,p)=13/15</text>
+  <text x="670" y="172" text-anchor="middle" font-family="Courier New" font-size="12" fill="#1e293b">s(h,t)=1/5</text>
+  <text x="670" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">其他共同行为越少</text>
+  <text x="670" y="218" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">→ 贡献权重越高</text>
+  <text x="670" y="244" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">1/(α+|Iᵤ∩Iᵥ|)</text>
+
+  <rect x="0" y="300" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="324" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">s(i,j) = Σ Σ wᵤ·wᵥ / (α + |Iᵤ∩Iᵥ|)   →   过滤热门噪声</text>
+</svg>

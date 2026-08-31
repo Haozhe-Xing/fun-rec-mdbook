@@ -1,0 +1,35 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow10a" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">扩散模型分类：数据空间 vs 潜在空间</text>
+
+  <g font-family="Arial" font-size="13" text-anchor="middle">
+    <rect x="40" y="70" width="340" height="210" rx="12" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow10a)"/>
+    <text x="210" y="100" font-weight="bold" fill="#4A6CF7">数据空间扩散</text>
+    <text x="210" y="122" font-size="12" fill="#64748b">Pixel-Space / 交互向量空间</text>
+    <text x="210" y="150" font-family="Arial" font-size="12" fill="#1e293b">代表：DDPM</text>
+    <text x="210" y="178" font-family="Arial" font-size="12" fill="#64748b">直接在原始高维空间</text>
+    <text x="210" y="198" font-family="Arial" font-size="12" fill="#64748b">迭代加噪/去噪</text>
+    <text x="210" y="226" font-family="Arial" font-size="12" fill="#ef4444">代价高 · 长序列低效</text>
+    <text x="210" y="252" font-family="Arial" font-size="11" fill="#64748b">理论直观但计算昂贵</text>
+
+    <rect x="420" y="70" width="340" height="210" rx="12" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow10a)"/>
+    <text x="590" y="100" font-weight="bold" fill="#16a34a">潜在空间扩散 ★推荐常用</text>
+    <text x="590" y="122" font-size="12" fill="#64748b">Latent Diffusion (LDM)</text>
+    <text x="590" y="150" font-family="Arial" font-size="12" fill="#1e293b">代表：Stable Diffusion</text>
+    <text x="590" y="178" font-family="Arial" font-size="12" fill="#64748b">编码→低维空间扩散→解码</text>
+    <text x="590" y="198" font-family="Arial" font-size="12" fill="#10b981">计算降 (d/d')² 倍</text>
+    <text x="590" y="226" font-family="Arial" font-size="12" fill="#1e293b">语义紧凑 · 易融合 CF/GNN</text>
+    <text x="590" y="252" font-family="Arial" font-size="11" fill="#64748b">满足工业实时性</text>
+  </g>
+
+  <line x1="380" y1="175" x2="416" y2="175" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow10a)"/>
+  <text x="398" y="160" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">推荐选</text>
+</svg>

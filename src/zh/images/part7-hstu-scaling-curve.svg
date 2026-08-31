@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh3"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">推荐系统 Scaling Law（对数坐标）</text>
+
+  <!-- Left: NE (sorting) decreasing -->
+  <rect x="40" y="60" width="340" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh3)"/>
+  <text x="210" y="86" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">排序：Normalized Entropy ↓</text>
+  <line x1="80" y1="320" x2="370" y2="320" stroke="#64748b" marker-end="url(#arr3)"/>
+  <line x1="80" y1="320" x2="80" y2="100" stroke="#64748b" marker-end="url(#arr3)"/>
+  <text x="225" y="340" font-size="11" fill="#64748b" text-anchor="middle">训练计算量 C (PetaFLOPs/day, log)</text>
+  <text x="62" y="115" font-size="11" fill="#64748b" text-anchor="middle" transform="rotate(-90 62 215)">NE</text>
+  <!-- log curve for NE: decreasing -->
+  <path d="M90,120 C160,150 250,210 360,295" fill="none" stroke="#ef4444" stroke-width="3"/>
+  <circle cx="90" cy="120" r="5" fill="#ef4444"/>
+  <circle cx="225" cy="205" r="5" fill="#ef4444"/>
+  <circle cx="360" cy="295" r="5" fill="#ef4444"/>
+  <text x="95" y="112" font-size="10" fill="#64748b">10³</text>
+  <text x="350" y="312" font-size="10" fill="#64748b">10⁵</text>
+  <text x="150" y="175" font-size="11" fill="#1e293b">NE = 0.549 − 0.0053·lnC</text>
+
+  <!-- Right: HR@100 (recall) increasing -->
+  <rect x="420" y="60" width="340" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh3)"/>
+  <text x="590" y="86" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">召回：Hit Rate@100 ↑</text>
+  <line x1="460" y1="320" x2="750" y2="320" stroke="#64748b" marker-end="url(#arr3)"/>
+  <line x1="460" y1="320" x2="460" y2="100" stroke="#64748b" marker-end="url(#arr3)"/>
+  <text x="605" y="340" font-size="11" fill="#64748b" text-anchor="middle">训练计算量 C (PetaFLOPs/day, log)</text>
+  <text x="442" y="115" font-size="11" fill="#64748b" text-anchor="middle" transform="rotate(-90 442 215)">HR@100</text>
+  <!-- increasing log curve -->
+  <path d="M470,295 C540,255 650,180 740,110" fill="none" stroke="#10b981" stroke-width="3"/>
+  <circle cx="470" cy="295" r="5" fill="#10b981"/>
+  <circle cx="605" cy="195" r="5" fill="#10b981"/>
+  <circle cx="740" cy="110" r="5" fill="#10b981"/>
+  <text x="475" y="312" font-size="10" fill="#64748b">10³</text>
+  <text x="730" y="127" font-size="10" fill="#64748b">10⁵</text>
+  <text x="520" y="265" font-size="11" fill="#1e293b">HR@100 = 0.15 + 0.0195·lnC</text>
+
+  <text x="400" y="385" font-size="12" fill="#64748b" text-anchor="middle">三个数量级内稳定呈幂律：计算量每增 10×，HR@100 +4.5pp，NE −1.2pp</text>
+</svg>

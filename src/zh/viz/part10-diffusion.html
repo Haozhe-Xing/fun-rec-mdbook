@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>扩散模型前向/反向过程 · 步进演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  #grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:10px auto;max-width:260px;}
+  .cell{width:26px;height:26px;border-radius:5px;background:var(--c-cell);transition:all .35s;}
+  #bar{height:14px;border-radius:7px;background:linear-gradient(90deg,#4A6CF7,#94a3b8);margin:8px auto;max-width:260px;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌫️ 扩散模型：前向加噪 → 反向去噪（以用户交互向量为例）</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>交互向量可视化（8×8 信号格）</h3>
+    <div id="grid"></div>
+    <div id="bar"></div>
+    <div id="barcap" style="text-align:center;font-size:12px;color:var(--c-light);">信号强度</div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>公式 / 机制</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+// 固定的底层「用户-物品交互模式」（0=无交互,1=有交互）
+const SIG = [
+  [1,0,1,0,0,1,0,1],[0,1,0,1,1,0,1,0],[1,0,0,1,0,0,1,1],
+  [0,1,1,0,1,0,0,1],[1,0,1,0,0,1,1,0],[0,0,1,1,0,1,0,0],
+  [1,1,0,0,1,0,1,0],[0,1,0,1,1,0,0,1]
+];
+// 确定性的伪噪声（与 t 相关），保证可复现
+function noiseAt(r,c,seed){
+  let v = Math.sin((r*12.9898 + c*78.233 + seed*37.719))*43758.5453;
+  return v - Math.floor(v); // 0..1
+}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+const stages = [
+  { name:"① x₀ 原始交互向量", ratio:0.0, dir:"fwd",
+    desc:"干净的「用户-物品」交互向量。1 表示该用户与对应物品有交互，是推荐要恢复/预测的目标信号。",
+    code:["# 前向扩散起点","x0 = user_item_interaction","# 信号清晰, 含协同结构","# 推荐目标: 恢复 x0 并排序"] },
+  { name:"② xₜ 轻加噪 (t 小)", ratio:0.3, dir:"fwd",
+    desc:"前向过程按 q(xₜ|xₜ₋₁) 加入少量高斯噪声。信号主体仍在，但已有噪声扰动——对应 βₜ 较小的早期步。",
+    code:["# 单步加噪","x_t ~ N(√αₜ x_{t-1}, βₜ I)","# αₜ=1-βₜ, 噪声仍弱","# 信号主导"] },
+  { name:"③ xₜ 重加噪 (t 中)", ratio:0.65, dir:"fwd",
+    desc:"随 t 增大，噪声占比上升。交互结构变得模糊，但仍有可辨识的残影。任意 t 可由 x₀ 直接采样。",
+    code:["# 任意 t 直接采样(重参数化)","x_t = √ᾱₜ·x0 + √(1-ᾱₜ)·ε","ε ~ N(0, I)","# ᾱₜ = ∏αᵢ, 噪声渐强"] },
+  { name:"④ x_T 近纯高斯噪声", ratio:1.0, dir:"fwd",
+    desc:"T 步后信号几乎完全被噪声淹没，x_T ≈ N(0,I)。推荐特殊设计会用噪声尺度 s 限制最大强度，保留部分个性化。",
+    code:["# 前向终点","x_T ≈ N(0, I)  # 推荐中受 s 限制","# 反向去噪的起点","# 也可从 x_T' (T'<T) 出发"] },
+  { name:"⑤ 反向去噪 xₜ→xₜ₋₁", ratio:0.4, dir:"rev",
+    desc:"训练好的去噪网络 p_θ(xₜ₋₁|xₜ) 逐步去除噪声、恢复信号。每步由均值 μ_θ 与（可选）随机 z 决定。",
+    code:["# 反向一步(以 ε-pred 为例)","x_{t-1} = 1/√(1-βₜ) (x_t -","    βₜ/√(1-ᾱₜ) ε_θ(x_t,t)) + σₜ z","# 学的是 去噪 而非 加噪"] },
+  { name:"⑥ x₀ 恢复的交互向量", ratio:0.0, dir:"rev",
+    desc:"完成 T 步反向去噪，得到恢复的 x₀——在推荐中即预测的交互分数，用作排序推荐。推荐常选用 x₀-prediction 直接输出。",
+    code:["# 反向终点 = 生成样本","x0_hat = x0_prediction(x_t, t)","# 排序: score = x0_hat","# 比 ε-pred 更贴合推荐"] }
+];
+
+let cur = 0, timer = null;
+const gridEl = document.getElementById("grid");
+const barEl = document.getElementById("bar");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function renderGrid(ratio){
+  gridEl.innerHTML = "";
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      const sig = SIG[r][c];
+      const n = noiseAt(r,c,cur);
+      // 信号 0/1 与噪声混合：ratio 越大越接近噪声 n
+      const val = lerp(sig, n, ratio);
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      // 颜色：信号高→蓝, 噪声→灰
+      const blue = [74,108,247], gray=[148,163,184];
+      const R=Math.round(lerp(sig?blue[0]:gray[0], gray[0], ratio));
+      // 简单：信号用蓝, 噪声用灰, 亮度随 val
+      const col = sig? blue : gray;
+      const light = 0.35 + 0.65*val;
+      cell.style.background = `rgba(${col[0]},${col[1]},${col[2]},${light})`;
+      gridEl.appendChild(cell);
+    }
+  }
+  barEl.style.width = (10 + ratio*250) + "px";
+}
+
+function render(){
+  const s = stages[cur];
+  renderGrid(s.ratio);
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===0 ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name+"  ["+(s.dir==="fwd"?"前向加噪":"反向去噪")+"]";
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1800); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

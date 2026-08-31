@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="shadow4" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="430" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Wide &amp; Deep：联合训练整体结构</text>
+
+  <!-- Input -->
+  <rect x="330" y="60" width="140" height="50" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shadow4)"/>
+  <text x="400" y="90" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="600">原始特征 x</text>
+
+  <line x1="360" y1="110" x2="290" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+  <line x1="440" y1="110" x2="510" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+
+  <!-- Wide branch -->
+  <rect x="170" y="155" width="240" height="120" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow4)"/>
+  <rect x="170" y="155" width="240" height="34" rx="8" fill="#4A6CF7"/>
+  <text x="290" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Wide 部分（记忆）</text>
+  <text x="290" y="220" text-anchor="middle" font-size="12.5" fill="#1e293b">线性模型 + 交叉特征</text>
+  <text x="290" y="244" text-anchor="middle" font-size="12.5" fill="#1e293b">y = wᵀ[x, φ(x)] + b</text>
+  <text x="290" y="266" text-anchor="middle" font-size="11" fill="#64748b">优化器：FTRL (L1 稀疏)</text>
+
+  <!-- Deep branch -->
+  <rect x="390" y="155" width="240" height="120" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shadow4)"/>
+  <rect x="390" y="155" width="240" height="34" rx="8" fill="#10b981"/>
+  <text x="510" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Deep 部分（泛化）</text>
+  <text x="510" y="220" text-anchor="middle" font-size="12.5" fill="#1e293b">Embedding → DNN</text>
+  <text x="510" y="244" text-anchor="middle" font-size="12.5" fill="#1e293b">a⁽ˡᶠ⁾ = f(W·a + b)</text>
+  <text x="510" y="266" text-anchor="middle" font-size="11" fill="#64748b">优化器：AdaGrad / Adam</text>
+
+  <!-- merge -->
+  <line x1="290" y1="275" x2="370" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+  <line x1="510" y1="275" x2="430" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+
+  <rect x="345" y="335" width="110" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="362" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">相加 +</text>
+
+  <line x1="455" y1="357" x2="540" y2="357" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4)"/>
+
+  <!-- Sigmoid + output -->
+  <rect x="550" y="332" width="160" height="50" rx="8" fill="#1e293b"/>
+  <text x="630" y="354" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">σ → P(Y=1)</text>
+  <text x="630" y="372" text-anchor="middle" font-size="11" fill="#cbd5e1">联合训练·同时更新</text>
+
+  <text x="400" y="416" text-anchor="middle" font-size="12" fill="#64748b">反向传播时，Wide 与 Deep 的全部参数由同一损失同时优化</text>
+</svg>

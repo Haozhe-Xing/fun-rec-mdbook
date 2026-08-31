@@ -1,0 +1,42 @@
+<svg width="800" height="330" viewBox="0 0 800 330" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="330" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">项目完整技术栈：前端 / 后端 / 存储 / 基础设施</text>
+
+  <!-- Front-end card -->
+  <rect x="40" y="70" width="200" height="200" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="140" y="94" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#4A6CF7">前端</text>
+  <text x="140" y="124" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Vue.js 3</text>
+  <text x="140" y="149" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Tailwind CSS</text>
+  <text x="140" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Pinia / Router</text>
+  <text x="140" y="199" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Axios</text>
+
+  <!-- Backend card -->
+  <rect x="280" y="70" width="200" height="200" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="380" y="94" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#10b981">后端 API</text>
+  <text x="380" y="124" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">FastAPI</text>
+  <text x="380" y="149" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">YoutubeDNN 召回</text>
+  <text x="380" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">DeepFM 排序</text>
+  <text x="380" y="199" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">UCB 冷启动</text>
+
+  <!-- Storage card -->
+  <rect x="520" y="70" width="240" height="200" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+  <text x="640" y="94" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#f59e0b">存储 + 基础设施</text>
+  <text x="640" y="124" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">PostgreSQL</text>
+  <text x="640" y="149" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Redis</text>
+  <text x="640" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Elasticsearch</text>
+  <text x="640" y="199" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Docker Compose</text>
+  <text x="640" y="224" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">uv</text>
+
+  <!-- flow arrows -->
+  <line x1="244" y1="170" x2="276" y2="170" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="484" y1="170" x2="516" y2="170" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="0" y="300" width="800" height="30" fill="#1e293b" opacity="0.06" rx="0 0 12 12"/>
+</svg>

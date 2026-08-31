@@ -1,0 +1,41 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="ae" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="200" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">离线数据流：原始数据 → 特征/模型 → 共享目录 + Redis</text>
+  <rect x="40" y="80" width="130" height="70" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="105" y="111" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">原始 CSV</text>
+  <text x="105" y="129" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">评分/用户/电影</text>
+  <line x1="170" y1="115" x2="205" y2="115" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="195" y="80" width="130" height="70" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="260" y="111" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#10b981">特征工程</text>
+  <text x="260" y="129" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">训练样本</text>
+  <line x1="325" y1="115" x2="360" y2="115" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="350" y="80" width="130" height="70" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="415" y="111" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#10b981">模型训练</text>
+  <text x="415" y="129" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">YoutubeDNN/DeepFM</text>
+  <line x1="480" y1="115" x2="515" y2="115" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="505" y="80" width="130" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="570" y="111" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">模型部署</text>
+  <text x="570" y="129" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">共享目录</text>
+  <line x1="635" y1="115" x2="670" y2="115" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="660" y="80" width="130" height="70" rx="8" fill="#e8ecff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+  <text x="725" y="111" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#f59e0b">特征上线</text>
+  <text x="725" y="129" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Redis</text>
+  <rect x="0" y="170" width="800" height="30" fill="#1e293b" opacity="0.06" rx="0 0 12 12"/>
+</svg>

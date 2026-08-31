@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RQ-VAE 语义 ID 量化过程 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .vec{height:26px;border-radius:6px;background:linear-gradient(90deg,#4A6CF7,#10b981);margin:8px 0;transition:width .4s;display:flex;align-items:center;padding-left:10px;font-size:11px;color:#fff;}
+  .layer{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:13px;}
+  .layer .cb{width:40px;height:40px;border-radius:8px;background:var(--c-cell);display:flex;align-items:center;justify-content:center;font-size:12px;}
+  .layer.on .cb{background:var(--c-success);}
+  .sidseq{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .sidtok{width:48px;height:48px;border-radius:8px;background:var(--c-cell);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .35s;}
+  .sidtok.on{background:var(--c-primary);transform:scale(1.06);}
+  .resid{font-size:12px;color:var(--c-warn);margin-top:8px;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧩 RQ-VAE 语义 ID 量化过程</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>量化过程可视化</h3>
+    <div id="viz"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 编码：物品 → 连续向量",
+    r0:100,
+    desc:"物品的视频画面、文本标题等多模态特征，经预训练编码器映射为连续语义向量 z_e（此处以 1 维长度示意）。这是量化的起点。",
+    code:["# 编码器","z_e = f_theta(x)        # 多模态→连续向量","# 例: z_e = 5.5 (1维示意)","r_0 = z_e              # 初始残差"],
+    hl:0 },
+  { name:"② Layer 1：捕获粗粒度语义",
+    r0:100,
+    desc:"第 1 层在码本中找最接近 r₀ 的码字。本例选代表「体育竞技」的 e₁₀，残差 r₁ 保留「是什么体育？」的信息。ID 序列变为 [10]。",
+    code:["# 残差量化 Layer 1","k_1 = argmin ||r_0 - e_j||","e_10 = '体育竞技'","r_1 = r_0 - e_10","ID = [10]"],
+    hl:1 },
+  { name:"③ Layer 2：细化到中粒度",
+    r0:100,
+    desc:"第 2 层在 r₁ 上继续量化，选代表「篮球项目」的 e₅。残差 r₂ 进一步聚焦「是比赛还是教学？扣篮还是投篮？」。ID 序列更新为 [10, 5]。",
+    code:["# 残差量化 Layer 2","k_2 = argmin ||r_1 - e_j||","e_5 = '篮球项目'","r_2 = r_1 - e_5","ID = [10, 5]"],
+    hl:1 },
+  { name:"④ Layer 3：捕获细粒度细节",
+    r0:100,
+    desc:"第 3 层用「扣篮动作」e₄₂ 捕获最后细节，残差趋零。最终 SID=[10, 5, 42]，如同一台不断对焦的相机，精准描述视频内容。",
+    code:["# 残差量化 Layer 3","k_3 = argmin ||r_2 - e_j||","e_42 = '扣篮动作'","r_3 ≈ 0","ID = [10, 5, 42]"],
+    hl:1 },
+  { name:"⑤ 层次化语义 ID 完成",
+    r0:100,
+    desc:"三层残差叠加 z_q = e₁₀+e₅+e₄₂。相似物品共享前缀 [10,5]，天然支持前缀匹配与泛化。即使只看 [10,5] 也知是篮球视频。",
+    code:["# 最终语义 ID","z_q = e_10 + e_5 + e_42","SID = [10, 5, 42]","# 前缀 [10,5] ⇒ 篮球视频","# 新物品可零样本泛化"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const viz = document.getElementById("viz");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  const s = stages[cur];
+  viz.innerHTML = "";
+  // residual bar (shrinks as layers progress)
+  const residPct = [100, 60, 30, 5, 0][cur];
+  const v = document.createElement("div");
+  v.className="vec";
+  v.style.width = (40 + residPct*1.6)+"px";
+  v.textContent = cur===0 ? "物品向量 z_e" : "残差 r_"+Math.min(cur,3);
+  viz.appendChild(v);
+
+  const layers=[["e₁₀","体育竞技",1],["e₅","篮球项目",2],["e₄₂","扣篮动作",3]];
+  layers.forEach(([c,n,lv])=>{
+    const row=document.createElement("div");
+    row.className="layer"+(cur>=lv?" on":"");
+    row.innerHTML=`<div class='cb'>${c}</div><div>${n}${cur>=lv?" ✓":""}</div>`;
+    viz.appendChild(row);
+  });
+
+  const rq=document.createElement("div");
+  rq.className="resid";
+  rq.textContent = "当前残差：" + (cur===0?"r₀ = 5.5（完整向量）": cur===1?"r₁ = 0.5（「什么体育？」）": cur===2?"r₂ = 0.1（「扣篮？」）": cur===3?"r₃ ≈ 0（细节已捕获）":"r₃ ≈ 0（趋零）");
+  viz.appendChild(rq);
+
+  const seq=document.createElement("div");
+  seq.className="sidseq";
+  const toks=[["10",1],["5",2],["42",3]];
+  toks.forEach(([t,lv])=>{
+    const d=document.createElement("div");
+    d.className="sidtok"+(cur>=lv?" on":"");
+    d.textContent=t;
+    seq.appendChild(d);
+  });
+  viz.appendChild(seq);
+  const lab=document.createElement("div");
+  lab.style.cssText="font-size:11px;color:#94a3b8;margin-top:6px;";
+  lab.textContent="语义 ID（SID）：层次化 token 序列";
+  viz.appendChild(lab);
+
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<svg width="800" height="280" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="ae" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="280" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">DeepFM 训练：FM 二阶交叉 + DNN 高阶非线性</text>
+  <rect x="60" y="70" width="220" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="170" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">FM 部分</text>
+  <text x="170" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">二阶特征交叉</text>
+  <rect x="300" y="70" width="220" height="70" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="410" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">DNN 部分</text>
+  <text x="410" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">高阶非线性</text>
+  <line x1="280" y1="105" x2="300" y2="105" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="520" y1="105" x2="540" y2="105" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="540" y="70" width="200" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="640" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Sigmoid</text>
+  <text x="640" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">点击概率</text>
+  <rect x="60" y="180" width="680" height="50" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="205" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#f59e0b">特征同进 deepfm + linear 两组 · 评估指标 AUC · 存配置供在线复用编码器</text>
+  <rect x="0" y="250" width="800" height="30" fill="#1e293b" opacity="0.06" rx="0 0 12 12"/>
+</svg>

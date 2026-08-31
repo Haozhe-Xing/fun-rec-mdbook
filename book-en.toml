@@ -1,12 +1,12 @@
 [book]
-title = "深度推荐算法实践（小麦书）"
-description = "从级联架构到生成式范式——一本系统讲解推荐系统的书"
-authors = ["Datawhale", "WorkBuddy 重写版"]
-language = "zh"
-src = "src/zh"
+title = "Deep Recommender Systems in Practice (Fun-Rec Book)"
+description = "From cascading architectures to generative paradigms — a systematic guide to recommender systems"
+authors = ["Datawhale", "WorkBuddy Rewrite Edition"]
+language = "en"
+src = "src/en"
 
 [build]
-build-dir = "book/zh"
+build-dir = "book/en"
 create-missing = false
 
 [output.html]
@@ -14,7 +14,6 @@ default-theme = "light"
 preferred-dark-theme = "navy"
 additional-css = ["styles/website.css"]
 additional-js = ["scripts/viz-expand.js", "scripts/in-page-toc.js", "scripts/callouts.js"]
-exclude = ["_svg-gallery.html"]
 
 [output.html.search]
 enable = true

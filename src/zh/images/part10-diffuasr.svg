@@ -1,0 +1,30 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10e" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow10e" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">DiffuASR：生成「前序」序列增强用户历史</text>
+
+  <g font-family="Arial" font-size="12" text-anchor="middle">
+    <rect x="30" y="80" width="150" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10e)"/>
+    <text x="105" y="106" fill="#1e293b">S_raw</text><text x="105" y="126" font-size="11" fill="#64748b">原始序列</text>
+    <rect x="210" y="80" width="150" height="60" rx="8" fill="#cdd6f4" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10e)"/>
+    <text x="285" y="106" fill="#1e293b">前向加噪</text><text x="285" y="126" font-size="11" fill="#64748b">嵌入矩阵</text>
+    <rect x="390" y="80" width="160" height="60" rx="8" fill="#4A6CF7" filter="url(#shadow10e)"/>
+    <text x="470" y="106" fill="#ffffff" font-weight="bold">SU-Net</text><text x="470" y="126" font-size="11" fill="#e8ecff">反向去噪</text>
+    <rect x="580" y="80" width="150" height="60" rx="8" fill="#fef3cd" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow10e)"/>
+    <text x="655" y="106" fill="#1e293b">舍入 Rounding</text><text x="655" y="126" font-size="11" fill="#64748b">→ 离散 ID</text>
+    <rect x="30" y="180" width="700" height="60" rx="8" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow10e)"/>
+    <text x="380" y="206" fill="#16a34a" font-weight="bold">引导过程 Guide：c = Avg(原始序列嵌入)</text>
+    <text x="380" y="228" font-family="Arial" font-size="11" fill="#64748b">S_aug ⊕ S_raw → 更长更完整的训练序列（拼接后训下游序列推荐）</text>
+  </g>
+  <line x1="180" y1="110" x2="206" y2="110" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10e)"/>
+  <line x1="360" y1="110" x2="386" y2="110" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10e)"/>
+  <line x1="550" y1="110" x2="576" y2="110" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow10e)"/>
+  <line x1="655" y1="140" x2="380" y2="178" stroke="#10b981" stroke-width="2"/>
+</svg>

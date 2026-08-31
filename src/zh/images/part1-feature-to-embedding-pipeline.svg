@@ -1,0 +1,55 @@
+<svg width="800" height="420" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">从业务字段到模型预测的特征处理流程</title>
+  <desc id="desc">原始业务字段经过特征处理，形成离散、分桶和连续特征，再由模型服务查询 Embedding 并完成预测。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#64748b" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4A6CF7"/>
+    </marker>
+  </defs>
+  <rect width="800" height="420" rx="16" fill="#f8f9fc"/>
+  <text x="400" y="36" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="20" font-weight="700" fill="#1e293b">业务字段如何变成模型输入</text>
+
+  <g filter="url(#shadow)">
+    <rect x="30" y="75" width="170" height="230" rx="12" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="115" y="106" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#4A6CF7">① 原始业务字段</text>
+    <text x="52" y="145" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">性别 = 男</text>
+    <text x="52" y="178" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">广告 ID = 10001</text>
+    <text x="52" y="211" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">eCPM = 57</text>
+    <text x="52" y="244" font-family="Arial, PingFang SC, sans-serif" font-size="14" fill="#1e293b">预估 CTR = 0.073</text>
+    <text x="52" y="280" font-family="Arial, PingFang SC, sans-serif" font-size="12" fill="#64748b">字符串、枚举、连续数值</text>
+  </g>
+
+  <line x1="200" y1="190" x2="245" y2="190" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="250" y="75" width="220" height="230" rx="12" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="360" y="106" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#b45309">② 特征处理</text>
+    <rect x="272" y="128" width="176" height="38" rx="8" fill="#e8ecff"/>
+    <text x="360" y="153" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">离散：哈希 / 整数编码</text>
+    <rect x="272" y="180" width="176" height="38" rx="8" fill="#fef3c7"/>
+    <text x="360" y="205" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">分桶：钳制 / 切区间</text>
+    <rect x="272" y="232" width="176" height="38" rx="8" fill="#dcfce7"/>
+    <text x="360" y="257" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">连续：归一化 / 异常兜底</text>
+    <text x="360" y="292" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="12" fill="#64748b">输出 slotId / featureSign / value</text>
+  </g>
+
+  <line x1="470" y1="190" x2="515" y2="190" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="520" y="75" width="250" height="230" rx="12" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="645" y="106" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#047857">③ 模型服务</text>
+    <rect x="545" y="128" width="200" height="38" rx="8" fill="#dcfce7"/>
+    <text x="645" y="153" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">用 featureSign 查 Embedding</text>
+    <rect x="545" y="180" width="200" height="38" rx="8" fill="#e8ecff"/>
+    <text x="645" y="205" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">结合 value 缩放 / 拼接</text>
+    <rect x="545" y="232" width="200" height="38" rx="8" fill="#fef3c7"/>
+    <text x="645" y="257" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#1e293b">DNN 计算点击率 / 排序分</text>
+    <text x="645" y="292" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="12" fill="#64748b">Embedding 是训练得到的参数</text>
+  </g>
+
+  <rect x="95" y="344" width="610" height="48" rx="10" fill="#1e293b"/>
+  <text x="400" y="374" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="15" font-weight="700" fill="#ffffff">featureSign 是查表的 key；Embedding 才是模型使用的向量</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a87" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s87" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="400" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">EGA：双解码器联合生成 + 竞价/支付解耦</text>
+
+  <!-- encoder -->
+  <rect x="30" y="56" width="190" height="130" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s87)"/>
+  <text x="125" y="80" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">编码器</text>
+  <text x="125" y="104" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">(POI, 创意, type)</text>
+  <text x="125" y="124" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">混合广告+有机</text>
+  <text x="125" y="150" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">S^e=Enc(S^u)</text>
+
+  <line x1="220" y1="121" x2="268" y2="121" stroke="#64748b" stroke-width="2.5" marker-end="url(#a87)"/>
+
+  <!-- two decoders -->
+  <rect x="273" y="56" width="220" height="130" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s87)"/>
+  <text x="383" y="80" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#d97706">双解码器（MTP）</text>
+  <text x="383" y="104" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">POI 解码器：先生成</text>
+  <text x="383" y="122" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">a¹,a²,a³ = Dec_POI(·)</text>
+  <text x="383" y="144" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">创意解码器：以 POI 为条件</text>
+  <text x="383" y="166" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">a^img = Dec_Cr([a¹,a²,a³])</text>
+
+  <!-- token bidding -->
+  <rect x="508" y="56" width="262" height="130" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s87)"/>
+  <text x="639" y="80" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">Token 级竞价（max 聚合）</text>
+  <text x="639" y="104" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">b(a^j)=max(b₁..b_N)</text>
+  <text x="639" y="124" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">w=[b]^α+β</text>
+  <text x="639" y="144" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">z(a^j)= w·e^{a^j}/Σ</text>
+  <text x="639" y="166" text-anchor="middle" font-family="Arial" font-size="11" fill="#10b981">分配：竞价引导生成</text>
+
+  <!-- payment + IC band -->
+  <rect x="30" y="208" width="740" height="160" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2" filter="url(#s87)"/>
+  <text x="50" y="234" font-family="Arial" font-size="14" font-weight="bold" fill="#ef4444">POI 级支付网络 + 排列感知奖励：近似保证 IC / IR</text>
+  <text x="50" y="260" font-family="Arial" font-size="12" fill="#1e293b">① 排列感知奖励：Self-Attention 建模位置外部性（位置/相邻/对比效应）</text>
+  <text x="50" y="282" font-family="Arial" font-size="12" fill="#1e293b">   三塔 SIM：pCTR-poi / pCTR-img / pCVR → r̂ = λ₁+λ₂+λ₃</text>
+  <text x="50" y="308" font-family="Arial" font-size="12" fill="#1e293b">② 支付网络：p̂ = σ(MLP(S*; B⁻; Z·Θ))，p_i = p̂_i·b_i  →  Sigmoid 保 IR (p_i≤b_i)</text>
+  <text x="50" y="332" font-family="Arial" font-size="12" fill="#1e293b">③ ex-post regret：rgt_i = max_{b'} (u_i(v_i;b') − u_i(v_i;v_i))，Lagrangian 对偶压到≈0</text>
+  <text x="50" y="356" font-family="Arial" font-size="11.5" fill="#64748b">两阶段训练：Interest-based Pre-training (NTP+MTP) → Auction-based Post-training (RM + PG + Pay)</text>
+</svg>

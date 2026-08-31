@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MIND 多兴趣检索 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  /* visual: behaviors -> capsules -> retrieve */
+  .behaviors{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .beh{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:5px 10px;font-size:12px;color:var(--c-light);transition:all .35s;}
+  .beh.r1{border-color:var(--c-primary);color:#fff;}
+  .beh.r2{border-color:var(--c-success);color:#fff;}
+  .beh.r3{border-color:var(--c-warn);color:#fff;}
+  .caps{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+  .cap{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:10px;transition:all .35s;opacity:.4;}
+  .cap.on{opacity:1;box-shadow:0 0 0 2px currentColor;}
+  .cap.c1{color:var(--c-primary);border-color:var(--c-primary);}
+  .cap.c2{color:var(--c-success);border-color:var(--c-success);}
+  .cap.c3{color:var(--c-warn);border-color:var(--c-warn);}
+  .cap .name{font-size:13px;font-weight:700;}
+  .cap .members{font-size:11px;color:var(--c-light);}
+  .merged{margin-top:10px;background:#0f172a;border:1px dashed #334155;border-radius:10px;padding:10px;font-size:12px;color:var(--c-light);}
+  .merged b{color:var(--c-text);}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 MIND：多兴趣向量检索</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>行为 → 兴趣胶囊 → 检索</h3>
+    <div style="font-size:12px;color:var(--c-light)">历史行为</div>
+    <div class="behaviors" id="behaviors">
+      <span class="beh">📘 编程书</span><span class="beh">⌨️ 机械键盘</span>
+      <span class="beh">👟 跑鞋</span><span class="beh">🏃 跑步机</span>
+      <span class="beh">☕ 咖啡豆</span>
+    </div>
+    <div style="font-size:12px;color:var(--c-light);margin-top:12px">兴趣胶囊 (动态路由)</div>
+    <div class="caps" id="caps">
+      <div class="cap c1" id="cap1"><div class="name">兴趣① 编程</div><div class="members">书 + 键盘</div></div>
+      <div class="cap c2" id="cap2"><div class="name">兴趣② 运动</div><div class="members">跑鞋 + 跑步机</div></div>
+      <div class="cap c3" id="cap3"><div class="name">兴趣③ 美食</div><div class="members">咖啡豆</div></div>
+    </div>
+    <div class="merged" id="merged">合并召回候选：—</div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 输入：用户行为序列",
+    desc:"MIND 接收用户的历史交互序列（书籍、键盘、跑鞋、跑步机、咖啡豆）。这些异质兴趣若压成单向量会互相抵消。",
+    code:["behaviors = [书, 键盘, 跑鞋,","            跑步机, 咖啡豆]","# 异质兴趣，单向量会平均掉"],
+    hl:1, caps:[], merged:"—", beh:[] },
+  { name:"② 动态路由 (B2I)",
+    desc:"路由迭代约 3 次：行为经共享矩阵 S 变换，按 softmax 权重软聚类到兴趣胶囊，squash 压缩模长到 [0,1)。行为被分到最相关的兴趣。",
+    code:["for it in 3 iterations:","    w = softmax(b)          # 路由权重","    z = Σ wᵢⱼ S eᵢ        # 聚合","    u = squash(z)        # 压缩","    b += uᵀ S eᵢ         # 更新"],
+    hl:2, caps:[1,2,3], merged:"—", beh:[1,1,2,2,3] },
+  { name:"③ 多兴趣胶囊就绪",
+    desc:"得到 K 个兴趣胶囊（自适应 K），每个代言一类兴趣：编程、运动、美食。它们在同一向量空间，可分别检索。",
+    code:["capsules = route(behaviors)","# → [编程向量, 运动向量, 美食向量]","K = max(1, min(Kmax, log2|I|))"],
+    hl:1, caps:[1,2,3], merged:"—", beh:[1,1,2,2,3] },
+  { name:"④ 各胶囊分别检索",
+    desc:"每个兴趣胶囊独立去物品库做近邻检索 Top-K。编程胶囊找书/IDE，运动胶囊找鞋/护具，美食胶囊找咖啡器具。",
+    code:["for cap in capsules:","    topk = ann_search(cap, K=50)","# 每兴趣各自检索"],
+    hl:1, caps:[1,2,3],
+    merged:"<b>兴趣①</b>→ 编程书/IDE<br><b>兴趣②</b>→ 跑鞋/护具<br><b>兴趣③</b>→ 咖啡豆/器具", beh:[1,1,2,2,3] },
+  { name:"⑤ 合并去重 → 召回候选",
+    desc:"把各胶囊的 Top-K 合并、按物品去重、再按多样性截断，得到覆盖多元兴趣的召回候选集。相比单向量，长尾兴趣不再被淹没。",
+    code:["candidates = merge_dedup(capsules)","# 多向量检索 > 单向量平均","# 交排序/重排阶段"],
+    hl:1, caps:[1,2,3],
+    merged:"<b>合并</b>：编程书 · IDE · 跑鞋 · 护具 · 咖啡器具<br><b>去重+截断</b> → 召回候选", beh:[1,1,2,2,3] }
+];
+
+let cur = 0, timer = null;
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+const capsEl = [document.getElementById("cap1"),document.getElementById("cap2"),document.getElementById("cap3")];
+const mergedEl = document.getElementById("merged");
+const behEls = Array.from(document.querySelectorAll(".beh"));
+
+function render(){
+  const s = stages[cur];
+  capsEl.forEach((el,i)=> el.classList.toggle("on", s.caps.includes(i+1)));
+  behEls.forEach((el,i)=>{ el.className = "beh" + (s.beh[i] ? " r"+s.beh[i] : ""); });
+  mergedEl.innerHTML = s.merged === "—" ? "合并召回候选：—" : "合并召回候选：<br>"+s.merged;
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },2000); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

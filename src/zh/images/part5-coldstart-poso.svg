@@ -1,0 +1,54 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="s5b" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="30" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">POSO：人群专用子模块 + 个性化门控</text>
+
+  <!-- input -->
+  <rect x="30" y="120" width="120" height="64" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s5b)"/>
+  <text x="90" y="146" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">用户特征 x</text>
+  <text x="90" y="166" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">含 is_new_user</text>
+
+  <!-- K sub-modules -->
+  <rect x="220" y="60" width="130" height="46" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s5b)"/>
+  <text x="285" y="80" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">f₁ 新客专柜</text>
+  <text x="285" y="98" text-anchor="middle" font-family="Courier New" font-size="11" fill="#4A6CF7">σ(W₁x+b₁)</text>
+
+  <rect x="220" y="120" width="130" height="46" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s5b)"/>
+  <text x="285" y="140" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">f₂ 老客专柜</text>
+  <text x="285" y="158" text-anchor="middle" font-family="Courier New" font-size="11" fill="#4A6CF7">σ(W₂x+b₂)</text>
+
+  <rect x="220" y="180" width="130" height="46" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s5b)"/>
+  <text x="285" y="200" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">fₖ ...</text>
+  <text x="285" y="218" text-anchor="middle" font-family="Courier New" font-size="11" fill="#4A6CF7">σ(Wₖx+bₖ)</text>
+
+  <!-- gate -->
+  <rect x="430" y="115" width="140" height="74" rx="8" fill="#f59e0b" stroke="#92400e" stroke-width="1.5" filter="url(#s5b)"/>
+  <text x="500" y="142" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#fff">个性化门控</text>
+  <text x="500" y="162" text-anchor="middle" font-family="Courier New" font-size="11" fill="#fef3c7">g=softmax(</text>
+  <text x="500" y="178" text-anchor="middle" font-family="Courier New" font-size="11" fill="#fef3c7">MLP_gate(xᵖᶜ))</text>
+
+  <!-- output -->
+  <rect x="640" y="120" width="130" height="64" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#s5b)"/>
+  <text x="705" y="146" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#fff">加权组合</text>
+  <text x="705" y="166" text-anchor="middle" font-family="Courier New" font-size="11" fill="#d1fae5">y=Σ gᵢ·fᵢ(x)</text>
+
+  <!-- arrows -->
+  <line x1="150" y1="142" x2="216" y2="83" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="150" y1="150" x2="216" y2="143" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="150" y1="158" x2="216" y2="203" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="350" y1="83" x2="426" y2="135" stroke="#f59e0b" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="350" y1="143" x2="426" y2="152" stroke="#f59e0b" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="350" y1="203" x2="426" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#ar5)"/>
+  <line x1="570" y1="152" x2="636" y2="152" stroke="#10b981" stroke-width="2.5" marker-end="url(#ar5)"/>
+
+  <rect x="0" y="280" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="304" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">新客走「新客专柜」、老客走「老客专柜」——门控按用户特征分流，新用户的个性化信号再不会被老用户声量淹没</text>
+</svg>
