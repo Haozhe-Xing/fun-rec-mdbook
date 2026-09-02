@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 580" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="580" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Three-Party Data and the DMP Data Trading Loop</text>
+  <text x="400" y="54" text-anchor="middle" font-size="12" fill="#64748b">First-party = advertiser · Second-party = ad platform · Third-party = other data providers | Monetization path: labels attached to traffic, billed on actual wins</text>
+
+  <!-- Row 1: data sources -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="78" width="210" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="155" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Advertisers (first-party data)</text>
+    <text x="155" y="122" text-anchor="middle" font-size="12" fill="#4A6CF7">CRM · orders · site visitors</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="295" y="78" width="210" height="58" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="400" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Ad platforms (second-party data)</text>
+    <text x="400" y="122" text-anchor="middle" font-size="12" fill="#10b981">In-platform behavior and delivery logs</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="540" y="78" width="210" height="58" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="645" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Other data providers (third-party)</text>
+    <text x="645" y="122" text-anchor="middle" font-size="12" fill="#f59e0b">Small/mid media · membership and behavior data</text>
+  </g>
+
+  <!-- Arrows sources -> DMPs -->
+  <line x1="155" y1="136" x2="185" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="645" y1="136" x2="610" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="400" y1="136" x2="400" y2="298" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="412" y="240" font-size="12" fill="#10b981">Second-party data directly guides platform delivery (ad network model)</text>
+
+  <!-- Row 2: two DMPs -->
+  <g filter="url(#shadow)">
+    <rect x="90" y="192" width="260" height="72" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="220" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">First-party DMP (hosted processing)</text>
+    <text x="220" y="235" text-anchor="middle" font-size="12" fill="#4A6CF7">Processes labels per DP needs · charges a tech service fee</text>
+    <text x="220" y="254" text-anchor="middle" font-size="12" fill="#64748b">Data hosting service, never re-monetizes client data</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="450" y="192" width="260" height="72" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="580" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Third-party DMP = data trading platform</text>
+    <text x="580" y="235" text-anchor="middle" font-size="12" fill="#f59e0b">Processes labels under its own logic · sells to monetize</text>
+    <text x="580" y="254" text-anchor="middle" font-size="12" fill="#64748b">Revenue shared proportionally with data providers</text>
+  </g>
+
+  <!-- Arrows DMPs -> ADX -->
+  <line x1="220" y1="264" x2="300" y2="300" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="264" x2="500" y2="300" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="238" y="292" font-size="12" fill="#64748b">Batch label transfer</text>
+  <text x="560" y="292" font-size="12" fill="#64748b">Batch label transfer</text>
+
+  <!-- Row 3: ADX -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="304" width="300" height="64" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="327" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">ADX / SSP: the relay and "water meter" of data trading</text>
+    <text x="400" y="347" text-anchor="middle" font-size="12" fill="#1e293b">Labels attached to bid requests · priced to DSPs on CPM</text>
+    <text x="400" y="363" text-anchor="middle" font-size="12" fill="#64748b">Incidentally handles usage monitoring and billing; star topology reduces mapping loss</text>
+  </g>
+
+  <!-- ADX -> DSP -->
+  <line x1="400" y1="368" x2="400" y2="414" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="412" y="396" font-size="12" fill="#64748b">RTB inquiries carry user labels</text>
+
+  <!-- Row 4: DSP -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="418" width="300" height="58" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="400" y="441" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">DSP: labels used for targeting and bidding</text>
+    <text x="400" y="462" text-anchor="middle" font-size="12" fill="#10b981">Pays the data surcharge on actually won impressions × CPM</text>
+  </g>
+
+  <!-- Feedback loop -->
+  <path d="M 250 447 L 120 447 L 120 140" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowRed)"/>
+  <text x="130" y="390" font-size="12" font-weight="bold" fill="#ef4444">Conversion performance flows back (closed loop)</text>
+
+  <!-- Legend -->
+  <g font-size="12">
+    <rect x="80" y="510" width="14" height="14" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="102" y="522" fill="#1e293b">First-party data (the soul, small but precise)</text>
+    <rect x="310" y="510" width="14" height="14" rx="3" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="332" y="522" fill="#1e293b">Second-party data (platform self-use, guides delivery)</text>
+    <rect x="550" y="510" width="14" height="14" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="572" y="522" fill="#1e293b">Third-party data (traded and circulated)</text>
+    <text x="400" y="554" text-anchor="middle" fill="#64748b">Loop: data sources → DMP processing → trading → DSP application → performance flows back → reprocessing</text>
+  </g>
+</svg>

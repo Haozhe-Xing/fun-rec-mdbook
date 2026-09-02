@@ -1,0 +1,22 @@
+### 12.8 Glossary
+
+- **Audience Targeting** — The process of extracting meaningful features (labels) along the three dimensions of ad $a$, user $u$, and context $c$; one of the core driving forces of display advertising.
+- **Contextual Targeting** — The $t(c)$ class of targeting: assigning labels instantly based on the page the user is currently visiting or request parameters (geo, channel, URL, keywords, topics).
+- **Behavioral Targeting (BT)** — The $t(u)$ class of targeting: mapping a user onto some targeting label based on the history of the user's online behaviors over a period of time.
+- **Customized Labels ($t(a,u)$)** — User labels produced for a specific advertiser (e.g., retargeting, look-alike); their count grows proportionally with the number of advertisers, making them suitable for direct supply by the demand side in programmatic trading.
+- **Taxonomy** — A predefined, interpretable set of labels sold to advertisers; the dual metrics of effectiveness and scale require it to cover both the "broad and large" end and the "precise and small" end.
+- **Semi-online Crawler** — The page-crawling scheme for contextual targeting: no offline crawling; crawling and labeling are triggered only after an ad request, managed with cache + TTL, and temporarily empty labels are allowed.
+- **Weak Consistency** — A business property of ad systems: as long as most decisions are optimal, a few suboptimal or even random decisions are acceptable; the basis for low-cost system design.
+- **Demand-driven Keywords** — A keyword selection method that obtains a commercially valuable keyword list and IDF from advertiser descriptions, then computes TF-IDF together with page TF.
+- **Latent Semantic Analysis (LSA)** — A topic model that takes the SVD of the document-term matrix and keeps the dominant singular values; its two transformation matrices are not guaranteed non-negative, which is intuitively unsatisfying.
+- **Probabilistic Latent Semantic Indexing (PLSI)** — The probabilistic version of LSA: modeled as a generative process of "document picks a topic, topic generates words"; solvable with distributed EM.
+- **Latent Dirichlet Allocation (LDA)** — The Bayesian version of PLSI, adding a Dirichlet prior to the topic distribution; more robust under noisy data or short documents, commonly solved with Gibbs sampling.
+- **word2vec / Word Embedding** — A representation-learning method mapping words into dense real-valued vectors; CBOW + Huffman tree (hierarchical softmax) reduces output complexity from $O(\|V\|)$ to $O(\log \|V\|)$ — the origin of the embedding idea.
+- **Embedding-based Labeling** — The mainstream label-production route of 2026: using representation models (two-tower / graph embeddings) or LLMs to map content into vectors or structured labels, having replaced topic-model labeling.
+- **Time Decay** — The behavior accumulation method $\tilde{x}(d) = \alpha\tilde{x}(d-1) + x(d)$; an exponential window filters raw behaviors, only the previous slice's state needs storing, and it is superior to the sliding window method in engineering.
+- **Sliding Window** — An accumulation method that sets a window length $D$ and sums behavior intensities within the window; rectangular in shape, and it must store all behaviors inside the window.
+- **Feature Selection Function ($x_{tn}(b)$)** — The function that maps raw behavior $b$ onto label $t$ with an intensity; the most critical link in behavioral targeting's feature generation.
+- **User Label Score ($\lambda_t$)** — The linear score of the behavioral targeting GLM, $\log\lambda_t = w_t \cdot \tilde{x}$, controlling how frequently clicks arrive; updated online via the recursion $\lambda(d) = \alpha\lambda(d-1) + \sum_n w_{tn} x_{tn}(d)$.
+- **Demographic Prediction** — A classification task predicting fixed user characteristics such as gender and age from behavior; a rejection threshold is mandatory, and training-set quality matters more than the model.
+- **reach/CTR Curve** — The semi-quantitative evaluation tool for behavioral targeting: the curve of label population size (reach) versus that population's CTR; it should decrease monotonically, the head slope reflects discriminative power, and the far-right CTR is fixed at the full-population level.
+- **AUC (see 12.5)** — The metric of a model's discriminative power (relative ordering); the steepness of the reach/CTR curve's head is its projection in targeting evaluation, and scores entering the arithmetic must still pass calibration.

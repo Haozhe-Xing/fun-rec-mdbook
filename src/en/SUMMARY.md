@@ -80,6 +80,10 @@
   * [Bias and Calibration in Ad Systems](part12-computational-advertising/bias-and-calibration.md)
   * [Open-Loop and Closed-Loop Advertising](part12-computational-advertising/open-closed-loop.md)
   * [Online Allocation and Traffic Management](part12-computational-advertising/online-allocation.md)
+  * [Audience Targeting](part12-computational-advertising/audience-targeting.md)
+  * [Ad Retrieval and Semantic Recall](part12-computational-advertising/ad-retrieval-semantic-recall.md)
+  * [Data Processing and Trading](part12-computational-advertising/data-processing-and-trading.md)
+  * [Experiment Framework and Anti-Fraud](part12-computational-advertising/experiment-and-antifraud.md)
 
 # Appendix
 

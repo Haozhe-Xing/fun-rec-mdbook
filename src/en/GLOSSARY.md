@@ -567,4 +567,96 @@
 
 ---
 
+
+### 12.8
+
+- **Audience Targeting** — The process of extracting meaningful features (labels) along the three dimensions of ad $a$, user $u$, and context $c$; one of the core driving forces of display advertising.
+- **Contextual Targeting** — The $t(c)$ class of targeting: assigning labels instantly based on the page the user is currently visiting or request parameters (geo, channel, URL, keywords, topics).
+- **Behavioral Targeting (BT)** — The $t(u)$ class of targeting: mapping a user onto some targeting label based on the history of the user's online behaviors over a period of time.
+- **Customized Labels ($t(a,u)$)** — User labels produced for a specific advertiser (e.g., retargeting, look-alike); their count grows proportionally with the number of advertisers, making them suitable for direct supply by the demand side in programmatic trading.
+- **Taxonomy** — A predefined, interpretable set of labels sold to advertisers; the dual metrics of effectiveness and scale require it to cover both the "broad and large" end and the "precise and small" end.
+- **Semi-online Crawler** — The page-crawling scheme for contextual targeting: no offline crawling; crawling and labeling are triggered only after an ad request, managed with cache + TTL, and temporarily empty labels are allowed.
+- **Weak Consistency** — A business property of ad systems: as long as most decisions are optimal, a few suboptimal or even random decisions are acceptable; the basis for low-cost system design.
+- **Demand-driven Keywords** — A keyword selection method that obtains a commercially valuable keyword list and IDF from advertiser descriptions, then computes TF-IDF together with page TF.
+- **Latent Semantic Analysis (LSA)** — A topic model that takes the SVD of the document-term matrix and keeps the dominant singular values; its two transformation matrices are not guaranteed non-negative, which is intuitively unsatisfying.
+- **Probabilistic Latent Semantic Indexing (PLSI)** — The probabilistic version of LSA: modeled as a generative process of "document picks a topic, topic generates words"; solvable with distributed EM.
+- **Latent Dirichlet Allocation (LDA)** — The Bayesian version of PLSI, adding a Dirichlet prior to the topic distribution; more robust under noisy data or short documents, commonly solved with Gibbs sampling.
+- **word2vec / Word Embedding** — A representation-learning method mapping words into dense real-valued vectors; CBOW + Huffman tree (hierarchical softmax) reduces output complexity from $O(\|V\|)$ to $O(\log \|V\|)$ — the origin of the embedding idea.
+- **Embedding-based Labeling** — The mainstream label-production route of 2026: using representation models (two-tower / graph embeddings) or LLMs to map content into vectors or structured labels, having replaced topic-model labeling.
+- **Time Decay** — The behavior accumulation method $\tilde{x}(d) = \alpha\tilde{x}(d-1) + x(d)$; an exponential window filters raw behaviors, only the previous slice's state needs storing, and it is superior to the sliding window method in engineering.
+- **Sliding Window** — An accumulation method that sets a window length $D$ and sums behavior intensities within the window; rectangular in shape, and it must store all behaviors inside the window.
+- **Feature Selection Function ($x_{tn}(b)$)** — The function that maps raw behavior $b$ onto label $t$ with an intensity; the most critical link in behavioral targeting's feature generation.
+- **User Label Score ($\lambda_t$)** — The linear score of the behavioral targeting GLM, $\log\lambda_t = w_t \cdot \tilde{x}$, controlling how frequently clicks arrive; updated online via the recursion $\lambda(d) = \alpha\lambda(d-1) + \sum_n w_{tn} x_{tn}(d)$.
+- **Demographic Prediction** — A classification task predicting fixed user characteristics such as gender and age from behavior; a rejection threshold is mandatory, and training-set quality matters more than the model.
+- **reach/CTR Curve** — The semi-quantitative evaluation tool for behavioral targeting: the curve of label population size (reach) versus that population's CTR; it should decrease monotonically, the head slope reflects discriminative power, and the far-right CTR is fixed at the full-population level.
+- **AUC (see 12.5)** — The metric of a model's discriminative power (relative ordering); the steepness of the reach/CTR curve's head is its projection in targeting evaluation, and scores entering the arithmetic must still pass calibration.
+
+### 12.9
+
+- **Ad Retrieval** — the computational stage that, under millisecond-level constraints, finds from hundreds of millions of ad candidates the few eligible to participate in this auction; the qualification round before eCPM ranking (12.2).
+- **Disjunctive Normal Form (DNF)** — the standard representation of ad targeting conditions: a union of several Conjunctions, where hitting any one Conjunction means hitting the ad.
+- **Conjunction** — a group of assignments joined by AND within a DNF; the retrieval algorithm builds its inverted index over Conjunctions (not over whole ads).
+- **Assignment** — a minimal constraint on a single label (belonging or not belonging to some value set), e.g. age ∈ {3}; size counts only assignments containing "∈".
+- **Boolean Retrieval** — retrieval that evaluates targeting conditions over an inverted index: a two-layer index (Conjunction inverted index + Conj→AD auxiliary index) plus size-tier pruning, first taking a candidate superset then doing exact evaluation; pure-"∉" Conjunctions hang on the special key Z as a fallback.
+- **Inverted Index** — a data structure mapping "keys (labels/keywords)" to "the list of documents containing each key"; ad retrieval extends it into a size-tiered Conjunction index.
+- **Size-Tier Pruning** — building the index tiered by the number of "∈" assignments in a Conjunction; when a request's label count is below a tier's size, that entire tier is skipped — the most powerful pruning in boolean retrieval.
+- **Exact Match** — the strictest tier of keyword matching in search ads: triggered only when the query is identical to the bidding keyword; contrasted with phrase match and broad match (which triggers query expansion).
+- **Query Expansion** — the technique in search ads of expanding a short query into a set of biddable keywords; three routes are collaborative filtering, topic models, and historical eCPM performance mining, with over-generalization harming relevance.
+- **Ad Placement** — the decision in search ads of how many ads the North/East zones carry: revenue optimization under an average-ad-count constraint, with personalized adjustment via the ratio of user click-through rates.
+- **Relevance Retrieval** — retrieval for extremely long queries targeting "query-document similarity" rather than boolean matching; requires the evaluation function to be linear with non-negative weights to support fast upper-bound pruning.
+- **WAND (Weak AND / weight AND)** — a Top-K pruning retrieval algorithm: precompute keyword contribution upper bounds, exactly score only when the accumulated bound exceeds the heap threshold, with a min-heap maintaining the current best K results; its "rough upper bound + threshold positive feedback" idea carries into the pre-ranking layer.
+- **Semantic Recall** — recall that maps queries/users and ads into the same semantic vector space with a DNN and replaces keyword matching with nearest neighbor search; resolves the matching blind spot caused by different wording.
+- **DSSM (Deep Semantic Similarity Model)** — a deep model using clicks as weak supervision to learn query and document semantic vectors end to end: word embedding → multi-layer network projecting into semantic space → cosine similarity + softmax/pairwise ranking loss.
+- **Two-Tower Model** — a recall architecture where the user tower and item tower independently encode vectors and online serving computes only vector inner products; the modern form of the DSSM/YouTube model, standardly trained with in-batch negatives.
+- **Approximate Nearest Neighbor (ANN)** — the umbrella term for nearest neighbor search techniques that accept some recall loss in exchange for millisecond-level vector retrieval, in three families: hashing (LSH), vector quantization (PQ/HKM), and graphs (NSW/HNSW).
+- **Locality-Sensitive Hashing (LSH)** — divide-and-conquer ANN based on "the closer in the original space, the easier the hash collision"; with random projection, the same-bucket probability is 1−θ/π; recall is boosted by LSH forest (trading memory) or multi-probe (trading query time); superseded in engineering by graph indexes, but its intuition remains the conceptual origin of ANN.
+- **HNSW (Hierarchical Navigable Small World)** — the hierarchical version of NSW: sparse upper layers for fast navigation, a dense base layer for precision; the most widely used ANN graph index in industry today, implemented in faiss/hnswlib.
+- **IVF-PQ** — an ANN index that first coarse-clusters into buckets with K-means (IVF), then compresses within buckets with product quantization (PQ); memory-efficient, suited to candidate pools above hundreds of millions.
+- **Retrieval Funnel** — the full system view of candidates narrowing layer by layer: recall (10⁴~10⁵) → pre-ranking (10²~10³) → fine-ranking (10¹~10²) → auction (1~3 ads shown), each layer trading between "shrinking candidates" and "raising scoring precision"; the modern recall form is **multi-channel recall** — boolean targeting, semantic vectors, collaborative/behavioral, and popularity fallback run in parallel each taking Top-K, merged and deduplicated before entering ranking.
+
+### 12.10
+
+- **First-party Data** — Data generated on an advertiser's own channels (CRM, orders, website visitor behavior); small in volume but with the clearest semantics, it is the "soul" of all data.
+- **Second-party Data** — Behavioral and delivery data generated by users on the media/ad platform and held by the platform itself; the mainstay guiding delivery under the ad network model.
+- **Third-party Data** — Data owned and circulated by providers that do not directly participate in ad trading (small and mid-sized media, data companies, etc.); large in volume but of uneven quality.
+- **User Identifier** — The basis for linking "which behaviors come from the same user," such as cookie, IDFA, Android ID/IMEI; identity is the 1 in front of a string of 0s.
+- **Decision Behavior** — Conversions and pre-conversions (searching, browsing, price comparison, cart addition, and other pre-order actions), occurring on the advertiser's own site; the clearest intent orientation and the highest value.
+- **Semi-active Behavior** — Weak-purpose content consumption behaviors such as sharing and page views; they capture the domain of interest with limited precision, and their volume is the largest of all behavior classes.
+- **Cookie Mapping** — The technique of aligning the same user's cookie identities across different domain systems with one party's consent; it has become historical infrastructure since third-party cookies' exit.
+- **Data Management Platform (DMP)** — A product that organizes and processes raw data into directly usable user labels and supports monetization; it comes in two models — first-party (hosting and processing for a service fee) and third-party (processing and selling for monetization).
+- **Customer Data Platform (CDP)** — First-party data infrastructure that unifies a brand's own touchpoints (website, app, CRM) into persistent customer profiles; in its modern form it has replaced most scenarios of the old first-party DMP.
+- **Audience Segment** — A set of users selected by labels; the standard "trading unit" of data trading and audience targeting.
+- **Data Trading Platform (Third-party DMP)** — A product that aggregates raw behavioral data from multiple sources, processes it into labels under its own logic, sells it to monetize, and shares revenue with data providers; the representative case is BlueKai.
+- **Unified ID 2.0 (UID2)** — An open identity framework led by The Trade Desk, rooted in hashed email addresses/phone numbers; the cross-domain identity solution replacing third-party cookies.
+- **Data Trading** — The market mechanism in which labels are relayed through the ADX, attached to bid requests and priced on a CPM basis, and delivered on the DSP's actually won impressions.
+- **Data Clean Room** — A compliant collaboration environment where multi-party data is matched and analyzed under the premise that neither side can see the other's raw records, outputting only aggregated results (often with differential privacy added); the mainstream form of data collaboration in the 2020s.
+- **Quasi-identifier** — A set of attributes individually unidentifying but capable of locating a specific person in combination (e.g., age + city + job title); a high leakage risk even without PII.
+- **K-Anonymity** — Generalizing quasi-identifiers so that every group of quasi-identifier instances in the dataset has K records identical to it; not applicable to extremely sparse behavioral data.
+- **Differential Privacy** — A technique that modifies the dataset to a certain degree so as to minimize privacy leakage risk with as little loss of query accuracy as possible.
+- **Demand-side Data Security** — The risk that an advertiser's first-party data (such as visitor sets) is obtained and exploited by the platform or competitors in RTB; the typical tactic is merging visitor sets under vague labels and reselling them.
+- **GDPR** — The EU General Data Protection Regulation (effective 2018): a sensitive-data list, explicit consent, and four rights (access / erasure / restriction of processing / portability), with the penalty cap being the higher of 20 million euros or 4% of global annual turnover.
+- **PIPL** — China's Personal Information Protection Law (effective November 2021): establishes principles such as informed consent, minimal necessity, and withdrawable consent, and likewise distinguishes sensitive personal information.
+
+### 12.11
+
+- **Programmatic Creative** — an optimization approach in which a program assembles the key reasons for pushing the ad (geo, search term, featured product, etc.) into the creative online at delivery time, under the premise that the ad's basic appeal stays stable.
+- **Click Heatmap** — a tool that visualizes the click density of each position of a creative; used both to guide creative iteration semi-quantitatively and to detect machine click flooding through distribution shape (too uniform / too concentrated).
+- **A/B Testing** — an experimental method that splits real traffic into a control group and a treatment group running the original and the new scheme respectively, with online metrics adjudicating which is better.
+- **Experimentation Framework** — the online system supporting A/B testing, responsible for traffic splitting, parameter distribution, and metric collection; the infrastructure underlying the evolution speed of an ad system.
+- **Experiment Layer and Domain** — a layer is a container of experiment parameters divided by system module (retrieval / ranking / display); a domain is a traffic subset split within a layer by user-ID hashing; all of a user's requests deterministically land in the same domain (mutual exclusion within a layer).
+- **Layered Experimentation** — a framework that expands experiment capacity by exploiting the relative independence of modules: mutual exclusion within layers, orthogonality across layers, a reserved non-overlapping domain for cross-layer joint tuning, and a companion publishing layer for gray-scale release.
+- **Orthogonality** — the traffic splits of different experiment layers are independent of one another, so the same traffic can be reused by multiple layers and experiment capacity grows linearly with the number of layers.
+- **AA Test** — a controlled experiment in which both groups run under exactly identical configurations, used to verify even splitting and consistent log definitions; a significant AA difference means the experimentation framework itself is biased.
+- **Ad Monitoring** — a service in which the demand side commissions an independent third party to perform verification measurement of impressions, clicks, or conversions (about 1% of brand campaign budgets); its core vehicle is the **monitoring URL** that packs together ad/media/user information.
+- **Brand Safety** — the requirement that ads not appear on content that damages the brand image, implemented by **advertising verification** (stop serving and switch creatives upon detecting unsafe content; the engineering core is iframe penetration to obtain the top-level URL).
+- **Viewability** — verification of whether an ad impression was actually seen by the user (rendered); defined today by MRC-style dual thresholds on area and duration, and one of the settlement metrics for brand buying.
+- **Non-Human Traffic (NHT)** — fraud in which the impressions, clicks, or conversions themselves are fabricated; the mainstream of CPM/CPC ad fraud, subdivided by method into machine fraud and human-operated fraud.
+- **Attribution Fraud** — fraud that credits traffic from other channels or organic traffic to oneself; common in CPA/CPS advertising, where fabricating conversions is expensive.
+- **Click Spam / Click Flooding** — a tactic that fabricates clicks for a large number of users and waits for their organic downloads to be attributed to the channel; smoking guns are CVR 1–2 orders of magnitude low and a near-uniform click-to-conversion time distribution.
+- **Click Injection** — a tactic that exploits the Android install broadcast to fire a make-up click at the instant an app is installed, snatching attribution for the subsequent activation; signature: abnormally high CVR and an extremely short click-to-activation gap.
+- **Cookie Stuffing** — attribution fraud in CPS affiliate advertising: silently planting a source cookie via hidden requests without the user clicking, hijacking organic conversions.
+- **Traffic Hijacking** — quasi-fraud committed by operators of underlying network services that forcibly place ads where they have no right to serve or tamper with creatives/landing pages (channel pop-ups, creative replacement, search redirection, landing-page source hijacking); the first three harm media, source hijacking harms advertisers.
+- **Device Farm** — a human-operated fraud form in which real people with real devices mass-produce browse-click-convert sequences; every dimension of the data looks genuine, requiring device clustering and association networks for detection.
+- **Device Fingerprint** — a unique device identifier assembled from hardware and environment characteristics, used to track fraud sources across IPs/cookies and build device reputation scores.
+- **Graph-based Fraud Detection** — connecting devices, IPs, accounts, and payment paths into an association network and exploiting the highly clustered structure of fraud rings to expose group characteristics that no single record can disguise.
 _The glossary covers the full book: Volume I (Ch0–Ch4, Parts 1–5), Volume II (Ch5–Ch10, Parts 6–11), and the Special Topic (Part 12, Computational Advertising)._

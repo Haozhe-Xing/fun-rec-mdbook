@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="640" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Ad Fraud Tactics and Countermeasure Matrix</text>
+  <text x="400" y="52" text-anchor="middle" font-size="12" fill="#64748b">who cheats → how they cheat → what statistical tell they leave → how to counter it</text>
+
+  <!-- Top strip: who cheats -->
+  <rect x="24" y="66" width="240" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="144" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6CF7">Media fraud</text>
+  <text x="144" y="108" text-anchor="middle" font-size="11" fill="#64748b">mainly click fraud, plus fake impressions</text>
+  <rect x="280" y="66" width="240" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6CF7">Ad platform fraud</text>
+  <text x="400" y="108" text-anchor="middle" font-size="11" fill="#64748b">fake clicks for revenue share · DSP fake conversions</text>
+  <rect x="536" y="66" width="240" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="656" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6CF7">Advertiser competitors</text>
+  <text x="656" y="108" text-anchor="middle" font-size="11" fill="#64748b">maliciously draining rivals' budgets</text>
+
+  <!-- Table header -->
+  <rect x="24" y="140" width="196" height="34" rx="8" fill="#1e293b"/>
+  <text x="122" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Common fraud tactic</text>
+  <rect x="228" y="140" width="110" height="34" rx="8" fill="#1e293b"/>
+  <text x="283" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Fraud type</text>
+  <rect x="346" y="140" width="430" height="34" rx="8" fill="#1e293b"/>
+  <text x="561" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Statistical tell and countermeasure</text>
+
+  <!-- Row 1 -->
+  <rect x="24" y="182" width="196" height="42" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="34" y="207" font-size="12.5" font-weight="bold" fill="#1e293b">Monitoring spoofing (server)</text>
+  <rect x="228" y="182" width="110" height="42" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="283" y="207" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">Fake traffic</text>
+  <rect x="346" y="182" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="207" font-size="12" fill="#1e293b">datacenter IPs concentrated → block IDC IP ranges, detect proxy IPs</text>
+
+  <!-- Row 2 -->
+  <rect x="24" y="232" width="196" height="42" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="34" y="257" font-size="12.5" font-weight="bold" fill="#1e293b">Monitoring spoofing (client)</text>
+  <rect x="228" y="232" width="110" height="42" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="283" y="257" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">Fake traffic</text>
+  <rect x="346" y="232" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="251" font-size="12" fill="#1e293b">frequency clusters at 8/16/24/32 → Fourier base-frequency detection;</text>
+  <text x="358" y="268" font-size="12" fill="#64748b">click heatmap: machine clicks too uniform or too concentrated</text>
+
+  <!-- Row 3 -->
+  <rect x="24" y="282" width="196" height="42" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="34" y="307" font-size="12.5" font-weight="bold" fill="#1e293b">Frequent identity rotation</text>
+  <rect x="228" y="282" width="110" height="42" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="283" y="307" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">Fake traffic</text>
+  <rect x="346" y="282" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="301" font-size="12" fill="#1e293b">single IP / cookie over cap → frequency caps + blacklist;</text>
+  <text x="358" y="318" font-size="12" fill="#64748b">DSP side: first-seen device IDs are excluded from bidding</text>
+
+  <!-- Row 4 -->
+  <rect x="24" y="332" width="196" height="42" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="34" y="357" font-size="12.5" font-weight="bold" fill="#1e293b">Bots and rooted phones</text>
+  <rect x="228" y="332" width="110" height="42" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="283" y="357" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">Fake traffic</text>
+  <rect x="346" y="332" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="351" font-size="12" fill="#1e293b">data indistinguishable from real users → device fingerprints,</text>
+  <text x="358" y="368" font-size="12" fill="#64748b">root / jailbreak detection, behavioral-sequence anomaly checks</text>
+
+  <!-- Row 5 -->
+  <rect x="24" y="382" width="196" height="42" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="34" y="407" font-size="12.5" font-weight="bold" fill="#1e293b">Traffic hijacking (pop-ups)</text>
+  <rect x="228" y="382" width="110" height="42" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="283" y="407" text-anchor="middle" font-size="12" font-weight="bold" fill="#64748b">Quasi-fraud</text>
+  <rect x="346" y="382" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="401" font-size="12" fill="#1e293b">multi-layer iframe URL disguise → iframe penetration to top URL,</text>
+  <text x="358" y="418" font-size="12" fill="#64748b">pre-bid blocking; landing-page source hijacking hurts advertisers</text>
+
+  <!-- Row 6 -->
+  <rect x="24" y="432" width="196" height="42" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="34" y="457" font-size="12.5" font-weight="bold" fill="#1e293b">Cookie stuffing (CPS)</text>
+  <rect x="228" y="432" width="110" height="42" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2"/>
+  <text x="283" y="457" text-anchor="middle" font-size="12" font-weight="bold" fill="#f59e0b">Attribution fraud</text>
+  <rect x="346" y="432" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="451" font-size="12" fill="#1e293b">silent source cookies steal organic conversions → no-click checks,</text>
+  <text x="358" y="468" font-size="12" fill="#64748b">cross-reconciliation of click rate and conversion rate</text>
+
+  <!-- Row 7 -->
+  <rect x="24" y="482" width="196" height="42" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="34" y="507" font-size="12.5" font-weight="bold" fill="#1e293b">Click spam (flooding)</text>
+  <rect x="228" y="482" width="110" height="42" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2"/>
+  <text x="283" y="507" text-anchor="middle" font-size="12" font-weight="bold" fill="#f59e0b">Attribution fraud</text>
+  <rect x="346" y="482" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="501" font-size="12" fill="#1e293b">CVR 1–2 orders of magnitude below normal; click-to-conversion</text>
+  <text x="358" y="518" font-size="12" fill="#64748b">time near-uniform in window → normal channels decay fast</text>
+
+  <!-- Row 8 -->
+  <rect x="24" y="532" width="196" height="42" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="34" y="557" font-size="12.5" font-weight="bold" fill="#1e293b">Click injection</text>
+  <rect x="228" y="532" width="110" height="42" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2"/>
+  <text x="283" y="557" text-anchor="middle" font-size="12" font-weight="bold" fill="#f59e0b">Attribution fraud</text>
+  <rect x="346" y="532" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="551" font-size="12" fill="#1e293b">clicks injected after install broadcast → abnormally high CVR,</text>
+  <text x="358" y="568" font-size="12" fill="#64748b">very short click-to-activation gap; store verifies download time</text>
+
+  <!-- Row 9 -->
+  <rect x="24" y="582" width="196" height="42" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="34" y="607" font-size="12.5" font-weight="bold" fill="#1e293b">Device farm (human-operated)</text>
+  <rect x="228" y="582" width="110" height="42" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2"/>
+  <text x="283" y="607" text-anchor="middle" font-size="12" font-weight="bold" fill="#f59e0b">Mixed fraud</text>
+  <rect x="346" y="582" width="430" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="358" y="601" font-size="12" fill="#1e293b">humans fake conversions → device reputation, IP/device clustering,</text>
+  <text x="358" y="618" font-size="12" fill="#64748b">device-account-IP association graph analysis</text>
+</svg>
