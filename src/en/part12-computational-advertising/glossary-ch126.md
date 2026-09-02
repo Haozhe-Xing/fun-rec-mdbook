@@ -1,0 +1,35 @@
+- **Data Observability** — the degree to which an advertising platform can directly observe user conversion behavior; the second axis that determines how deep the platform's optimization can go.
+- **Closed-loop Advertising** — advertising in which the entire chain of impression, click, order, and payment happens inside the platform's domain, with no data leaving the platform's ecosystem; also called the inner loop.
+- **Open-loop Advertising** — advertising in which the conversion happens outside the platform's domain (App Store, brand website, offline store), where the platform must rely on postbacks to learn about conversions; also called the outer loop.
+- **Inner-loop / Outer-loop** — the industry-wide alternative names (Douyin, Kuaishou, Facebook) for closed-loop/open-loop advertising.
+- **Semi-closed-loop** — the compromise form in which the advertiser posts back only some events (e.g., only activation, not payment), giving the platform an incomplete label set for partial optimization.
+- **Deep conversion bidding** — bidding that optimizes toward back-funnel behaviors such as payment, ROI, next-day retention, and 7-day ROI; feasible only when the platform can observe those behaviors.
+- **Shallow-funnel goal / Deep-funnel goal** — the two sets of optimization targets: the front funnel (impression, click, activation, form, registration) and the back funnel (payment, ROI, next-day retention, 7-day ROI), corresponding to the capability boundary of open-loop and closed-loop respectively.
+- **pDeepCVR** — the deep conversion probability of "click → payment/next-day retention", sitting deeper in the conversion funnel, with sparser samples and higher latency.
+- **Attribution** — the process of identifying which ad/channel brought about the key behavior in the advertising behavior chain.
+- **Attribution Model** — the allocation rule that decides how conversion credit is distributed across touchpoints; a convention, not objective fact.
+- **Last-click** — the attribution model that gives 100% credit to the last touchpoint before conversion; the mobile default.
+- **First-click** — the attribution model that gives 100% credit to the first touchpoint; used to measure top-of-funnel discovery.
+- **Linear Attribution** — the attribution model that divides credit equally among all touchpoints.
+- **Time-decay** — the attribution model that gives more credit to touchpoints closer to conversion; suits short-cycle intent-driven journeys.
+- **Position-based** — the attribution model that gives more credit to the first and last touchpoints and less to the middle (U-shaped); balances discovery and closing.
+- **Data-driven Attribution** — the attribution model in which an algorithm assigns credit automatically based on observed contributions; requires large amounts of conversion data.
+- **clickid** — the unique identifier issued by the media at the ad touchpoint (impression/click), used to bind the conversion to a specific ad during postback.
+- **Conversion postback** — the process by which the advertiser posts the device ID, clickid, and timestamp back to the media via SDK/API to report "this user has converted".
+- **Fallback attribution** — the attribution approach of falling back to ip + ua fuzzy matching when a device ID is unavailable; lower precision.
+- **Self-attribution** — the approach in which the platform/media completes attribution itself and claims the conversion; prone to double counting when multiple networks run in parallel.
+- **Non-self-attribution** — the approach in which the advertiser matches users to media information itself and completes attribution independently.
+- **Mobile Measurement Partner (MMP)** — a neutral third-party attribution/analytics platform (AppsFlyer, Adjust, Branch, Singular, Kochava) that arbitrates between the advertiser and the various ad networks.
+- **ATT (App Tracking Transparency)** — Apple's authorization framework since iOS 14.5; apps must show a prompt to access IDFA, with an opt-in rate of only about 25%.
+- **IDFA (Identifier for Advertisers)** — Apple's device-level advertising identifier; largely collapsed after ATT, and the unique user ID that deterministic attribution depended on.
+- **SKAdNetwork (SKAN)** — Apple's privacy-preserving install attribution framework that posts conversion data back in an aggregated, randomly delayed, crowd-anonymized way.
+- **Crowd Anonymity** — SKAN's privacy mechanism; it returns less information when install volume is low, preventing any single user from being reverse-identified.
+- **conversion value** — the user-interaction conversion value reported by the app through `updateConversionValue` in SKAN; SKAN 4.0 introduces coarse and fine variants.
+- **Postback window** — SKAN 4.0's postback cadence: roughly 0–2 days, 3–7 days, and 8–35 days; conversion data flows back in batches with random delay.
+- **Hierarchical source identifier** — SKAN 4.0's 4-digit hierarchical source identifier (first 2 digits campaign, 3rd digit position, 4th digit placement); more digits returned as the crowd anonymity level rises.
+- **Android Privacy Sandbox** — Google's cookieless attribution solution, containing the Attribution Reporting API and the Topics API.
+- **Attribution Reporting API** — the Privacy Sandbox component that provides event-level and aggregated attribution reports, with differential privacy noise on aggregated reports.
+- **Differential Privacy** — the technique of injecting calibrated noise into aggregate statistics to protect individual privacy; used in Privacy Sandbox attribution reports.
+- **Deterministic attribution / Probabilistic attribution** — precise attribution relying on a device-level unique identifier vs statistical attribution relying on aggregated/fuzzy signals; the privacy wave pushes the former to collapse into the latter.
+- **First-party Data** — data that an enterprise collects directly from and lawfully with its users; the strategic direction after cross-app tracking is restricted.
+- **Modeling-based Estimation** — the estimation method that trains a model on the observable portion (SKAN + authorized deterministic data) and extrapolates to fill the "unattributable" gap.

@@ -6,21 +6,21 @@
     <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
   </defs>
 
-  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">PRM 整体架构：输入 → Transformer 编码 → 列表级 Softmax</text>
+  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">PRM Architecture: Input → Transformer Encoding → List-Wise Softmax</text>
 
   <!-- initial list -->
   <rect x="250" y="50" width="300" height="34" rx="8" fill="#f8f9fc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="400" y="72" text-anchor="middle" font-size="12.5" fill="#1e293b">初始排序列表 S = [i₁, i₂, …, iₙ]（带精排分数）</text>
+  <text x="400" y="72" text-anchor="middle" font-size="11" fill="#1e293b">Initial list S = [i₁, …, iₙ] + ranking scores</text>
   <line x1="400" y1="84" x2="400" y2="104" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- input layer -->
   <rect x="160" y="106" width="480" height="90" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2" filter="url(#sh)"/>
-  <text x="400" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#ea580c">① 输入层：E = [xⱼ ; pvⱼ] + peⱼ</text>
-  <g font-size="11.5" fill="#1e293b">
-    <rect x="185" y="136" width="120" height="26" rx="6" fill="#e8ecff"/><text x="245" y="153" text-anchor="middle">物品特征 xⱼ</text>
-    <rect x="320" y="136" width="120" height="26" rx="6" fill="#fde68a"/><text x="380" y="153" text-anchor="middle">个性化 pvⱼ</text>
-    <rect x="455" y="136" width="120" height="26" rx="6" fill="#dcfce7"/><text x="515" y="153" text-anchor="middle">位置嵌入 peⱼ</text>
-    <text x="400" y="184" text-anchor="middle" font-size="11" fill="#64748b">拼接物品与个性化 + 注入位置 → 序列表示 E</text>
+  <text x="400" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#ea580c">① Input Layer: E = [xⱼ ; pvⱼ] + peⱼ</text>
+  <g font-size="11" fill="#1e293b">
+    <rect x="185" y="136" width="120" height="26" rx="6" fill="#e8ecff"/><text x="245" y="153" text-anchor="middle">Item Feat. xⱼ</text>
+    <rect x="320" y="136" width="120" height="26" rx="6" fill="#fde68a"/><text x="380" y="153" text-anchor="middle">Person. pvⱼ</text>
+    <rect x="455" y="136" width="120" height="26" rx="6" fill="#dcfce7"/><text x="515" y="153" text-anchor="middle">Pos. Emb. peⱼ</text>
+    <text x="400" y="184" text-anchor="middle" font-size="11" fill="#64748b">Concat item + personalization, inject position → sequence rep. E</text>
   </g>
   <line x1="400" y1="196" x2="400" y2="216" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
 

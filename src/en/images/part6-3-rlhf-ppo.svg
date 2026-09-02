@@ -4,32 +4,32 @@
     <filter id="sr" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.18"/></filter>
   </defs>
   <rect width="800" height="340" fill="#f8f9fc"/>
-  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">RLHF / PPO 偏好对齐流程</text>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">RLHF / PPO Preference Alignment Pipeline</text>
 
   <!-- stage 1 -->
   <rect x="40" y="80" width="220" height="80" rx="10" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sr)"/>
-  <text x="150" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#4A6CF7">STAGE 1 偏好数据</text>
-  <text x="150" y="132" text-anchor="middle" font-size="12" fill="#64748b">同 prompt 生成多输出</text>
-  <text x="150" y="150" text-anchor="middle" font-size="12" fill="#64748b">人类排序 (y_w, y_l)</text>
+  <text x="150" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#4A6CF7">STAGE 1 Preference Data</text>
+  <text x="150" y="132" text-anchor="middle" font-size="11" fill="#64748b">Multiple outputs per prompt</text>
+  <text x="150" y="150" text-anchor="middle" font-size="11" fill="#64748b">Human ranking (y_w, y_l)</text>
 
   <!-- stage 2 -->
   <rect x="290" y="80" width="220" height="80" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sr)"/>
-  <text x="400" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#f59e0b">STAGE 2 奖励模型</text>
-  <text x="400" y="132" text-anchor="middle" font-size="12" fill="#64748b">训练 RM: rφ(c,y)</text>
-  <text x="400" y="150" text-anchor="middle" font-size="12" fill="#64748b">产出奖励信号</text>
+  <text x="400" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#f59e0b">STAGE 2 Reward Model</text>
+  <text x="400" y="132" text-anchor="middle" font-size="11" fill="#64748b">Train RM: rφ(c, y)</text>
+  <text x="400" y="150" text-anchor="middle" font-size="11" fill="#64748b">Emit the reward signal</text>
 
   <!-- stage 3 -->
   <rect x="540" y="80" width="220" height="80" rx="10" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sr)"/>
-  <text x="650" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">STAGE 3 策略优化</text>
-  <text x="650" y="132" text-anchor="middle" font-size="12" fill="#64748b">PPO 更新策略 πθ</text>
-  <text x="650" y="150" text-anchor="middle" font-size="12" fill="#64748b">KL ≤ β 约束 ref</text>
+  <text x="650" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#10b981">STAGE 3 Policy Optimization</text>
+  <text x="650" y="132" text-anchor="middle" font-size="11" fill="#64748b">PPO updates policy πθ</text>
+  <text x="650" y="150" text-anchor="middle" font-size="11" fill="#64748b">Constrained by KL ≤ β to ref</text>
 
   <line x1="260" y1="120" x2="286" y2="120" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
   <line x1="510" y1="120" x2="536" y2="120" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- KL constraint loop -->
   <path d="M650,160 C650,210 400,210 400,160" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#ar)"/>
-  <text x="525" y="205" text-anchor="middle" font-size="11" fill="#10b981">KL 散度约束 ref 模型</text>
+  <text x="525" y="205" text-anchor="middle" font-size="11" fill="#10b981">KL divergence to the ref model</text>
 
-  <text x="400" y="280" text-anchor="middle" font-size="13" fill="#64748b">DPO 可省略 RM 与 RL：用策略/参考模型比值隐式表示奖励，训练似监督学习。</text>
+  <text x="400" y="280" text-anchor="middle" font-size="12" fill="#64748b">DPO drops RM and RL: the policy/reference ratio implicitly encodes reward, so training looks supervised.</text>
 </svg>

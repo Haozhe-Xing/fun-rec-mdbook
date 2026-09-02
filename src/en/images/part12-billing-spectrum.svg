@@ -1,0 +1,75 @@
+<svg width="800" height="440" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <filter id="shd" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="440" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">计费模式谱系：从「买时段」到「买销售」</text>
+
+  <!-- advertiser risk arrow (top) -->
+  <text x="400" y="58" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ef4444">广告主承担的风险：高 → 低</text>
+  <line x1="80" y1="74" x2="720" y2="74" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrA)"/>
+
+  <!-- five billing boxes -->
+  <!-- CPT/CPD -->
+  <rect x="40" y="100" width="136" height="170" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shd)"/>
+  <text x="108" y="126" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">CPT / CPD</text>
+  <text x="108" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">包时段 · 包天</text>
+  <text x="108" y="168" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">买断广告位</text>
+  <text x="108" y="188" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">媒体定价 · 省心</text>
+  <text x="108" y="208" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">计量粗糙</text>
+  <text x="108" y="238" text-anchor="middle" font-family="Arial" font-size="11.5" font-weight="bold" fill="#ef4444">风险全在广告主</text>
+
+  <!-- CPM -->
+  <rect x="186" y="100" width="136" height="170" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shd)"/>
+  <text x="254" y="126" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">CPM</text>
+  <text x="254" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">千次展示计费</text>
+  <text x="254" y="170" text-anchor="middle" font-family="Courier New" font-size="10" fill="#64748b">CPM=消耗/展现×1000</text>
+  <text x="254" y="192" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">平台保量 · eCPM 固定</text>
+  <text x="254" y="212" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">展示即付费</text>
+  <text x="254" y="238" text-anchor="middle" font-family="Arial" font-size="11.5" font-weight="bold" fill="#ef4444">风险在广告主</text>
+
+  <!-- CPC (highlighted balance point) -->
+  <rect x="332" y="100" width="136" height="170" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5" filter="url(#shd)"/>
+  <text x="400" y="126" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">CPC ⚖</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">每次点击计费</text>
+  <text x="400" y="170" text-anchor="middle" font-family="Courier New" font-size="10" fill="#64748b">CPC=消耗/点击</text>
+  <text x="400" y="192" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">点击价值归广告主</text>
+  <text x="400" y="212" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">平台用 CTR 预测管风险</text>
+  <text x="400" y="238" text-anchor="middle" font-family="Arial" font-size="11.5" font-weight="bold" fill="#10b981">风险双方共担（平衡点）</text>
+
+  <!-- CPA -->
+  <rect x="478" y="100" width="136" height="170" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shd)"/>
+  <text x="546" y="126" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">CPA</text>
+  <text x="546" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">每次行为计费</text>
+  <text x="546" y="168" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">注册 / 下单等行为</text>
+  <text x="546" y="192" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">点击率与价值皆动态</text>
+  <text x="546" y="212" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">平台做决策</text>
+  <text x="546" y="238" text-anchor="middle" font-family="Arial" font-size="11.5" font-weight="bold" fill="#d97706">风险归平台</text>
+
+  <!-- CPS -->
+  <rect x="624" y="100" width="136" height="170" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shd)"/>
+  <text x="692" y="126" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">CPS</text>
+  <text x="692" y="148" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">每次销售提成</text>
+  <text x="692" y="168" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">常见于网络联盟</text>
+  <text x="692" y="192" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1e293b">广告主规避费用风险</text>
+  <text x="692" y="212" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">最贴合效果反推</text>
+  <text x="692" y="238" text-anchor="middle" font-family="Arial" font-size="11.5" font-weight="bold" fill="#d97706">风险全归平台</text>
+
+  <!-- platform risk arrow (bottom) -->
+  <text x="400" y="292" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">平台承担的风险：低 → 高</text>
+  <line x1="80" y1="308" x2="720" y2="308" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrB)"/>
+
+  <!-- bottom notes -->
+  <rect x="30" y="326" width="740" height="96" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="50" y="352" font-family="Arial" font-size="12" fill="#1e293b">计费单位离最终转化越近，越贴合广告主「按效果反推单次广告价值」的模型，平台承担的风险也越大。</text>
+  <text x="50" y="376" font-family="Arial" font-size="12" fill="#1e293b">CPC 是折中点：广告主判断点击价值（出价），平台预估点击率（pCTR）——平台用 CTR 预测把风险管起来。</text>
+  <text x="50" y="400" font-family="Arial" font-size="12" fill="#64748b">决策归属：CPM 固定 eCPM → 广告主决策；CPC 价值归广告主、点击率归平台；CPA/CPS 两者皆动态 → 平台决策。</text>
+</svg>

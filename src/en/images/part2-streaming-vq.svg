@@ -9,45 +9,45 @@
   </defs>
   <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Streaming VQ：双塔 + 量化索引 + EMA 实时更新</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Streaming VQ: Two-Tower + Quantized Index + Real-Time EMA Update</text>
 
   <!-- twin tower -->
   <rect x="40" y="70" width="200" height="90" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="140" y="95" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">双塔 (索引步)</text>
+  <text x="140" y="95" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Two-Tower (index step)</text>
   <text x="140" y="118" text-anchor="middle" font-family="Courier New" font-size="11" fill="#1e293b">u, v ← DNN</text>
-  <text x="140" y="138" text-anchor="middle" font-family="Courier New" font-size="10" fill="#64748b">L_aux 对比学习</text>
+  <text x="140" y="138" text-anchor="middle" font-family="Courier New" font-size="10" fill="#64748b">L_aux contrastive loss</text>
 
   <line x1="240" y1="115" x2="298" y2="115" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- quantize -->
   <rect x="310" y="70" width="170" height="90" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
-  <text x="395" y="95" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">向量量化 Q</text>
+  <text x="395" y="95" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1e293b">Vector Quantization Q</text>
   <text x="395" y="118" text-anchor="middle" font-family="Courier New" font-size="10" fill="#1e293b">k* = argmin ‖eᵏ-v‖²</text>
-  <text x="395" y="138" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">物品→聚类</text>
+  <text x="395" y="138" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">item → cluster</text>
 
   <line x1="480" y1="115" x2="538" y2="115" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- index -->
   <rect x="550" y="70" width="210" height="90" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
-  <text x="655" y="95" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#065f46">流式索引</text>
-  <text x="655" y="116" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">聚类中心 eᵏ</text>
-  <text x="655" y="136" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">实时写参数服务器</text>
+  <text x="655" y="95" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#065f46">Streaming Index</text>
+  <text x="655" y="116" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">cluster centroids eᵏ</text>
+  <text x="655" y="136" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">written live to param server</text>
 
   <!-- EMA loop -->
   <path d="M655,160 C655,210 500,210 395,165" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
   <rect x="500" y="178" width="150" height="34" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="575" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">EMA 更新中心</text>
+  <text x="575" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">EMA centroid update</text>
 
   <!-- service -->
   <rect x="40" y="220" width="360" height="60" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="220" y="244" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">服务：归并排序</text>
+  <text x="220" y="244" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">Serving: merge sort</text>
   <text x="220" y="266" text-anchor="middle" font-family="Courier New" font-size="11" fill="#1e293b">score = uᵀQ(v) + v_bias</text>
 
   <!-- balance note -->
   <rect x="440" y="220" width="320" height="60" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
-  <text x="600" y="244" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">索引平衡性</text>
-  <text x="600" y="266" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">L_ind + 流行度调节 + 扰动</text>
+  <text x="600" y="244" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">Index Balance</text>
+  <text x="600" y="266" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">L_ind + popularity control + noise</text>
 
   <rect x="0" y="305" width="800" height="35" fill="#1e293b" rx="0 0 12 12"/>
-  <text x="400" y="328" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">L_aux 替代 L_sim → 物品优先，索引实时自适应</text>
+  <text x="400" y="328" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">L_aux replaces L_sim → item-first, index adapts in real time</text>
 </svg>

@@ -5,11 +5,11 @@
     </filter>
   </defs>
 
-  <text x="40" y="40" font-size="16" font-weight="700" fill="#1e293b">行列式 = 列向量张成的「体积」：越大越正交，多样性越高</text>
+  <text x="40" y="40" font-size="15" font-weight="700" fill="#1e293b">Determinant = Volume Spanned by Column Vectors: Larger = More Orthogonal, More Diverse</text>
 
   <!-- Left: collinear -->
   <rect x="40" y="70" width="350" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
-  <text x="215" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#ef4444">共线 · 多样性低（det = 0）</text>
+  <text x="215" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#ef4444">Collinear · Low Diversity (det = 0)</text>
   <!-- axes -->
   <line x1="90" y1="320" x2="90" y2="120" stroke="#64748b" stroke-width="1.5"/>
   <line x1="90" y1="320" x2="330" y2="320" stroke="#64748b" stroke-width="1.5"/>
@@ -23,7 +23,7 @@
 
   <!-- Right: orthogonal -->
   <rect x="410" y="70" width="350" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
-  <text x="585" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">正交 · 多样性高（det 大）</text>
+  <text x="585" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">Orthogonal · High Diversity (large det)</text>
   <line x1="460" y1="320" x2="460" y2="120" stroke="#64748b" stroke-width="1.5"/>
   <line x1="460" y1="320" x2="700" y2="320" stroke="#64748b" stroke-width="1.5"/>
   <!-- parallelogram area -->
@@ -37,5 +37,5 @@
 
   <!-- bottom takeaway -->
   <rect x="40" y="362" width="720" height="0" />
-  <text x="400" y="372" text-anchor="middle" font-size="12.5" fill="#64748b">几何直觉：向量越「塌缩」在一条线上（相似度高），张成的体积越小 → 行列式越小 → 多样性越低。</text>
+  <text x="400" y="372" text-anchor="middle" font-size="11" fill="#64748b">Geometric intuition: vectors collapsing onto one line (high similarity) span less volume - smaller det - lower diversity.</text>
 </svg>

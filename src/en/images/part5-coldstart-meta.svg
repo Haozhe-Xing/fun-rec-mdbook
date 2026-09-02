@@ -9,29 +9,29 @@
   </defs>
   <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">MetaEmbedding：元学习「可快速适应」的初始 Embedding</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">MetaEmbedding: Meta-Learning a Fast-Adapting Initial Embedding</text>
 
   <!-- Stage A -->
   <rect x="40" y="70" width="340" height="120" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shM)"/>
-  <text x="210" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">阶段 A：初始 Embedding 生成</text>
+  <text x="210" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">Stage A: Initial Embedding Generation</text>
   <text x="210" y="126" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">φ_init = h_w(u_i)</text>
-  <text x="210" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">在 D_a 上算损失 l_a(φ_init)</text>
-  <text x="210" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">模拟「冷启动」初始状态</text>
+  <text x="210" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Loss l_a(φ_init) computed on D_a</text>
+  <text x="210" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Simulates the cold-start state</text>
 
   <!-- Stage B -->
   <rect x="420" y="70" width="340" height="120" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shM)"/>
-  <text x="590" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">阶段 B：梯度适应与评估</text>
+  <text x="590" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">Stage B: Gradient Adaptation and Eval</text>
   <text x="590" y="126" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">φ' = φ_init − a·∇l_a(φ_init)</text>
-  <text x="590" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">在 D_b 上算损失 l_b(φ')</text>
-  <text x="590" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">模拟「少量交互后」适应</text>
+  <text x="590" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Loss l_b(φ') computed on D_b</text>
+  <text x="590" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Simulates warm-up after a few clicks</text>
 
   <line x1="380" y1="130" x2="418" y2="130" stroke="#10b981" stroke-width="2" marker-end="url(#arrM)"/>
 
   <!-- meta loss -->
   <rect x="200" y="220" width="400" height="56" rx="8" fill="#1e293b" filter="url(#shM)"/>
   <text x="400" y="246" text-anchor="middle" font-family="Courier New" font-size="13" fill="#e2e8f0">l_meta = α·l_a(φ_init) + (1−α)·l_b(φ')</text>
-  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">兼顾初始质量与快速适应能力 → 更新生成器 w</text>
+  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="10" fill="#94a3b8">Balances initial quality and fast adaptation → updates generator w</text>
 
   <rect x="0" y="280" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
-  <text x="400" y="304" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">优化的是「可学习性」，而非某个固定 embedding</text>
+  <text x="400" y="304" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">It optimizes learnability, not one fixed embedding</text>
 </svg>

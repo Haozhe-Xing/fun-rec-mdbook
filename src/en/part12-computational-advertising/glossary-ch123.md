@@ -1,0 +1,26 @@
+- **Auction Mechanism** — the institutional design governing how ad slots are allocated and priced, consisting of an allocation rule and a pricing rule.
+- **Position Auction** — the auction model in which multiple advertisers compete for multiple slots differing only in click-through rate; expected value $u_{is} = v_i \cdot x_s$.
+- **Valuation** — the advertiser's true value judgment of one click; private information invisible to the platform.
+- **Bid** — the per-click price the advertiser declares to the platform as willing to pay (on a CPC basis).
+- **Position CTR** — the click-through rate $x_s$ of slot $s$; larger for more forward positions, and the only difference between slots.
+- **Allocation Rule** — the rule within a mechanism deciding "who wins which slot"; in auction advertising, usually assignment in descending order of bid (times quality score).
+- **Pricing Rule** — the rule within a mechanism deciding "how much the winner pays"; it determines whether advertisers are willing to bid truthfully.
+- **Generalized First Price (GFP)** — the mechanism that allocates slots by ranking bids with everyone paying their own bid; has no pure-strategy Nash equilibrium, causes market oscillation, and is now obsolete.
+- **Nash Equilibrium** — a strategy profile in which no player can gain by unilaterally changing its own strategy.
+- **Pure-Strategy Nash Equilibrium** — a Nash equilibrium in which each player commits to one deterministic strategy; none exists under GFP.
+- **Second-Price Auction / Vickrey Auction** — a single-slot auction where the highest bidder wins and pays the second-highest bid; truthful bidding is a dominant strategy.
+- **Dominant Strategy** — a strategy that is optimal regardless of how opponents act; in the second-price auction, truth-telling is a dominant strategy.
+- **Generalized Second Price (GSP)** — the mechanism where the rank-$i$ advertiser pays the next bidder's eCPM converted as $p_i = b_{i+1}x_{i+1}/x_i$ and the last rank pays the reserve price; widely adopted by online advertising systems.
+- **Reserve Price** — the minimum transaction price set by the platform; paid by the last-ranked advertiser or when there is no competitor.
+- **Incentive Compatibility (IC)** — the property that truthfully reporting one's valuation is a dominant strategy: misreporting cannot raise utility.
+- **Individual Rationality (IR)** — participation in the auction never leaves the participant with negative utility, i.e., payment does not exceed the declared value $p_i \le b_i$.
+- **Truth-telling** — the behavior of bidding one's true valuation $b_i = v_i$; satisfied by the VCG market as a whole, not by GSP.
+- **Symmetric Nash Equilibrium (SNE)** — the stable equilibrium that exists under GSP, satisfying the envy-free property.
+- **Envy-free** — the allocation property that in equilibrium no one wants to swap positions with another: taking another's position requires paying their price, yielding no utility gain.
+- **VCG Mechanism (Vickrey-Clarke-Groves)** — the mechanism charging each participant the externality damage it imposes on the others; the market as a whole is truth-telling, and it degenerates to second-price with a single slot.
+- **Externality** — the welfare loss that one participant's presence imposes on all other participants, i.e., "how much more the others could have earned without you."
+- **Winner's Curse** — the situation of winning a slot above one's own valuation through an inflated bid and suffering negative utility; common under first-price auctions.
+- **First-Price Auction** — the auction where the winner pays their own bid; re-adopted around 2019 by leading ADXs in programmatic open auctions.
+- **Header Bidding** — the technique where publishers send traffic to multiple demand sides for pre-bidding before the main auction; its spread fueled the multi-level resale chain and the return to first-price.
+- **Bid Shading** — the bidding strategy under first-price auctions by which a DSP presses its bid toward "the lowest price that still wins" based on the win-probability distribution; the core competency of the first-price era.
+- **Smart Bidding** — the bidding product form where the platform bids on the advertiser's behalf (e.g., OCPC by target conversion cost) and converts the bid into the ranking model.

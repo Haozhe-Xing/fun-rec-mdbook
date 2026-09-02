@@ -6,27 +6,27 @@
   </defs>
   <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">推荐系统生态：三角平衡</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">Recommender Ecosystem: A Three-Way Balance</text>
 
   <!-- Triangle -->
   <polygon points="400,70 200,250 600,250" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2.5" filter="url(#sh4)"/>
 
   <!-- Vertex labels -->
   <circle cx="400" cy="70" r="44" fill="#4A6CF7" filter="url(#sh4)"/>
-  <text x="400" y="66" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">用户</text>
-  <text x="400" y="84" text-anchor="middle" font-family="Arial" font-size="13" fill="#dbeafe">创作者</text>
+  <text x="400" y="66" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">Users</text>
+  <text x="400" y="84" text-anchor="middle" font-family="Arial" font-size="13" fill="#dbeafe">Creators</text>
 
   <circle cx="200" cy="250" r="44" fill="#10b981" filter="url(#sh4)"/>
-  <text x="200" y="254" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">内容</text>
+  <text x="200" y="254" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">Content</text>
 
   <circle cx="600" cy="250" r="44" fill="#f59e0b" filter="url(#sh4)"/>
-  <text x="600" y="254" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">平台</text>
+  <text x="600" y="254" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">Platform</text>
 
   <!-- center -->
-  <text x="400" y="180" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">长期健康生态</text>
-  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">动态平衡 · 多方共赢</text>
+  <text x="400" y="180" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">Long-term healthy ecosystem</text>
+  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Dynamic balance · win-win for all sides</text>
 
   <!-- UGC/PGC/AIGC note -->
   <rect x="120" y="300" width="560" height="0" fill="none"/>
-  <text x="400" y="306" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">内容供给：UGC（大众）· PGC（专业）· AIGC（AI 辅助）共同构成分发池</text>
+  <text x="400" y="306" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Content supply: UGC (crowd) · PGC (professional) · AIGC (AI-assisted) form the distribution pool</text>
 </svg>

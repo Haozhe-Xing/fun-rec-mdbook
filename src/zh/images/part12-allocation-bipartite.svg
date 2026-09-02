@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="520" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">在线分配的供给/需求二部图</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">供给节点 = 标签相同的流量库（存量 s）· 需求节点 = 合约（约定量 d）· 决策变量 = 分配比例 x</text>
+
+  <!-- Demand nodes (top) -->
+  <g filter="url(#shadow)">
+    <rect x="90" y="100" width="180" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="180" y="124" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">合约 a₁：25-35岁女性</text>
+    <text x="180" y="145" text-anchor="middle" font-size="12" fill="#4A6CF7" font-weight="bold">约定量 d₁ = 400 mille</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="330" y="100" width="180" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="420" y="124" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">合约 a₂：女性 ∨ 地域X</text>
+    <text x="420" y="145" text-anchor="middle" font-size="12" fill="#4A6CF7" font-weight="bold">约定量 d₂ = 500 mille</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="570" y="100" width="180" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="660" y="124" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">合约 a₃：年龄≤25</text>
+    <text x="660" y="145" text-anchor="middle" font-size="12" fill="#4A6CF7" font-weight="bold">约定量 d₃ = 300 mille</text>
+  </g>
+
+  <!-- Edges: labels satisfied -->
+  <!-- a1 (cx 180) connects s1, s2 ; a2 (cx 420) connects s1..s4 ; a3 (cx 660) connects s5, s6 -->
+  <g stroke="#94a3b8" stroke-width="2" opacity="0.75">
+    <line x1="180" y1="158" x2="140" y2="272"/>
+    <line x1="180" y1="158" x2="320" y2="272"/>
+    <line x1="420" y1="158" x2="140" y2="272"/>
+    <line x1="420" y1="158" x2="320" y2="272"/>
+    <line x1="420" y1="158" x2="500" y2="272"/>
+    <line x1="420" y1="158" x2="680" y2="272"/>
+    <line x1="660" y1="158" x2="500" y2="272"/>
+    <line x1="660" y1="158" x2="680" y2="272"/>
+  </g>
+
+  <!-- Supply nodes (middle row) -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="272" width="160" height="54" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="140" y="294" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">s₁ {女性, 北上广}</text>
+    <text x="140" y="314" text-anchor="middle" font-size="12" fill="#10b981" font-weight="bold">s₁ = 200 mille</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="240" y="272" width="160" height="54" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="320" y="294" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">s₂ {女性}</text>
+    <text x="320" y="314" text-anchor="middle" font-size="12" fill="#10b981" font-weight="bold">s₂ = 400 mille</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="420" y="272" width="160" height="54" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="500" y="294" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">s₃ {地域X}</text>
+    <text x="500" y="314" text-anchor="middle" font-size="12" fill="#10b981" font-weight="bold">s₃ = 500 mille</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="600" y="272" width="160" height="54" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="680" y="294" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">s₄ {年龄≤25}</text>
+    <text x="680" y="314" text-anchor="middle" font-size="12" fill="#10b981" font-weight="bold">s₄ = 300 mille</text>
+  </g>
+
+  <!-- Decision annotation -->
+  <line x1="140" y1="326" x2="140" y2="380" stroke="#64748b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <rect x="150" y="356" width="520" height="64" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="410" y="381" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">决策变量：分配比例 x（把 sᵢ 的多大比例分给 a）</text>
+  <text x="410" y="403" text-anchor="middle" font-size="13" fill="#64748b">目标 max Σ sᵢxᵢₐrᵢₐ ，约束：Σ xᵢₐ ≤ 1（不超卖）· Σ sᵢxᵢₐqᵢₐ ≥ dₐ（不欠量）</text>
+
+  <!-- Bottom legend -->
+  <g font-size="12">
+    <rect x="70" y="448" width="14" height="14" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="92" y="460" fill="#1e293b">需求节点（合约：定向 + 约定量）</text>
+    <rect x="330" y="448" width="14" height="14" rx="3" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="352" y="460" fill="#1e293b">供给节点（标签组合的流量库）</text>
+    <rect x="570" y="448" width="14" height="14" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="592" y="460" fill="#1e293b">优化框架（带约束的分配）</text>
+    <text x="400" y="496" text-anchor="middle" fill="#64748b">边的含义：供给节点的受众标签满足合约的定向要求 · 供给节点数随定向条件呈几何级数上升</text>
+  </g>
+</svg>

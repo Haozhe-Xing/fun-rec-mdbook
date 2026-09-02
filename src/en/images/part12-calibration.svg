@@ -1,0 +1,80 @@
+<svg width="800" height="480" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrCl" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="800" height="480" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="30" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">可靠性图：过度自信与保序回归修正</text>
+
+  <!-- plot area -->
+  <rect x="130" y="80" width="510" height="300" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+
+  <!-- grid lines -->
+  <line x1="232" y1="80" x2="232" y2="380" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="334" y1="80" x2="334" y2="380" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="436" y1="80" x2="436" y2="380" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="538" y1="80" x2="538" y2="380" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="130" y1="320" x2="640" y2="320" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="130" y1="260" x2="640" y2="260" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="130" y1="200" x2="640" y2="200" stroke="#e8ecff" stroke-width="1"/>
+  <line x1="130" y1="140" x2="640" y2="140" stroke="#e8ecff" stroke-width="1"/>
+
+  <!-- tick labels x -->
+  <text x="130" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">0</text>
+  <text x="232" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">0.2</text>
+  <text x="334" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">0.4</text>
+  <text x="436" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">0.6</text>
+  <text x="538" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">0.8</text>
+  <text x="640" y="400" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">1.0</text>
+  <text x="385" y="424" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b">预测概率（分桶 conf）</text>
+
+  <!-- tick labels y -->
+  <text x="120" y="384" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">0</text>
+  <text x="120" y="324" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">0.2</text>
+  <text x="120" y="264" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">0.4</text>
+  <text x="120" y="204" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">0.6</text>
+  <text x="120" y="144" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">0.8</text>
+  <text x="120" y="84" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">1.0</text>
+  <text x="62" y="230" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b" transform="rotate(-90 62 230)">实际正例率（acc）</text>
+
+  <!-- perfect calibration diagonal -->
+  <line x1="130" y1="380" x2="640" y2="80" stroke="#64748b" stroke-width="2" stroke-dasharray="6,5"/>
+  <text x="636" y="72" text-anchor="end" font-family="Arial" font-size="11" fill="#64748b">完美校准（对角线）</text>
+
+  <!-- overconfident curve (below diagonal) -->
+  <polyline points="181,365 283,326 385,275 487,224 589,170" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+  <circle cx="181" cy="365" r="5" fill="#ef4444"/>
+  <circle cx="283" cy="326" r="5" fill="#ef4444"/>
+  <circle cx="385" cy="275" r="5" fill="#ef4444"/>
+  <circle cx="487" cy="224" r="5" fill="#ef4444"/>
+  <circle cx="589" cy="170" r="5" fill="#ef4444"/>
+
+  <!-- isotonic corrected curve -->
+  <polyline points="181,353 283,290 385,227 487,167 589,110" fill="none" stroke="#10b981" stroke-width="2.5"/>
+  <circle cx="181" cy="353" r="5" fill="#10b981"/>
+  <circle cx="283" cy="290" r="5" fill="#10b981"/>
+  <circle cx="385" cy="227" r="5" fill="#10b981"/>
+  <circle cx="487" cy="167" r="5" fill="#10b981"/>
+  <circle cx="589" cy="110" r="5" fill="#10b981"/>
+
+  <!-- correction arrows -->
+  <line x1="385" y1="269" x2="385" y2="233" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrCl)"/>
+  <line x1="589" y1="164" x2="589" y2="116" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrCl)"/>
+
+  <!-- annotation -->
+  <text x="560" y="196" text-anchor="end" font-family="Arial" font-size="11" fill="#ef4444">预测 0.9 的桶，实际正例率仅 0.70</text>
+
+  <!-- legend -->
+  <rect x="655" y="92" width="132" height="92" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <line x1="667" y1="112" x2="697" y2="112" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="703" y="116" font-family="Arial" font-size="11" fill="#1e293b">校准前</text>
+  <line x1="667" y1="138" x2="697" y2="138" stroke="#10b981" stroke-width="2.5"/>
+  <text x="703" y="142" font-family="Arial" font-size="11" fill="#1e293b">保序回归后</text>
+  <line x1="667" y1="164" x2="697" y2="164" stroke="#64748b" stroke-width="2" stroke-dasharray="6,5"/>
+  <text x="703" y="168" font-family="Arial" font-size="11" fill="#1e293b">完美校准</text>
+
+  <!-- bottom notes -->
+  <text x="50" y="450" font-family="Arial" font-size="11.5" fill="#1e293b">ECE = Σ |B_m|/n · |acc(B_m) − conf(B_m)|：校准前各桶系统性低于对角线（过度自信）；保序回归（PAVA）修正后各桶贴近对角线，ECE 显著下降。</text>
+  <text x="50" y="470" font-family="Arial" font-size="11.5" fill="#64748b">两类方法均需在独立验证集上拟合：Platt scaling 参数少、适合小样本；保序回归灵活、适合大样本，但稀疏高分桶易过拟合。</text>
+</svg>

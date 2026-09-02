@@ -9,7 +9,7 @@
   </defs>
   <rect x="0" y="0" width="800" height="250" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">分布假说：一个词的意义由它常伴随的词决定</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Distributional Hypothesis: a word's meaning comes from the words around it</text>
 
   <!-- sentence row -->
   <!-- Tom (outside) -->
@@ -36,9 +36,9 @@
 
   <!-- window bracket -->
   <path d="M151,142 H649 M151,142 V152 M649,142 V152" stroke="#10b981" stroke-width="2" fill="none"/>
-  <text x="400" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">滑动窗口 m = 2（中心词左右各 2 个词为上下文）</text>
+  <text x="400" y="170" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">Sliding window m = 2 (2 words on each side of the center word are context)</text>
 
   <line x1="400" y1="180" x2="400" y2="205" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow)"/>
   <rect x="220" y="208" width="360" height="30" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="400" y="228" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">这些共现词共同塑造「loves」的语义向量</text>
+  <text x="400" y="228" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">These co-occurring words shape the vector of "loves"</text>
 </svg>

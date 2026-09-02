@@ -1,0 +1,70 @@
+<svg width="800" height="430" viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrE" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="shdE" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="430" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">eCPM 排序：把「点击概率 × 出价」折算成同一把尺子</text>
+
+  <!-- candidates label -->
+  <text x="120" y="62" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#64748b">候选广告（CPC 计费）</text>
+
+  <!-- candidate A -->
+  <rect x="30" y="74" width="180" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdE)"/>
+  <text x="120" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">广告 A</text>
+  <text x="120" y="118" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">bid 2.0 元 · pCTR 3%</text>
+
+  <!-- candidate B -->
+  <rect x="30" y="148" width="180" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdE)"/>
+  <text x="120" y="172" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">广告 B</text>
+  <text x="120" y="192" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">bid 5.0 元 · pCTR 1%</text>
+
+  <!-- candidate C -->
+  <rect x="30" y="222" width="180" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdE)"/>
+  <text x="120" y="246" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">广告 C</text>
+  <text x="120" y="266" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">bid 1.0 元 · pCTR 8%</text>
+
+  <line x1="212" y1="102" x2="248" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="212" y1="176" x2="248" y2="176" stroke="#64748b" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="212" y1="250" x2="248" y2="202" stroke="#64748b" stroke-width="2" marker-end="url(#arrE)"/>
+
+  <!-- eCPM computation box -->
+  <rect x="252" y="74" width="210" height="204" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdE)"/>
+  <text x="357" y="100" text-anchor="middle" font-family="Arial" font-size="13.5" font-weight="bold" fill="#4A6CF7">eCPM 计算</text>
+  <text x="357" y="126" text-anchor="middle" font-family="Courier New" font-size="11.5" fill="#1e293b">eCPM = pCTR×bid×1000</text>
+  <text x="357" y="156" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">A: 3%×2.0×1000 = ¥60</text>
+  <text x="357" y="182" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">B: 1%×5.0×1000 = ¥50</text>
+  <text x="357" y="208" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">C: 8%×1.0×1000 = ¥80</text>
+  <text x="357" y="240" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">CPM 计费时：eCPM = 出价</text>
+  <text x="357" y="262" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">（pCTR 由平台预估）</text>
+
+  <line x1="464" y1="176" x2="496" y2="176" stroke="#64748b" stroke-width="2" marker-end="url(#arrE)"/>
+
+  <!-- sorted box -->
+  <rect x="500" y="74" width="140" height="204" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shdE)"/>
+  <text x="570" y="100" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">按 eCPM 降序</text>
+  <text x="570" y="138" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#10b981">① C：¥80</text>
+  <text x="570" y="174" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">② A：¥60</text>
+  <text x="570" y="210" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1e293b">③ B：¥50</text>
+  <text x="570" y="248" text-anchor="middle" font-family="Arial" font-size="10.5" fill="#64748b">千次展示期望收益</text>
+
+  <line x1="642" y1="176" x2="674" y2="176" stroke="#64748b" stroke-width="2" marker-end="url(#arrE)"/>
+
+  <!-- winner box -->
+  <rect x="678" y="74" width="92" height="204" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5" filter="url(#shdE)"/>
+  <text x="724" y="104" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#d97706">展示</text>
+  <text x="724" y="140" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">广告 C</text>
+  <text x="724" y="166" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">eCPM 最高</text>
+  <text x="724" y="192" text-anchor="middle" font-family="Arial" font-size="10.5" fill="#64748b">赢得本次</text>
+  <text x="724" y="210" text-anchor="middle" font-family="Arial" font-size="10.5" fill="#64748b">展示机会</text>
+
+  <!-- bottom notes -->
+  <rect x="30" y="300" width="740" height="108" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="50" y="328" font-family="Arial" font-size="12" fill="#1e293b">平台按 eCPM 降序分配展示：无论 CPC / CPM / CPA 计费，都先折算成「千次展示期望收益」这同一把尺子再比较。</text>
+  <text x="50" y="354" font-family="Arial" font-size="12" fill="#1e293b">高出价 ≠ 高排序：B 出价 5 元最高，但 pCTR 仅 1%，eCPM（¥50）反而低于出价 1 元、pCTR 8% 的 C（¥80）。</text>
+  <text x="50" y="380" font-family="Arial" font-size="12" fill="#64748b">eCPM 决定「谁上场」；实际收多少钱（如 GSP 按下一名计费）由竞价机制决定，见 12.3。</text>
+</svg>

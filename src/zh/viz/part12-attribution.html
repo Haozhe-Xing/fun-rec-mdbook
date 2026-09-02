@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>归因模型模拟器：同一旅程的不同结论 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#60a5fa; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-danger:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{ height:auto; min-height:480px; padding:14px 16px; }
+  body.embed .panel{ min-height:200px; }
+
+  .inline-controls{ display:none; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.35fr 1.05fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+
+  /* visual panel: journey + bars */
+  .journey{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px;}
+  .jnode{border-radius:8px;padding:6px 8px;font-size:11.5px;text-align:center;border:2px solid #3b4a61;background:var(--c-cell);transition:all .25s;min-width:56px;}
+  .jnode b{display:block;font-size:12px;}
+  .jnode .sub{font-size:10px;color:var(--c-light);}
+  .jnode.hot{border-color:var(--c-warn);box-shadow:0 0 0 3px rgba(245,158,11,.25);}
+  .jarrow{color:var(--c-light);font-size:13px;}
+
+  .bar-row{display:flex;align-items:center;gap:8px;margin:7px 0;}
+  .bar-row .lbl{width:74px;font-size:11.5px;color:var(--c-light);text-align:right;flex-shrink:0;}
+  .bar-track{flex:1;background:rgba(15,23,42,.7);border-radius:6px;height:20px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;transition:width .45s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;font-size:10.5px;font-weight:700;color:#0f172a;white-space:nowrap;}
+  .bar-val{width:46px;font-size:12px;font-family:"Courier New",monospace;color:var(--c-text);text-align:left;}
+
+  .chart-note{font-size:12px;color:var(--c-light);line-height:1.6;margin-top:12px;padding:8px 10px;background:rgba(15,23,42,.6);border-radius:8px;border-left:3px solid var(--c-primary);}
+  .chart-note b{color:var(--c-warn);}
+
+  /* state panel */
+  #state p{margin:6px 0;font-size:13px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #state table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;}
+  #state th,#state td{border:1px solid #3b4a61;padding:4px 5px;text-align:center;}
+  #state th{color:var(--c-light);font-weight:600;background:rgba(51,65,85,.45);}
+  #state td.mono{font-family:"Courier New",monospace;}
+  .good{color:var(--c-success);font-weight:700;}
+  .warn{color:var(--c-warn);font-weight:700;}
+  .note{font-size:12px;color:var(--c-light);line-height:1.6;margin-top:8px;padding:8px 10px;background:rgba(15,23,42,.6);border-radius:8px;border-left:3px solid var(--c-primary);}
+  .note b{color:var(--c-success);}
+  .note.warn b{color:var(--c-warn);}
+
+  /* code panel */
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(96,165,250,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧮 归因模型模拟器：同一旅程，五种结论</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="inline-controls" id="inlineCtrl">
+    <button id="prev2" class="sec">◀ 上一步</button>
+    <button id="next2">下一步 ▶</button>
+    <button id="auto2" class="sec">⏯ 自动播放</button>
+    <button id="reset2" class="sec">↺ 重置</button>
+  </div>
+
+  <div class="panel">
+    <h3>用户旅程 & 功劳分配</h3>
+    <div class="journey" id="journey"></div>
+    <div id="bars"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前模型解读</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>分配规则伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+// ── 触点与模型定义 ──
+const TOUCH = [
+  {key:"A", name:"广告A曝光", color:"#60a5fa"},
+  {key:"B", name:"广告B点击", color:"#f59e0b"},
+  {key:"C", name:"广告C点击", color:"#10b981"},
+];
+
+const MODELS = [
+  {name:"最后点击", en:"Last-click",   weights:[0,    0,    100  ], desc:"100% 给转化前最后一次触点（C）", code:["# 最后点击 Last-click","credit = [0, 0, 1]","# 100% 给最后一次触点","# A=0%   B=0%   C=100%"]},
+  {name:"首次点击", en:"First-click",   weights:[100,  0,    0    ], desc:"100% 给第一次触点（A）",         code:["# 首次点击 First-click","credit = [1, 0, 0]","# 100% 给第一次触点","# A=100%  B=0%  C=0%"]},
+  {name:"线性",     en:"Linear",        weights:[33.3, 33.3, 33.3 ], desc:"所有触点均分",                    code:["# 线性 Linear","credit = [1/3, 1/3, 1/3]","# 所有触点均分","# A≈33%  B≈33%  C≈33%"]},
+  {name:"时间衰减", en:"Time-decay",    weights:[14.3, 28.6, 57.1 ], desc:"越接近转化分得越多",              code:["# 时间衰减 Time-decay","w = [1/4, 1/2, 1]   # 越近权重越大","sum = 1.75","credit = w / sum","# A≈14%  B≈29%  C≈57%"]},
+  {name:"位置加权", en:"Position-based",weights:[40,   20,   40   ], desc:"首尾多分、中间少分（U 型）",       code:["# 位置加权 Position-based","credit = [0.4, 0.2, 0.4]","# 首尾各 40%，中间 20%","# A=40%  B=20%  C=40%"]},
+];
+
+const STEP_DESC = ["设定：用户旅程", "最后点击", "首次点击", "线性", "时间衰减", "位置加权", "总结"];
+let cur = 0, timer = null;
+
+// ── 视觉面板：旅程节点 ──
+function renderJourney(){
+  const hotKey = cur >= 1 && cur <= 5
+    ? TOCHP[argmax(MODELS[cur-1].weights)].key
+    : "";
+  const wrap = document.getElementById("journey");
+  wrap.innerHTML = "";
+  TOUCH.forEach((t, i) => {
+    const d = document.createElement("div");
+    d.className = "jnode" + (t.key === hotKey ? " hot" : "");
+    d.style.borderColor = t.color;
+    d.innerHTML = `<b style="color:${t.color}">${t.name}</b>`;
+    wrap.appendChild(d);
+    if(i < 2){
+      const a = document.createElement("span");
+      a.className = "jarrow"; a.textContent = "→";
+      wrap.appendChild(a);
+    }
+  });
+  // 转化节点
+  const conv = document.createElement("div");
+  conv.className = "jnode";
+  conv.style.borderColor = "#ef4444";
+  conv.innerHTML = `<b style="color:#ef4444">转化下单</b>`;
+  wrap.appendChild(conv);
+}
+
+// ── 视觉面板：横向条形 ──
+function renderBars(weights){
+  const wrap = document.getElementById("bars");
+  wrap.innerHTML = "";
+  TOUCH.forEach((t, i) => {
+    const pct = weights[i];
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    const fillColor = t.color;
+    row.innerHTML = `
+      <div class="lbl">${t.name}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fillColor}">${pct >= 12 ? Math.round(pct)+"%" : ""}</div></div>
+      <div class="bar-val">${pct.toFixed(1)}%</div>`;
+    wrap.appendChild(row);
+  });
+}
+
+// ── 工具函数 ──
+function argmax(arr){ let m = 0; for(let i=1;i<arr.length;i++) if(arr[i]>arr[m]) m=i; return m; }
+const TOUCHP = TOUCH; // alias
+
+// ── 状态面板 ──
+function renderState(){
+  let head = `<h3>当前模型解读</h3>`, table = "", note = "";
+  if(cur === 0){
+    note = `<div class="note">这是一条<b>固定的用户旅程</b>：广告 A 曝光 → 广告 B 点击 → 广告 C 点击 → 转化下单。同一个转化，接下来依次用 5 种归因模型分配功劳——你会看到答案如何被<b>彻底改写</b>。</div>`;
+    table = `<table><tr><th>触点</th><th>功劳</th></tr>
+      <tr><td>A 曝光</td><td class="mono">—</td></tr>
+      <tr><td>B 点击</td><td class="mono">—</td></tr>
+      <tr><td>C 点击</td><td class="mono">—</td></tr></table>`;
+  } else if(cur <= 5){
+    const m = MODELS[cur-1];
+    const w = m.weights;
+    table = `<table><tr><th>触点</th><th>功劳</th></tr>
+      <tr><td>A 曝光</td><td class="mono">${w[0].toFixed(1)}%</td></tr>
+      <tr><td>B 点击</td><td class="mono">${w[1].toFixed(1)}%</td></tr>
+      <tr><td>C 点击</td><td class="mono">${w[2].toFixed(1)}%</td></tr></table>`;
+    const winner = TOUCH[argmax(w)];
+    note = `<div class="note"><b>${m.name}</b>（${m.en}）：${m.desc}。此模型认为 <b style="color:${winner.color}">${winner.name}</b> 是本次转化的关键推手。</div>`;
+  } else {
+    table = `<table><tr><th>模型</th><th>A</th><th>B</th><th>C</th></tr>
+      <tr><td>最后点击</td><td>0%</td><td>0%</td><td class="mono">100%</td></tr>
+      <tr><td>首次点击</td><td class="mono">100%</td><td>0%</td><td>0%</td></tr>
+      <tr><td>线性</td><td>33%</td><td>33%</td><td>33%</td></tr>
+      <tr><td>时间衰减</td><td>14%</td><td>29%</td><td class="mono">57%</td></tr>
+      <tr><td>位置加权</td><td>40%</td><td>20%</td><td>40%</td></tr></table>`;
+    note = `<div class="note warn">同一条旅程，五种模型给出五种结论：最后点击把功劳全给 <b>C</b>，首次点击全给 <b>A</b>，线性人人有份，时间衰减偏向 <b>C</b>，位置加权首尾并重。<b>归因是「分配规则」的约定，而非「客观事实」的测量</b>——选模型先问「你相信哪个环节更值钱」。</div>`;
+  }
+  document.getElementById("state").innerHTML = head + table + note;
+}
+
+// ── 代码面板 ──
+function renderCode(){
+  let code, hl = 0;
+  if(cur === 0){
+    code = ["# 用户旅程（按时间顺序）",
+            "# 广告A曝光 → 广告B点击 → 广告C点击 → 转化下单",
+            "# 问题：这次转化，功劳该分给谁？",
+            "# 下一步：依次套用 5 种归因模型",
+            "# 答案会随模型而改变"]; hl = 2;
+  } else if(cur <= 5){
+    code = MODELS[cur-1].code; hl = 1;
+  } else {
+    code = ["# 同一旅程，五种结论",
+            "# 最后点击：C 是收口者",
+            "# 首次点击：A 是种草者",
+            "# 线性：人人有份",
+            "# 时间衰减：越近越关键",
+            "# 位置加权：首尾并重",
+            "# 归因 = 分配规则，不是客观事实"]; hl = 6;
+  }
+  document.getElementById("codepre").innerHTML =
+    code.map((l, i) => i === hl ? "<span class='hl'>" + escapeHtml(l) + "</span>" : escapeHtml(l)).join("\n");
+}
+
+// ── 渲染主流程 ──
+function render(){
+  const weights = (cur >= 1 && cur <= 5) ? MODELS[cur-1].weights : [0, 0, 0];
+  renderJourney();
+  renderBars(weights);
+  renderState();
+  renderCode();
+  document.getElementById("foot").textContent = "步骤 " + (cur+1) + " / " + STEP_DESC.length + " — " + STEP_DESC[cur];
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p = new URLSearchParams(location.search); return p.get(k);}
+
+function next(){ if(cur < STEP_DESC.length-1){cur++; render();} else stopAuto(); }
+function prev(){ if(cur > 0){cur--; render();} }
+function reset(){ cur = 0; render(); }
+function startAuto(){ if(timer) return; timer = setInterval(() => { if(cur >= STEP_DESC.length-1){stopAuto(); return;} next(); }, 2200); }
+function stopAuto(){ if(timer){clearInterval(timer); timer = null;} }
+
+document.getElementById("next").onclick = next;
+document.getElementById("prev").onclick = prev;
+document.getElementById("reset").onclick = reset;
+document.getElementById("auto").onclick = () => { timer ? stopAuto() : startAuto(); };
+
+document.getElementById("next2")?.addEventListener("click", next);
+document.getElementById("prev2")?.addEventListener("click", prev);
+document.getElementById("reset2")?.addEventListener("click", reset);
+document.getElementById("auto2")?.addEventListener("click", () => { timer ? stopAuto() : startAuto(); });
+
+document.addEventListener("keydown", e => { if(e.key === "ArrowRight") next(); if(e.key === "ArrowLeft") prev(); });
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# 12.4 术语表（智能出价与预算控制）
+
+- **智能出价（Smart Bidding）** — 平台代广告主管理每次展示出价的产品形态：广告主只报目标（target CPA/ROI），出价由平台的价值估计、预算控制与机制适配模块联合决定。
+- **转化出价（oCPC / oCPM）** — 按转化目标出价的产品：出价公式为 $\text{eCPM} = 1000 \cdot \text{pCTR} \cdot \text{pCVR} \cdot \text{Bid}_{\text{CPA}}$，oCPC 按点击计费、oCPM 按展示计费。
+- **目标转化成本（Target CPA）** — 广告主愿意为一次转化支付的目标成本，是出价栈中唯一由广告主直接输入的价值锚点。
+- **价值出价（Value Bid）** — 用 pCTR × pCVR × targetCPA 把转化目标折算成的单次展示期望价值，是下游 shading 与 pacing 的输入。
+- **两阶段投放（Two-Stage Delivery）** — oCPC/oCPM 的冷启动惯例：第一阶段沿用 CPC 出价积累转化数据，模型置信后切换到转化出价。
+- **预算平滑消耗（Budget Pacing）** — 把日预算按时间进度均匀花完的控制问题，避免前置消耗错过晚高峰优质流量。
+- **参照轨迹（Reference Trajectory）** — pacing 的控制目标 $r(t) = G \cdot t / T$，即「消耗进度与时间进度同步」的直线。
+- **概率节流（Probabilistic Throttling）** — pacing 的一种实现：以概率 $\alpha$ 决定是否参与每次竞价，是 0/1 的硬门控（LinkedIn，KDD 2014）。
+- **出价缩放（Bid Scaling）** — pacing 的另一种实现：用乘子 $\alpha \in [0,1]$ 缩放出价 $b' = \alpha \cdot b$，保留参与度、牺牲单次竞争力。
+- **Pacing 乘子（Pacing Multiplier）** — 预算控制器的操作量，经 sigmoid 压缩到 $[0,1]$，直接乘在出价上。
+- **PID 控制（PID Control）** — 比例–积分–微分反馈控制器：P 即时响应误差，I 消除稳态偏差，D 超前抑制；广告 pacing 中 D 项因放大离散请求噪声被普遍砍掉，只留 PI。
+- **对数比误差（Log-Ratio Error）** — 误差形式 $e(t) = -\log(N(t)/r(t))$，把偏离归一化为相对值，使不同预算规模的计划可共用同一套控制增益。
+- **前馈补偿（Feedforward Compensation）** — 在反馈控制之外，用可预测的扰动（如流量日内规律）提前调整操作量，Verizon DSP 的积分控制即配有前馈。
+- **期望剩余（Expected Surplus）** — 一价拍卖下出价 $b$ 的期望利润 $\mathbb{E}[S] = (v-b) \cdot P(\text{win} \mid b)$，bid shading 的优化目标。
+- **最低赢价（Minimum Winning Price）** — 刚好能赢下一次拍卖的价格，其分布（CDF）决定赢率 $P(\text{win} \mid b) = F(b)$。
+- **赢价分布（Bid Landscape / Win-Price Distribution）** — 最低赢价随流量变化的概率分布，bid shading 的核心估计对象；log-normal 对其长尾拟合最好。
+- **删失数据（Censored Data）** — 只观测到部分信息的样本：封闭拍卖中输掉的拍卖看不到真实赢价，需用生存分析处理。
+- **生存分析（Survival Analysis）** — 处理删失观测的统计方法，DDN 用它从「是否赢 + 赢时最低价」的不完全数据中估计赢价分布。
+- **黄金分割搜索（Golden Section Search）** — 无需梯度的区间极值搜索，每次迭代保留 0.618 区间；DDN 用它在毫秒级求出 surplus 峰值出价 $b^*$。
+- **DDN（Deep Distribution Network）** — Verizon Media 的分布估计网络（Zhou et al., KDD 2021）：网络输出赢价分布参数，线上 surplus 提升 14.3%，日服务数千亿次请求。
+- **分布鲁棒出价（Distributionally Robust Bidding）** — 当估值与赢价分布估计噪声大时，用 KL 散度不确定性集做 max-min 优化的出价鲁棒化方法。
+- **误差传导链（Error Propagation Chain）** — 出价栈各模块串行耦合，上游预测（pCTR/pCVR）的偏差无损传导到最终出价的性质，是 12.5 校准问题的动机。

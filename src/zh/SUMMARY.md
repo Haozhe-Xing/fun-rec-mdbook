@@ -70,6 +70,21 @@
   * [前端](part11-project/frontend.md)
   * [部署上线](part11-project/deployment.md)
 
+# 专题 · 计算广告
+
+* [计算广告](part12-computational-advertising/README.md)
+  * [计算广告全景与生态](part12-computational-advertising/advertising-panorama.md)
+  * [计费模式与核心指标](part12-computational-advertising/billing-and-metrics.md)
+  * [竞价机制：从一价到二价](part12-computational-advertising/auction-mechanisms.md)
+  * [智能出价与预算控制](part12-computational-advertising/smart-bidding.md)
+  * [广告系统中的偏差与校准](part12-computational-advertising/bias-and-calibration.md)
+  * [开环广告与闭环广告](part12-computational-advertising/open-closed-loop.md)
+  * [在线分配与流量管理](part12-computational-advertising/online-allocation.md)
+  * [受众定向技术](part12-computational-advertising/audience-targeting.md)
+  * [广告检索与语义召回](part12-computational-advertising/ad-retrieval-semantic-recall.md)
+  * [数据加工与交易](part12-computational-advertising/data-processing-and-trading.md)
+  * [实验框架与反作弊](part12-computational-advertising/experiment-and-antifraud.md)
+
 # 附录
 
 * [📖 术语表](GLOSSARY.md)

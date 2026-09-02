@@ -1,0 +1,22 @@
+- **Smart Bidding** — the product form where the platform manages the per-impression bid on the advertiser's behalf: the advertiser reports only a goal (target CPA/ROI), and the bid is jointly determined by the platform's value estimation, budget control, and mechanism-adaptation modules.
+- **Conversion Bidding (oCPC / oCPM)** — products that bid by conversion goal: the bid formula is $\text{eCPM} = 1000 \cdot \text{pCTR} \cdot \text{pCVR} \cdot \text{Bid}_{\text{CPA}}$; oCPC bills by click, oCPM bills by impression.
+- **Target CPA** — the target cost the advertiser is willing to pay for one conversion; the only value anchor in the bidding stack input directly by the advertiser.
+- **Value Bid** — the expected value of a single impression converted from the conversion goal via pCTR × pCVR × targetCPA; the input to downstream shading and pacing.
+- **Two-Phase Rollout** — the cold-start convention for oCPC/oCPM: the first phase stays with CPC bidding to accumulate conversion data, switching to conversion bidding once the model is confident.
+- **Budget Pacing** — the control problem of spending the daily budget evenly in step with time progress, avoiding front-loaded spending that misses premium evening-peak traffic.
+- **Reference Trajectory** — the control target of pacing, $r(t) = G \cdot t / T$: the straight line of "spending progress in sync with time progress."
+- **Probabilistic Throttling** — one pacing implementation: decide whether to participate in each auction with probability $\alpha$; a 0/1 hard gate (LinkedIn, KDD 2014).
+- **Bid Scaling** — the other pacing implementation: scale the bid $b' = \alpha \cdot b$ with a multiplier $\alpha \in [0,1]$, preserving participation at the cost of per-auction competitiveness.
+- **Pacing Multiplier** — the control action of the budget controller, squashed by a sigmoid into $[0,1]$ and multiplied directly onto the bid.
+- **PID Control** — the proportional–integral–derivative feedback controller: P responds to error immediately, I removes the steady-state error, D damps anticipatorily; in ad pacing the D term is universally dropped because it amplifies discrete-request noise, leaving only PI.
+- **Log-Ratio Error** — the error form $e(t) = -\log(N(t)/r(t))$, normalizing deviation to a relative value so that plans of different budget scales can share the same control gains.
+- **Feedforward Compensation** — beyond feedback control, adjusting the control action in advance using predictable disturbances (such as intraday traffic patterns); Verizon DSP's integral control is equipped with feedforward.
+- **Expected Surplus** — the expected profit of bid $b$ under a first-price auction, $\mathbb{E}[S] = (v-b) \cdot P(\text{win} \mid b)$; the optimization target of bid shading.
+- **Minimum Winning Price** — the price that just barely wins an auction; its distribution (CDF) determines the win rate $P(\text{win} \mid b) = F(b)$.
+- **Bid Landscape / Win-Price Distribution** — the probability distribution of the minimum winning price across traffic; the core estimation object of bid shading, with log-normal fitting its long tail best.
+- **Censored Data** — samples where only partial information is observed: in sealed auctions, the true winning price of lost auctions is never visible, requiring survival analysis.
+- **Survival Analysis** — the statistical method for censored observations; DDN uses it to estimate the win-price distribution from the incomplete data of "whether we won + the minimum price when we won."
+- **Golden Section Search** — a gradient-free interval extremum search retaining 0.618 of the interval per iteration; DDN uses it to find the surplus-peak bid $b^*$ in milliseconds.
+- **DDN (Deep Distribution Network)** — Verizon Media's distribution-estimation network (Zhou et al., KDD 2021): the network outputs win-price distribution parameters; online surplus improved 14.3%, serving hundreds of billions of requests daily.
+- **Distributionally Robust Bidding** — a bidding-robustness method that uses KL-divergence uncertainty sets for max-min optimization when the estimation noise in valuations and win-price distributions is large.
+- **Error Propagation Chain** — the property that the modules of the bidding stack are coupled in series, so biases in upstream predictions (pCTR/pCVR) propagate losslessly to the final bid; the motivation for the calibration problem of 12.5.

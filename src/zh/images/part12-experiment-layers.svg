@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="560" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">分层实验框架：流量切分与实验容量扩展</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">层内互斥切域 · 层间正交共享流量 · 同一用户永远落在同一域</text>
+
+  <!-- Left: user request entry -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="250" width="120" height="70" rx="8" fill="#1e293b"/>
+    <text x="90" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">广告请求</text>
+    <text x="90" y="300" text-anchor="middle" font-size="11" fill="#cbd5e1">按 user ID 哈希</text>
+  </g>
+  <line x1="150" y1="285" x2="196" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="150" y1="285" x2="196" y2="277" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="150" y1="285" x2="196" y2="400" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="168" y="228" font-size="11" fill="#64748b">固定</text>
+  <text x="168" y="244" font-size="11" fill="#64748b">落域</text>
+
+  <!-- Layer 1: 检索层 -->
+  <rect x="200" y="92" width="470" height="88" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="216" y="116" font-size="13" font-weight="bold" fill="#4A6CF7">检索层</text>
+  <text x="284" y="116" font-size="11" fill="#64748b">触发 / 索引参数</text>
+  <rect x="216" y="128" width="104" height="38" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="268" y="152" text-anchor="middle" font-size="12" fill="#1e293b">实验 域1</text>
+  <rect x="332" y="128" width="104" height="38" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="384" y="152" text-anchor="middle" font-size="12" fill="#1e293b">实验 域2</text>
+  <rect x="448" y="128" width="104" height="38" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="500" y="152" text-anchor="middle" font-size="12" fill="#1e293b">实验 域3</text>
+  <rect x="564" y="128" width="90" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="609" y="152" text-anchor="middle" font-size="12" fill="#64748b">默认域</text>
+
+  <!-- Layer 2: 排序层 -->
+  <rect x="200" y="216" width="470" height="88" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2"/>
+  <text x="216" y="240" font-size="13" font-weight="bold" fill="#10b981">排序层</text>
+  <text x="284" y="240" font-size="11" fill="#64748b">pCTR / 出价参数</text>
+  <rect x="216" y="252" width="104" height="38" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="268" y="276" text-anchor="middle" font-size="12" fill="#1e293b">实验 域A</text>
+  <rect x="332" y="252" width="104" height="38" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="384" y="276" text-anchor="middle" font-size="12" fill="#1e293b">实验 域B</text>
+  <rect x="448" y="252" width="104" height="38" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="500" y="276" text-anchor="middle" font-size="12" fill="#1e293b">实验 域C</text>
+  <rect x="564" y="252" width="90" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="609" y="276" text-anchor="middle" font-size="12" fill="#64748b">默认域</text>
+
+  <!-- Layer 3: 展现层 -->
+  <rect x="200" y="340" width="470" height="88" rx="8" fill="#e8ecff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="216" y="364" font-size="13" font-weight="bold" fill="#f59e0b">展现层</text>
+  <text x="284" y="364" font-size="11" fill="#64748b">创意 / 样式参数</text>
+  <rect x="216" y="376" width="104" height="38" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="268" y="400" text-anchor="middle" font-size="12" fill="#1e293b">实验 域Ⅰ</text>
+  <rect x="332" y="376" width="104" height="38" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="384" y="400" text-anchor="middle" font-size="12" fill="#1e293b">实验 域Ⅱ</text>
+  <rect x="448" y="376" width="104" height="38" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="400" text-anchor="middle" font-size="12" fill="#1e293b">实验 域Ⅲ</text>
+  <rect x="564" y="376" width="90" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="609" y="400" text-anchor="middle" font-size="12" fill="#64748b">默认域</text>
+
+  <!-- Non-overlap domain -->
+  <g filter="url(#shadow)">
+    <rect x="690" y="92" width="86" height="336" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="733" y="240" text-anchor="middle" font-size="13" font-weight="bold" fill="#ef4444">非重叠</text>
+    <text x="733" y="260" text-anchor="middle" font-size="13" font-weight="bold" fill="#ef4444">测试域</text>
+    <text x="733" y="286" text-anchor="middle" font-size="11" fill="#64748b">跨层联合</text>
+    <text x="733" y="302" text-anchor="middle" font-size="11" fill="#64748b">调参实验</text>
+  </g>
+
+  <!-- Publishing layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="458" width="470" height="52" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+    <text x="216" y="480" font-size="13" font-weight="bold" fill="#1e293b">发布层（灰度放量）</text>
+    <rect x="360" y="470" width="70" height="28" rx="8" fill="#4A6CF7"/>
+    <text x="395" y="489" text-anchor="middle" font-size="11" fill="#ffffff">1%</text>
+    <rect x="434" y="470" width="70" height="28" rx="8" fill="#7c90f5"/>
+    <text x="469" y="489" text-anchor="middle" font-size="11" fill="#ffffff">5%</text>
+    <rect x="508" y="470" width="70" height="28" rx="8" fill="#aab8f9"/>
+    <text x="543" y="489" text-anchor="middle" font-size="11" fill="#1e293b">50%</text>
+    <rect x="582" y="470" width="70" height="28" rx="8" fill="#e8ecff"/>
+    <text x="617" y="489" text-anchor="middle" font-size="11" fill="#1e293b">100%</text>
+  </g>
+
+  <!-- Bottom note -->
+  <text x="400" y="540" text-anchor="middle" font-size="12" fill="#64748b">参数优先级：实验层参数 ＞ 发布层参数 ＞ 默认参数 ｜ 同一参数只属于一个实验层和一个发布层</text>
+</svg>

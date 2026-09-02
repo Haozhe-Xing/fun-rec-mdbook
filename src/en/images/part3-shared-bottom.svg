@@ -9,28 +9,28 @@
   </defs>
 
   <rect x="0" y="0" width="800" height="380" fill="#f8f9fc"/>
-  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Shared-Bottom：共享地基 + 独立任务塔</text>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Shared-Bottom: Shared Base + Independent Task Towers</text>
 
   <rect x="330" y="60" width="140" height="44" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#s13)"/>
-  <text x="400" y="87" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="600">输入 x</text>
+  <text x="400" y="87" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="600">Input x</text>
 
   <line x1="400" y1="104" x2="400" y2="138" stroke="#64748b" stroke-width="2" marker-end="url(#a13)"/>
 
   <rect x="290" y="142" width="220" height="50" rx="8" fill="#4A6CF7" filter="url(#s13)"/>
-  <text x="400" y="172" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="700">共享底层 g(Wₛx)</text>
+  <text x="400" y="172" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="700">Shared Bottom g(Wₛx)</text>
 
   <line x1="350" y1="192" x2="270" y2="232" stroke="#64748b" stroke-width="2" marker-end="url(#a13)"/>
   <line x1="450" y1="192" x2="530" y2="232" stroke="#64748b" stroke-width="2" marker-end="url(#a13)"/>
 
   <rect x="180" y="236" width="180" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s13)"/>
-  <text x="270" y="268" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">任务塔 1 (CTR)</text>
-  <text x="270" y="286" text-anchor="middle" font-size="11" fill="#64748b">f₁(W₁·共享)</text>
+  <text x="270" y="268" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">Task Tower 1 (CTR)</text>
+  <text x="270" y="286" text-anchor="middle" font-size="11" fill="#64748b">f₁(W₁·shared)</text>
 
   <rect x="440" y="236" width="180" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s13)"/>
-  <text x="530" y="268" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">任务塔 2 (CVR)</text>
-  <text x="530" y="286" text-anchor="middle" font-size="11" fill="#64748b">f₂(W₂·共享)</text>
+  <text x="530" y="268" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">Task Tower 2 (CVR)</text>
+  <text x="530" y="286" text-anchor="middle" font-size="11" fill="#64748b">f₂(W₂·shared)</text>
 
   <rect x="180" y="318" width="440" height="48" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
-  <text x="400" y="340" text-anchor="middle" font-size="12.5" fill="#ef4444" font-weight="700">⚠ 负迁移：任务冲突时共享层梯度矛盾</text>
-  <text x="400" y="358" text-anchor="middle" font-size="11.5" fill="#64748b">∇L₁·∇L₂ &lt; 0 → 跷跷板（提升一目标损另一）</text>
+  <text x="400" y="340" text-anchor="middle" font-size="12.5" fill="#ef4444" font-weight="700">⚠ Negative transfer: conflicting shared-layer gradients</text>
+  <text x="400" y="358" text-anchor="middle" font-size="11.5" fill="#64748b">∇L₁·∇L₂ &lt; 0 → seesaw effect (one task gains, another loses)</text>
 </svg>

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 580" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="580" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">三方数据与 DMP 数据交易闭环</text>
+  <text x="400" y="54" text-anchor="middle" font-size="12" fill="#64748b">第一方 = 广告主 · 第二方 = 广告平台 · 第三方 = 其他数据提供方｜变现路径：标签附着于流量，按实际成交计费</text>
+
+  <!-- Row 1: data sources -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="78" width="210" height="58" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="155" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">广告主（第一方数据）</text>
+    <text x="155" y="122" text-anchor="middle" font-size="12" fill="#4A6CF7">CRM · 订单 · 官网访客</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="295" y="78" width="210" height="58" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="400" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">广告平台（第二方数据）</text>
+    <text x="400" y="122" text-anchor="middle" font-size="12" fill="#10b981">平台内行为与投放日志</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="540" y="78" width="210" height="58" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="645" y="101" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">其他数据方（第三方）</text>
+    <text x="645" y="122" text-anchor="middle" font-size="12" fill="#f59e0b">中小媒体 · 会员与行为数据</text>
+  </g>
+
+  <!-- Arrows sources -> DMPs -->
+  <line x1="155" y1="136" x2="185" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="645" y1="136" x2="610" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="400" y1="136" x2="400" y2="298" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="412" y="240" font-size="12" fill="#10b981">第二方数据直接指导平台投放（广告网络模式）</text>
+
+  <!-- Row 2: two DMPs -->
+  <g filter="url(#shadow)">
+    <rect x="90" y="192" width="260" height="72" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="220" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">第一方 DMP（托管加工）</text>
+    <text x="220" y="235" text-anchor="middle" font-size="12" fill="#4A6CF7">按数据方需求加工标签 · 收技术服务费</text>
+    <text x="220" y="254" text-anchor="middle" font-size="12" fill="#64748b">数据托管服务，绝不二次变现客户数据</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="450" y="192" width="260" height="72" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="580" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">第三方 DMP = 数据交易平台</text>
+    <text x="580" y="235" text-anchor="middle" font-size="12" fill="#f59e0b">按自有逻辑加工标签 · 售卖变现</text>
+    <text x="580" y="254" text-anchor="middle" font-size="12" fill="#64748b">收入按比例分成给数据提供方</text>
+  </g>
+
+  <!-- Arrows DMPs -> ADX -->
+  <line x1="220" y1="264" x2="300" y2="300" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="580" y1="264" x2="500" y2="300" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="238" y="292" font-size="12" fill="#64748b">批量传输标签</text>
+  <text x="560" y="292" font-size="12" fill="#64748b">批量传输标签</text>
+
+  <!-- Row 3: ADX -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="304" width="300" height="64" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="327" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">ADX / SSP：数据交易的中转与「水表」</text>
+    <text x="400" y="347" text-anchor="middle" font-size="12" fill="#1e293b">标签附加在竞价请求上 · 按 CPM 向 DSP 计价</text>
+    <text x="400" y="363" text-anchor="middle" font-size="12" fill="#64748b">顺带完成用量监测与计费，星形拓扑减少映射损耗</text>
+  </g>
+
+  <!-- ADX -> DSP -->
+  <line x1="400" y1="368" x2="400" y2="414" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="412" y="396" font-size="12" fill="#64748b">RTB 询价携带用户标签</text>
+
+  <!-- Row 4: DSP -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="418" width="300" height="58" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="400" y="441" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">DSP：标签用于定向与出价</text>
+    <text x="400" y="462" text-anchor="middle" font-size="12" fill="#10b981">按实际成交展示量 × CPM 支付数据附加费</text>
+  </g>
+
+  <!-- Feedback loop -->
+  <path d="M 250 447 L 120 447 L 120 140" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowRed)"/>
+  <text x="130" y="390" font-size="12" font-weight="bold" fill="#ef4444">转化效果回流（闭环）</text>
+
+  <!-- Legend -->
+  <g font-size="12">
+    <rect x="80" y="510" width="14" height="14" rx="3" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="102" y="522" fill="#1e293b">第一方数据（灵魂，量小而精）</text>
+    <rect x="310" y="510" width="14" height="14" rx="3" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="332" y="522" fill="#1e293b">第二方数据（平台自用指导投放）</text>
+    <rect x="550" y="510" width="14" height="14" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="572" y="522" fill="#1e293b">第三方数据（交易流通）</text>
+    <text x="400" y="554" text-anchor="middle" fill="#64748b">闭环：数据源 → DMP 加工 → 交易 → DSP 应用 → 效果回流 → 再加工</text>
+  </g>
+</svg>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>竞价机制模拟器：GFP / GSP / VCG · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#60a5fa; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-danger:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.25fr 1.1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+
+  /* visual panel: advertisers + slots */
+  .row-label{font-size:12px;color:var(--c-light);margin:14px 0 6px;}
+  .row-label:first-of-type{margin-top:0;}
+  .cards{display:flex;flex-wrap:wrap;gap:8px;}
+  .advc{width:118px;border-radius:10px;background:var(--c-cell);padding:8px 10px;border:2px solid transparent;transition:all .3s;}
+  .advc.dev{border-color:var(--c-warn);background:rgba(245,158,11,.14);}
+  .advc .id{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .advc .fld{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--c-light);margin-top:3px;}
+  .advc input{width:62px;background:var(--c-bg);border:1px solid #475569;border-radius:6px;color:var(--c-text);font-size:12px;padding:2px 5px;font-family:"Courier New",monospace;}
+  .slots{display:flex;flex-direction:column;gap:8px;}
+  .slot{border-radius:10px;background:var(--c-cell);padding:8px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .slot .s-head{font-size:12px;color:var(--c-light);width:118px;}
+  .slot .s-occ{font-size:14px;font-weight:700;}
+  .slot .s-pay{font-size:12.5px;font-family:"Courier New",monospace;color:var(--c-success);}
+  .slot.dev-occ{border:2px solid var(--c-warn);}
+
+  /* state panel */
+  #state p{margin:6px 0;font-size:13px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #state table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;}
+  #state th,#state td{border:1px solid #3b4a61;padding:4px 5px;text-align:center;}
+  #state th{color:var(--c-light);font-weight:600;background:rgba(51,65,85,.45);}
+  #state td.mono{font-family:"Courier New",monospace;}
+  .up{color:var(--c-warn);font-weight:700;}
+  .down{color:var(--c-danger);font-weight:700;}
+  .flat{color:var(--c-light);font-weight:700;}
+  .good{color:var(--c-success);font-weight:700;}
+  .note{font-size:12px;color:var(--c-light);line-height:1.6;margin-top:8px;padding:8px 10px;background:rgba(15,23,42,.6);border-radius:8px;border-left:3px solid var(--c-primary);}
+  .note b{color:var(--c-success);}
+  .note.warn b{color:var(--c-warn);}
+
+  /* code panel */
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(96,165,250,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚖️ 竞价机制模拟器：GFP / GSP / VCG</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+
+  <div class="panel">
+    <h3>广告主与坑位分配</h3>
+    <div class="row-label">广告主（可编辑出价 b 与估值 v，元/点击）</div>
+    <div class="cards" id="advcards"></div>
+    <div class="row-label">坑位分配（按出价降序） · 保留价 r = 0.50 · CTR = 0.40 / 0.20 / 0.10</div>
+    <div class="slots" id="slots"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前步骤结算</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>机制伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const CTR = [0.40, 0.20, 0.10];
+const RESERVE = 0.50;
+const MECHS = ["GFP", "GSP", "VCG"];
+const MECH_NAME = {GFP:"GFP 广义一价", GSP:"GSP 广义第二高价", VCG:"VCG 外部性定价"};
+let advs = [ {id:"A", v:4, b:4}, {id:"B", v:3, b:3}, {id:"C", v:2, b:2} ];
+let traj = [];
+let cur = 0, timer = null;
+
+function round2(x){ return Math.round(x*100)/100; }
+
+// ── 三种机制的结算：分配规则相同（按出价降序），定价规则不同 ──
+function settle(mech, bids){
+  const order = advs.map((_, i) => i).sort((a, b) => bids[b] - bids[a] || a - b);
+  const res = advs.map(() => ({slot:-1, pay:0, util:0}));
+  order.forEach((ai, slot) => {
+    if(slot >= CTR.length) return;
+    const x = CTR[slot];
+    let p;
+    if(mech === "GFP"){
+      p = bids[ai];                                   // 付自己的出价
+    } else if(mech === "GSP"){
+      const nx = order[slot+1];
+      p = (nx !== undefined && slot+1 < CTR.length)
+          ? bids[nx] * CTR[slot+1] / x                // 下一名 eCPM 折算
+          : RESERVE;                                  // 末位付保留价
+      p = Math.max(p, RESERVE);
+    } else {                                          // VCG：外部性
+      let wWithout = 0;                               // 无 i 时他人总福利
+      order.filter(j => j !== ai).forEach((oj, k) => { if(k < CTR.length) wWithout += bids[oj]*CTR[k]; });
+      let wWith = 0;                                  // 有 i 时他人总福利
+      order.forEach((oj, s2) => { if(oj !== ai && s2 < CTR.length) wWith += bids[oj]*CTR[s2]; });
+      p = Math.max((wWithout - wWith) / x, RESERVE);
+    }
+    res[ai] = {slot, pay:p, util:(advs[ai].v - p) * x};
+  });
+  return {order, res};
+}
+
+// ── 步骤轨迹：0 设定 → 1-3 三机制如实结算 → 4-6 虚报情景 → 7 结论 ──
+function buildTraj(){
+  const base = advs.map(a => a.b);
+  const S = {GFP:settle("GFP",base), GSP:settle("GSP",base), VCG:settle("VCG",base)};
+
+  const bB2 = base.slice(); bB2[1] = round2(Math.min(advs[1].v*0.34, Math.min(base[0], base[2])*0.9));   // B 压低出价
+  const bB3 = base.slice(); bB3[1] = round2(Math.max(base[1], base[0]*1.125));                          // B 抬高出价
+  const bC3 = base.slice(); bC3[2] = round2(Math.max(base[2], base[0]*1.125));                          // C 抬高出价
+  const settleAll = b => ({GFP:settle("GFP",b), GSP:settle("GSP",b), VCG:settle("VCG",b)});
+
+  const sc1 = {dev:1, mode:"down", from:base[1], to:bB2[1], bids:bB2, s:settleAll(bB2), base:S};
+  const sc2 = {dev:1, mode:"up",   from:base[1], to:bB3[1], bids:bB3, s:settleAll(bB3), base:S};
+  const sc3 = {dev:2, mode:"up",   from:base[2], to:bC3[2], bids:bC3, s:settleAll(bC3), base:S};
+
+  traj = [
+    {type:"intro", bids:base},
+    {type:"mech", mech:"GFP", bids:base, s:S.GFP},
+    {type:"mech", mech:"GSP", bids:base, s:S.GSP},
+    {type:"mech", mech:"VCG", bids:base, s:S.VCG},
+    {type:"scen", label:"情景一：B 压低出价", sc:sc1},
+    {type:"scen", label:"情景二：B 抬高出价", sc:sc2},
+    {type:"scen", label:"情景三：C 抬高出价", sc:sc3},
+    {type:"end",  bids:base, scens:[sc1, sc2, sc3]}
+  ];
+}
+
+// ── 视觉面板：输入卡片（一次性构建）+ 坑位分配（每步刷新） ──
+function initInputs(){
+  const wrap = document.getElementById("advcards");
+  wrap.innerHTML = "";
+  advs.forEach((a, i) => {
+    const d = document.createElement("div");
+    d.className = "advc";
+    d.id = "advc" + i;
+    d.innerHTML = `<div class="id">广告主 ${a.id}</div>
+      <div class="fld">出价 b <input type="number" step="0.1" min="0" value="${a.b}" id="in-b-${i}"/></div>
+      <div class="fld">估值 v <input type="number" step="0.1" min="0" value="${a.v}" id="in-v-${i}"/></div>`;
+    wrap.appendChild(d);
+  });
+  advs.forEach((_, i) => {
+    document.getElementById("in-b-" + i).onchange = e => {
+      advs[i].b = Math.max(0, parseFloat(e.target.value) || 0);
+      e.target.value = advs[i].b;
+      cur = 0; buildTraj(); render();
+    };
+    document.getElementById("in-v-" + i).onchange = e => {
+      advs[i].v = Math.max(0, parseFloat(e.target.value) || 0);
+      e.target.value = advs[i].v;
+      cur = 0; buildTraj(); render();
+    };
+  });
+}
+
+function renderVisual(st){
+  advs.forEach((_, i) => {
+    document.getElementById("advc" + i).classList.toggle("dev", st.type === "scen" && st.sc.dev === i);
+  });
+  const bids = st.type === "scen" ? st.sc.bids : st.bids;
+  const order = advs.map((_, i) => i).sort((a, b) => bids[b] - bids[a] || a - b);
+  const showPay = (st.type === "mech");
+  const slotsEl = document.getElementById("slots");
+  slotsEl.innerHTML = "";
+  CTR.forEach((x, s) => {
+    const ai = order[s];
+    if(ai === undefined) return;
+    const d = document.createElement("div");
+    d.className = "slot" + (st.type === "scen" && st.sc.dev === ai ? " dev-occ" : "");
+    let payLine = "";
+    if(showPay){
+      const r = st.s.res[ai];
+      payLine = `<div class="s-pay">付 ${r.pay.toFixed(2)}/点击 · 效用 ${r.util.toFixed(2)}</div>`;
+    } else if(st.type === "scen"){
+      payLine = `<div class="s-pay" style="color:var(--c-light)">支付见右表</div>`;
+    } else {
+      payLine = `<div class="s-pay" style="color:var(--c-light)">—</div>`;
+    }
+    d.innerHTML = `<div class="s-head">坑位 ${s+1} · CTR ${x.toFixed(2)}</div>
+                   <div class="s-occ">${advs[ai].id}（b=${bids[ai].toFixed(2)}）</div>${payLine}`;
+    slotsEl.appendChild(d);
+  });
+}
+
+// ── 状态面板 ──
+function mechTable(s){
+  let rows = "";
+  advs.forEach((a, i) => {
+    const r = s.res[i];
+    rows += `<tr><td>${a.id}</td><td>${r.slot+1}</td><td class="mono">${r.pay.toFixed(2)}</td>
+             <td class="mono">${r.util.toFixed(2)}</td></tr>`;
+  });
+  return `<table><tr><th>广告主</th><th>坑位</th><th>支付/点击</th><th>效用 (v−p)·x</th></tr>${rows}</table>`;
+}
+
+function deltaClass(d){ return d > 0.005 ? "up" : (d < -0.005 ? "down" : "flat"); }
+function deltaText(d){ return d > 0.005 ? "有利 ▲" : (d < -0.005 ? "受损 ▼" : "无差异"); }
+
+function renderState(st){
+  if(st.type === "intro"){
+    return `<h3>当前步骤结算</h3>
+      <p><span class="k">设定：</span>3 个广告主、3 个坑位，坑位 CTR = 0.40 / 0.20 / 0.10，保留价 r = 0.50。</p>
+      <p>当前为<b>如实出价</b>（b = v）：A=4、B=3、C=2（元/点击）。分配规则三种机制相同——按出价降序配坑位。</p>
+      <p>接下来三步分别用 <span class="k">GFP / GSP / VCG</span> 结算同一组出价，比较支付与效用；再做三组「虚报」实验。</p>
+      <div class="note">效用统一为 <b>(v − p) × x_s</b>：估值减每点击支付，乘以坑位点击率。</div>`;
+  }
+  if(st.type === "mech"){
+    let note = "";
+    if(st.mech === "GFP"){
+      note = `<div class="note warn">人人按<b>自己的出价</b>支付：如实出价 ⇒ 效用全为 0，利润归零。于是人人想压价省钱、想抬价抢位——<b>GFP 不稳定的根源</b>。</div>`;
+    } else if(st.mech === "GSP"){
+      note = `<div class="note">支付与自己的申报<b>半解耦</b>：付「下一名 eCPM 折算价」= 保住位置的最小出价。但注意：GSP <b>非严格 IC</b>（说真话不必最优），市场稳定靠对称纳什均衡（无妒忌）。</div>`;
+    } else {
+      note = `<div class="note">支付 = 你对<b>其他所有人</b>造成的外部性损害（无你时他人福利 − 有你时他人福利），与你的申报解耦 ⇒ <b>如实出价是占优策略</b>。GSP 与 VCG 的收费高低须在均衡意义下比较：VCG 说真话，GSP 均衡出价系统性更高。</div>`;
+    }
+    return `<h3>当前步骤结算</h3>
+      <p><span class="k">机制：</span>${MECH_NAME[st.mech]}（如实出价）</p>
+      ${mechTable(st.s)}${note}`;
+  }
+  if(st.type === "scen"){
+    const sc = st.sc;
+    const devName = advs[sc.dev].id;
+    const oldBid = sc.from, newBid = sc.to;
+    let rows = "";
+    MECHS.forEach(m => {
+      const r = sc.s[m].res[sc.dev];
+      const b0 = sc.base[m].res[sc.dev];
+      const d = r.util - b0.util;
+      rows += `<tr><td>${m}</td><td>${r.slot+1}</td><td class="mono">${r.pay.toFixed(2)}</td>
+               <td class="mono">${r.util.toFixed(2)}</td><td class="mono">${b0.util.toFixed(2)}</td>
+               <td class="${deltaClass(d)}">${deltaText(d)}</td></tr>`;
+    });
+    let verdict = "";
+    if(sc.dev === 1 && sc.mode === "down"){
+      verdict = `<div class="note warn">压价在 <b>GFP 下反而有利</b>（付得更少还能赢坑位 3）——一价奖励博弈；而 <b>GSP / VCG 下均受损</b>：坑位跌到第 3，便宜的支付补不回点击率的损失。</div>`;
+    } else if(sc.dev === 1 && sc.mode === "up"){
+      verdict = `<div class="note"><b>GSP 效用不变</b>：顶到坑位 1 后付的是 A 的折算价（2.00），效用恰好等于原来在坑位 2 的效用——这正是<b>无妒忌（envy-free）</b>：虚报常不受罚，GSP 靠均衡而非占优策略保持稳定。<b>VCG 严格惩罚虚报</b>；<b>GFP 下亏本赢</b>（赢家诅咒）。</div>`;
+    } else {
+      verdict = `<div class="note warn">远超估值的抬价在<b>三种机制下都吃亏</b>；更糟的是 GSP 下 A、B 两个<b>无辜者被连累</b>（A 效用 1.00→0.50，B 0.40→0.25）——谎报的代价由全市场分担，这正是 GSP 非严格 IC 的市场级后果。</div>`;
+    }
+    return `<h3>${st.label}</h3>
+      <p>广告主 <span class="k">${devName}</span> 把出价从 <b>${oldBid.toFixed(2)}</b> 改为 <b>${newBid.toFixed(2)}</b>（估值不变，v=${advs[sc.dev].v}），其余人不动。三种机制分别重新结算：</p>
+      <table><tr><th>机制</th><th>新坑位</th><th>支付/点击</th><th>新效用</th><th>如实效用</th><th>结论</th></tr>${rows}</table>
+      ${verdict}`;
+  }
+  // conclusion
+  let rows = "";
+  const labels = ["B 压低出价", "B 抬高出价", "C 抬高出价"];
+  st.scens.forEach((sc, k) => {
+    let cells = "";
+    MECHS.forEach(m => {
+      const u0 = sc.base[m].res[sc.dev].util;
+      const u1 = sc.s[m].res[sc.dev].util;
+      const d = u1 - u0;
+      cells += `<td class="mono ${deltaClass(d)}">${u0.toFixed(2)} → ${u1.toFixed(2)}</td>`;
+    });
+    rows += `<tr><td>${labels[k]}</td>${cells}</tr>`;
+  });
+  return `<h3>结论：虚报会发生什么</h3>
+    <table><tr><th>虚报行为</th><th>GFP</th><th>GSP</th><th>VCG</th></tr>${rows}</table>
+    <p><span class="k">VCG / 二价：</span>两个方向的虚报都不增效用——<b>说真话是占优策略（IC 成立）</b>。</p>
+    <p><span class="k">GSP：</span>虚报常无惩罚也无奖励（无妒忌）——稳定靠均衡，不靠诚实。</p>
+    <p><span class="k">GFP：</span>压价有利可图——人人博弈、市场震荡（12.3.1）。</p>
+    <div class="note">试着修改左侧的出价与估值再走一遍流程；然后对照 8.3（EGA）：这套 IC/IR 约束在那里被量化为 ex-post regret，端到端地学进支付网络。</div>`;
+}
+
+// ── 代码面板 ──
+function renderCode(st){
+  let code, hl = 0;
+  if(st.type === "intro"){
+    code = ["# 位置拍卖设定（元/点击）", "CTR = [0.40, 0.20, 0.10]", "reserve = 0.50", "bids = [4, 3, 2]   # 如实出价 b=v", "utility_i = (v_i - p_i) * x_s", "# 下一步：三种机制结算同一组出价"]; hl = 4;
+  } else if(st.type === "mech"){
+    if(st.mech === "GFP"){
+      code = ["# GFP 广义一价：付自己的出价", "order = sort(bids, desc)", "for i, slot in enumerate(order):", "    p[i] = bids[i]            # 支付=自己出价", "    u[i] = (v[i]-p[i])*x[slot]", "# 说真话 ⇒ 效用全为 0 ⇒ 人人想压价"]; hl = 3;
+    } else if(st.mech === "GSP"){
+      code = ["# GSP 广义第二高价", "order = sort(bids, desc)", "for i in range(S):", "    p[i] = bids[i+1]*x[i+1]/x[i]", "    # ↑ 下一名 eCPM 折算到自己 CTR", "p[last] = reserve   # 末位付保留价", "# 支付只依赖下一名 → 与申报半解耦"]; hl = 3;
+    } else {
+      code = ["# VCG：为外部性定价", "for winner i at slot s:", "    P = welfare(others, 无i) \\", "        - welfare(others, 有i)  # 外部性", "    p[i] = max(P / x[s], reserve)", "# 支付与申报解耦 → 说真话是占优策略"]; hl = 3;
+    }
+  } else if(st.type === "scen"){
+    const sc = st.sc;
+    const v = advs[sc.dev].v;
+    code = [`# ${st.label}`, `bids[${sc.dev}] = ${sc.to.toFixed(2)}   # 原 ${sc.from.toFixed(2)}，v=${v}`, "recompute(GFP, GSP, VCG)", `compare_utility(${advs[sc.dev].id}, 如实 vs 虚报)`, "# 右表：三个机制下的新坑位/支付/效用"]; hl = 1;
+  } else {
+    code = ["# 本章结论", "# VCG/二价: u(truth) >= u(lie)  对一切谎报", "            # → IC 成立，说真话占优", "# GSP: 谎报常无差异（无妒忌均衡）", "# GFP: 压价有利 → 市场震荡", "# 定价规则塑造行为（12.3.5 对比图）"]; hl = 1;
+  }
+  document.getElementById("codepre").innerHTML =
+    code.map((l, i) => i === hl ? "<span class='hl'>" + escapeHtml(l) + "</span>" : escapeHtml(l)).join("\n");
+}
+
+// ── 渲染主流程 ──
+const STEP_DESC = ["初始设定", "GFP 结算", "GSP 结算", "VCG 结算", "情景一：B 压价", "情景二：B 抬价", "情景三：C 抬价", "结论对比"];
+function render(){
+  const st = traj[cur];
+  renderVisual(st);
+  document.getElementById("state").innerHTML = renderState(st);
+  renderCode(st);
+  document.getElementById("foot").textContent = "步骤 " + (cur+1) + " / " + traj.length + " — " + STEP_DESC[cur];
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p = new URLSearchParams(location.search); return p.get(k);}
+
+function next(){ if(cur < traj.length-1){cur++; render();} else stopAuto(); }
+function prev(){ if(cur > 0){cur--; render();} }
+function reset(){ cur = 0; buildTraj(); initInputs(); render(); }
+function startAuto(){ if(timer) return; timer = setInterval(() => { if(cur >= traj.length-1){stopAuto(); return;} next(); }, 2200); }
+function stopAuto(){ if(timer){clearInterval(timer); timer = null;} }
+
+document.getElementById("next").onclick = next;
+document.getElementById("prev").onclick = prev;
+document.getElementById("reset").onclick = reset;
+document.getElementById("auto").onclick = () => { timer ? stopAuto() : startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click", next);
+document.getElementById("prev2")?.addEventListener("click", prev);
+document.getElementById("reset2")?.addEventListener("click", reset);
+document.getElementById("auto2")?.addEventListener("click", () => { timer ? stopAuto() : startAuto(); });
+
+document.addEventListener("keydown", e => { if(e.key === "ArrowRight") next(); if(e.key === "ArrowLeft") prev(); });
+
+buildTraj();
+initInputs();
+render();
+</script>
+</body>
+</html>

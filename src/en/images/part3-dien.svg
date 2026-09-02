@@ -9,10 +9,10 @@
   </defs>
 
   <rect x="0" y="0" width="800" height="420" fill="#f8f9fc"/>
-  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">DIEN：兴趣提取（GRU+辅助损失）与兴趣演化（AUGRU）</text>
+  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">DIEN: Interest Extraction (GRU + Auxiliary Loss) and Interest Evolution (AUGRU)</text>
 
   <!-- behavior sequence -->
-  <text x="60" y="80" font-size="12" fill="#1e293b" font-weight="600">行为序列：</text>
+  <text x="60" y="80" font-size="12" fill="#1e293b" font-weight="600">Behavior Sequence:</text>
   <g font-size="11">
     <rect x="60" y="90" width="64" height="30" rx="6" fill="#e8ecff"/><text x="92" y="109" text-anchor="middle" fill="#4A6CF7">e₁</text>
     <rect x="134" y="90" width="64" height="30" rx="6" fill="#e8ecff"/><text x="166" y="109" text-anchor="middle" fill="#4A6CF7">e₂</text>
@@ -24,28 +24,28 @@
   <!-- Stage 1 -->
   <rect x="60" y="150" width="330" height="110" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s11)"/>
   <rect x="60" y="150" width="330" height="32" rx="8" fill="#4A6CF7"/>
-  <text x="225" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① 兴趣提取层（GRU）</text>
-  <text x="80" y="210" font-size="11.5" fill="#1e293b">h₁→h₂→h₃→h₄：逐时隐藏状态</text>
-  <text x="80" y="232" font-size="11.5" fill="#f59e0b" font-weight="700">+ 辅助损失：hₜ 预测 eₜ₊₁</text>
-  <text x="80" y="252" font-size="11.5" fill="#64748b">逼 GRU 学到"真兴趣"状态</text>
+  <text x="225" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① Interest Extraction Layer (GRU)</text>
+  <text x="80" y="210" font-size="11.5" fill="#1e293b">h₁→h₂→h₃→h₄: hidden state per step</text>
+  <text x="80" y="232" font-size="11.5" fill="#f59e0b" font-weight="700">+ Auxiliary loss: hₜ predicts eₜ₊₁</text>
+  <text x="80" y="252" font-size="11.5" fill="#64748b">Pushes GRU toward "true interest" states</text>
 
   <line x1="225" y1="120" x2="225" y2="148" stroke="#64748b" stroke-width="2" marker-end="url(#a11)"/>
 
   <!-- Stage 2 -->
   <rect x="430" y="150" width="310" height="110" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s11)"/>
   <rect x="430" y="150" width="310" height="32" rx="8" fill="#10b981"/>
-  <text x="585" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② 兴趣演化层（AUGRU）</text>
-  <text x="450" y="210" font-size="11.5" fill="#1e293b">aₜ = 候选与 hₜ 注意力</text>
-  <text x="450" y="232" font-size="11.5" fill="#1e293b">ũ'ₜ = aₜ · u'ₜ（缩放更新门）</text>
-  <text x="450" y="252" font-size="11.5" fill="#64748b">相关兴趣传、漂移被抑制</text>
+  <text x="585" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② Interest Evolution Layer (AUGRU)</text>
+  <text x="450" y="210" font-size="11.5" fill="#1e293b">aₜ = attention of target on hₜ</text>
+  <text x="450" y="232" font-size="11.5" fill="#1e293b">ũ'ₜ = aₜ · u'ₜ (scaled update gate)</text>
+  <text x="450" y="252" font-size="11.5" fill="#64748b">Relevant interests pass, drift suppressed</text>
 
   <line x1="390" y1="205" x2="428" y2="205" stroke="#64748b" stroke-width="2" marker-end="url(#a11)"/>
 
   <!-- candidate + output -->
   <rect x="430" y="290" width="150" height="50" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
-  <text x="505" y="316" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700">候选广告 e_a</text>
+  <text x="505" y="316" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700">Target Item e_a</text>
   <rect x="610" y="290" width="130" height="50" rx="8" fill="#1e293b"/>
-  <text x="675" y="316" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">CTR 预估</text>
+  <text x="675" y="316" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">CTR Prediction</text>
   <line x1="585" y1="260" x2="505" y2="288" stroke="#64748b" stroke-width="2" marker-end="url(#a11)"/>
   <line x1="675" y1="290" x2="675" y2="288" stroke="#64748b" stroke-width="2" marker-end="url(#a11)"/>
 </svg>

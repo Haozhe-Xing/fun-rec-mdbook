@@ -4,18 +4,18 @@
     <filter id="sq" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.18"/></filter>
   </defs>
   <rect width="800" height="360" fill="#f8f9fc"/>
-  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">自注意力：查询—匹配—聚合（Q / K / V）</text>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Self-Attention: Query - Match - Aggregate (Q / K / V)</text>
 
   <!-- input X -->
   <rect x="40" y="150" width="110" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sq)"/>
-  <text x="95" y="178" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">输入 X</text>
+  <text x="95" y="178" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Input X</text>
   <text x="95" y="196" text-anchor="middle" font-size="11" fill="#64748b">R^{T×d}</text>
 
   <!-- three linear -> Q K V -->
   <g font-size="12" text-anchor="middle">
-    <rect x="220" y="70" width="120" height="50" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sq)"/><text x="280" y="92" font-weight="700" fill="#4A6CF7">Query Q</text><text x="280" y="110" fill="#64748b">预测需求</text>
-    <rect x="220" y="155" width="120" height="50" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sq)"/><text x="280" y="177" font-weight="700" fill="#10b981">Key K</text><text x="280" y="195" fill="#64748b">匹配索引</text>
-    <rect x="220" y="240" width="120" height="50" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sq)"/><text x="280" y="262" font-weight="700" fill="#f59e0b">Value V</text><text x="280" y="280" fill="#64748b">实际内容</text>
+    <rect x="220" y="70" width="120" height="50" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sq)"/><text x="280" y="92" font-weight="700" fill="#4A6CF7">Query Q</text><text x="280" y="110" fill="#64748b" font-size="11">What I need</text>
+    <rect x="220" y="155" width="120" height="50" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sq)"/><text x="280" y="177" font-weight="700" fill="#10b981">Key K</text><text x="280" y="195" fill="#64748b" font-size="11">Match index</text>
+    <rect x="220" y="240" width="120" height="50" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sq)"/><text x="280" y="262" font-weight="700" fill="#f59e0b">Value V</text><text x="280" y="280" fill="#64748b" font-size="11">Actual content</text>
   </g>
   <line x1="150" y1="170" x2="216" y2="95" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
   <line x1="150" y1="180" x2="216" y2="180" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
@@ -24,16 +24,16 @@
   <!-- attention score -->
   <rect x="430" y="120" width="160" height="60" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sq)"/>
   <text x="510" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">A = softmax(QKᵀ/√dₖ)</text>
-  <text x="510" y="165" text-anchor="middle" font-size="11" fill="#64748b">注意力权重</text>
+  <text x="510" y="165" text-anchor="middle" font-size="11" fill="#64748b">Attention weights</text>
   <line x1="340" y1="95" x2="426" y2="135" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
   <line x1="340" y1="180" x2="426" y2="150" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
 
   <!-- output Z -->
   <rect x="660" y="120" width="110" height="60" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2" filter="url(#sq)"/>
-  <text x="715" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">输出 Z = AV</text>
-  <text x="715" y="170" text-anchor="middle" font-size="11" fill="#64748b">加权聚合</text>
+  <text x="715" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">Output Z = AV</text>
+  <text x="715" y="170" text-anchor="middle" font-size="11" fill="#64748b">Weighted sum</text>
   <line x1="590" y1="150" x2="656" y2="150" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
   <line x1="510" y1="180" x2="655" y2="165" stroke="#4A6CF7" stroke-width="2" marker-end="url(#aq)"/>
 
-  <text x="400" y="320" text-anchor="middle" font-size="13" fill="#64748b">例：注意力权重 [0.1, 0.3, 0.6] ⇒ Z = 0.1·V₁ + 0.3·V₂ + 0.6·V₃</text>
+  <text x="400" y="320" text-anchor="middle" font-size="13" fill="#64748b">e.g. weights [0.1, 0.3, 0.6] ⇒ Z = 0.1·V₁ + 0.3·V₂ + 0.6·V₃</text>
 </svg>

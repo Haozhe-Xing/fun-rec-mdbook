@@ -10,34 +10,34 @@
   <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
 
   <!-- title -->
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">ItemCF：从共现到相似物品的扩散</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">ItemCF: From Co-occurrence to Similar-Item Diffusion</text>
 
   <!-- users -->
   <rect x="40" y="70" width="120" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="100" y="94" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">用户 U</text>
-  <text x="100" y="113" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">喜欢 T恤+夹克</text>
+  <text x="100" y="94" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">User U</text>
+  <text x="100" y="113" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Likes Tee + Jacket</text>
 
   <rect x="40" y="150" width="120" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="100" y="174" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">用户 A</text>
-  <text x="100" y="193" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">喜欢 T恤+夹克</text>
+  <text x="100" y="174" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">User A</text>
+  <text x="100" y="193" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Likes Tee + Jacket</text>
 
   <rect x="40" y="230" width="120" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="100" y="254" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">用户 B</text>
-  <text x="100" y="273" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">喜欢 T恤+夹克</text>
+  <text x="100" y="254" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">User B</text>
+  <text x="100" y="273" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Likes Tee + Jacket</text>
 
   <!-- items -->
   <rect x="330" y="90" width="120" height="56" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="390" y="114" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#ffffff">T恤 (种子)</text>
-  <text x="390" y="133" text-anchor="middle" font-family="Arial" font-size="11" fill="#d1fae5">用户 U 交互过</text>
+  <text x="390" y="114" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#ffffff">Tee (Seed)</text>
+  <text x="390" y="133" text-anchor="middle" font-family="Arial" font-size="11" fill="#d1fae5">Interacted by U</text>
 
   <rect x="330" y="200" width="120" height="56" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
-  <text x="390" y="224" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">夹克</text>
-  <text x="390" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">待推荐候选</text>
+  <text x="390" y="224" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">Jacket</text>
+  <text x="390" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Candidate item</text>
 
-  <!-- arrows U->T恤, U->夹克 -->
+  <!-- arrows U->Tee, U->Jacket -->
   <line x1="160" y1="98" x2="328" y2="110" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
   <line x1="160" y1="120" x2="328" y2="218" stroke="#4A6CF7" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
-  <!-- co-occurrence edges A,B -> T恤, 夹克 -->
+  <!-- co-occurrence edges A,B -> Tee, Jacket -->
   <line x1="160" y1="178" x2="328" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
   <line x1="160" y1="178" x2="328" y2="228" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
   <line x1="160" y1="258" x2="328" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
@@ -45,10 +45,10 @@
 
   <!-- similarity label -->
   <rect x="520" y="180" width="240" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
-  <text x="640" y="204" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">w(夹克, T恤) 高</text>
-  <text x="640" y="223" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">A,B 同时喜欢 → 强共现</text>
+  <text x="640" y="204" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">w(Jacket, Tee) is high</text>
+  <text x="640" y="223" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">A,B both liked → strong co-occurrence</text>
   <line x1="450" y1="228" x2="518" y2="208" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
 
   <line x1="40" y1="290" x2="760" y2="290" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="400" y="309" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">p(u,i) = Σ wᵢⱼ · rᵤⱼ   →   种子物品扩散出相似候选</text>
+  <text x="400" y="309" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">p(u,i) = Σ wᵢⱼ · rᵤⱼ   →   seed item diffuses to similar candidates</text>
 </svg>

@@ -1,0 +1,59 @@
+<svg width="800" height="480" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shdG" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="480" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">担保式投送（GD）：Ad → (Context, User) 二部图在线分配</text>
+
+  <!-- column labels -->
+  <text x="155" y="64" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#4A6CF7">广告合约（Demand）</text>
+  <text x="605" y="64" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#10b981">流量供给（(Context, User)）</text>
+  <text x="400" y="64" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#64748b">每条边 = 定向条件匹配</text>
+
+  <!-- contract nodes -->
+  <rect x="40" y="78" width="230" height="88" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdG)"/>
+  <text x="155" y="104" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#4A6CF7">合约① 汽车品牌</text>
+  <text x="155" y="126" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">保量 500 万展示 · CPM ¥8</text>
+  <text x="155" y="148" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">定向：男性 · 25–40 岁</text>
+
+  <rect x="40" y="186" width="230" height="88" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdG)"/>
+  <text x="155" y="212" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#4A6CF7">合约② 母婴品牌</text>
+  <text x="155" y="234" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">保量 300 万展示 · CPM ¥6</text>
+  <text x="155" y="256" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">定向：女性 · 25–35 岁</text>
+
+  <rect x="40" y="294" width="230" height="88" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdG)"/>
+  <text x="155" y="320" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#4A6CF7">合约③ 电商大促</text>
+  <text x="155" y="342" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">保量 1000 万展示 · CPM ¥4</text>
+  <text x="155" y="364" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">定向：不限</text>
+
+  <!-- supply nodes -->
+  <rect x="530" y="86" width="230" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shdG)"/>
+  <text x="645" y="112" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b">(体育频道, 男性用户)</text>
+  <text x="645" y="136" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">预估日流量 200 万</text>
+
+  <rect x="530" y="192" width="230" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shdG)"/>
+  <text x="645" y="218" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b">(育儿频道, 女性用户)</text>
+  <text x="645" y="242" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">预估日流量 150 万</text>
+
+  <rect x="530" y="298" width="230" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shdG)"/>
+  <text x="645" y="324" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b">(首页信息流, 全量用户)</text>
+  <text x="645" y="348" text-anchor="middle" font-family="Courier New" font-size="10.5" fill="#64748b">预估日流量 900 万</text>
+
+  <!-- matching edges -->
+  <line x1="270" y1="122" x2="530" y2="121" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="270" y1="140" x2="530" y2="333" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="270" y1="230" x2="530" y2="227" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="270" y1="248" x2="530" y2="245" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <line x1="270" y1="338" x2="530" y2="135" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="270" y1="346" x2="530" y2="240" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="270" y1="354" x2="530" y2="338" stroke="#64748b" stroke-width="1.5"/>
+  <text x="400" y="108" text-anchor="middle" font-family="Arial" font-size="10.5" fill="#64748b">定向命中</text>
+  <text x="400" y="372" text-anchor="middle" font-family="Arial" font-size="10.5" fill="#64748b">虚线 = 部分命中（全量流量中筛定向人群）</text>
+
+  <!-- bottom notes -->
+  <rect x="30" y="392" width="740" height="72" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="50" y="418" font-family="Arial" font-size="12" fill="#1e293b">约束：各合约实际展示 ≥ 保量（约定量未完成需补偿）；目标：量优先于质，在满足量的前提下优化收益。</text>
+  <text x="50" y="440" font-family="Arial" font-size="12" fill="#1e293b">基础：点击率预测 + 流量预测（反向检索问题）；求解：构造对偶问题。GD 按 CPM 结算、服务端决策，定向粒度粗于竞价。</text>
+</svg>

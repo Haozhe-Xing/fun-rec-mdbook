@@ -9,23 +9,23 @@
   </defs>
   <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">EGES：商品特定注意力聚合多源向量</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">EGES: Item-Specific Attention Fuses Multi-Source Embeddings</text>
 
   <!-- source vectors -->
   <rect x="40" y="80" width="130" height="50" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="105" y="104" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">ID 向量</text>
+  <text x="105" y="104" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">ID Emb.</text>
   <text x="105" y="122" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">a⁰=0.3</text>
 
   <rect x="40" y="145" width="130" height="50" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="105" y="169" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">品牌向量</text>
+  <text x="105" y="169" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Brand Emb.</text>
   <text x="105" y="187" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">a¹=0.9 ↑</text>
 
   <rect x="40" y="210" width="130" height="50" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="105" y="234" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">类目向量</text>
+  <text x="105" y="234" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Category Emb.</text>
   <text x="105" y="252" text-anchor="middle" font-family="Courier New" font-size="11" fill="#64748b">a²=0.5</text>
 
   <rect x="40" y="275" width="130" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="105" y="299" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">价格向量 ...</text>
+  <text x="105" y="299" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Price Emb. ...</text>
 
   <!-- arrows to attention -->
   <line x1="170" y1="105" x2="320" y2="130" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
@@ -35,24 +35,24 @@
 
   <!-- attention box -->
   <rect x="330" y="110" width="180" height="130" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
-  <text x="420" y="135" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">商品特定注意力</text>
+  <text x="420" y="135" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">Item-Specific Attention</text>
   <text x="420" y="160" text-anchor="middle" font-family="Courier New" font-size="11" fill="#1e293b">wⱼ = e^{aᵛʲ} / Σe^{aᵛʲ}</text>
-  <text x="420" y="185" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">手机：品牌权重高</text>
-  <text x="420" y="205" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">日用品：价格权重高</text>
-  <text x="420" y="228" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">per-item 自适应</text>
+  <text x="420" y="185" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Phones: brand weighs more</text>
+  <text x="420" y="205" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Daily goods: price wins</text>
+  <text x="420" y="228" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">per-item adaptive</text>
 
   <!-- output -->
   <rect x="560" y="140" width="200" height="70" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="660" y="168" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">物品向量 Hᵥ</text>
-  <text x="660" y="190" text-anchor="middle" font-family="Courier New" font-size="11" fill="#d1fae5">加权聚合结果</text>
+  <text x="660" y="168" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">Item Embedding Hᵥ</text>
+  <text x="660" y="190" text-anchor="middle" font-family="Courier New" font-size="11" fill="#d1fae5">weighted aggregation</text>
 
   <line x1="510" y1="175" x2="558" y2="175" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
 
   <!-- cold start note -->
   <rect x="560" y="235" width="200" height="60" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="660" y="258" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">冷启动：无行为</text>
-  <text x="660" y="278" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">→ 属性 mean pooling</text>
+  <text x="660" y="258" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">Cold start: no behavior</text>
+  <text x="660" y="278" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">→ mean pooling of attrs</text>
 
   <rect x="0" y="305" width="800" height="35" fill="#1e293b" rx="0 0 12 12"/>
-  <text x="400" y="328" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">Hᵥ = Σ e^{aᵛʲ}Wᵛʲ / Σ e^{aᵛʲ}   →   属性加权，解冷启动</text>
+  <text x="400" y="328" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">Hᵥ = Σ e^{aᵛʲ}Wᵛʲ / Σ e^{aᵛʲ}   →   weighted attrs solve cold start</text>
 </svg>

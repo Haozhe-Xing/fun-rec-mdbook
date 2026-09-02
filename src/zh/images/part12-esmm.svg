@@ -1,0 +1,80 @@
+<svg width="800" height="520" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrEs" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="shdEs" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="520" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">ESMM：在全部曝光空间上联合建模 pCTR × pCVR</text>
+
+  <!-- loss ctr box -->
+  <rect x="48" y="56" width="178" height="66" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="137" y="80" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#ef4444">损失 L_ctr</text>
+  <text x="137" y="100" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">pCTR vs 点击标签</text>
+  <text x="137" y="114" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">（全曝光空间可监督）</text>
+
+  <!-- pCTCVR box -->
+  <rect x="322" y="56" width="156" height="48" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5" filter="url(#shdEs)"/>
+  <text x="400" y="86" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">pCTCVR</text>
+
+  <!-- loss ctcvr box -->
+  <rect x="574" y="56" width="178" height="66" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="663" y="80" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#ef4444">损失 L_ctcvr</text>
+  <text x="663" y="100" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">pCTCVR vs 转化标签</text>
+  <text x="663" y="114" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">（全曝光空间可监督）</text>
+
+  <!-- arrows pCTCVR -> losses and multiply node -->
+  <line x1="478" y1="80" x2="570" y2="80" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+  <line x1="400" y1="146" x2="400" y2="108" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+
+  <!-- multiply node -->
+  <circle cx="400" cy="160" r="14" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+  <text x="400" y="166" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">×</text>
+
+  <!-- CTR tower -->
+  <rect x="236" y="196" width="128" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="300" y="220" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">CTR 塔</text>
+  <text x="300" y="240" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">→ pCTR</text>
+
+  <!-- CVR tower -->
+  <rect x="436" y="196" width="128" height="56" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="500" y="220" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#d97706">CVR 塔</text>
+  <text x="500" y="240" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">→ pCVR</text>
+
+  <!-- arrows towers -> multiply -->
+  <line x1="330" y1="196" x2="388" y2="170" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+  <line x1="470" y1="196" x2="412" y2="170" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+  <!-- arrow CTR tower -> L_ctr -->
+  <line x1="240" y1="196" x2="160" y2="126" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+
+  <!-- shared embedding -->
+  <rect x="230" y="292" width="340" height="46" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="400" y="320" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#4A6CF7">共享 Embedding 层（CVR 从 CTR 样本迁移表示）</text>
+
+  <!-- arrows embedding -> towers -->
+  <line x1="330" y1="292" x2="302" y2="256" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+  <line x1="470" y1="292" x2="498" y2="256" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+
+  <!-- exposure space -->
+  <rect x="150" y="366" width="500" height="48" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shdEs)"/>
+  <text x="400" y="395" text-anchor="middle" font-family="Arial" font-size="12.5" font-weight="bold" fill="#1e293b">全部曝光样本（含未点击）—— 训练空间 = 推理空间</text>
+
+  <!-- arrow exposure -> embedding -->
+  <line x1="400" y1="366" x2="400" y2="342" stroke="#64748b" stroke-width="2" marker-end="url(#arrEs)"/>
+
+  <!-- side annotation -->
+  <rect x="600" y="188" width="170" height="118" rx="8" fill="#f8f9fc" stroke="#64748b" stroke-width="2"/>
+  <text x="685" y="212" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1e293b">CVR 塔没有直接损失项</text>
+  <text x="685" y="232" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">参数仅由 L_ctcvr 更新</text>
+  <text x="685" y="250" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">（隐式学习）</text>
+  <text x="685" y="272" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">乘法避免相除的数值不稳定</text>
+  <text x="685" y="290" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">且 pCTR·pCVR ∈ (0,1)</text>
+
+  <!-- bottom notes -->
+  <rect x="30" y="432" width="740" height="72" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="50" y="458" font-family="Arial" font-size="12" fill="#1e293b">pCTCVR = pCTR × pCVR（链式法则）：pCTR 与 pCTCVR 都定义在全曝光空间，绕开「点击空间训练、曝光空间推理」的 SSB。</text>
+  <text x="50" y="485" font-family="Arial" font-size="12" fill="#64748b">淘宝公开数据点击仅占曝光约 4%（DS）；ESMM 在 CVR 任务上 AUC 绝对提升 2.56%，生产数据集 89 亿样本（Ma et al., SIGIR 2018）。</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">Bid Shading：赢率与利润的倒 U 权衡</text>
+  <text x="400" y="52" text-anchor="middle" font-size="12" fill="#64748b">估值 v = 6，赢价分布取 log-normal（μ = ln 3，σ = 0.6）：出价 b 越高赢率越高、单次利润越低，乘积 E[S] 在 b* 处取峰值</text>
+
+  <!-- plot frame -->
+  <rect x="90" y="90" width="620" height="270" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+
+  <!-- grid -->
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="90" y1="293" x2="710" y2="293"/>
+    <line x1="90" y1="225" x2="710" y2="225"/>
+    <line x1="90" y1="158" x2="710" y2="158"/>
+    <line x1="245" y1="90" x2="245" y2="360"/>
+    <line x1="400" y1="90" x2="400" y2="360"/>
+    <line x1="555" y1="90" x2="555" y2="360"/>
+  </g>
+  <g font-size="11" fill="#64748b" text-anchor="end">
+    <text x="84" y="364">0</text>
+    <text x="84" y="297">0.25</text>
+    <text x="84" y="229">0.5</text>
+    <text x="84" y="162">0.75</text>
+    <text x="84" y="95">1.0</text>
+  </g>
+  <g font-size="11" fill="#64748b" text-anchor="middle">
+    <text x="90" y="376">0</text><text x="245" y="376">2</text><text x="400" y="376">4</text>
+    <text x="555" y="376">6</text><text x="710" y="376">8</text>
+  </g>
+
+  <!-- axes -->
+  <line x1="90" y1="90" x2="90" y2="360" stroke="#64748b" stroke-width="2"/>
+  <line x1="90" y1="360" x2="710" y2="360" stroke="#64748b" stroke-width="2"/>
+  <text x="400" y="396" text-anchor="middle" font-size="12" fill="#64748b">出价 b（元）</text>
+  <text x="46" y="225" text-anchor="middle" font-size="12" fill="#64748b" transform="rotate(-90 46 225)">归一化值</text>
+
+  <!-- P(win|b) blue curve -->
+  <polyline fill="none" stroke="#4A6CF7" stroke-width="2.5" stroke-linejoin="round"
+    points="90,360 109,360 129,359.7 148,357.3 168,350.8 187,340.6 206,326.5 226,310.1 245,292.5 264,274.7 284,257.1 303,240.7 322,225 342,210.7 361,197.5 381,185.9 400,175.3 439,157.2 478,143.2 516,132.1 555,123.5 632,111.3 710,103.5"/>
+  <text x="700" y="90" text-anchor="end" font-size="12" fill="#4A6CF7" font-weight="700">P(win | b) 赢率 = F(b)（最低赢价 CDF）</text>
+
+  <!-- unit profit yellow line: (v-b)/v from (0,1) to (v,0) -->
+  <polyline fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="8 4"
+    points="90,90 555,360 710,360"/>
+  <text x="200" y="150" font-size="12" fill="#f59e0b" font-weight="700">单位利润 (v − b)/v</text>
+
+  <!-- E[S] green curve -->
+  <polyline fill="none" stroke="#10b981" stroke-width="3" stroke-linejoin="round"
+    points="90,360 129,359 148,350.3 168,330.3 187,299.3 206,261.2 226,221 245,183.2 264,150 284,124 303,105.1 322,94.1 342,90.3 350,90 361,92.8 381,102.9 400,117.5 439,160.5 478,217.7 516,285.2 555,360"/>
+  <text x="470" y="200" font-size="12" fill="#10b981" font-weight="700">E[S] = (v − b) · P(win | b)</text>
+
+  <!-- optimal point b* -->
+  <line x1="350" y1="90" x2="350" y2="360" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <circle cx="350" cy="90" r="6" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+  <text x="350" y="74" text-anchor="middle" font-size="12.5" fill="#10b981" font-weight="700">b* ≈ 3.4：期望 surplus 峰值</text>
+
+  <!-- b = v point -->
+  <circle cx="555" cy="360" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+  <text x="555" y="440" text-anchor="middle" font-size="12.5" fill="#ef4444" font-weight="700">b = v：按估值出一价，利润为零</text>
+  <line x1="555" y1="360" x2="555" y2="425" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- low bid region -->
+  <circle cx="112" cy="360" r="5" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="150" y="330" font-size="12.5" fill="#f59e0b" font-weight="700">b → 0：赢率崩塌</text>
+
+  <!-- legend box -->
+  <rect x="60" y="440" width="680" height="24" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+  <text x="400" y="456" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">两端皆输：出价过低赢率崩塌、按估值出一价利润归零 —— 最优出价藏在中间，赢率分布（而非点估计）决定 b* 位置</text>
+</svg>

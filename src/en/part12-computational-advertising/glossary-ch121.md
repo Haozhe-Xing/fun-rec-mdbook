@@ -1,0 +1,39 @@
+- **Computational Advertising (计算广告)** — The technical and business system that matches and optimizes over the user, context, and ad triple with the goal of maximizing ROI.
+- **Sponsor (出资人)** — One of the three elements of the advertising definition: the advertiser who pays for ad delivery and has explicit commercial objectives.
+- **Publisher (媒介)** — One of the three elements of the advertising definition: the medium or product that carries ads and holds the user's attention.
+- **Audience (受众)** — One of the three elements of the advertising definition: the group of target users the advertising message reaches.
+- **Brand Awareness (品牌广告)** — An ad type focused on long-term influence and building recognition; typical metrics are exposure and awareness.
+- **Direct Response (效果广告)** — An ad type pursuing short-term conversion actions (clicks, sign-ups, orders).
+- **Ad Effectiveness Model (广告有效性模型)** — The six-stage funnel describing how ads take effect: Exposure→Attention→Comprehension→Acceptance→Retention→Decision, grouped into the selection, interpretation, and attitude phases.
+- **ROI (Return on Investment)** — The ratio of return to spend in ad delivery; the core optimization objective of computational advertising.
+- **eCPM (effective Cost Per Mille)** — Expected revenue per thousand impressions, obtained by multiplying the click-through rate and the click value; the unified yardstick for ad ranking and traffic valuation.
+- **CPM Market (CPM 市场)** — A market form billing per impression, where the decisions (and risks) of click-through rate and click value are handed entirely to the advertiser.
+- **CPC Market (CPC 市场)** — A market form billing per click, where click value is judged by the advertiser through bidding and the click-through rate is dynamically estimated by the platform.
+- **CPA/CPS Market (CPA/CPS 市场)** — A market form billing per action/sale, where decisions and risks fall entirely on the platform; suits markets whose advertisers have highly uniform conversion processes.
+- **Advertising System Value Formula (广告系统价值公式)** — Advertising system value = conversion efficiency × pricing mechanism × resource volume × delivery efficiency; the master framework for understanding advertising technology evolution.
+- **Ad Network (广告网络)** — A closed intermediary system under the 2.0 delivery model that aggregates multi-media traffic and sells audiences rather than ad slots, mainly billing on CPC.
+- **Programmatic Trade (程序化交易)** — Automated, single-impression-granularity ad trading completed via DSP-ADX-SSP under the 3.0 delivery model.
+- **Ad Exchange (ADX, 广告交易平台)** — The trading hub that connects ads with (context, users) via real-time bidding and settles auctions at impression granularity.
+- **Demand-Side Platform (DSP, 需求方平台)** — The demand-side technology platform serving advertisers, providing customized audience segmentation, cross-media traffic procurement, and RTB bidding.
+- **Supply-Side Platform (SSP, 供应方平台)** — The supply-side technology platform serving media; its core function is yield optimization, uniformly optimizing multiple monetization methods.
+- **Data Management Platform (DMP, 数据管理平台)** — A platform providing websites with data processing and external trading capabilities, characterized by customized audience segmentation and a unified data interface.
+- **Trading Desk (广告购买平台)** — A demand-side tool allowing advertisers to buy across ad networks with ROI optimization, often incubated by agencies.
+- **Real-Time Bidding (RTB, 实时竞价)** — The programmatic trading mechanism that queries multiple DSPs in real time for every ad impression, with the highest bidder winning.
+- **Cookie Mapping (用户身份匹配)** — The up-front RTB phase, initiated by the DSP, that builds the lookup table between media Cookies and DSP user IDs; the mapping table is stored on the demand side.
+- **Ad Call (广告请求)** — The RTB auction phase: the ADX broadcasts the bid request, DSPs return bids, and the highest bidder wins the impression.
+- **Guaranteed Delivery (担保式投送)** — A premium-sale trading form based on contracts, with make-goods for unmet guaranteed impression volumes; CPM settlement, volume over quality.
+- **Preferred Deal (优选)** — A one-on-one negotiated trading method where advertisers pick traffic first at an agreed price, with no open auction.
+- **Network Optimization (网络优化)** — A trading method where the medium hands traffic to an ad network for wholesale monetization; a portfolio optimization problem.
+- **Targeting (定向)** — The technology of finding an ad's target audience within the broad population; the professional term for audience-ad matching.
+- **Contextual Targeting (上下文定向)** — A targeting technology matching ads based on page content and scenario information; implemented in engineering as a near-line context system.
+- **Behavioral Targeting (行为定向)** — A targeting technology based on user behavior logs; behaviors are ordered by information strength, and behaviors closer to demand and more active are more effective.
+- **Retargeting (重定向)** — A system-based targeting technology where the advertiser provides audience information and the system recovers these already-reached users from supply-side traffic.
+- **Personalized Retargeting (个性化重定向)** — The vertical extension of retargeting: pushing item-granularity personalized ads to old users; equivalent to an offsite recommendation engine.
+- **Search Retargeting (搜索重定向)** — The horizontal extension of retargeting: directing users who searched specific keywords to the advertiser's site.
+- **Look-alike (新客推荐)** — A targeting technology where the advertiser provides a seed audience and the DSP finds potential new users by behavioral similarity among the supply-side audience.
+- **Seed Audience (种子用户)** — The high-value target audience sample provided by the advertiser for look-alike targeting.
+- **Feed Ads (信息流广告)** — An ad form mixed into the user's reading feed with a form similar to content; a positive example of balancing ad effectiveness and user experience.
+- **Native Ads (植入式原生广告)** — An ad form blended into product content and services, deeply integrated with content.
+- **Click Value (点击价值)** — The expected revenue brought by one click; together with the click-through rate it constitutes eCPM.
+- **Bid Landscape Prediction (竞价行情预估)** — The core DSP problem of forecasting the traffic bidding distribution to decide procurement strategy; the traffic it receives is a function of its bids.
+- **Yield Optimizer (收益管理)** — The SSP's core function, uniformly optimizing premium sales, network, and RTB traffic to maximize the medium's revenue.

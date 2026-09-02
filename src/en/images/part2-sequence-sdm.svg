@@ -9,21 +9,21 @@
   </defs>
   <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">SDM：长短期兴趣经门控动态融合</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">SDM: Gated Fusion of Long- and Short-Term Interests</text>
 
   <!-- short term -->
   <rect x="40" y="70" width="220" height="100" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
-  <text x="150" y="94" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">短期兴趣 s_t</text>
-  <text x="150" y="116" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">LSTM 会话序列</text>
-  <text x="150" y="134" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">多头自注意力</text>
-  <text x="150" y="152" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">个性化注意力</text>
+  <text x="150" y="94" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">Short-Term Interest s_t</text>
+  <text x="150" y="116" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">LSTM over session seq.</text>
+  <text x="150" y="134" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Multi-head self-attn</text>
+  <text x="150" y="152" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Personalized attention</text>
 
   <!-- long term -->
   <rect x="40" y="185" width="220" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
-  <text x="150" y="209" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#065f46">长期兴趣 p</text>
-  <text x="150" y="231" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">特征维度子集</text>
-  <text x="150" y="249" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">(ID/类目/店/品牌)</text>
-  <text x="150" y="267" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">注意力聚合 + FC</text>
+  <text x="150" y="209" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#065f46">Long-Term Interest p</text>
+  <text x="150" y="231" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Subset of feature fields</text>
+  <text x="150" y="249" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">(ID / cate / shop / brand)</text>
+  <text x="150" y="267" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Attention pooling + FC</text>
 
   <!-- arrows to gate -->
   <line x1="260" y1="120" x2="370" y2="150" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
@@ -31,23 +31,23 @@
 
   <!-- user profile into gate -->
   <rect x="40" y="300" width="120" height="34" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="100" y="322" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">用户画像 e_u</text>
+  <text x="100" y="322" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">User Profile e_u</text>
   <line x1="160" y1="317" x2="368" y2="200" stroke="#64748b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
 
   <!-- gate -->
   <circle cx="430" cy="180" r="48" fill="#fef3c7" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
   <text x="430" y="174" text-anchor="middle" font-family="Courier New" font-size="14" font-weight="bold" fill="#1e293b">GATE</text>
-  <text x="430" y="194" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">门控 G</text>
+  <text x="430" y="194" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">gate G</text>
 
   <!-- output -->
   <rect x="540" y="150" width="220" height="70" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="650" y="178" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">融合兴趣 o_t</text>
+  <text x="650" y="178" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">Fused Interest o_t</text>
   <text x="650" y="200" text-anchor="middle" font-family="Courier New" font-size="11" fill="#e8ecff">o=(1-G)⊙p + G⊙s</text>
 
   <line x1="478" y1="180" x2="538" y2="180" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
   <line x1="650" y1="220" x2="650" y2="265" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
   <rect x="560" y="270" width="180" height="40" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#shadow)"/>
-  <text x="650" y="294" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">U2I 检索候选</text>
+  <text x="650" y="294" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">U2I retrieval candidates</text>
 
-  <text x="400" y="335" text-anchor="middle" font-family="Courier New" font-size="11" fill="#94a3b8">o_t = (1-G)⊙pᵘ + G⊙s_tᵘ   →   逐维动态融合</text>
+  <text x="400" y="335" text-anchor="middle" font-family="Courier New" font-size="11" fill="#94a3b8">o_t = (1-G)⊙pᵘ + G⊙s_tᵘ   →   per-dimension dynamic fusion</text>
 </svg>

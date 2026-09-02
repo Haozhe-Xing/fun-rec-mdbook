@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Online Allocation Simulator: HWM Planning and Execution · Interactive Demo</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#60a5fa; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-danger:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  body.embed header, body.embed footer{ display:none !important; }
+  body.embed .stage{ height:auto; min-height:500px; padding:12px 14px; }
+  body.embed .panel{ min-height:220px; }
+  .inline-controls{ display:none; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  body.embed .inline-controls{ display:flex; }
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  button:hover:not(:disabled){opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.35fr 1fr 0.95fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:860px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:14px;overflow:auto;min-height:0;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  #viz svg{width:100%;height:auto;display:block;}
+  .step-badge{display:inline-block;background:var(--c-primary);color:#fff;font-size:11px;font-weight:700;border-radius:12px;padding:2px 10px;margin-bottom:8px;}
+  .narrative{font-size:13px;line-height:1.75;color:var(--c-text);}
+  .narrative b{color:var(--c-warn);}
+  .narrative code{font-family:"Courier New",monospace;background:rgba(96,165,250,.12);padding:1px 5px;border-radius:4px;color:var(--c-primary);font-size:12px;}
+  .formula{font-family:"Courier New",monospace;font-size:12px;color:var(--c-light);background:rgba(15,23,42,.6);border-left:3px solid var(--c-warn);padding:8px 10px;border-radius:8px;margin-top:10px;line-height:1.7;}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  th{color:var(--c-light);font-weight:600;text-align:left;padding:4px 6px;border-bottom:1px solid #334155;}
+  td{padding:4px 6px;border-bottom:1px solid rgba(51,65,85,.5);font-family:"Courier New",monospace;}
+  td.hl{color:var(--c-warn);font-weight:700;}
+  td.ok{color:var(--c-success);font-weight:700;}
+  td.bad{color:var(--c-danger);font-weight:700;}
+  #log{font-family:"Courier New",monospace;font-size:11px;line-height:1.7;color:var(--c-light);max-height:220px;overflow:auto;background:rgba(15,23,42,.6);border-radius:8px;padding:8px 10px;}
+  #log .k1{color:var(--c-primary);} #log .k2{color:var(--c-success);} #log .k3{color:var(--c-warn);} #log .k4{color:var(--c-danger);}
+  footer{padding:10px 20px;border-top:1px solid #334155;font-size:11px;color:var(--c-light);text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Online Allocation Simulator · HWM Planning → Randomized Execution</h1>
+  <div class="controls">
+    <button class="sec" id="btnPrev" onclick="prev()">← Prev</button>
+    <button id="btnNext" onclick="next()">Next →</button>
+    <button class="sec" id="btnAuto" onclick="auto()">Auto Play</button>
+    <button class="sec" id="btnReset" onclick="reset()">Reset</button>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="panel" id="viz">
+    <h3>Supply/Demand Bipartite Graph</h3>
+    <svg id="graph" viewBox="0 30 460 300"></svg>
+  </div>
+
+  <div class="panel">
+    <h3>Decision State</h3>
+    <div class="step-badge" id="stepBadge">STEP 0</div>
+    <div class="narrative" id="narrative"></div>
+    <div class="formula" id="formula"></div>
+    <h3 style="margin-top:14px;">Contract Ledger</h3>
+    <table id="ledger"></table>
+  </div>
+
+  <div class="panel">
+    <h3>Supply Remains</h3>
+    <table id="supplies"></table>
+    <h3 style="margin-top:14px;">Execution Log</h3>
+    <div id="log"></div>
+  </div>
+</div>
+
+<footer>Online allocation: offline, scale down remains by θ priority to set allocation ratios · online, randomized decisions by cumulative ratio · leftover ratio returned to the auction channel</footer>
+
+<script>
+// ───────── Market setup: 3 supply nodes / 3 contracts ─────────
+const SUP = [
+  {id:"s1", label:"Female·Tier-1", s:300, x:230, y:236},
+  {id:"s2", label:"Female",        s:500, x:110, y:236},
+  {id:"s3", label:"RegionX",       s:200, x:350, y:236},
+];
+const DEM = [
+  {id:"c1", label:"Female·Tier-1", d:250, links:[0],      x:230, y:56},
+  {id:"c2", label:"Female",        d:300, links:[0,1],    x:110, y:56},
+  {id:"c3", label:"Female∨RegionX", d:350, links:[0,1,2],  x:350, y:56},
+];
+
+let state, timer=null, svgNS="http://www.w3.org/2000/svg";
+
+function freshState(){
+  return {
+    step:0,
+    remains: SUP.map(n=>n.s),
+    theta:[], orders:[], rates:[], got:[0,0,0],
+    batch:0, givenBack:0, totalShown:0,
+  };
+}
+
+// ───────── HWM offline planning ─────────
+function hwmPlan(){
+  const st = freshState();
+  st.theta = DEM.map((c,a)=> c.d / c.links.reduce((t,i)=>t+SUP[i].s,0));
+  st.orders = DEM.map((c,a)=>a).sort((a,b)=>st.theta[b]-st.theta[a]); // θ descending
+  st.rates = new Array(DEM.length).fill(0);
+  for(const a of st.orders){
+    const total = DEM[a].links.reduce((t,i)=>t+st.remains[i],0);
+    st.rates[a] = total >= DEM[a].d ? DEM[a].d/total : 1.0;
+    for(const i of DEM[a].links) st.remains[i] *= (1 - st.rates[a]);
+  }
+  st.remains = SUP.map(n=>n.s);
+  return st;
+}
+
+// ───────── Step script ─────────
+function buildSteps(){
+  const steps=[];
+  steps.push({n:"STEP 1 · Traffic Forecasting", narr:`Historical logs are aggregated by label combination into <b>supply nodes</b>: s₁ (Female·Tier-1, 300), s₂ (Female, 500), s₃ (RegionX, 200). Three contracts attach with their targeting conditions and committed volumes; <code>θ = d/Σs</code> captures each contract's tightness.`, f:"θ(c) = d(c) / Σ_{i∈Γ(c)} sᵢ"});
+  steps.push({n:"STEP 2 · Priority", narr:`θ₁ = 250/300 = <b>0.833</b>, θ₂ = 300/800 = 0.375, θ₃ = 350/1000 = 0.350. HWM determines the allocation priority in descending order of θ: <b>c₁ → c₂ → c₃</b> — the harder a contract is to satisfy, the earlier it is allocated.`, f:"Priority = sort(θ, desc)"});
+  for(const [k,a] of state.orders.entries()){
+    const c = DEM[a];
+    const total = c.links.reduce((t,i)=>t+state.remains[i],0);
+    steps.push({n:`STEP ${3+k} · Allocate ${c.id}`,
+      narr:`Processing ${c.id} (${c.label}): candidate nodes' remaining traffic totals <b>${total}</b>, ${total>=c.d?"≥":"<"} the committed volume ${c.d}. Allocation ratio rate = <b>${state.rates[a].toFixed(3)}</b>; then each candidate node's remain is scaled down by (1−rate) — <b>contracts allocated earlier genuinely eat into later contracts' candidate remains</b>.`,
+      f:`rate(${c.id}) = ${Math.min(c.d,total)} / ${total} = ${state.rates[a].toFixed(3)}`,
+      apply:true, alloc:a});
+  }
+  steps.push({n:"STEP 6 · Online Serving", narr:`The allocation ratio table is ready and delivery begins: <b>each step = a batch of 40 impressions</b>. Every impression first lands randomly on a supply node by traffic share, then among its candidate contracts the ratios are accumulated by priority and a random number is drawn to pick the contract; when the candidates' total ratio is below 1, the shortfall is <b>returned to the auction channel</b> with the corresponding probability.`, f:"serve: accumulate Σrate, interval hit → selected"});
+  steps.push({n:"STEP 7 · Wrap-up Review", narr:`Delivery finished. Check the ledger on the right: did the three contracts' <b>delivered volumes</b> reach their commitments? How much traffic was returned to the auction channel? Raise any contract's d (edit the d value in DEM in the code) and hit reset, then watch how θ, the priorities, and the whole ratio table reshuffle.`, f:"Completion = got / d"});
+  return steps;
+}
+
+// ───────── Rendering ─────────
+function edgeActive(i,a){
+  if(state.step===0) return true;
+  const aOrd = state.step>=2 ? state.orders.indexOf(a) : -1;
+  if(state.step===1) return true;
+  // planning steps 2..4: highlight edges of contracts processed so far
+  const processed = state.step - 2; // how many allocations done visually
+  if(state.step<=4 && aOrd>=0){
+    if(aOrd < processed) return "done";
+    if(aOrd === processed) return "active";
+    return false;
+  }
+  return true;
+}
+function draw(){
+  const svg=document.getElementById("graph"); svg.innerHTML="";
+  const mk=(t,attrs)=>{const e=document.createElementNS(svgNS,t);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+  // edges
+  DEM.forEach((c,a)=>c.links.forEach(i=>{
+    let stroke="#334155", w=2, dash="";
+    const act=edgeActive(i,a);
+    if(act==="active"){stroke="#f59e0b";w=3.5;}
+    else if(act==="done"){stroke="#10b981";w=2.5;}
+    else if(act===false){stroke="#1e293b";w=1;}
+    const l=mk("line",{x1:c.x,y1:c.y+26,x2:SUP[i].x,y2:SUP[i].y-4,stroke,"stroke-width":w});
+    if(dash)l.setAttribute("stroke-dasharray",dash);
+    svg.appendChild(l);
+    if(act==="active"){
+      const t=mk("text",{x:(c.x+SUP[i].x)/2+8,y:(c.y+SUP[i].y)/2,fill:"#f59e0b","font-size":11,"font-family":"Courier New","font-weight":"bold"});
+      t.textContent="rate="+state.rates[a].toFixed(2); svg.appendChild(t);
+    }
+  }));
+  // demand nodes
+  DEM.forEach((c,a)=>{
+    const done = state.got[a]>=c.d;
+    const g=mk("g",{});
+    const fill = state.step>=2 && state.orders.indexOf(a)<=(state.step-3) && state.step<=4 ? "#f59e0b33" : "#1e293b";
+    g.appendChild(mk("rect",{x:c.x-78,y:c.y-26,width:156,height:52,rx:8,fill,stroke:done?"#10b981":"#60a5fa","stroke-width":2}));
+    const t1=mk("text",{x:c.x,y:c.y-6,"text-anchor":"middle",fill:"#e2e8f0","font-size":12,"font-weight":"bold"}); t1.textContent=`${c.id} ${c.label}`; g.appendChild(t1);
+    const t2=mk("text",{x:c.x,y:c.y+13,"text-anchor":"middle",fill:done?"#10b981":"#60a5fa","font-size":11,"font-family":"Courier New","font-weight":"bold"});
+    t2.textContent=`d=${c.d} · got=${Math.round(state.got[a])}`; g.appendChild(t2);
+    // θ badge
+    if(state.theta.length){
+      const t3=mk("text",{x:c.x,y:c.y-34,"text-anchor":"middle",fill:"#94a3b8","font-size":10,"font-family":"Courier New"});
+      t3.textContent=`θ=${state.theta[a].toFixed(3)} · rank ${state.orders.indexOf(a)+1}`; g.appendChild(t3);
+    }
+    svg.appendChild(g);
+  });
+  // supply nodes
+  SUP.forEach((n,i)=>{
+    const g=mk("g",{});
+    const used = n.s-state.remains[i];
+    g.appendChild(mk("rect",{x:n.x-70,y:n.y-4,width:140,height:44,rx:8,fill:"#1e293b",stroke:"#10b981","stroke-width":2}));
+    const t1=mk("text",{x:n.x,y:n.y+13,"text-anchor":"middle",fill:"#e2e8f0","font-size":12,"font-weight":"bold"}); t1.textContent=`${n.id} ${n.label}`; g.appendChild(t1);
+    const t2=mk("text",{x:n.x,y:n.y+31,"text-anchor":"middle",fill:"#94a3b8","font-size":10.5,"font-family":"Courier New"});
+    t2.textContent=`s=${n.s} left=${Math.round(state.remains[i])}`; g.appendChild(t2);
+    // utilization bar
+    const frac = used/n.s;
+    g.appendChild(mk("rect",{x:n.x-70,y:n.y+46,width:140,height:7,rx:3,fill:"#334155"}));
+    g.appendChild(mk("rect",{x:n.x-70,y:n.y+46,width:Math.max(2,140*frac),height:7,rx:3,fill:frac>0.95?"#ef4444":"#10b981"}));
+    svg.appendChild(g);
+  });
+}
+
+function renderNarr(){
+  const steps=buildSteps();
+  let idx=state.step;
+  if(idx===6 && state.totalShown<200) idx=5;   // still serving batches: keep the "online serving" narration
+  idx=Math.min(idx,steps.length-1);
+  const s=steps[idx];
+  document.getElementById("stepBadge").textContent=s.n;
+  document.getElementById("narrative").innerHTML=s.narr;
+  document.getElementById("formula").innerHTML=`<b style="color:#f59e0b">${idx===0?"Formula":""}</b> ${s.f}`;
+}
+function renderLedger(){
+  const rows=[`<tr><th>Contract</th><th>θ</th><th>rate</th><th>got/d</th><th>Completion</th></tr>`];
+  DEM.forEach((c,a)=>{
+    const rate = state.step>=2 ? state.rates[a].toFixed(3) : "—";
+    const frac = state.got[a]/c.d;
+    const cls = state.step>=5 ? (frac>=0.98?"ok":(frac>=0.85?"hl":"bad")) : "";
+    rows.push(`<tr><td>${c.id}</td><td>${state.theta.length?state.theta[a].toFixed(3):"—"}</td><td>${rate}</td><td>${Math.round(state.got[a])}/${c.d}</td><td class="${cls}">${state.step>=5?(frac*100).toFixed(0)+"%":"—"}</td></tr>`);
+  });
+  document.getElementById("ledger").innerHTML=rows.join("");
+  const sup=[`<tr><th>Node</th><th>s</th><th>Left</th><th>Usage</th></tr>`];
+  SUP.forEach((n,i)=>{
+    sup.push(`<tr><td>${n.id}</td><td>${n.s}</td><td>${Math.round(state.remains[i])}</td><td>${((n.s-state.remains[i])/n.s*100).toFixed(0)}%</td></tr>`);
+  });
+  document.getElementById("supplies").innerHTML=sup.join("");
+}
+function log(html){
+  const el=document.getElementById("log");
+  el.innerHTML += html+"<br>"; el.scrollTop=el.scrollHeight;
+}
+
+// ───────── serving: a batch of 40 impressions ─────────
+function serveBatch(){
+  const B=40; let back=0; const cnt=[0,0,0], hit=[0,0,0];
+  for(let k=0;k<B;k++){
+    // 1) impressions land on supply nodes by traffic share
+    const tot=SUP.reduce((t,n)=>t+n.s,0);
+    let r=Math.random()*tot, si=0;
+    for(let i=0;i<SUP.length;i++){ r-=SUP[i].s; if(r<0){si=i;break;} }
+    state.totalShown++;
+    // 2) candidates = contracts this node can serve (sorted by priority); random number lands in cumulative interval
+    const cands=state.orders.filter(a=>DEM[a].links.includes(si));
+    const r2=Math.random(); let acc=0, pick=null;
+    for(const a of cands){ acc+=state.rates[a]; if(r2<acc){pick=a;break;} }
+    if(pick===null){ back++; } else { state.got[pick]+=1; cnt[pick]++; }
+  }
+  state.batch++;
+  const line = cnt.map((n,a)=>n?`<span class="k2">${DEM[a].id}:${n}</span>`:"").filter(Boolean).join(" ");
+  log(`Batch${state.batch}: ${B} imps → ${line||"—"} <span class="k4">returned:${back}</span>`);
+  state.givenBack+=back;
+}
+
+// ───────── Controls ─────────
+function next(){
+  if(timer) return stopAuto();
+  const steps=buildSteps();
+  if(state.step===0){ state.theta=state.orders=state.rates=null; state=hwmPlan(); state.step=1; draw(); renderNarr(); renderLedger(); }
+  else if(state.step>=1 && state.step<=4){
+    const s=steps[state.step-1+1]; // next step def
+    if(state.step>=2 && state.step<=4){
+      // apply allocation effect of contract just processed
+      const a=state.orders[state.step-2];
+      const total=DEM[a].links.reduce((t,i)=>t+state.remains[i],0);
+      for(const i of DEM[a].links) state.remains[i]*=(1-state.rates[a]);
+    }
+    state.step++;
+    if(state.step===5){ /* ready to serve */ }
+    draw(); renderNarr(); renderLedger();
+  }
+  else if(state.step===5){
+    state.step=6; serveBatch(); draw(); renderNarr(); renderLedger();
+    if(state.totalShown>=200) state.step=7;
+  }
+  else if(state.step===6){
+    serveBatch(); draw(); renderLedger();
+    if(state.totalShown>=200){
+      state.step=7; renderNarr();
+      const fr=DEM.map((c,a)=>(state.got[a]/c.d*100).toFixed(0)+"%");
+      log(`<span class="k1">Review: completion ${DEM.map((c,a)=>c.id+" "+fr[a]).join(" / ")} · returned ${state.givenBack}/${state.totalShown}</span>`);
+    }
+  }
+  updateButtons();
+}
+function prev(){
+  if(timer) return stopAuto();
+  const t=Math.max(0, state.step-1);
+  document.getElementById("log").innerHTML="";
+  state=freshState();
+  fastForward(t);
+}
+function reset(){ stopAuto(); state=freshState(); document.getElementById("log").innerHTML=""; init(); }
+function updateButtons(){
+  document.getElementById("btnNext").disabled = state.step>=7;
+}
+function fastForward(target){
+  // recompute from scratch to a given step
+  state=hwmPlan();
+  state.step=Math.min(target,7);
+  if(state.step>=3){ for(const a of state.orders){ const total=DEM[a].links.reduce((t,i)=>t+state.remains[i],0); for(const i of DEM[a].links) state.remains[i]*=(1-state.rates[a]); } }
+  if(state.step===6) serveBatch();
+  if(state.step>=7){
+    while(state.totalShown<200) serveBatch();
+    const fr=DEM.map((c,a)=>(state.got[a]/c.d*100).toFixed(0)+"%");
+    log(`<span class="k1">Review: completion ${DEM.map((c,a)=>c.id+" "+fr[a]).join(" / ")} · returned ${state.givenBack}/${state.totalShown}</span>`);
+  }
+  draw(); renderNarr(); renderLedger(); updateButtons();
+}
+function auto(){
+  if(timer){ return stopAuto(); }
+  document.getElementById("btnAuto").textContent="Pause ⏸";
+  timer=setInterval(()=>{ if(state.step>=7) return stopAuto(); next(); }, 900);
+}
+function stopAuto(){ if(timer){clearInterval(timer); timer=null;} document.getElementById("btnAuto").textContent="Auto Play ▶"; }
+function init(keepLog){
+  if(!keepLog) document.getElementById("log").innerHTML="";
+  if(!state || !state.step) state=freshState();
+  draw(); renderNarr(); renderLedger(); updateButtons();
+}
+state=freshState(); init();
+</script>
+</body>
+</html>

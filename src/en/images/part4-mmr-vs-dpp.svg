@@ -6,12 +6,12 @@
     <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker>
   </defs>
 
-  <text x="400" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">MMR vs DPP：逐对近似惩罚 vs 集合级体积精确控制</text>
+  <text x="400" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">MMR vs DPP: Pairwise Approximate Penalty vs Set-Level Volume Control</text>
 
   <!-- MMR panel -->
   <rect x="40" y="60" width="350" height="300" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2" filter="url(#sh)"/>
-  <text x="215" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#ea580c">MMR（启发式线性组合）</text>
-  <text x="215" y="116" text-anchor="middle" font-size="12" fill="#64748b">只看与「最相似已选项」的两两相似度</text>
+  <text x="215" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#ea580c">MMR (Heuristic Linear Blend)</text>
+  <text x="215" y="116" text-anchor="middle" font-size="11" fill="#64748b">Only pairwise sim to the most similar pick</text>
   <!-- selected set -->
   <g>
     <circle cx="100" cy="200" r="22" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
@@ -24,15 +24,15 @@
     <circle cx="300" cy="140" r="22" fill="#f97316" stroke="#ea580c" stroke-width="2"/>
     <text x="300" y="145" text-anchor="middle" font-size="12" fill="#fff">i</text>
     <line x1="300" y1="162" x2="170" y2="180" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
-    <text x="332" y="144" text-anchor="start" font-size="11" fill="#ef4444">只比最相似的 S₂</text>
+    <text x="332" y="144" text-anchor="start" font-size="10" fill="#ef4444">vs S₂ only</text>
   </g>
   <rect x="70" y="300" width="300" height="40" rx="6" fill="#ffffff" stroke="#f97316" stroke-width="1.5"/>
   <text x="220" y="325" text-anchor="middle" font-size="12" fill="#1e293b">MR=λ·Rel−(1−λ)·maxⱼ Sim(i,j)</text>
 
   <!-- DPP panel -->
   <rect x="410" y="60" width="350" height="300" rx="8" fill="#eef2ff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
-  <text x="585" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#4A6CF7">DPP（行列式框架）</text>
-  <text x="585" y="116" text-anchor="middle" font-size="12" fill="#64748b">联合考量整个子集的相互排斥（体积）</text>
+  <text x="585" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#4A6CF7">DPP (Determinant Framework)</text>
+  <text x="585" y="116" text-anchor="middle" font-size="11" fill="#64748b">Joint repulsion over the whole subset (volume)</text>
   <g>
     <circle cx="470" cy="200" r="22" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
     <circle cx="540" cy="200" r="22" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
@@ -46,8 +46,8 @@
     <line x1="680" y1="178" x2="470" y2="178" stroke="#10b981" stroke-width="1.5" marker-end="url(#ar)"/>
     <line x1="680" y1="178" x2="540" y2="178" stroke="#10b981" stroke-width="1.5" marker-end="url(#ar)"/>
     <line x1="680" y1="178" x2="610" y2="178" stroke="#10b981" stroke-width="1.5" marker-end="url(#ar)"/>
-    <text x="680" y="160" text-anchor="middle" font-size="11" fill="#0c8f6a">与整组交互</text>
+    <text x="680" y="160" text-anchor="middle" font-size="10" fill="#0c8f6a">Interacts with whole set</text>
   </g>
   <rect x="440" y="300" width="300" height="40" rx="6" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5"/>
-  <text x="590" y="325" text-anchor="middle" font-size="12" fill="#1e293b">目标: max log det(L) （集合体积）</text>
+  <text x="590" y="325" text-anchor="middle" font-size="12" fill="#1e293b">Objective: max log det(L) (set volume)</text>
 </svg>

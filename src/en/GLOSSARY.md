@@ -330,6 +330,241 @@
 - **Healthcheck** — The container periodically runs a probe command (e.g., `redis-cli ping`) and is judged unhealthy only after consecutive failures, letting dependent services wait for readiness and guaranteeing startup order.
 - **Service-name DNS** — Within a Docker network, service names (e.g., `postgres`) resolve to container IPs — the correct way for containers to communicate (not `localhost`).
 
+## Part 12 · Computational Advertising
+
+### 12.1
+
+- **Computational Advertising (计算广告)** — The technical and business system that matches and optimizes over the user, context, and ad triple with the goal of maximizing ROI.
+- **Sponsor (出资人)** — One of the three elements of the advertising definition: the advertiser who pays for ad delivery and has explicit commercial objectives.
+- **Publisher (媒介)** — One of the three elements of the advertising definition: the medium or product that carries ads and holds the user's attention.
+- **Audience (受众)** — One of the three elements of the advertising definition: the group of target users the advertising message reaches.
+- **Brand Awareness (品牌广告)** — An ad type focused on long-term influence and building recognition; typical metrics are exposure and awareness.
+- **Direct Response (效果广告)** — An ad type pursuing short-term conversion actions (clicks, sign-ups, orders).
+- **Ad Effectiveness Model (广告有效性模型)** — The six-stage funnel describing how ads take effect: Exposure→Attention→Comprehension→Acceptance→Retention→Decision, grouped into the selection, interpretation, and attitude phases.
+- **ROI (Return on Investment)** — The ratio of return to spend in ad delivery; the core optimization objective of computational advertising.
+- **eCPM (effective Cost Per Mille)** — Expected revenue per thousand impressions, obtained by multiplying the click-through rate and the click value; the unified yardstick for ad ranking and traffic valuation.
+- **CPM Market (CPM 市场)** — A market form billing per impression, where the decisions (and risks) of click-through rate and click value are handed entirely to the advertiser.
+- **CPC Market (CPC 市场)** — A market form billing per click, where click value is judged by the advertiser through bidding and the click-through rate is dynamically estimated by the platform.
+- **CPA/CPS Market (CPA/CPS 市场)** — A market form billing per action/sale, where decisions and risks fall entirely on the platform; suits markets whose advertisers have highly uniform conversion processes.
+- **Advertising System Value Formula (广告系统价值公式)** — Advertising system value = conversion efficiency × pricing mechanism × resource volume × delivery efficiency; the master framework for understanding advertising technology evolution.
+- **Ad Network (广告网络)** — A closed intermediary system under the 2.0 delivery model that aggregates multi-media traffic and sells audiences rather than ad slots, mainly billing on CPC.
+- **Programmatic Trade (程序化交易)** — Automated, single-impression-granularity ad trading completed via DSP-ADX-SSP under the 3.0 delivery model.
+- **Ad Exchange (ADX, 广告交易平台)** — The trading hub that connects ads with (context, users) via real-time bidding and settles auctions at impression granularity.
+- **Demand-Side Platform (DSP, 需求方平台)** — The demand-side technology platform serving advertisers, providing customized audience segmentation, cross-media traffic procurement, and RTB bidding.
+- **Supply-Side Platform (SSP, 供应方平台)** — The supply-side technology platform serving media; its core function is yield optimization, uniformly optimizing multiple monetization methods.
+- **Data Management Platform (DMP, 数据管理平台)** — A platform providing websites with data processing and external trading capabilities, characterized by customized audience segmentation and a unified data interface.
+- **Trading Desk (广告购买平台)** — A demand-side tool allowing advertisers to buy across ad networks with ROI optimization, often incubated by agencies.
+- **Real-Time Bidding (RTB, 实时竞价)** — The programmatic trading mechanism that queries multiple DSPs in real time for every ad impression, with the highest bidder winning.
+- **Cookie Mapping (用户身份匹配)** — The up-front RTB phase, initiated by the DSP, that builds the lookup table between media Cookies and DSP user IDs; the mapping table is stored on the demand side.
+- **Ad Call (广告请求)** — The RTB auction phase: the ADX broadcasts the bid request, DSPs return bids, and the highest bidder wins the impression.
+- **Guaranteed Delivery (担保式投送)** — A premium-sale trading form based on contracts, with make-goods for unmet guaranteed impression volumes; CPM settlement, volume over quality.
+- **Preferred Deal (优选)** — A one-on-one negotiated trading method where advertisers pick traffic first at an agreed price, with no open auction.
+- **Network Optimization (网络优化)** — A trading method where the medium hands traffic to an ad network for wholesale monetization; a portfolio optimization problem.
+- **Targeting (定向)** — The technology of finding an ad's target audience within the broad population; the professional term for audience-ad matching.
+- **Contextual Targeting (上下文定向)** — A targeting technology matching ads based on page content and scenario information; implemented in engineering as a near-line context system.
+- **Behavioral Targeting (行为定向)** — A targeting technology based on user behavior logs; behaviors are ordered by information strength, and behaviors closer to demand and more active are more effective.
+- **Retargeting (重定向)** — A system-based targeting technology where the advertiser provides audience information and the system recovers these already-reached users from supply-side traffic.
+- **Personalized Retargeting (个性化重定向)** — The vertical extension of retargeting: pushing item-granularity personalized ads to old users; equivalent to an offsite recommendation engine.
+- **Search Retargeting (搜索重定向)** — The horizontal extension of retargeting: directing users who searched specific keywords to the advertiser's site.
+- **Look-alike (新客推荐)** — A targeting technology where the advertiser provides a seed audience and the DSP finds potential new users by behavioral similarity among the supply-side audience.
+- **Seed Audience (种子用户)** — The high-value target audience sample provided by the advertiser for look-alike targeting.
+- **Feed Ads (信息流广告)** — An ad form mixed into the user's reading feed with a form similar to content; a positive example of balancing ad effectiveness and user experience.
+- **Native Ads (植入式原生广告)** — An ad form blended into product content and services, deeply integrated with content.
+- **Click Value (点击价值)** — The expected revenue brought by one click; together with the click-through rate it constitutes eCPM.
+- **Bid Landscape Prediction (竞价行情预估)** — The core DSP problem of forecasting the traffic bidding distribution to decide procurement strategy; the traffic it receives is a function of its bids.
+- **Yield Optimizer (收益管理)** — The SSP's core function, uniformly optimizing premium sales, network, and RTB traffic to maximize the medium's revenue.
+
+### 12.2
+
+- **Advertiser** — The party that pays for ads and derives the value of a single ad backward from final outcomes; the decision-making subject on the demand side.
+- **Media / Supply Side** — The content or application owner holding ad slots and traffic, concerned with how much revenue each unit of ad inventory generates.
+- **Direct Response** — An advertising form oriented toward short-term conversion actions; the supply side computes ad volume from ad performance, billed by outcomes and traded through auctions.
+- **Brand Awareness** — An advertising form focused on long-term brand impact, billed by impressions and traded through contracts, commonly seen in premium placements such as core banners.
+- **CPT (Cost Per Time)** — A model charging by the duration an ad slot is occupied (monthly or weekly); hassle-free but crude in measurement, unable to guarantee client interests.
+- **CPD (Cost Per Day)** — A billing model that buys out an ad slot by the day, mostly seen in contracted brand advertising; modest prerequisites for cooperation, but less real-time and effective than CPS in the long run.
+- **CPM (Cost Per Mille)** — A billing model charging per thousand impressions, computed as spend/impressions×1000; common in RTB, with risk borne mainly by the advertiser.
+- **CPC (Cost Per Click)** — A billing model charging per click, computed as spend/clicks; the compromise point of risk between advertiser and platform, common in keyword advertising and RTB.
+- **CPA (Cost Per Action)** — A billing model charging on user actions such as registration or ordering; both CTR and value are dynamic, with decisions and risk falling on the platform.
+- **CPS (Cost Per Sales)** — A billing model converting ad fees into commissions on actual sales; advertisers hedge fee risk, commonly seen in affiliate networks.
+- **dCPM (dynamic CPM)** — The settlement system widely adopted by DSPs; the bid for each impression is computed in real time from campaign performance, optimizing for advertisers by performance while settling with media by impressions.
+- **flat CPM** — The traditional CPM with a fixed per-thousand-impression price, in contrast to dCPM.
+- **Spend** — The advertiser's cost of running ads; the numerator in formulas such as CPM, CPC, and ROI.
+- **CTR (Click-Through Rate)** — Clicks divided by impressions; measures the average number of user clicks an ad receives across multiple impressions.
+- **CVR (Conversion Rate)** — Orders divided by clicks; measures the relationship between user clicks and final orders.
+- **ROI (Return On Investment)** — Order value divided by spend; measures the return relationship between ad cost and generated order value.
+- **eCPM (effective/expected CPM)** — Expected revenue per thousand impressions; equals pCTR×bid×1000 under CPC billing and the bid under CPM billing — the unified ranking measure across billing models.
+- **Guaranteed Delivery (GD)** — A contract-based ad delivery mechanism: agreed impression volume unmet requires compensation, volume before quality, CPM settlement, and server-side decisions.
+- **Online Allocation** — Modeling the matching of ads to (Context, User) traffic as a bipartite-graph optimization of Ad→(Context,User), allocating impressions under each contract's volume constraint; the classic solution constructs the dual problem.
+- **Traffic Forecasting** — Estimation of future volumes of targeted traffic; can be viewed as an inverted retrieval problem with the ad as the query over the (u,c) space, requiring u and c to be handled separately.
+- **Exclusivity** — Brand advertisers' exclusionary demands on exposure in contract sales (e.g., competitor exclusion), further tightening the feasible space of online allocation.
+- **Ad hierarchy (creative/solution/campaign/advertiser)** — The hierarchical organization from creative through delivery unit, campaign, to advertiser, used for back-off prior estimation of new ads' CTR.
+- **Back-off** — An estimation strategy that climbs to coarser levels to borrow statistics when data is missing; used for CTR estimation in new-ad cold start.
+- **Dynamic Features** — Click-feedback statistical features aggregated along label-combination dimensions; fast-responding with strong back-off for new combinations, but costly in online storage and updates.
+- **Online Learning** — A scheme where the model updates in a streaming fashion on new data to capture dynamic behavior; forms the "adjust the model vs. adjust the features" trade-off with dynamic features.
+- **E&E (Exploration & Exploitation)** — A framework that creates impression opportunities for long-tail (a,u,c) combinations to accumulate statistics and thus estimate CTR more accurately; the volume and effectiveness of exploration must be strictly controlled.
+- **ε-greedy** — A multi-armed bandit strategy that explores randomly on an ε fraction of traffic and exploits the current best on the rest.
+- **UCB (Upper Confidence Bound)** — A strategy that computes an upper confidence bound on each candidate's expected reward and picks the highest; the more selections, the closer the bound approaches the true expectation.
+- **Contextual Bandit** — An E&E method that makes decisions on arms' feature vectors instead of the arms themselves to reduce dimensionality; well suited to ad scenarios with huge candidate spaces.
+- **GSP (Generalized Second Pricing)** — An auction mechanism where the winner pays a price converted from the next-ranked ad; simple to implement and widely adopted by online ad systems, but the market as a whole is not truth-telling (see 12.3).
+- **Individual Rationality (IR)** — The basic participation constraint that an advertiser pays no more than its bid, e.g., GSP payment ≤ winner's bid.
+
+### 12.3
+
+- **Auction Mechanism** — the institutional design governing how ad slots are allocated and priced, consisting of an allocation rule and a pricing rule.
+- **Position Auction** — the auction model in which multiple advertisers compete for multiple slots differing only in click-through rate; expected value $u_{is} = v_i \cdot x_s$.
+- **Valuation** — the advertiser's true value judgment of one click; private information invisible to the platform.
+- **Bid** — the per-click price the advertiser declares to the platform as willing to pay (on a CPC basis).
+- **Position CTR** — the click-through rate $x_s$ of slot $s$; larger for more forward positions, and the only difference between slots.
+- **Allocation Rule** — the rule within a mechanism deciding "who wins which slot"; in auction advertising, usually assignment in descending order of bid (times quality score).
+- **Pricing Rule** — the rule within a mechanism deciding "how much the winner pays"; it determines whether advertisers are willing to bid truthfully.
+- **Generalized First Price (GFP)** — the mechanism that allocates slots by ranking bids with everyone paying their own bid; has no pure-strategy Nash equilibrium, causes market oscillation, and is now obsolete.
+- **Nash Equilibrium** — a strategy profile in which no player can gain by unilaterally changing its own strategy.
+- **Pure-Strategy Nash Equilibrium** — a Nash equilibrium in which each player commits to one deterministic strategy; none exists under GFP.
+- **Second-Price Auction / Vickrey Auction** — a single-slot auction where the highest bidder wins and pays the second-highest bid; truthful bidding is a dominant strategy.
+- **Dominant Strategy** — a strategy that is optimal regardless of how opponents act; in the second-price auction, truth-telling is a dominant strategy.
+- **Generalized Second Price (GSP)** — the mechanism where the rank-$i$ advertiser pays the next bidder's eCPM converted as $p_i = b_{i+1}x_{i+1}/x_i$ and the last rank pays the reserve price; widely adopted by online advertising systems.
+- **Reserve Price** — the minimum transaction price set by the platform; paid by the last-ranked advertiser or when there is no competitor.
+- **Incentive Compatibility (IC)** — the property that truthfully reporting one's valuation is a dominant strategy: misreporting cannot raise utility.
+- **Individual Rationality (IR)** — participation in the auction never leaves the participant with negative utility, i.e., payment does not exceed the declared value $p_i \le b_i$.
+- **Truth-telling** — the behavior of bidding one's true valuation $b_i = v_i$; satisfied by the VCG market as a whole, not by GSP.
+- **Symmetric Nash Equilibrium (SNE)** — the stable equilibrium that exists under GSP, satisfying the envy-free property.
+- **Envy-free** — the allocation property that in equilibrium no one wants to swap positions with another: taking another's position requires paying their price, yielding no utility gain.
+- **VCG Mechanism (Vickrey-Clarke-Groves)** — the mechanism charging each participant the externality damage it imposes on the others; the market as a whole is truth-telling, and it degenerates to second-price with a single slot.
+- **Externality** — the welfare loss that one participant's presence imposes on all other participants, i.e., "how much more the others could have earned without you."
+- **Winner's Curse** — the situation of winning a slot above one's own valuation through an inflated bid and suffering negative utility; common under first-price auctions.
+- **First-Price Auction** — the auction where the winner pays their own bid; re-adopted around 2019 by leading ADXs in programmatic open auctions.
+- **Header Bidding** — the technique where publishers send traffic to multiple demand sides for pre-bidding before the main auction; its spread fueled the multi-level resale chain and the return to first-price.
+- **Bid Shading** — the bidding strategy under first-price auctions by which a DSP presses its bid toward "the lowest price that still wins" based on the win-probability distribution; the core competency of the first-price era.
+- **Smart Bidding** — the bidding product form where the platform bids on the advertiser's behalf (e.g., OCPC by target conversion cost) and converts the bid into the ranking model.
+
+### 12.4
+
+- **Smart Bidding** — the product form where the platform manages the per-impression bid on the advertiser's behalf: the advertiser reports only a goal (target CPA/ROI), and the bid is jointly determined by the platform's value estimation, budget control, and mechanism-adaptation modules.
+- **Conversion Bidding (oCPC / oCPM)** — products that bid by conversion goal: the bid formula is $\text{eCPM} = 1000 \cdot \text{pCTR} \cdot \text{pCVR} \cdot \text{Bid}_{\text{CPA}}$; oCPC bills by click, oCPM bills by impression.
+- **Target CPA** — the target cost the advertiser is willing to pay for one conversion; the only value anchor in the bidding stack input directly by the advertiser.
+- **Value Bid** — the expected value of a single impression converted from the conversion goal via pCTR × pCVR × targetCPA; the input to downstream shading and pacing.
+- **Two-Phase Rollout** — the cold-start convention for oCPC/oCPM: the first phase stays with CPC bidding to accumulate conversion data, switching to conversion bidding once the model is confident.
+- **Budget Pacing** — the control problem of spending the daily budget evenly in step with time progress, avoiding front-loaded spending that misses premium evening-peak traffic.
+- **Reference Trajectory** — the control target of pacing, $r(t) = G \cdot t / T$: the straight line of "spending progress in sync with time progress."
+- **Probabilistic Throttling** — one pacing implementation: decide whether to participate in each auction with probability $\alpha$; a 0/1 hard gate (LinkedIn, KDD 2014).
+- **Bid Scaling** — the other pacing implementation: scale the bid $b' = \alpha \cdot b$ with a multiplier $\alpha \in [0,1]$, preserving participation at the cost of per-auction competitiveness.
+- **Pacing Multiplier** — the control action of the budget controller, squashed by a sigmoid into $[0,1]$ and multiplied directly onto the bid.
+- **PID Control** — the proportional–integral–derivative feedback controller: P responds to error immediately, I removes the steady-state error, D damps anticipatorily; in ad pacing the D term is universally dropped because it amplifies discrete-request noise, leaving only PI.
+- **Log-Ratio Error** — the error form $e(t) = -\log(N(t)/r(t))$, normalizing deviation to a relative value so that plans of different budget scales can share the same control gains.
+- **Feedforward Compensation** — beyond feedback control, adjusting the control action in advance using predictable disturbances (such as intraday traffic patterns); Verizon DSP's integral control is equipped with feedforward.
+- **Expected Surplus** — the expected profit of bid $b$ under a first-price auction, $\mathbb{E}[S] = (v-b) \cdot P(\text{win} \mid b)$; the optimization target of bid shading.
+- **Minimum Winning Price** — the price that just barely wins an auction; its distribution (CDF) determines the win rate $P(\text{win} \mid b) = F(b)$.
+- **Bid Landscape / Win-Price Distribution** — the probability distribution of the minimum winning price across traffic; the core estimation object of bid shading, with log-normal fitting its long tail best.
+- **Censored Data** — samples where only partial information is observed: in sealed auctions, the true winning price of lost auctions is never visible, requiring survival analysis.
+- **Survival Analysis** — the statistical method for censored observations; DDN uses it to estimate the win-price distribution from the incomplete data of "whether we won + the minimum price when we won."
+- **Golden Section Search** — a gradient-free interval extremum search retaining 0.618 of the interval per iteration; DDN uses it to find the surplus-peak bid $b^*$ in milliseconds.
+- **DDN (Deep Distribution Network)** — Verizon Media's distribution-estimation network (Zhou et al., KDD 2021): the network outputs win-price distribution parameters; online surplus improved 14.3%, serving hundreds of billions of requests daily.
+- **Distributionally Robust Bidding** — a bidding-robustness method that uses KL-divergence uncertainty sets for max-min optimization when the estimation noise in valuations and win-price distributions is large.
+- **Error Propagation Chain** — the property that the modules of the bidding stack are coupled in series, so biases in upstream predictions (pCTR/pCVR) propagate losslessly to the final bid; the motivation for the calibration problem of 12.5.
+
+### 12.5
+
+- **Calibration** — the consistency between predicted values and true probabilities: $\Pr(Y{=}1 \mid f(x)=p) = p$; i.e., about $100p\%$ of the samples scored $p$ are positive.
+- **Discrimination** — a model's ability to rank positives above negatives, measured by AUC-type metrics, invariant to monotonic transformations of the scores.
+- **size-accuracy** — the accuracy of the absolute magnitude of predictions; critical for precise bidding, auction stability, and mixed-delivery fairness.
+- **Overconfidence** — the general tendency of deep models' predictions to systematically exceed the true probabilities (Guo et al., 2017).
+- **Position bias** — the bias in which the click advantage of forward positions is misattributed to the ad's own quality.
+- **Examination hypothesis** — the decomposition assumption click = seen × worth clicking: $P(\text{click}) = P(\text{seen}\mid\text{position}) \cdot P(\text{relevant}\mid\text{user, ad})$.
+- **Inverse propensity weighting (IPW)** — a debiasing method that weights samples by the reciprocal of propensity scores to restore an unbiased distribution.
+- **Propensity score** — the probability of a sample being assigned to a position / being selected; the source of IPW weights, usually requiring random traffic to estimate.
+- **PAL (position-bias-aware learning)** — the structured debiasing framework proposed by Huawei: bCTR = ProbSeen(position) × pCTR(user, ad, context); joint training, online only the pCTR tower (Guo et al., RecSys 2019).
+- **Cascade model** — a position modeling approach assuming users browse front to back in order, stop upon clicking, and click at most once per session; the examination probability depends on preceding content.
+- **Sample selection bias (SSB)** — the distribution mismatch caused by training CVR on the click subspace while inferring on the entire impression space.
+- **Data sparsity (DS)** — insufficient training signal caused by conversion samples being far fewer than click samples (clicks are only about 4% of impressions).
+- **ESMM (Entire Space Multi-Task Model)** — Alibaba's entire-space multi-task model: joint training on all impression samples with pCTCVR = pCTR × pCVR, solving SSB and DS simultaneously (Ma et al., SIGIR 2018).
+- **pCTCVR** — the probability from impression to conversion, equal to pCTR × pCVR; defined on the entire impression space and directly supervisable.
+- **Implicit learning** — the learning regime in ESMM where the CVR tower has no direct loss term and is updated only by L_ctcvr's gradients through the product.
+- **Winner's bias** — selection bias caused by auction logs recording only winners' outcomes while losers have no labels; requires exploration traffic to supply unbiased signals.
+- **Exploration traffic** — a traffic allocation strategy that deliberately lets ads that would have lost occasionally win, to generate unbiased feedback.
+- **Delayed feedback** — the phenomenon of conversion labels arriving hours or days after the click.
+- **Label window** — the observation-period convention for calibration data extraction (e.g., 1-day clicks, 7-day conversions); extracting before maturity is necessarily biased.
+- **Reliability diagram** — a diagnostic plot of bucketed predicted probabilities vs the actual positive rate per bucket; points on the diagonal mean perfect calibration.
+- **Expected calibration error (ECE)** — the sample-size-weighted average of the gap between the actual positive rate and the mean prediction per bucket.
+- **Platt scaling** — a calibration method fitting a logistic transform (two parameters) to the model scores; suitable for small samples.
+- **Isotonic regression** — a calibration method fitting a free-form monotone step function; suitable for large samples, prone to overfitting in sparse regions.
+- **PAVA (Pool Adjacent Violators Algorithm)** — the classic algorithm for solving isotonic regression: repeatedly merging adjacent blocks that violate monotonicity and averaging them.
+- **Prior correction** — a calibration method that restores the true base rate after negative sampling with the closed-form formula $\hat{p}'=\hat{p}/(\hat{p}+(1-\hat{p})/w)$ (Facebook ADKDD'14).
+- **Negative sampling** — a technique of downsampling negatives during training to accelerate or balance samples; it raises the training base rate and requires correction before use.
+- **Distribution drift** — the phenomenon of historical calibration becoming inaccurate as traffic mix, ad inventory, and user behavior change.
+- **PCOC (Predicted-over-Posterior Click rate)** — the ratio of predicted CTR to posterior CTR; the closer to 1 the better.
+- **Cal-N** — an overall calibration bias measure aggregated from multi-cluster PCOC.
+- **GC-N** — a calibration evaluation metric weighted across dimensions.
+- **SIR (Smoothed Isotonic Regression)** — the starting point of Alimama's calibration system: bucketing + isotonic regression + linear scaling.
+- **Bayes-SIR** — a calibration algorithm introducing Bayesian priors on top of SIR to address cold start and instability in sparse buckets.
+- **RTW-BSIR** — a calibration algorithm adding real-time fluctuation correction on top of Bayes-SIR to fight distribution drift.
+- **PCCEM** — a calibration algorithm that uses short-term post-click signals to predict long-term conversions and address delayed feedback; deployed online by Alimama since 2018.
+- **AdaCalib** — a field-level fine-grained calibration framework: a family of isotonic functions + adaptive guidance from posterior statistics (Wei et al., SIGIR 2022).
+- **observed-vs-predicted guardrail** — an operations mechanism that continuously monitors "actual positive rate ÷ predicted positive rate" online and alerts and refits when the deviation from 1 exceeds a threshold.
+
+
+### 12.6
+
+- **Data Observability** — the degree to which an advertising platform can directly observe user conversion behavior; the second axis that determines how deep the platform's optimization can go.
+- **Closed-loop Advertising** — advertising in which the entire chain of impression, click, order, and payment happens inside the platform's domain, with no data leaving the platform's ecosystem; also called the inner loop.
+- **Open-loop Advertising** — advertising in which the conversion happens outside the platform's domain (App Store, brand website, offline store), where the platform must rely on postbacks to learn about conversions; also called the outer loop.
+- **Inner-loop / Outer-loop** — the industry-wide alternative names (Douyin, Kuaishou, Facebook) for closed-loop/open-loop advertising.
+- **Semi-closed-loop** — the compromise form in which the advertiser posts back only some events (e.g., only activation, not payment), giving the platform an incomplete label set for partial optimization.
+- **Deep conversion bidding** — bidding that optimizes toward back-funnel behaviors such as payment, ROI, next-day retention, and 7-day ROI; feasible only when the platform can observe those behaviors.
+- **Shallow-funnel goal / Deep-funnel goal** — the two sets of optimization targets: the front funnel (impression, click, activation, form, registration) and the back funnel (payment, ROI, next-day retention, 7-day ROI), corresponding to the capability boundary of open-loop and closed-loop respectively.
+- **pDeepCVR** — the deep conversion probability of "click → payment/next-day retention", sitting deeper in the conversion funnel, with sparser samples and higher latency.
+- **Attribution** — the process of identifying which ad/channel brought about the key behavior in the advertising behavior chain.
+- **Attribution Model** — the allocation rule that decides how conversion credit is distributed across touchpoints; a convention, not objective fact.
+- **Last-click** — the attribution model that gives 100% credit to the last touchpoint before conversion; the mobile default.
+- **First-click** — the attribution model that gives 100% credit to the first touchpoint; used to measure top-of-funnel discovery.
+- **Linear Attribution** — the attribution model that divides credit equally among all touchpoints.
+- **Time-decay** — the attribution model that gives more credit to touchpoints closer to conversion; suits short-cycle intent-driven journeys.
+- **Position-based** — the attribution model that gives more credit to the first and last touchpoints and less to the middle (U-shaped); balances discovery and closing.
+- **Data-driven Attribution** — the attribution model in which an algorithm assigns credit automatically based on observed contributions; requires large amounts of conversion data.
+- **clickid** — the unique identifier issued by the media at the ad touchpoint (impression/click), used to bind the conversion to a specific ad during postback.
+- **Conversion postback** — the process by which the advertiser posts the device ID, clickid, and timestamp back to the media via SDK/API to report "this user has converted".
+- **Fallback attribution** — the attribution approach of falling back to ip + ua fuzzy matching when a device ID is unavailable; lower precision.
+- **Self-attribution** — the approach in which the platform/media completes attribution itself and claims the conversion; prone to double counting when multiple networks run in parallel.
+- **Non-self-attribution** — the approach in which the advertiser matches users to media information itself and completes attribution independently.
+- **Mobile Measurement Partner (MMP)** — a neutral third-party attribution/analytics platform (AppsFlyer, Adjust, Branch, Singular, Kochava) that arbitrates between the advertiser and the various ad networks.
+- **ATT (App Tracking Transparency)** — Apple's authorization framework since iOS 14.5; apps must show a prompt to access IDFA, with an opt-in rate of only about 25%.
+- **IDFA (Identifier for Advertisers)** — Apple's device-level advertising identifier; largely collapsed after ATT, and the unique user ID that deterministic attribution depended on.
+- **SKAdNetwork (SKAN)** — Apple's privacy-preserving install attribution framework that posts conversion data back in an aggregated, randomly delayed, crowd-anonymized way.
+- **Crowd Anonymity** — SKAN's privacy mechanism; it returns less information when install volume is low, preventing any single user from being reverse-identified.
+- **conversion value** — the user-interaction conversion value reported by the app through `updateConversionValue` in SKAN; SKAN 4.0 introduces coarse and fine variants.
+- **Postback window** — SKAN 4.0's postback cadence: roughly 0–2 days, 3–7 days, and 8–35 days; conversion data flows back in batches with random delay.
+- **Hierarchical source identifier** — SKAN 4.0's 4-digit hierarchical source identifier (first 2 digits campaign, 3rd digit position, 4th digit placement); more digits returned as the crowd anonymity level rises.
+- **Android Privacy Sandbox** — Google's cookieless attribution solution, containing the Attribution Reporting API and the Topics API.
+- **Attribution Reporting API** — the Privacy Sandbox component that provides event-level and aggregated attribution reports, with differential privacy noise on aggregated reports.
+- **Differential Privacy** — the technique of injecting calibrated noise into aggregate statistics to protect individual privacy; used in Privacy Sandbox attribution reports.
+- **Deterministic attribution / Probabilistic attribution** — precise attribution relying on a device-level unique identifier vs statistical attribution relying on aggregated/fuzzy signals; the privacy wave pushes the former to collapse into the latter.
+- **First-party Data** — data that an enterprise collects directly from and lawfully with its users; the strategic direction after cross-app tracking is restricted.
+- **Modeling-based Estimation** — the estimation method that trains a model on the observable portion (SKAN + authorized deterministic data) and extrapolates to fill the "unattributable" gap.
+
+
+### 12.7
+
+- **Online Allocation** — an algorithmic framework that decides in real time, for every ad impression, how to allocate it so as to optimize overall product revenue subject to volume constraints; offline planning + online execution is its standard shape.
+- **Guaranteed Delivery (GD)** — the delivery system for impression contracts: contracts commit to a targeting audience and an impression volume, the system must guarantee full delivery by the deadline, and its core computational problem is constrained online allocation.
+- **Scheduling System** — the non-personalized system managing CPT ad-slot contracts: creatives are delivered directly through the CDN front end by schedule, with no real-time server-side decisions.
+- **House Ad (fallback ad)** — the default creative rendered by the CDN when dynamic ad serving times out or errs, guaranteeing the ad slot is never blank.
+- **Bipartite Graph** — the problem modeling of online allocation: a matching structure $G=(I \cup A, E)$ between supply nodes (traffic pools with identical labels) and demand nodes (contracts).
+- **Supply Node** — a node on one side of the bipartite graph, representing a block of traffic inventory whose labels are all identical, with total volume $s_i$; node count grows geometrically with targeting-condition combinations.
+- **Demand Node** — a node on the other side of the bipartite graph, representing one ad contract, with committed volume $d_a$.
+- **Demand Constraint** — the constraint that the revenue (or volume) allocated to a contract is no less than its committed value: $\sum_{i \in \Gamma(a)} s_i x_{ia} q_{ia} \ge d_a$.
+- **Supply Constraint** — the constraint that the ratios allocated out of each supply node sum to at most 1: $\sum_{a \in \Gamma(i)} x_{ia} \le 1$; violating it means overselling.
+- **Allocation Ratio** — the decision variable $x_{ia}$: what fraction of supply node $i$'s traffic is allocated to contract $a$.
+- **AdWords Problem (bidding with budget constraints)** — the online allocation instance of maximizing market revenue in a CPC auction given each advertiser's budget; its dual variables are "the marginal value of traffic to a budget," the theoretical prototype of the pacing multiplier.
+- **Traffic Forecasting** — the technique of estimating the winnable impression volume of a future period given audience label combinations and an eCPM threshold; in engineering it uses the "inverted index" scheme (documents = traffic aggregated by labels, queries = targeting conditions).
+- **Frequency Capping** — controlling the number of impressions for the combination $(a,u)$ within a period; implemented via client-side cookie/SDK or server-side in-memory cache, it is the main factor breaking the per-impression separability assumption.
+- **Dual Variable** — the variable corresponding to a constraint in the LP dual problem: $\alpha_a$ (contract scarcity) and $\beta_i$ (supply-side opportunity cost), on the order of the contract count and the supply node count respectively.
+- **Compact Allocation Plan** — an allocation plan that keeps only contract-level dual variables $\alpha$ ($O(|A|)$-level) and recovers $\beta$ and $x_{ia} = \max(0, \theta_a(1+\alpha_a-\beta_i))$ via the KKT conditions; stateless, zero synchronization across machines.
+- **Demand-Supply Ratio (θ)** — $\theta_a = d_a / \sum_{i \in \Gamma(a)} s_i$, measuring how tight a contract is relative to all its candidate traffic; appears in both the compact plan and HWM.
+- **SHALE** — the primal-dual iterative algorithm for online allocation: alternately updates $\alpha$ and $\beta$ to solve the dual problem, and supports incrementally inserting new contracts.
+- **High Water Mark (HWM)** — the engineering heuristic allocation scheme: determines contract priority in descending order of $\theta$ and scales down candidate supply remains layer by layer to get allocation ratios; online decisions are made randomly by cumulative ratio.
+- **Competitive Ratio** — if an online policy achieves a factor of $\epsilon$ of the offline globally optimal objective in the worst case, it is called $\epsilon$-competitive; the optimal upper bound for online allocation is $1-1/e$.
+- **Free Disposal** — the assumption that over-delivering brings neither gain nor loss; it matches the reality of most ad contracts and is the source of online allocation algorithms' tolerance.
+
+
 ---
 
-_The glossary covers the full book: Volume I (Ch0–Ch4, Parts 1–5) and Volume II (Ch5–Ch10, Parts 6–11)._
+_The glossary covers the full book: Volume I (Ch0–Ch4, Parts 1–5), Volume II (Ch5–Ch10, Parts 6–11), and the Special Topic (Part 12, Computational Advertising)._

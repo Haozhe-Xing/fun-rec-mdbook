@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="arrowRight" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">智能出价决策栈：从广告主目标到最终出价</text>
+  <text x="400" y="54" text-anchor="middle" font-size="12" fill="#64748b">DSP 在一次 bid request 中逐层加工出价：每层标注外部输入，层间箭头标注传递的中间量</text>
+
+  <!-- ── Layer 1: 广告主目标 ── -->
+  <rect x="230" y="84" width="360" height="82" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <circle cx="252" cy="125" r="13" fill="#4A6CF7"/>
+  <text x="252" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+  <text x="278" y="116" font-size="15" font-weight="700" fill="#1e293b">广告主目标</text>
+  <text x="278" y="140" font-size="12.5" fill="#64748b">只报 target CPA（元/转化）或 ROI 目标 + 日预算</text>
+  <text x="278" y="157" font-size="11.5" fill="#64748b">输入：营销目标　→　输出：目标成本 Bid_CPA</text>
+
+  <!-- arrow 1→2 -->
+  <line x1="410" y1="166" x2="410" y2="202" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="422" y="190" font-size="11.5" fill="#10b981" font-family="Courier New, monospace">Bid_CPA</text>
+
+  <!-- ── Layer 2: 价值估计 ── -->
+  <rect x="230" y="206" width="360" height="82" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <circle cx="252" cy="247" r="13" fill="#4A6CF7"/>
+  <text x="252" y="252" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+  <text x="278" y="238" font-size="15" font-weight="700" fill="#1e293b">价值估计（转化出价 oCPC / oCPM）</text>
+  <text x="278" y="262" font-size="13" fill="#1e293b" font-family="Courier New, monospace">eCPM = 1000 · pCTR · pCVR · Bid_CPA</text>
+  <text x="278" y="279" font-size="11.5" fill="#64748b">输出：单次展示的价值出价 v（元/千次展示）</text>
+
+  <!-- arrow 2→3 -->
+  <line x1="410" y1="288" x2="410" y2="324" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="422" y="312" font-size="11.5" fill="#10b981" font-family="Courier New, monospace">v</text>
+
+  <!-- ── Layer 3: Bid Shading ── -->
+  <rect x="230" y="328" width="360" height="82" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <circle cx="252" cy="369" r="13" fill="#10b981"/>
+  <text x="252" y="374" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+  <text x="278" y="360" font-size="15" font-weight="700" fill="#1e293b">Bid Shading（一价市场适配）</text>
+  <text x="278" y="384" font-size="13" fill="#1e293b" font-family="Courier New, monospace">b* = argmax (v − b) · P(win | b)</text>
+  <text x="278" y="401" font-size="11.5" fill="#64748b">输出：遮蔽后出价 b*（压向能赢的最低价）</text>
+
+  <!-- arrow 3→4 -->
+  <line x1="410" y1="410" x2="410" y2="446" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="422" y="434" font-size="11.5" fill="#10b981" font-family="Courier New, monospace">b*</text>
+
+  <!-- ── Layer 4: Budget Pacing ── -->
+  <rect x="230" y="450" width="360" height="82" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+  <circle cx="252" cy="491" r="13" fill="#f59e0b"/>
+  <text x="252" y="496" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+  <text x="278" y="482" font-size="15" font-weight="700" fill="#1e293b">Budget Pacing（预算平滑约束）</text>
+  <text x="278" y="506" font-size="13" fill="#1e293b" font-family="Courier New, monospace">b' = α · b*,　α ∈ [0,1]（PI 控制器输出）</text>
+  <text x="278" y="523" font-size="11.5" fill="#64748b">输出：预算约束下的最终出价 b'</text>
+
+  <!-- arrow 4→5 -->
+  <line x1="410" y1="532" x2="410" y2="568" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <text x="422" y="556" font-size="11.5" fill="#10b981" font-family="Courier New, monospace">b' = α·b*</text>
+
+  <!-- ── Layer 5: 提交 ── -->
+  <rect x="230" y="572" width="360" height="72" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <circle cx="252" cy="608" r="13" fill="#ef4444"/>
+  <text x="252" y="613" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+  <text x="278" y="602" font-size="15" font-weight="700" fill="#1e293b">提交出价 → ADX 一价拍卖</text>
+  <text x="278" y="624" font-size="11.5" fill="#64748b">全链路串行执行，DSP 总响应预算约 20ms</text>
+
+  <!-- ── 左侧外部输入 ── -->
+  <g font-size="11.5" fill="#f59e0b" text-anchor="end">
+    <line x1="150" y1="125" x2="226" y2="125" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowRight)"/>
+    <text x="146" y="116">广告主配置</text>
+    <line x1="150" y1="247" x2="226" y2="247" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowRight)"/>
+    <text x="146" y="238">pCTR / pCVR 预测模型</text>
+    <line x1="150" y1="369" x2="226" y2="369" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowRight)"/>
+    <text x="146" y="360">赢价分布 F(z)（历史竞价）</text>
+    <line x1="150" y1="491" x2="226" y2="491" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowRight)"/>
+    <text x="146" y="482">消耗进度误差 e(t)</text>
+  </g>
+
+  <!-- ── 右侧风险/职责标注 ── -->
+  <g font-size="11" fill="#64748b">
+    <text x="640" y="120">风险归属：</text>
+    <text x="640" y="136">12.2 计费谱系的延伸</text>
+    <text x="640" y="242">平台代管出价：</text>
+    <text x="640" y="258">预测换定价权</text>
+    <text x="640" y="364">机制的算法补位：</text>
+    <text x="640" y="380">12.3 一价回归的应对</text>
+    <text x="640" y="486">控制论视角：</text>
+    <text x="640" y="502">反馈回路闭环</text>
+  </g>
+
+  <!-- footer note -->
+  <rect x="60" y="660" width="680" height="30" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+  <text x="400" y="680" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">任何一层的误差都会沿箭头向下传导到最终出价 —— 预测的绝对精度是整条链路的地基（见 12.5）</text>
+</svg>

@@ -13,30 +13,30 @@
 
   <rect x="0" y="0" width="800" height="380" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Word2Vec Skip-Gram → Item2Vec 的序列映射</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Word2Vec Skip-Gram → Item2Vec: Mapping Sequences</text>
 
   <!-- ===== Left: NLP world ===== -->
   <rect x="40" y="64" width="300" height="156" rx="12" fill="#eef2ff" stroke="#4A6CF7" stroke-width="1.5"/>
-  <text x="190" y="90" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">文本世界</text>
+  <text x="190" y="90" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">Text World</text>
 
   <g font-family="Arial" font-size="13">
     <rect x="60" y="104" width="80" height="40" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5"/>
-    <text x="100" y="129" text-anchor="middle" fill="#1e293b">国王</text>
+    <text x="100" y="129" text-anchor="middle" fill="#1e293b">king</text>
     <rect x="150" y="104" width="80" height="40" rx="8" fill="#4A6CF7"/>
-    <text x="190" y="129" text-anchor="middle" font-weight="bold" fill="#ffffff">王后</text>
+    <text x="190" y="129" text-anchor="middle" font-weight="bold" fill="#ffffff">queen</text>
     <rect x="240" y="104" width="80" height="40" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5"/>
-    <text x="280" y="129" text-anchor="middle" fill="#1e293b">城堡</text>
+    <text x="280" y="129" text-anchor="middle" fill="#1e293b">castle</text>
   </g>
   <!-- skip-gram: center predicts context -->
   <line x1="150" y1="124" x2="142" y2="124" stroke="#4A6CF7" stroke-width="1.8" marker-end="url(#ar-b)"/>
   <line x1="230" y1="124" x2="238" y2="124" stroke="#4A6CF7" stroke-width="1.8" marker-end="url(#ar-b)"/>
-  <text x="190" y="172" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">中心词预测上下文（Skip-Gram）</text>
-  <text x="190" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">词序列</text>
+  <text x="190" y="172" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Center word predicts context (Skip-Gram)</text>
+  <text x="190" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">word sequence</text>
 
   <!-- ===== Center: isomorphism node ===== -->
   <circle cx="400" cy="142" r="40" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
-  <text x="400" y="137" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#475569">序列</text>
-  <text x="400" y="156" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#475569">同构</text>
+  <text x="400" y="137" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#475569">Sequence</text>
+  <text x="400" y="156" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#475569">Isomorphism</text>
 
   <!-- connections -->
   <line x1="340" y1="142" x2="358" y2="142" stroke="#94a3b8" stroke-width="1.8" marker-end="url(#ar-g)"/>
@@ -44,22 +44,22 @@
 
   <!-- ===== Right: Rec world ===== -->
   <rect x="460" y="64" width="300" height="156" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-  <text x="610" y="90" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#10b981">推荐世界</text>
+  <text x="610" y="90" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#10b981">Rec World</text>
 
   <g font-family="Arial" font-size="13">
     <rect x="480" y="104" width="80" height="40" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
-    <text x="520" y="129" text-anchor="middle" fill="#065f46">物品A</text>
+    <text x="520" y="129" text-anchor="middle" fill="#065f46">Item A</text>
     <rect x="570" y="104" width="80" height="40" rx="8" fill="#10b981"/>
-    <text x="610" y="129" text-anchor="middle" font-weight="bold" fill="#ffffff">物品B</text>
+    <text x="610" y="129" text-anchor="middle" font-weight="bold" fill="#ffffff">Item B</text>
     <rect x="660" y="104" width="70" height="40" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
-    <text x="695" y="129" text-anchor="middle" fill="#065f46">物品C</text>
+    <text x="695" y="129" text-anchor="middle" fill="#065f46">Item C</text>
   </g>
   <line x1="570" y1="124" x2="562" y2="124" stroke="#10b981" stroke-width="1.8" marker-end="url(#ar-gn)"/>
   <line x1="650" y1="124" x2="658" y2="124" stroke="#10b981" stroke-width="1.8" marker-end="url(#ar-gn)"/>
-  <text x="610" y="172" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">用户行为序列 = 句子</text>
-  <text x="610" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">物品序列</text>
+  <text x="610" y="172" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">User behavior sequence = sentence</text>
+  <text x="610" y="192" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">item sequence</text>
 
   <!-- ===== Bottom insight ===== -->
   <line x1="40" y1="350" x2="760" y2="350" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="400" y="366" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">语义相近 → 向量相近 → 近邻检索做 I2I 召回</text>
+  <text x="400" y="366" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">Similar semantics → similar vectors → ANN search for i2i retrieval</text>
 </svg>

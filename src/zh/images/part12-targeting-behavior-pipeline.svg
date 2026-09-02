@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="540" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">行为定向：从原始行为到标签得分的流水线</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">离线训练权重 w → 在线递归打分 λ → 阈值判定打标 → reach/CTR 曲线评测</text>
+
+  <!-- Stage 1: raw behaviors -->
+  <g filter="url(#shadow)">
+    <rect x="28" y="92" width="150" height="170" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="103" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">原始行为 b</text>
+    <text x="42" y="146" font-size="12" fill="#1e293b">· 网页浏览（URL）</text>
+    <text x="42" y="170" font-size="12" fill="#1e293b">· 搜索（查询词）</text>
+    <text x="42" y="194" font-size="12" fill="#1e293b">· 广告点击（落地页）</text>
+    <text x="42" y="218" font-size="12" fill="#1e293b">· 购买 / 转化（单品）</text>
+    <text x="42" y="242" font-size="11" fill="#64748b">按用户 ID 组织成事件流</text>
+  </g>
+
+  <!-- Stage 2: labeling -->
+  <g filter="url(#shadow)">
+    <rect x="212" y="92" width="150" height="170" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="287" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">标签化 x_tn(b)</text>
+    <text x="226" y="146" font-size="12" fill="#1e293b">浏览 → 上下文打标</text>
+    <text x="226" y="170" font-size="12" fill="#1e293b">搜索 → 搜索引擎扩展</text>
+    <text x="226" y="194" font-size="12" fill="#1e293b">或垂直分类（如电商）</text>
+    <text x="226" y="218" font-size="12" fill="#1e293b">点击 → 落地页内容</text>
+    <text x="226" y="242" font-size="11" fill="#64748b">强度置 1，映射到标签 t</text>
+  </g>
+
+  <!-- Stage 3: decay accumulation -->
+  <g filter="url(#shadow)">
+    <rect x="396" y="92" width="170" height="170" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="481" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">时间衰减累积</text>
+    <text x="481" y="150" text-anchor="middle" font-size="14" fill="#10b981" font-weight="bold">x̃(d) = α·x̃(d−1) + x(d)</text>
+    <text x="410" y="180" font-size="12" fill="#1e293b">矩形窗（滑动窗法）vs</text>
+    <text x="410" y="202" font-size="12" fill="#1e293b">指数窗（时间衰减法）</text>
+    <text x="410" y="234" font-size="11" fill="#64748b">工程推荐后者：只需保存</text>
+    <text x="410" y="252" font-size="11" fill="#64748b">昨日累积 + 今日行为</text>
+  </g>
+
+  <!-- Stage 4: GLM scoring -->
+  <g filter="url(#shadow)">
+    <rect x="600" y="92" width="172" height="170" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="686" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">GLM 打分</text>
+    <text x="686" y="150" text-anchor="middle" font-size="13" fill="#f59e0b" font-weight="bold">h ~ Poisson(λ_t)</text>
+    <text x="686" y="174" text-anchor="middle" font-size="13" fill="#f59e0b" font-weight="bold">log λ_t = w_t · x̃</text>
+    <text x="614" y="202" font-size="12" fill="#1e293b">训练：每标签一组 w</text>
+    <text x="614" y="224" font-size="12" fill="#1e293b">w_tn 调节各行为类型</text>
+    <text x="614" y="246" font-size="12" fill="#1e293b">（搜索/浏览/购买）权重</text>
+  </g>
+
+  <!-- Arrows between stages -->
+  <g stroke="#64748b" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="178" y1="177" x2="206" y2="177"/>
+    <line x1="362" y1="177" x2="390" y2="177"/>
+    <line x1="566" y1="177" x2="594" y2="177"/>
+  </g>
+
+  <!-- Online decision row -->
+  <rect x="28" y="292" width="744" height="96" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">决策过程（在线，无需泊松分布）：算 λ → 与阈值 τ 比较 → 打上标签 t</text>
+  <text x="400" y="344" text-anchor="middle" font-size="13" fill="#1e293b">线上缓存递归更新：λ(d) = α·λ(d−1) + Σ_n w_tn · x_tn(d)</text>
+  <text x="400" y="368" text-anchor="middle" font-size="12" fill="#64748b">只存得分、乘 α 再累加今日行为 —— 比每周期重算全部 λ 轻量得多，可快速反馈短时兴趣</text>
+
+  <!-- Evaluation row -->
+  <rect x="28" y="412" width="744" height="72" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="400" y="438" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">评测：reach/CTR 曲线（需保留每个用户在标签上的得分，而非二值结果）</text>
+  <text x="400" y="462" text-anchor="middle" font-size="12" fill="#64748b">曲线应单调下降：reach 小 → CTR 高；最右端 CTR 固定为全量水平；头部斜率越大鉴别力越强（呼应 12.5 的 AUC 与校准）</text>
+
+  <text x="400" y="516" text-anchor="middle" font-size="12" fill="#64748b">训练集长度取 7 的整数倍（消除工作日周期性）· 时间片越小对标签时效性反馈越快</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="500" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">受众定向技术分类总览</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">定向 = 对广告 a、用户 u、上下文 c 提取特征（标签）的过程 · 标签进入 eCPM = μ(a,u,c) × bid 参与排序</text>
+
+  <!-- Column 1: t(c) -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="90" width="225" height="250" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="40" y="90" width="225" height="46" rx="8" fill="#4A6CF7"/>
+    <text x="152" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">上下文标签 t(c)</text>
+    <text x="152" y="158" text-anchor="middle" font-size="12" fill="#64748b">根据当前访问得到的即时兴趣</text>
+    <text x="62" y="188" font-size="13" fill="#1e293b">· 地域定向（请求 IP / GPS）</text>
+    <text x="62" y="214" font-size="13" fill="#1e293b">· 频道 / URL / 操作系统</text>
+    <text x="62" y="240" font-size="13" fill="#1e293b">· 关键词定向（TF-IDF）</text>
+    <text x="62" y="266" font-size="13" fill="#1e293b">· 主题定向（文本主题挖掘）</text>
+    <text x="62" y="292" font-size="13" fill="#1e293b">· 上下文行为（来源搜索词）</text>
+    <text x="152" y="324" text-anchor="middle" font-size="12" fill="#4A6CF7" font-weight="bold">技术方案：半在线抓取 + 缓存</text>
+  </g>
+
+  <!-- Column 2: t(u) -->
+  <g filter="url(#shadow)">
+    <rect x="288" y="90" width="225" height="250" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="288" y="90" width="225" height="46" rx="8" fill="#10b981"/>
+    <text x="400" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">用户标签 t(u)</text>
+    <text x="400" y="158" text-anchor="middle" font-size="12" fill="#64748b">根据历史行为数据挖掘</text>
+    <text x="310" y="188" font-size="13" fill="#1e293b">· 行为定向（兴趣分类）</text>
+    <text x="310" y="214" font-size="13" fill="#1e293b">· 人口属性预测（性别/年龄）</text>
+    <text x="310" y="240" font-size="13" fill="#1e293b">· "where on earth" 居住地</text>
+    <text x="310" y="266" font-size="13" fill="#1e293b">· 行为来源：浏览 / 搜索 /</text>
+    <text x="322" y="288" font-size="13" fill="#1e293b">广告点击 / 购买等</text>
+    <text x="400" y="324" text-anchor="middle" font-size="12" fill="#10b981" font-weight="bold">技术方案：GLM 建模 + 打分阈值</text>
+  </g>
+
+  <!-- Column 3: t(a,u) -->
+  <g filter="url(#shadow)">
+    <rect x="536" y="90" width="225" height="250" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="536" y="90" width="225" height="46" rx="8" fill="#f59e0b"/>
+    <text x="648" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">定制化标签 t(a, u)</text>
+    <text x="648" y="158" text-anchor="middle" font-size="12" fill="#64748b">针对特定广告主加工</text>
+    <text x="558" y="188" font-size="13" fill="#1e293b">· 重定向（到过落地页的人）</text>
+    <text x="558" y="214" font-size="13" fill="#1e293b">· 新客推荐（Look-alike）</text>
+    <text x="558" y="240" font-size="13" fill="#1e293b">标签数与广告主数成正比，</text>
+    <text x="558" y="262" font-size="13" fill="#1e293b">适合程序化交易中由需求方</text>
+    <text x="558" y="284" font-size="13" fill="#1e293b">直接提供（DSP，见 16 章）</text>
+    <text x="648" y="324" text-anchor="middle" font-size="12" fill="#f59e0b" font-weight="bold">数据加工见 12.10（DMP）</text>
+  </g>
+
+  <!-- Bottom: t(a) + dual metrics -->
+  <rect x="40" y="368" width="721" height="56" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="400" y="391" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">匹配的对偶侧：广告也需打标签 t(a)（用广告主/计划/关键词，或人工归类）</text>
+  <text x="400" y="412" text-anchor="middle" font-size="12" fill="#64748b">每种定向都要同时提供「覆盖率高但较泛」与「精准但量小」两类标签，让市场充分竞争</text>
+
+  <text x="400" y="458" text-anchor="middle" font-size="12" fill="#64748b">t(c) 与 t(u) 的区别：前者由当前环境决定（在线即时计算），后者由历史日志决定（离线批量加工）</text>
+</svg>

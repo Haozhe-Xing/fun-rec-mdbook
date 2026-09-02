@@ -9,36 +9,36 @@
   </defs>
   <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
 
-  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">CB2CF：从内容特征映射到协同过滤表示</text>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">CB2CF: Mapping Content Features to CF Representations</text>
 
   <!-- Content encoder -->
   <rect x="40" y="80" width="200" height="90" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shC)"/>
-  <text x="140" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">内容编码器</text>
-  <text x="140" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">文本 / 图像 / 类别</text>
+  <text x="140" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">Content Encoder</text>
+  <text x="140" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">Text / Image / Category</text>
   <text x="140" y="150" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">CNN / RNN / Transformer</text>
 
   <!-- Mapping network -->
   <rect x="300" y="80" width="200" height="90" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shC)"/>
-  <text x="400" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">映射网络</text>
-  <text x="400" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#dbeafe">多层全连接</text>
+  <text x="400" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">Mapping Network</text>
+  <text x="400" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#dbeafe">Multi-layer MLP</text>
   <text x="400" y="150" text-anchor="middle" font-family="Arial" font-size="11" fill="#dbeafe">f: C → V</text>
 
   <!-- Constraint -->
   <rect x="560" y="80" width="200" height="90" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2" filter="url(#shC)"/>
-  <text x="660" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">约束优化</text>
-  <text x="660" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">余弦相似度约束</text>
-  <text x="660" y="150" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">保持语义一致</text>
+  <text x="660" y="108" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">Constrained Training</text>
+  <text x="660" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">Cosine similarity constraint</text>
+  <text x="660" y="150" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">Keeps semantics consistent</text>
 
   <line x1="240" y1="125" x2="298" y2="125" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrC)"/>
   <line x1="500" y1="125" x2="558" y2="125" stroke="#10b981" stroke-width="2" marker-end="url(#arrC)"/>
 
   <!-- output -->
   <rect x="280" y="220" width="240" height="60" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#shC)"/>
-  <text x="400" y="244" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">新物品 CF 向量 v̂_i = f(c_i)</text>
-  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="11" fill="#d1fae5">无交互历史也能获得协同质量表示</text>
+  <text x="400" y="244" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#ffffff">New-Item CF Vector v̂_i = f(c_i)</text>
+  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="9" fill="#d1fae5">CF-quality embedding with zero interactions</text>
 
   <line x1="400" y1="170" x2="400" y2="218" stroke="#1e293b" stroke-width="2" marker-end="url(#arrC)"/>
 
   <rect x="0" y="300" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
-  <text x="400" y="324" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">对有内容的物品：c_i → 映射 → 与真实 V 行对齐</text>
+  <text x="400" y="324" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">For items with content: c_i → map → align with the true V rows</text>
 </svg>

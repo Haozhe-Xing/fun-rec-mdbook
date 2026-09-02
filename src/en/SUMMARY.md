@@ -70,6 +70,17 @@
   * [Frontend](part11-project/frontend.md)
   * [Deployment](part11-project/deployment.md)
 
+# Topic · Computational Advertising
+
+* [Computational Advertising](part12-computational-advertising/README.md)
+  * [The Advertising Panorama and Ecosystem](part12-computational-advertising/advertising-panorama.md)
+  * [Billing Models and Core Metrics](part12-computational-advertising/billing-and-metrics.md)
+  * [Auction Mechanisms: From First-Price to Second-Price](part12-computational-advertising/auction-mechanisms.md)
+  * [Smart Bidding and Budget Control](part12-computational-advertising/smart-bidding.md)
+  * [Bias and Calibration in Ad Systems](part12-computational-advertising/bias-and-calibration.md)
+  * [Open-Loop and Closed-Loop Advertising](part12-computational-advertising/open-closed-loop.md)
+  * [Online Allocation and Traffic Management](part12-computational-advertising/online-allocation.md)
+
 # Appendix
 
 * [📖 Glossary](GLOSSARY.md)
