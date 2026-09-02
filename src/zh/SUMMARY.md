@@ -84,6 +84,8 @@
   * [广告检索与语义召回](part12-computational-advertising/ad-retrieval-semantic-recall.md)
   * [数据加工与交易](part12-computational-advertising/data-processing-and-trading.md)
   * [实验框架与反作弊](part12-computational-advertising/experiment-and-antifraud.md)
+  * [合约广告：产品形态与售卖模式](part12-computational-advertising/contract-advertising-products.md)
+  * [信息流与原生广告](part12-computational-advertising/feed-native-ads.md)
 
 # 附录
 

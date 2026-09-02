@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="560" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">合约广告的演进：从「卖位置」到「卖人群」</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">售卖颗粒度：时段 → 天 → 轮播序号 → 人群包 · 数据开始直接参与售卖</text>
+
+  <!-- Stage 1: CPT 独占 -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="90" width="220" height="240" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="30" y="90" width="220" height="44" rx="8" fill="#4A6CF7"/>
+    <rect x="30" y="118" width="220" height="16" fill="#4A6CF7"/>
+    <text x="140" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">阶段一 · CPT 独占</text>
+    <text x="140" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">卖「位置 × 时段」整买</text>
+    <text x="140" y="186" text-anchor="middle" font-size="12" fill="#64748b">开屏 / 首页特型等强曝光位</text>
+    <text x="140" y="208" text-anchor="middle" font-size="12" fill="#64748b">品牌冲击 ·「橱窗效应」</text>
+    <text x="140" y="230" text-anchor="middle" font-size="12" fill="#64748b">同页竞品排他 → 高溢价</text>
+    <rect x="46" y="250" width="188" height="60" rx="8" fill="#e8ecff"/>
+    <text x="140" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#4A6CF7">系统形态：广告排期系统</text>
+    <text x="140" y="294" text-anchor="middle" font-size="11" fill="#64748b">按合同自动执行 · 无个性化</text>
+  </g>
+
+  <line x1="254" y1="210" x2="284" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2: CPD 与轮替 -->
+  <g filter="url(#shadow)">
+    <rect x="290" y="90" width="220" height="240" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="290" y="90" width="220" height="44" rx="8" fill="#f59e0b"/>
+    <rect x="290" y="118" width="220" height="16" fill="#f59e0b"/>
+    <text x="400" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">阶段二 · CPD 与轮替</text>
+    <text x="400" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">按天售卖 · 库存拆细</text>
+    <text x="400" y="186" text-anchor="middle" font-size="12" fill="#64748b">独占库存不足时的确定售卖</text>
+    <text x="400" y="208" text-anchor="middle" font-size="12" fill="#64748b">同一位置 N 条创意轮播</text>
+    <text x="400" y="230" text-anchor="middle" font-size="12" fill="#64748b">随机起始序号 → 流量均匀</text>
+    <rect x="306" y="250" width="188" height="60" rx="8" fill="#fef9ec"/>
+    <text x="400" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">仍是「卖位置」：颗粒变细</text>
+    <text x="400" y="294" text-anchor="middle" font-size="11" fill="#64748b">轮播序号 = 虚拟广告位</text>
+  </g>
+
+  <line x1="514" y1="210" x2="544" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3: CPM 展示量合约 -->
+  <g filter="url(#shadow)">
+    <rect x="550" y="90" width="220" height="240" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="550" y="90" width="220" height="44" rx="8" fill="#10b981"/>
+    <rect x="550" y="118" width="220" height="16" fill="#10b981"/>
+    <text x="660" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">阶段三 · CPM 展示量合约</text>
+    <text x="660" y="160" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">卖「广告位 + 人群」</text>
+    <text x="660" y="186" text-anchor="middle" font-size="12" fill="#64748b">人群包：标签切出的可售流量</text>
+    <text x="660" y="208" text-anchor="middle" font-size="12" fill="#64748b">约定量 + 单价写进合同（GD）</text>
+    <text x="660" y="230" text-anchor="middle" font-size="12" fill="#64748b">未足量交付可能触发赔偿</text>
+    <rect x="566" y="250" width="188" height="60" rx="8" fill="#ecfdf5"/>
+    <text x="660" y="274" text-anchor="middle" font-size="12" font-weight="bold" fill="#10b981">系统形态：流量预测 + 在线分配</text>
+    <text x="660" y="294" text-anchor="middle" font-size="11" fill="#64748b">数据变现的里程碑（见 12.7）</text>
+  </g>
+
+  <!-- Milestone band -->
+  <rect x="30" y="360" width="740" height="80" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="390" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">演进主线：售卖颗粒度不断变细，技术复杂度转移到供给方</text>
+  <text x="400" y="414" text-anchor="middle" font-size="12" fill="#64748b">合约广告中需求方几乎没有优化空间（量价都被合同锁死）——这正是竞价广告产生的内在动力（见 12.3）</text>
+  <text x="400" y="432" text-anchor="middle" font-size="12" fill="#64748b">但展示量合约并没有摆脱广告位：CPM 打包不了差异大的位置，仍以大曝光位为基础切分人群</text>
+
+  <!-- Bottom legend -->
+  <g font-size="12">
+    <rect x="80" y="478" width="14" height="14" rx="3" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="102" y="490" fill="#1e293b">位置售卖（CPT / CPD / 轮替）</text>
+    <rect x="330" y="478" width="14" height="14" rx="3" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="352" y="490" fill="#1e293b">人群售卖（CPM 保量合约）</text>
+    <rect x="560" y="478" width="14" height="14" rx="3" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="582" y="490" fill="#1e293b">产品逻辑注解</text>
+    <text x="400" y="528" text-anchor="middle" fill="#64748b">售卖的对象从「广告位 × 时间」进化为「广告位 + 人群」——在线广告史上数据首次直接参与售卖</text>
+  </g>
+</svg>

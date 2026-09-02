@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="560" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">信息流广告：广告与内容在同一个流里竞争位置</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">自然内容按相关性排序 · 广告按 eCPM 排序 · 关键参数：S = 首条广告位置，K = 广告间隔</text>
+
+  <!-- 信息流面板 -->
+  <rect x="48" y="78" width="264" height="398" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="180" y="76" text-anchor="middle" font-size="12" fill="#64748b" font-weight="bold">某资讯 / 社交产品的信息流</text>
+
+  <!-- 内容卡 c1 -->
+  <g>
+    <rect x="64" y="92" width="232" height="44" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="80" y="111" font-size="13" font-weight="bold" fill="#1e293b">内容 c₁ · 旅游攻略</text>
+    <text x="80" y="128" font-size="11" fill="#64748b">来自推荐流 · 排序依据：相关性</text>
+  </g>
+  <!-- 内容卡 c2 -->
+  <g>
+    <rect x="64" y="146" width="232" height="44" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="80" y="165" font-size="13" font-weight="bold" fill="#1e293b">内容 c₂ · 科技资讯</text>
+    <text x="80" y="182" font-size="11" fill="#64748b">来自推荐流 · 排序依据：相关性</text>
+  </g>
+  <!-- 广告卡 a1 -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="200" width="232" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="80" y="219" font-size="13" font-weight="bold" fill="#1e293b">广告 a₁ · 酒店预订</text>
+    <text x="80" y="236" font-size="11" fill="#4A6CF7" font-weight="bold">排序依据：eCPM（按 GSP 扣费）</text>
+    <rect x="240" y="206" width="44" height="16" rx="8" fill="#4A6CF7"/>
+    <text x="262" y="218" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">广告</text>
+  </g>
+  <!-- 内容卡 c3 -->
+  <g>
+    <rect x="64" y="254" width="232" height="44" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="80" y="273" font-size="13" font-weight="bold" fill="#1e293b">内容 c₃ · 美食视频</text>
+    <text x="80" y="290" font-size="11" fill="#64748b">来自推荐流 · 排序依据：相关性</text>
+  </g>
+  <!-- 内容卡 c4 -->
+  <g>
+    <rect x="64" y="308" width="232" height="44" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="80" y="327" font-size="13" font-weight="bold" fill="#1e293b">内容 c₄ · 健身问答</text>
+    <text x="80" y="344" font-size="11" fill="#64748b">来自推荐流 · 排序依据：相关性</text>
+  </g>
+  <!-- 广告卡 a2 -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="362" width="232" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="80" y="381" font-size="13" font-weight="bold" fill="#1e293b">广告 a₂ · 运动装备</text>
+    <text x="80" y="398" font-size="11" fill="#4A6CF7" font-weight="bold">排序依据：eCPM（按 GSP 扣费）</text>
+    <rect x="240" y="368" width="44" height="16" rx="8" fill="#4A6CF7"/>
+    <text x="262" y="380" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">广告</text>
+  </g>
+  <!-- 内容卡 c5 -->
+  <g>
+    <rect x="64" y="416" width="232" height="44" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+    <text x="80" y="435" font-size="13" font-weight="bold" fill="#1e293b">内容 c₅ · 旅行日记</text>
+    <text x="80" y="452" font-size="11" fill="#64748b">来自推荐流 · 排序依据：相关性</text>
+  </g>
+
+  <!-- S / K 标记 -->
+  <circle cx="330" cy="195" r="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="330" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">S</text>
+  <line x1="342" y1="197" x2="374" y2="242" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-orange)"/>
+  <circle cx="330" cy="357" r="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="330" y="362" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">K</text>
+  <line x1="342" y1="355" x2="374" y2="298" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-orange)"/>
+
+  <!-- 右侧说明块 1：竞价队列 -->
+  <g filter="url(#shadow)">
+    <rect x="380" y="78" width="372" height="120" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="398" y="102" font-size="14" font-weight="bold" fill="#4A6CF7">① 多位置竞价队列</text>
+    <text x="398" y="126" font-size="12" fill="#1e293b">a₁、a₂、a₃ … 构成一个竞价队列，按 VCG / GSP 扣费</text>
+    <text x="398" y="148" font-size="12" fill="#1e293b">也可把 a₁、a₂ 视为不同广告位分别竞价</text>
+    <text x="398" y="170" font-size="12" fill="#64748b">若要求这几个广告位之间对广告去重 → 等价于单队列</text>
+  </g>
+
+  <!-- 右侧说明块 2：位置与密度 -->
+  <g filter="url(#shadow)">
+    <rect x="380" y="214" width="372" height="120" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="398" y="238" font-size="14" font-weight="bold" fill="#10b981">② 位置与密度：S 与 K 的权衡</text>
+    <text x="398" y="262" font-size="12" fill="#1e293b">S、K 越大 → 广告获得的关注越少，对体验影响越小</text>
+    <text x="398" y="284" font-size="12" fill="#1e293b">约束：平均广告条数（等价于约束用户体验）</text>
+    <text x="398" y="306" font-size="12" fill="#1e293b">目标：在约束下调整每个用户的 S 与 K，优化整体点击率</text>
+  </g>
+
+  <!-- 右侧说明块 3：权衡 -->
+  <g filter="url(#shadow)">
+    <rect x="380" y="350" width="372" height="126" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="398" y="374" font-size="14" font-weight="bold" fill="#d97706">③ 一个天平的两端</text>
+    <rect x="398" y="388" width="150" height="40" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+    <text x="473" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#10b981">用户体验</text>
+    <text x="473" y="421" text-anchor="middle" font-size="11" fill="#64748b">误点更少 · 关注更自然</text>
+    <text x="566" y="412" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">⇄</text>
+    <rect x="584" y="388" width="150" height="40" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="659" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">平台收益</text>
+    <text x="659" y="421" text-anchor="middle" font-size="11" fill="#64748b">eCPM · 整体点击率</text>
+    <text x="566" y="456" text-anchor="middle" font-size="12" fill="#64748b">信息流广告是效果与体验平衡的典范：广告即内容的一部分</text>
+  </g>
+
+  <!-- 底部注释 -->
+  <text x="400" y="516" text-anchor="middle" font-size="12" fill="#64748b">演进方向：内容与广告按同一准则统一排序 —— 这正是推荐系统「混排」问题的起点</text>
+</svg>
