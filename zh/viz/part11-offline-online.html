@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>离线→在线数据流转 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .flow{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+  .node{border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.5;transition:all .35s;}
+  .node.off{background:rgba(16,185,129,.15);border:1px solid #10b981;color:#bbf7d0;}
+  .node.bridge{background:rgba(245,158,11,.15);border:1px solid #f59e0b;color:#fde68a;text-align:center;}
+  .node.on{background:rgba(74,108,247,.15);border:1px solid #4A6CF7;color:#bfdbfe;}
+  .node.dim{opacity:.35;}
+  .node.hot{box-shadow:0 0 0 2px #fff inset;}
+  .arrowd{text-align:center;color:var(--c-light);font-size:18px;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔻 离线产出 → 在线消费：数据与模型的流转</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>离线 → 在线 数据通路</h3>
+    <div class="flow" id="flow"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>关键代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { focus:"off", title:"① 原始评分数据",
+    desc:"离线起点：MovieLens-1M 的 users / movies / ratings 三张表（约 100 万评分、3883 电影、6040 用户）。",
+    code:["df_movies = pd.read_pickle('movies.pkl')","df_ratings = pd.read_pickle('ratings.pkl')","df_users = pd.read_pickle('users.pkl')","# 离线专属：全量历史"],
+    hl:0 },
+  { focus:"off", title:"② 特征工程",
+    desc:"构造训练样本：类别编码（从 1 起）、滑动窗口序列样本、左填充定长；排序样本定义标签与负采样。",
+    code:["feat = LabelEncoder().fit_transform(x) + 1","samples = sliding_window(ratings)  # 前k→k+1","neg = hard:random = 1:2  # 总 1:3","# 产出训练字典"],
+    hl:0 },
+  { focus:"off", title:"③ 模型训练",
+    desc:"训练 YoutubeDNN 双塔与 DeepFM 排序。YoutubeDNN 返回完整/用户塔/物品塔三模型。",
+    code:["user_model, item_model = train_youtubednn()","ranking_model = train_deepfm()","user_model.save('user_model')","item_model.save('item_model')"],
+    hl:0 },
+  { focus:"off", title:"④ 物品向量预计算",
+    desc:"离线用物品塔预测全量电影向量并归一化，存 item_embeddings.npy —— 在线向量检索的前提。",
+    code:["emb = item_model.predict(all_ids)","emb = emb / norm(emb, axis=1)  # 归一化","np.save('item_embeddings.npy', emb)","# 内积 ≡ 余弦"],
+    hl:0 },
+  { focus:"bridge", title:"⑤ 存储层交接",
+    desc:"离线产出写入共享存储：模型/向量入共享目录，用户画像与行为序列入 Redis（Hash/List + Pipeline），active.json 记版本。",
+    code:["redis.hset('user:{id}:profile', ...)","redis.rpush('user:{id}:history', ...)","shutil.copy('item_embeddings.npy', deploy)","json.dump({'version':'v1'}, 'active.json')"],
+    hl:1 },
+  { focus:"on", title:"⑥ 在线加载资源",
+    desc:"在线服务以单例 + 惰性加载，读 active.json 版本指针决定加载哪版模型/向量/编码器，资源只加载一次。",
+    code:["with open('active.json') as f:","    ver = json.load(f)  # 读指针","user_model = load_model(ver['path'])","emb = np.load('item_embeddings.npy')"],
+    hl:0 },
+  { focus:"on", title:"⑦ 实时推荐服务",
+    desc:"用户请求到达，在线消费离线产出：算用户向量检索、DeepFM 排序、多样性重排，毫秒级返回个性化列表。",
+    code:["user_emb = user_model.predict(features)","scores = user_emb @ emb.T  # 内积","ranked = deepfm.predict(cands)","return rerank(ranked)  # <200ms"],
+    hl:3 }
+];
+
+let cur = 0, timer = null;
+const flowEl = document.getElementById("flow");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function render(){
+  flowEl.innerHTML = "";
+  const nodes = [
+    {cls:"off", t:"离线：原始数据 / 特征 / 训练 / 向量"},
+    {cls:"bridge", t:"存储层：Redis · 共享目录 · active.json"},
+    {cls:"on", t:"在线：加载 / 推理 / 返回"}
+  ];
+  // determine which side is hot
+  const side = stages[cur].focus;
+  nodes.forEach((nd, i)=>{
+    const d = document.createElement("div");
+    d.className = "node " + nd.cls;
+    if((i==0 && side!=="off") || (i==1 && side!=="bridge") || (i==2 && side!=="on")) d.classList.add("dim");
+    if(side==="off" && i===0) d.classList.add("hot");
+    if(side==="bridge" && i===1) d.classList.add("hot");
+    if(side==="on" && i===2) d.classList.add("hot");
+    d.innerHTML = nd.t;
+    flowEl.appendChild(d);
+    if(i < 2){
+      const a = document.createElement("div");
+      a.className = "arrowd"; a.textContent = "↓";
+      flowEl.appendChild(a);
+    }
+  });
+  const s = stages[cur];
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.title+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.title;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

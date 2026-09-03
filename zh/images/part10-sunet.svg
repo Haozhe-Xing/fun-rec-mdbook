@@ -1,0 +1,49 @@
+<svg width="800" height="280" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10f" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow10f" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="280" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">Sequential U-Net（SU-Net）：把序列当多通道「图像」</text>
+
+  <g font-family="Arial" font-size="12" text-anchor="middle">
+    <rect x="40" y="70" width="150" height="150" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10f)"/>
+    <text x="115" y="98" fill="#1e293b">xₜ ∈ R^{M×d}</text>
+    <text x="115" y="122" font-size="11" fill="#64748b">M 个通道</text>
+    <text x="115" y="144" font-size="11" fill="#64748b">每嵌入重塑</text>
+    <text x="115" y="164" font-size="11" fill="#64748b">√d × √d 矩阵</text>
+    <text x="115" y="190" font-size="11" fill="#64748b">可卷积处理</text>
+
+    <rect x="240" y="70" width="130" height="150" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10f)"/>
+    <text x="305" y="100" fill="#4A6CF7" font-weight="bold">下采样</text>
+    <text x="305" y="130" font-size="11" fill="#64748b">编码</text>
+    <text x="305" y="158" font-size="11" fill="#64748b">↓ 空间</text>
+    <text x="305" y="186" font-size="11" fill="#64748b">提语义</text>
+
+    <rect x="400" y="70" width="130" height="150" rx="8" fill="#4A6CF7" filter="url(#shadow10f)"/>
+    <text x="465" y="100" fill="#ffffff" font-weight="bold">AttnBlock</text>
+    <text x="465" y="130" font-size="11" fill="#e8ecff">中间</text>
+    <text x="465" y="158" font-size="11" fill="#e8ecff">注意力</text>
+    <text x="465" y="186" font-size="11" fill="#e8ecff">层</text>
+
+    <rect x="560" y="70" width="130" height="150" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10f)"/>
+    <text x="625" y="100" fill="#4A6CF7" font-weight="bold">上采样</text>
+    <text x="625" y="130" font-size="11" fill="#64748b">解码</text>
+    <text x="625" y="158" font-size="11" fill="#64748b">↑ 空间</text>
+    <text x="625" y="186" font-size="11" fill="#64748b">复形状</text>
+
+    <rect x="710" y="70" width="60" height="150" rx="8" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow10f)"/>
+    <text x="740" y="148" fill="#16a34a" font-size="11">x̂₀</text>
+  </g>
+  <line x1="190" y1="145" x2="236" y2="145" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10f)"/>
+  <line x1="370" y1="145" x2="396" y2="145" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10f)"/>
+  <line x1="530" y1="145" x2="556" y2="145" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10f)"/>
+  <line x1="690" y1="145" x2="706" y2="145" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow10f)"/>
+
+  <rect x="0" y="240" width="800" height="40" fill="#1e293b"/>
+  <text x="400" y="264" text-anchor="middle" font-family="Courier New" font-size="12" fill="#94a3b8">条件/时间步注入: z = c + t (正弦位置编码) → 各 ResNet 块加性融合</text>
+</svg>

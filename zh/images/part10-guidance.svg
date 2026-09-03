@@ -1,0 +1,34 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10d" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow10d" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">两种引导策略：控制生成方向</text>
+
+  <g font-family="Arial" font-size="13" text-anchor="middle">
+    <rect x="40" y="70" width="340" height="220" rx="12" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow10d)"/>
+    <text x="210" y="100" font-weight="bold" fill="#4A6CF7">Classifier-Guided</text>
+    <text x="210" y="124" font-size="12" fill="#64748b">需预训练分类器 p_φ(y|xₜ)</text>
+    <rect x="70" y="140" width="280" height="54" rx="8" fill="#f0f4ff" stroke="#4A6CF7" stroke-width="1.2"/>
+    <text x="210" y="162" font-family="Courier New" font-size="11" fill="#1e293b">ê = ε_θ − γ√(1−ᾱₜ)∇log p_φ</text>
+    <text x="210" y="184" font-family="Arial" font-size="11" fill="#64748b">推理时算梯度，推离目标类</text>
+    <text x="210" y="240" font-family="Arial" font-size="12" fill="#64748b">推荐：用序列模型当</text>
+    <text x="210" y="262" font-family="Arial" font-size="12" fill="#64748b">「分类器」引导一致交互</text>
+
+    <rect x="420" y="70" width="340" height="220" rx="12" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow10d)"/>
+    <text x="590" y="100" font-weight="bold" fill="#16a34a">Classifier-Free ★更常用</text>
+    <text x="590" y="124" font-size="12" fill="#64748b">训练时以 p_u 丢条件为 Φ</text>
+    <rect x="450" y="140" width="280" height="54" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.2"/>
+    <text x="590" y="162" font-family="Courier New" font-size="11" fill="#1e293b">ê = (1+γ)ε_θ(c) − γε_θ(Φ)</text>
+    <text x="590" y="184" font-family="Arial" font-size="11" fill="#64748b">推理时线性组合条件/无条件</text>
+    <text x="590" y="240" font-family="Arial" font-size="12" fill="#1e293b">γ大→更个性化但损质量</text>
+    <text x="590" y="262" font-family="Arial" font-size="12" fill="#1e293b">γ小→更多样但个性化低</text>
+  </g>
+  <line x1="380" y1="167" x2="416" y2="167" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow10d)"/>
+  <text x="398" y="155" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">推荐常用</text>
+</svg>

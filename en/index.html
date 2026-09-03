@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>🏠 Home - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div align="center">
+  <h1 id="practical-deep-recommender-systems"><a class="header" href="#practical-deep-recommender-systems">Practical Deep Recommender Systems</a></h1>
+  <p><strong>The Wheat Book · From Cascading Architectures to the Generative Paradigm</strong></p>
+  <p>
+    <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
+    <img alt="Language" src="https://img.shields.io/badge/Language-English-16a34a?style=flat-square">
+    <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square">
+    <img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square">
+    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a>
+  </p>
+  <p>
+    An open-source book that systematically traces the technical evolution of recommender systems: from the classic cascading architecture to generative recommendation, reasoning in recommendation, and hands-on practice with an end-to-end system.
+  </p>
+  <p>
+    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><strong>📖 Read Online</strong></a>
+    ·
+    <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub Repository</a>
+  </p>
+</div>
+<hr />
+<h2 id="what-is-this"><a class="header" href="#what-is-this">What Is This?</a></h2>
+<p><strong>Practical Deep Recommender Systems</strong> is an open-source book for recommender-system learners and engineering practitioners, rewritten from the Datawhale open-source project <a href="https://github.com/datawhalechina/fun-rec">fun-rec</a>.</p>
+<blockquote>
+<p>📖 <strong>Read online</strong>: visit <a href="https://haozhe-xing.github.io/fun-rec-mdbook/">https://haozhe-xing.github.io/fun-rec-mdbook/</a> for the latest version.</p>
+</blockquote>
+<p>The book follows two main threads:</p>
+<ul>
+<li><strong>Discriminative recommendation</strong>: retrieval, ranking, re-ranking, multi-task learning, multi-scenario modeling, debiasing, cold start, and other foundational capabilities of industrial recommender systems.</li>
+<li><strong>Generative recommendation</strong>: semantic IDs, generative ranking, end-to-end recommendation, recommendation reasoning, diffusion models, and hands-on practice building a generative recommender.</li>
+</ul>
+<p>If you want to move from "algorithm principles" to "system practice" and understand the full arc from the classic architecture to the generative paradigm, this book is for you.</p>
+<hr />
+<h2 id="content-map"><a class="header" href="#content-map">Content Map</a></h2>
+<p>The book has <strong>11 Parts</strong>, best read in order; if you already know the basics of recommender systems, feel free to jump straight to the topics you care about.</p>
+<div class="table-wrapper"><table><thead><tr><th>Part</th><th>Theme</th><th>What You Will Learn</th></tr></thead><tbody>
+<tr><td>Part 1</td><td>Recommender Systems at a Glance</td><td>The basic problems of recommendation, a technical map, and feature &amp; embedding fundamentals</td></tr>
+<tr><td>Part 2</td><td>Fast Candidate Retrieval</td><td>Collaborative filtering, vector retrieval, two-tower models, sequential retrieval, streaming indexes</td></tr>
+<tr><td>Part 3</td><td>Accurate Preference Prediction</td><td>Wide&amp;Deep, feature crossing, sequence modeling, multi-task learning, multi-scenario modeling</td></tr>
+<tr><td>Part 4</td><td>Re-ranking for Diversity</td><td>MMR, DPP, personalized re-ranking, and list-level optimization</td></tr>
+<tr><td>Part 5</td><td>Frontier Trends</td><td>Debiasing, cold start, and the evolution toward generative recommendation</td></tr>
+<tr><td>Part 6</td><td>Foundations of Generative Recommendation</td><td>The generative paradigm, LLM basics, codebooks, semantic IDs</td></tr>
+<tr><td>Part 7</td><td>Scaling Generative Ranking</td><td>HSTU, generative ranking, MTGR, RankMixer, OneTrans</td></tr>
+<tr><td>Part 8</td><td>End-to-End Generative Applications</td><td>End-to-end generative modeling in recommendation, search, and advertising</td></tr>
+<tr><td>Part 9</td><td>Thinking and Reasoning in Recommendation</td><td>Semantic alignment, reasoning frameworks, autonomous reasoning exploration</td></tr>
+<tr><td>Part 10</td><td>Diffusion Models for Recommendation</td><td>Diffusion basics, data augmentation, recommendation applications</td></tr>
+<tr><td>Part 11</td><td>Building a Generative Recommender</td><td>System architecture, offline pipeline, online pipeline, frontend, and deployment</td></tr>
+</tbody></table>
+</div>
+<p>See <a href="SUMMARY.html">SUMMARY.md</a> for the full table of contents.</p>
+<hr />
+<h3 id="1-install-dependencies"><a class="header" href="#1-install-dependencies">1. Install dependencies</a></h3>
+<pre><code class="language-bash">cargo install mdbook
+cargo install mdbook-katex
+</code></pre>
+<h3 id="2-local-preview"><a class="header" href="#2-local-preview">2. Local preview</a></h3>
+<pre><code class="language-bash">./serve.sh
+</code></pre>
+<p><code>./serve.sh</code> builds both language editions and starts a local preview server. Open the URL printed in the terminal to read the book — the language is auto-selected at the site root based on your browser settings.</p>
+<h3 id="3-build-static-sites"><a class="header" href="#3-build-static-sites">3. Build static sites</a></h3>
+<pre><code class="language-bash">mdbook build
+</code></pre>
+<p>Build artifacts are written to the <code>book/</code> directory (<code>book/zh/</code> and <code>book/en/</code>, one per edition; <code>./serve.sh</code> wraps the same build for both configs).</p>
+<hr />
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<p>This is a bilingual project: the Chinese and English editions share the same structure and are built separately.</p>
+<pre><code class="language-text">.
+├── README.md                 # Home page and project intro
+├── SUMMARY.md                # mdBook table of contents
+├── book.toml                 # mdBook config (Chinese edition)
+├── book-en.toml              # mdBook config (English edition)
+├── serve.sh                  # Build/serve script for both editions
+├── GLOSSARY.md               # Glossary
+├── src/
+│   ├── zh/                   # Chinese source (chapter sources + appendix)
+│   ├── en/                   # English source (chapter sources + appendix)
+│   ├── zh/images/            # SVG figures (Chinese edition)
+│   ├── en/images/            # SVG figures (English edition)
+│   ├── zh/viz/               # Interactive visualizations (Chinese edition)
+│   └── en/viz/               # Interactive visualizations (English edition)
+└── book/
+    ├── zh/                   # Build output (Chinese edition)
+    └── en/                   # Build output (English edition)
+</code></pre>
+<hr />
+<h2 id="recommended-reading-paths"><a class="header" href="#recommended-reading-paths">Recommended Reading Paths</a></h2>
+<h3 id="beginner-path"><a class="header" href="#beginner-path">Beginner path</a></h3>
+<p>For readers new to recommender systems who want to build a complete knowledge framework:</p>
+<pre><code class="language-text">Part 1 → Part 2 → Part 3 → Part 4 → Part 5
+</code></pre>
+<p>You will first master the classic cascading architecture of recommender systems, then understand how retrieval, ranking, and re-ranking work together.</p>
+<h3 id="advanced-engineering-path"><a class="header" href="#advanced-engineering-path">Advanced engineering path</a></h3>
+<p>For readers who have already worked on recommendation algorithms or recommendation engineering and want to strengthen their system-design skills:</p>
+<pre><code class="language-text">Part 2 → Part 3 → Part 4 → Part 11
+</code></pre>
+<p>You will focus on candidate generation, preference prediction, list-level optimization, and online serving architecture in the industrial recommendation pipeline.</p>
+<h3 id="generative-recommendation-path"><a class="header" href="#generative-recommendation-path">Generative recommendation path</a></h3>
+<p>For readers interested in LLMs, generative ranking, semantic IDs, and next-generation recommender systems:</p>
+<pre><code class="language-text">Part 5 → Part 6 → Part 7 → Part 8 → Part 9 → Part 10 → Part 11
+</code></pre>
+<p>You will start from the paradigm shift and work through the modeling, inference, and system deployment of generative recommendation step by step.</p>
+<hr />
+<h2 id="who-is-this-book-for"><a class="header" href="#who-is-this-book-for">Who Is This Book For?</a></h2>
+<ul>
+<li><strong>Recommendation algorithm learners</strong>: build a systematic grounding in the core models and technical roadmaps of recommender systems.</li>
+<li><strong>Machine learning engineers</strong>: understand the full engineering loop of a recommender system, from offline training to online serving.</li>
+<li><strong>Recommender system practitioners</strong>: catch up on new directions such as generative recommendation, semantic IDs, and end-to-end recommendation.</li>
+<li><strong>Interview candidates</strong>: build a clear mental map and vocabulary for recommender-system topics.</li>
+</ul>
+<hr />
+<h2 id="writing-conventions"><a class="header" href="#writing-conventions">Writing Conventions</a></h2>
+<ul>
+<li>Each chapter opens with badges for the <strong>chapter number, estimated reading time, and difficulty level</strong>.</li>
+<li>Math uses <code>$inline$</code> and <code>$$display$$</code> notation, rendered by <code>mdbook-katex</code>.</li>
+<li>Figures live in <code>images/</code>, and interactive visualizations live in <code>viz/</code>.</li>
+<li>Wherever possible, each chapter includes <strong>common mistakes, key takeaways, an FAQ, chapter connections, and tiered practice problems</strong>.</li>
+</ul>
+<hr />
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Issues and pull requests are welcome:</p>
+<ul>
+<li>Fix typos, formulas, figures, or broken links.</li>
+<li>Add recommender-system papers, industrial case studies, or engineering lessons.</li>
+<li>Improve chapter structure, example code, exercises, or visualizations.</li>
+<li>Propose new recommender-system topics you would like to see covered.</li>
+</ul>
+<p>When submitting, please keep:</p>
+<ul>
+<li><strong>Consistent terminology</strong>: follow <a href="GLOSSARY.html">GLOSSARY.md</a> first.</li>
+<li><strong>Consistent structure</strong>: mirror the organization of existing chapters.</li>
+<li><strong>Clear explanations</strong>: favor intuition, boundary conditions, and engineering trade-offs.</li>
+</ul>
+<hr />
+<h2 id="acknowledgments"><a class="header" href="#acknowledgments">Acknowledgments</a></h2>
+<p>This book is rewritten from the Datawhale open-source project <a href="https://github.com/datawhalechina/fun-rec">fun-rec</a>. Thanks to the original authors and community contributors for building open learning materials on recommender systems.</p>
+<p>Thanks also to the researchers and engineers in the recommender-system, information-retrieval, machine-learning, and LLM communities. Much of this book draws on public papers, industrial experience sharing, and open-source community discussions.</p>
+<hr />
+<div align="center">
+  <strong>If this book helps you, consider starring the repository, sharing it, or contributing.</strong>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="part1-introduction/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="part1-introduction/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="scripts/viz-expand.js"></script>
+        <script src="scripts/in-page-toc.js"></script>
+        <script src="scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

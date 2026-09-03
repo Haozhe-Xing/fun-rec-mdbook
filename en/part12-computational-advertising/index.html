@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Computational Advertising - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">💰 Part 12: Computational Advertising</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">The twin sibling of recommender systems — from the ad ecosystem, billing models, and auction mechanisms to online allocation, targeting, retrieval, data trading, and anti-fraud — a complete practitioner's knowledge base of traffic monetization.</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 11 sections · ⏱️ Estimated 9 hours · 🎯 Target: Build a panoramic understanding of computational advertising and master the full chain of auctions, smart bidding, calibration, targeting & retrieval, data compliance, and anti-fraud</p>
+</div>
+<p>Recommendation and advertising share the same technical foundation — retrieval, ranking, feature engineering, CTR estimation — but advertising layers something on top that recommendation lacks: an <strong>economic mechanism</strong>. Ad slots are scarce resources; every impression must be allocated among multiple advertisers, and the winner pays a fee. The design of the allocation and pricing rules directly determines "how bidding pays off" for each advertiser, and in turn the stability of the whole market and the platform's long-term revenue.</p>
+<p>This part follows the framework of Liu Peng's <em>Computational Advertising</em> course and extends it with recent industrial papers from KDD/SIGIR/RecSys, filling in the advertising picture for readers with a recommendation background: first a bird's-eye view of <strong>the evolution of ad delivery models and the programmatic ecosystem</strong> (12.1), then the thread that runs through every advertising system — <strong>billing models and core metrics</strong> (12.2), and then the centerpiece of this part — <strong>auction mechanisms</strong> (12.3): why first-price auctions destabilize the market, why the generalized second price became the industrial mainstream for two decades, and what it costs to make VCG's "truth-telling" work. The final two chapters turn to the engineering side: <strong>smart bidding and budget control</strong> (12.4) covers how platforms bid on behalf of advertisers, smooth out budget spending, and shade bids in first-price markets; <strong>bias and calibration</strong> (12.5) covers why ad prediction must be <em>absolutely accurate</em> rather than merely <em>correctly ranked</em>, and how position bias, sample selection bias, and industrial calibration pipelines are handled. Finally, <strong>open-loop and closed-loop advertising</strong> (12.6) closes the part from the angle of data observability: whether conversions happen inside the platform's observable domain decides how deep the platform can optimize — closed loops train deep pCVR models and support deep conversion bidding, while open loops are stuck with attribution and privacy. Next, <strong>online allocation and traffic management</strong> (12.7) supplies the algorithmic foundation of contract advertising — the supply/demand bipartite graph, the compact allocation plan that keeps only <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span>-level dual variables, and the HWM heuristic; this "constrained optimization + dual pricing" framework is also the theoretical origin of 12.4's budget bidding. Four more chapters complete the practitioner's panorama: <strong>audience targeting</strong> (12.8) covers the t(c)/t(u)/t(a,u) tag taxonomy and behavioral targeting models; <strong>ad retrieval and semantic recall</strong> (12.9) covers boolean indexing, WAND pruning, and the ANN recall funnel; <strong>data processing and trading</strong> (12.10) covers three-party data, DMP/CDP, and privacy compliance; and <strong>experiment framework and anti-fraud</strong> (12.11) closes the part with the two bottom lines — trustworthy measurement and real traffic.</p>
+<p><img src="../images/part12-ecosystem.svg" alt="The programmatic advertising ecosystem at a glance" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> A recommender system optimizes "the match between one user and one item"; an advertising system additionally optimizes "the game rules among multiple advertisers." <strong>Mechanism design is the biggest watershed between ads and recommendation</strong> — once you understand the GFP → GSP → VCG storyline, you can read 8.3's EGA with new eyes: why it embeds incentive-compatibility (IC) constraints directly into the generative process.</p>
+</blockquote>
+<hr />
+<h2 id="what-this-part-covers"><a class="header" href="#what-this-part-covers">What This Part Covers</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Section</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>12.1</strong></td><td>The Advertising Panorama and Ecosystem</td><td>From "advertiser ↔ publisher direct deals" to "DSP-ADX-SSP programmatic trading" — three leaps in delivery models, each integrating supply and demand and refining the granularity of bidding</td></tr>
+<tr><td><strong>12.2</strong></td><td>Billing Models and Core Metrics</td><td>The CPT→CPM→CPC→CPA spectrum is fundamentally a transfer of <strong>risk allocation</strong>; eCPM is the common yardstick — the platform sorts by it, advertisers game it</td></tr>
+<tr><td><strong>12.3</strong></td><td>Auction Mechanisms: From First-Price to Second-Price</td><td>First-price (GFP) has no stable equilibrium, second-price (GSP) became the industrial mainstream, VCG makes everyone honest but is hard to deploy — mechanism design is a trade-off between stability and incentive compatibility</td></tr>
+<tr><td><strong>12.4</strong></td><td>Smart Bidding and Budget Control</td><td>oCPC/oCPM platform-managed bidding, PID feedback control for budget pacing, and bid shading in first-price markets maximizing expected surplus — the four-layer bidding stack</td></tr>
+<tr><td><strong>12.5</strong></td><td>Bias and Calibration in Ad Systems</td><td>Position bias (PAL), sample selection bias (ESMM), winner's curse and delayed feedback; the Platt/isotonic calibration pipeline — absolute prediction accuracy is the foundation of ad systems</td></tr>
+<tr><td><strong>12.6</strong></td><td>Open-Loop and Closed-Loop Advertising</td><td>Whether conversion happens inside the platform's observable domain decides how deep it can optimize — closed loops train deep pCVR models, open loops are stuck with attribution and privacy</td></tr>
+<tr><td><strong>12.7</strong></td><td>Online Allocation and Traffic Management</td><td>Guaranteed-volume contracts written as constrained optimization on a bipartite graph: the compact allocation plan recovers <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span>-level allocation rates from <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span>-level dual variables, and HWM is the heuristic genuinely running in engineering</td></tr>
+<tr><td><strong>12.8</strong></td><td>Audience Targeting</td><td>Three classes of tags — t(c)/t(u)/t(a,u): contextual labeling, behavioral targeting with Poisson GLM and time decay, demographic prediction — topic models are history, embedding/LLM labeling is the present</td></tr>
+<tr><td><strong>12.9</strong></td><td>Ad Retrieval and Semantic Recall</td><td>From billions of candidates to millisecond auctions: boolean two-layer indexing + WAND pruning for Top-K, DSSM/two-tower semantic recall evolved into HNSW/IVF-PQ multi-source recall</td></tr>
+<tr><td><strong>12.10</strong></td><td>Data Processing and Trading</td><td>The processing pipeline and trading loop of first/second/third-party data; cookie mapping is dead — CDP + UID2 + clean rooms are the compliance-era answer</td></tr>
+<tr><td><strong>12.11</strong></td><td>Experiment Framework and Anti-Fraud</td><td>Layered experiments keep measurement trustworthy; anomaly detection + device fingerprinting + graph analysis keep traffic real — the two bottom lines of ad systems</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>Explain</strong> the essential differences between ads and recommendation: non-homogeneous matching, conversion as the endpoint, ROI orientation, and mechanism-design constraints</li>
+<li>🟢 <strong>Describe</strong> the responsibilities of DSP / ADX / SSP / DMP and the complete timeline of one RTB auction</li>
+<li>🟡 <strong>Distinguish</strong> risk allocation under each billing model: who makes the decision, who bears the effect uncertainty</li>
+<li>🟡 <strong>Derive</strong> the eCPM ranking logic and the GSP payment formula <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>🔴 <strong>Prove</strong> that truthful bidding is a dominant strategy in the single-slot second-price auction, and explain why multi-slot GSP loses strict incentive compatibility</li>
+<li>🔴 <strong>Compare</strong> GSP and VCG on revenue, equilibrium properties, and industrial feasibility, and understand why programmatic markets moved "back to first-price"</li>
+<li>🔴 <strong>Distinguish</strong> the open-loop/closed-loop criterion, and explain why closed loops support deep conversion bidding while open loops depend on postbacks and attribution models, and how ATT/SKAN collapse deterministic attribution</li>
+<li>🔴 <strong>Model</strong> the online allocation problem: write out the supply/demand constraints and the compact plan's recovery formula <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ia</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">))</span></span></span></span>, and explain HWM's priority-and-scale-down logic</li>
+<li>🔴 <strong>Design</strong> an audience targeting tag system: distinguish the use cases of t(c)/t(u)/t(a,u), score behavioral interests with a Poisson GLM + time decay, and articulate the reach/CTR trade-off</li>
+<li>🔴 <strong>Optimize</strong> the ad retrieval funnel: explain why boolean two-layer indexing and WAND pruning compress billions of candidates into milliseconds, and compare LSH vs. graph-based ANN</li>
+<li>🔴 <strong>Navigate</strong> data compliance boundaries: partition three-party data, explain why cookie mapping failed, and trace the DMP→CDP and clean-room evolution under GDPR/PIPL</li>
+<li>🔴 <strong>Fight</strong> ad fraud: recognize the motives and traces of click flooding/click injection, and defend the two bottom lines — trustworthy measurement and real traffic — with layered experiments and anomaly detection</li>
+<li>🏆 Verify "what happens if you misreport" with the interactive auction simulator, find the optimal bid with the bid-shading simulator, and compare five attribution models with the attribution simulator — then finish the tiered exercises in each section</li>
+</ul>
+<hr />
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Section</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>Advertising effectiveness model</td><td>12.1</td><td>Exposure→attention→comprehension→acceptance→retention→decision — a six-stage map of ad effect</td></tr>
+<tr><td>Programmatic ecosystem (DSP/ADX/SSP/DMP)</td><td>12.1</td><td>The infrastructure of modern ad delivery</td></tr>
+<tr><td>RTB (Real-Time Bidding)</td><td>12.1</td><td>Open bidding at per-impression granularity; Cookie Mapping is the prerequisite</td></tr>
+<tr><td>eCPM</td><td>12.2</td><td>The common yardstick that makes cross-billing-model ranking possible</td></tr>
+<tr><td>Guaranteed Delivery &amp; online allocation</td><td>12.7</td><td>The bipartite-graph optimization framework of contract advertising: compact allocation plan + HWM</td></tr>
+<tr><td>Compact Allocation Plan / SHALE</td><td>12.7</td><td>Stores only contract-level dual variables α and recovers allocation rates; solved by primal-dual iteration, supporting incremental contracts</td></tr>
+<tr><td>Position Auction</td><td>12.3</td><td>The unified model for multi-slot allocation and pricing</td></tr>
+<tr><td>Generalized Second Price (GSP)</td><td>12.3</td><td>The dominant pricing mechanism of search advertising for two decades</td></tr>
+<tr><td>VCG mechanism</td><td>12.3</td><td>The theoretically optimal truth-telling pricing, and the benchmark for industrial trade-offs</td></tr>
+<tr><td>Incentive Compatibility (IC) / Individual Rationality (IR)</td><td>12.3</td><td>The two properties of mechanism design, and the core constraints of EGA in 8.3</td></tr>
+<tr><td>Closed-loop / open-loop advertising</td><td>12.6</td><td>The binary of whether conversion happens inside the platform's observable domain, which caps optimization depth</td></tr>
+<tr><td>Targeting tag taxonomy t(c)/t(u)/t(a,u)</td><td>12.8</td><td>The classification framework of contextual / user / combined targeting tags</td></tr>
+<tr><td>Behavioral targeting Poisson model</td><td>12.8</td><td>Interest intensity h~Poisson(λt); time decay λ(d)=αλ(d−1)+w·x updates online</td></tr>
+<tr><td>Boolean retrieval &amp; WAND</td><td>12.9</td><td>Two-layer inverted index + upper-bound pruning — the industrial skeleton of Top-K ad retrieval</td></tr>
+<tr><td>Semantic recall / ANN</td><td>12.9</td><td>DSSM→two-tower→HNSW/IVF-PQ: from keyword matching to vector retrieval</td></tr>
+<tr><td>Three-party data &amp; DMP</td><td>12.10</td><td>First/second/third-party data partition; DMP processes audience segments for DSP bidding</td></tr>
+<tr><td>CDP &amp; clean room</td><td>12.10</td><td>Post-cookie first-party data infrastructure and "usable but invisible" compliant trading</td></tr>
+<tr><td>Layered experiments</td><td>12.11</td><td>Orthogonal layered traffic splitting lets many experiments run in parallel without contamination</td></tr>
+<tr><td>Click flooding / click injection</td><td>12.11</td><td>Two canonical attribution-fraud tactics and their detection signals</td></tr>
+<tr><td>Attribution</td><td>12.6</td><td>A rule for crediting a conversion to a channel — a convention, not an objective measurement</td></tr>
+<tr><td>SKAdNetwork (SKAN)</td><td>12.6</td><td>Apple's privacy-preserving attribution: aggregated, delayed, crowd-anonymized — the collapse of deterministic attribution</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have read <strong>1.1</strong> (What is a Recommender System) — this part repeatedly uses recommendation as the reference frame</li>
+<li>Basic probability and expected-value computation (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord">⋅</span><span class="mclose">]</span></span></span></span>); 12.3 contains light game-theoretic derivation but requires no prior game theory</li>
+<li>The IC/IR material in <strong>12.3</strong> and <strong>8.3</strong> (end-to-end generative advertising) are mirror images of each other — reading either first deepens the other</li>
+</ul>
+<blockquote>
+<p>This part is a <strong>special topic</strong> that does not depend on any chapter of the generative track; but the mechanism-design perspective of 12.3 will in turn illuminate why EGA in 8.3 decouples "allocation" from "payment."</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>Read 12.2 asking "who bears the risk."</strong> Every billing model can be summarized in one sentence: who holds the decision right, and who absorbs the effect uncertainty. This thread beats memorizing formulas.</li>
+<li><strong>Compute by hand in 12.3 — don't just read.</strong> The GSP formula <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> looks simple, but the position-CTR conversion trips people up constantly. Work through the three-slot numerical example in 12.3.3 by hand first, then play with the interactive simulator.</li>
+<li><strong>Treat mechanisms as institutions, not formulas.</strong> The difference between first- and second-price lies not in algebra but in the advertiser behavior they incentivize: oscillating bidding wars vs. stable equilibria. After 12.3 you should be able to explain why Overture's 1998 market was chaotic — and what Google changed in 2002.</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/deployment.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part12-computational-advertising/advertising-panorama.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/deployment.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part12-computational-advertising/advertising-panorama.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

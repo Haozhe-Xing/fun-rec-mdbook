@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Wide &amp; Deep - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~30 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="wide--deep"><a class="header" href="#wide--deep">Wide &amp; Deep</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 请先读完 <a href="../part1-introduction/feature-embedding-basics.html">1.3 特征与 Embedding 入门</a>，理解 Sparse / Dense 特征与查表向量；同时建议读完 <strong>Part 2</strong> 的召回章节，明确“候选已就绪、排序要精准打分”的工程位置。</p>
+</blockquote>
+<p>当你在 App 里搜索一件商品，系统给你推荐了它——这背后是排序模型在毫秒之间对成百上千个候选算出的分数。但在 2016 年之前，工业排序模型面临一个尴尬的取舍： <strong>要么记住历史规律，要么学会归纳推广，很难两者兼得</strong>。</p>
+<p>Wide &amp; Deep 模型（Google, 2016）给出了一个朴素却影响深远的答案：既然两种能力都需要，那就设计两个部分，让它们 <strong>联合训练</strong> ，各司其职。它至今仍是无数推荐业务的基线模型，也是后续所有精排深度模型的起点。读完本章，你不仅能讲清它的结构，更能理解"为什么要这样分"。</p>
+<p>读完本章，你将能够：</p>
+<ul>
+<li>用 <strong>一句话</strong> 区分 <strong>记忆（Memorization）</strong> 与 <strong>泛化（Generalization）</strong> ，并各举一个推荐场景的例子</li>
+<li>写出 <strong>Wide 部分</strong> 的线性公式，并说明 <strong>交叉特征（Cross-product Features）</strong> 如何体现记忆</li>
+<li>解释 <strong>Deep 部分</strong> 如何通过 Embedding + DNN 实现泛化，以及与 Wide 的本质差异</li>
+<li>复述 <strong>Wide &amp; Deep 联合训练</strong> 的预测公式，并说明 Wide/Deep 为何常用不同优化器</li>
+<li>完成 4 道分层练习题，巩固"记忆 + 泛化"的设计思想</li>
+</ul>
+<hr />
+<h2 id="310-一对看似矛盾的目标记忆与泛化"><a class="header" href="#310-一对看似矛盾的目标记忆与泛化">3.1.0 一对看似矛盾的目标：记忆与泛化</a></h2>
+<p>构建推荐模型时，我们常常同时追求两个目标： <strong>记忆</strong> 与 <strong>泛化</strong>。</p>
+<ul>
+<li><strong>记忆能力</strong> 指模型学习并记住历史数据中频繁共同出现的特征组合。例如"买了 A 的用户通常也会买 B"。它能精准捕捉显性、高频的关联，给用户高度相关的推荐——但一旦遇到没见过的组合就无能为力。</li>
+<li><strong>泛化能力</strong> 指模型学到特征间的深层关系，能处理训练时罕见的组合。例如"物品 A 和物品 C 同类，喜欢 A 的用户也可能喜欢 C"，即使从未见过该用户与 C 的交互，也能合理推荐。</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 记忆让推荐"准"，泛化让推荐"广"。单用记忆会陷入信息茧房、无法应对新物品；单用泛化会丢失那些高价值的历史强规则。Wide &amp; Deep 的精髓，就是<strong>用一个模型同时拥有两种能力</strong>。</p>
+</blockquote>
+<p><img src="../images/part3-memorization-generalization.svg" alt="记忆与泛化的两种能力对比" /></p>
+<p>左侧记忆路径捕捉"买 A 的人也买 B"这种高频强规则；右侧泛化路径把物品映射到向量空间，让模型能推荐未见过的相似物品（如《三体》附近的新书）。</p>
+<h3 id="-mental-model-老员工-vs-新人"><a class="header" href="#-mental-model-老员工-vs-新人">🧠 Mental Model: 老员工 vs 新人</a></h3>
+<blockquote>
+<p>把 <strong>Wide（记忆）</strong> 想成一位在公司干了二十年的老员工：他记得每一条历史"规矩"（交叉特征），谁和谁总一起出现，门儿清。把 <strong>Deep（泛化）</strong> 想成一位受过系统训练的新人：他没背过所有规矩，但懂得举一反三，遇到没见过的组合也能推理。一个好团队，两者都要。</p>
+</blockquote>
+<hr />
+<h2 id="311-记忆的捷径wide-部分"><a class="header" href="#311-记忆的捷径wide-部分">3.1.1 记忆的捷径：Wide 部分</a></h2>
+<p>Wide 部分本质是一个 <strong>广义线性模型</strong> （如逻辑回归）。它结构简单、可解释性强，擅长"记忆"那些显而易见的关联规则。其数学形式如下：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9747em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> 是预测值，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span></span></span></span> 是权重，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span></span> 是特征向量，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 是偏置。</p>
+<p>Wide 部分的关键在于输入特征 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span></span> 不仅含原始特征，更包含大量 <strong>人工设计的交叉特征（Cross-product Features）</strong>。交叉特征把多个独立特征组合成新特征，用来捕捉特定共现模式。例如在应用商店推荐中，我们可以构造：</p>
+<pre><code>AND(installed_app=photo_editor, impression_app=filter_pack)
+</code></pre>
+<p>它代表"用户已装照片编辑器、且当前看到滤镜包推荐"。通过这种交叉特征，Wide 部分能直接、快速地学到"照片编辑器用户对滤镜包有更高安装意愿"这类强关联——这正是记忆能力的直接体现。</p>
+<p><img src="../images/part3-wide-cross-feature.svg" alt="Wide 部分：交叉特征如何记忆共现模式" /></p>
+<p>左侧原始特征（已装 App、曝光 App）经交叉函数组合成一个新特征，再查一个独立的权重表，直接"记住"这对组合的共现强度。</p>
+<div class="table-wrapper"><table><thead><tr><th>组件</th><th>作用</th><th>类比</th></tr></thead><tbody>
+<tr><td>原始特征 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span></span></td><td>用户/物品基础属性</td><td>员工档案</td></tr>
+<tr><td>交叉特征 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)</span></span></span></span></td><td>人工组合的共现模式</td><td>老员工脑中的"规矩"</td></tr>
+<tr><td>权重 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td>每个组合的强/弱记忆</td><td>规矩的信任程度</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> Wide 部分"记忆"的本质，是<strong>为每个特征组合分配一个独立权重，通过查表直接记住历史共现</strong>。代价是这些特征需要专家手工设计，且无法泛化到未出现过的组合。</p>
+</blockquote>
+<hr />
+<h2 id="312-学习复杂关系deep-部分"><a class="header" href="#312-学习复杂关系deep-部分">3.1.2 学习复杂关系：Deep 部分</a></h2>
+<p>Deep 部分是一个 <strong>标准前馈神经网络（DNN）</strong> ，负责模型的"泛化能力"。与 Wide 依赖人工特征工程不同，Deep 部分能 <strong>自动</strong> 学习特征之间的高阶、非线性关系。</p>
+<p>它的工作流程分两步。首先，对高维稀疏的类别特征（用户 ID、物品 ID）通过 <strong>Embedding 层</strong> 映射为低维稠密向量——这些向量能捕捉潜在语义。例如《流浪地球》和《三体》的 ID 在嵌入空间中会比《流浪地球》和《熊出没》更近。随后，嵌入向量与其他数值特征拼接，送入多层网络前向传播：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.938em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span> 是第 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span></span> 层激活值，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span> 是权重与偏置，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 是激活函数（如 ReLU）。逐层抽象让 DNN 能发掘隐藏的复杂模式，对未见过特征组合做出合理预测。</p>
+<p><img src="../images/part3-wide-deep-deep.svg" alt="Deep 部分：Embedding + DNN 实现泛化" /></p>
+<p>稀疏类别特征先经 Embedding 变为稠密向量（相似物品在向量空间靠近），再拼接数值特征送入多层 DNN，自动学到高阶非线性关系。</p>
+<blockquote>
+<p><strong>Analysis:</strong> Deep 部分擅长泛化、自动学习特征交互，但<strong>可解释性弱</strong>——它学到的高阶组合难以直观解读；且对极高频率的强规则，可能不如 Wide 的显式交叉记得"牢"。复杂度主要来自深层 MLP，参数量随层宽层数增长；Embedding 查找开销小。</p>
+</blockquote>
+<hr />
+<h2 id="313-两者结合联合训练"><a class="header" href="#313-两者结合联合训练">3.1.3 两者结合：联合训练</a></h2>
+<p>Wide &amp; Deep 把两部分 <strong>联合训练（Joint Training）</strong> ，输出结合进行最终预测：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1∣</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1413em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.3211em;vertical-align:-0.3831em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">ee</span><span class="mord mathnormal mtight">p</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3831em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span></span></p>
+<p>这里 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> 是 Sigmoid 函数，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)]</span></span></span></span> 是 Wide 的输入（原始 + 交叉特征），<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span> 是 Deep 最后一层的输出向量。反向传播时，梯度 <strong>同时更新</strong> Wide 和 Deep 的全部参数——这是"联合训练"，区别于分别训练再集成。</p>
+<p>一个值得注意的工程细节：由于两部分处理的参数性质不同，通常 <strong>用不同优化器</strong>。</p>
+<ul>
+<li><strong>Wide 部分</strong> 输入稀疏，常用带 L1 正则的 <strong>FTRL</strong> 优化器。L1 产生稀疏权重，相当于自动特征选择，只"记住"重要规则。</li>
+<li><strong>Deep 部分</strong> 参数稠密，更适合 <strong>AdaGrad / Adam</strong> 这类优化器。</li>
+</ul>
+<p><img src="../images/part3-wide-deep.svg" alt="Wide &amp; Deep 联合训练的整体结构" /></p>
+<p>Wide（线性 + 交叉特征）与 Deep（Embedding + DNN）共享输入，各自产出 logit，相加后经 Sigmoid 输出最终点击概率。两部分在训练时联合优化。</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> Wide &amp; Deep 的意义不止于一个新结构，更在于给出了一个<strong>范式</strong>——如何把"记忆"和"泛化"组合进同一个端到端模型。它成为众多精排模型的基线，也为后续章节（用 FM 替代手工交叉、用注意力替代固定用户向量）埋下伏笔。</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-31"><a class="header" href="#-common-mistakes-in-31">⚠️ Common Mistakes in 3.1</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>把 Wide 当成"另一个小 DNN"</td><td>"Wide 和 Deep 都是神经网络，只是深浅不同"</td><td>Wide 是 <strong>线性 + 交叉特征</strong> ，靠查表记忆，不是非线性网络</td><td>记住：Wide=记忆（显式规则），Deep=泛化（隐式学习）</td></tr>
+<tr><td>2</td><td>认为交叉特征能自动发现</td><td>"把原始特征丢进去就行"</td><td>交叉特征需 <strong>专家手工设计</strong> ，Wide 不会自动组合</td><td>理解 Wide 的局限，这正是后续 FM/DeepFM 要解决的</td></tr>
+<tr><td>3</td><td>混淆联合训练与集成</td><td>"先训 Wide 再训 Deep，最后平均"</td><td>联合训练是 <strong>同一损失、同时更新</strong> 所有参数</td><td>区分 Joint Training（端到端）与 Ensemble（分别训练）</td></tr>
+<tr><td>4</td><td>忽略优化器差异</td><td>"两部分用同一个 Adam 就行"</td><td>Wide 稀疏适合 FTRL（L1 稀疏化），Deep 稠密适合 AdaGrad</td><td>按参数性质选优化器：稀疏→FTRL，稠密→AdaGrad/Adam</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>记忆 vs 泛化</td><td>Wide 记高频规则，Deep 学归纳推广</td><td>排序模型需两种能力兼得</td></tr>
+<tr><td>Wide 部分</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9247em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span>，靠交叉特征查表记忆</td><td>可解释、强关联精准，但需人工设计、不泛化</td></tr>
+<tr><td>Deep 部分</td><td>Embedding + DNN 自动学高阶非线性</td><td>泛化强、免手工，但可解释弱</td></tr>
+<tr><td>联合训练</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1244em;vertical-align:-0.2831em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.3072em;vertical-align:-0.4192em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">ee</span><span class="mord mathnormal mtight">p</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span></td><td>端到端同时优化两部分，奠定精排范式</td></tr>
+<tr><td>优化器分治</td><td>Wide→FTRL(L1)，Deep→AdaGrad/Adam</td><td>匹配稀疏/稠密参数性质</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: 既然 Deep 这么强，能不能只用 Deep 不要 Wide？</strong></p>
+<blockquote>
+<p>A: 纯 Deep 在高频强规则上往往"记不牢"——它把规则隐式编码进权重，不像 Wide 直接查表。对历史高频共现，显式记忆更稳定、更可解释。因此保留 Wide 仍有价值。</p>
+</blockquote>
+<p><strong>Q2: 交叉特征一定要人工设计吗？</strong></p>
+<blockquote>
+<p>A: Wide 部分的交叉特征是人工的，这正是它的短板。后续 3.2 节的 FM / DeepFM 正是为了<strong>自动</strong>学习特征交叉、摆脱人工特征工程而提出的。</p>
+</blockquote>
+<p><strong>Q3: 联合训练为什么比"先训 Wide、再训 Deep"好？</strong></p>
+<blockquote>
+<p>A: 联合训练用<strong>同一个损失</strong>同时更新两部分，Wide 和 Deep 在训练中互相校准；分别训练再集成（ensemble）是两个独立模型，无法端到端协同优化。</p>
+</blockquote>
+<h3 id="前后关联"><a class="header" href="#前后关联">前后关联</a></h3>
+<ul>
+<li><strong>3.2（特征交叉）</strong> 用 FM 自动替代 Wide 的手工交叉特征，演进到 DeepFM 共享 Embedding。</li>
+<li><strong>3.3（序列建模）</strong> 进一步突破"固定用户向量"，引入注意力动态激活历史。</li>
+<li><strong>3.4（多目标）</strong> 在 Wide&amp;Deep 的"双塔/共享底座"思想上扩展为多任务共享结构。</li>
+<li><strong>Part 2 召回</strong> 中 FM 的双塔用法，与本章 FM 用于交叉是同一技术的两条脉络。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 3.1.1 — 区分记忆与泛化</strong> 🟢 Easy</p>
+<p>判断下列推荐行为主要依赖"记忆"还是"泛化"，并说明理由：</p>
+<ul>
+<li>(a) 系统向"昨天刚买婴儿奶粉"的用户，再次推荐同品牌奶粉 —— 因为历史数据里"买过奶粉的人 7 天内复购同款"频率极高。</li>
+<li>(b) 系统向喜欢《三体》的用户，推荐了一本他从未见过、但与《三体》同属"硬科幻"标签的新书。</li>
+</ul>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 看该行为是"记住历史高频共现"（记忆）还是"归纳推广到未见组合"（泛化）。</p>
+<ul>
+<li><strong>(a) 记忆</strong> ：依赖"买奶粉→短期内复购同款"这种高频历史规则，是显式共现的直接套用，正是 Wide 部分做的事。</li>
+<li><strong>(b) 泛化</strong> ：用户从未见过这本新书，模型靠"硬科幻"语义相似（Embedding 空间邻近）做归纳推广，是 Deep 部分的能力。</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>记忆 = 高频共现的直接复用；泛化 = 未见组合的归纳推理。</li>
+<li>两者互补，Wide &amp; Deep 同时拥有。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 3.1.2 — 补全交叉特征</strong> 🟢 Easy</p>
+<p>某外卖 App 想用 Wide 部分记忆一类强规则："在工作日中午（12:00–14:00）浏览过快餐的用户，更可能点击下午茶优惠券"。请用 <code>AND(...)</code> 形式写出对应的交叉特征。</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 交叉特征把多个独立特征组合成一个新布尔特征，捕捉共现。</p>
+<pre><code>AND(time_slot=weekday_lunch, browse_cate=fast_food, impression=afternoon_tea_coupon)
+</code></pre>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>交叉特征是 <strong>人工设计</strong> 的，需专家定义哪些组合有意义。</li>
+<li>这正是 Wide 部分的短板，也是后续 FM 想自动化的对象。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 3.1.3 — 联合训练公式</strong> 🟡 Medium</p>
+<p>Wide &amp; Deep 的最终预测为 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1∣</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1244em;vertical-align:-0.2831em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.3072em;vertical-align:-0.4192em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.02778em;">w</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">ee</span><span class="mord mathnormal mtight">p</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span>。请回答：</p>
+<ol>
+<li>公式中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)]</span></span></span></span> 与 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span> 分别来自哪一部分？</li>
+<li>为什么 Wide 和 Deep 通常用不同优化器？各举一个。</li>
+</ol>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 对照 3.1.3 的联合训练公式与优化器分工。</p>
+<ol>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)]</span></span></span></span> 是 <strong>Wide 部分</strong> 的输入（原始特征 + 交叉特征）；<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span> 是 <strong>Deep 部分</strong> 最后一层隐藏层的输出向量。</li>
+<li>两部分参数性质不同：Wide 输入 <strong>稀疏</strong> （大量 0/1 交叉特征），用 <strong>FTRL</strong> （L1 正则产生稀疏权重，自动特征选择）更合适；Deep 参数 <strong>稠密</strong> ，用 <strong>AdaGrad / Adam</strong> 收敛更稳。</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>联合训练 = 同一损失、同时更新两部分参数。</li>
+<li>优化器按"稀疏 vs 稠密"分治，是工程经验而非理论强制。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 3.1.4 — 新组合下的记忆失效</strong> 🔴 Hard</p>
+<p>Wide&amp;Deep 输出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1244em;vertical-align:-0.2831em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">ϕ</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.3072em;vertical-align:-0.4192em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4169em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">ee</span><span class="mord mathnormal mtight">p</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span>。假设线上出现一个 <strong>全新特征组合</strong> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span>（两个高基数 ID 的交叉），训练集中从未出现。请分析：(1) Wide 部分对此组合贡献什么；(2) Deep 部分能否给出非零泛化；(3) 若要提升该组合的预估质量，改 Wide 还是 Deep 更划算？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 分别看两部分对"未见过组合"的行为。</p>
+<ol>
+<li>Wide 的交叉特征 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span> 在训练中无共现，其查表权重 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6331em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>（或随机初始化未更新），故 Wide 对此组合 <strong>几乎没有记忆信号</strong> ，只剩一阶线性项。</li>
+<li>Deep 部分中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span></span></span></span> 的 Embedding 各自通过与其他特征共现学好，DNN 可借语义邻近给出 <strong>非零泛化</strong> 预估。</li>
+<li>该组合属"未见过"，应优先靠 <strong>Deep（泛化）</strong> 兜底；若它高频重要、值得显式记忆，再补 Wide 交叉特征。改 Wide 对新组合无效（查不到权重），故 Deep 更划算。</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>记忆失效 = 查表权重未学；泛化兜底 = Embedding 语义。</li>
+<li>印证"记忆+泛化互补"，也点出 Wide 手工交叉的冷启动短板。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: 设计取舍论证</strong></p>
+<p>假设你负责一个日活千万电商的精排，业务方要求"既要抓住历史高频爆款组合，又要给新上架长尾商品机会"。请用不超过 150 字，论证 Wide &amp; Deep 是否合适，并指出若只用其中一半会损失什么。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Wide 抓高频爆款（记忆），Deep 给长尾新物品泛化机会；只留 Wide 会困于信息茧房、冷启动差，只留 Deep 会"记不牢"强规则、可解释弱。论证围绕"两种能力缺一不可"展开。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part3-ranking/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part3-ranking/feature-crossing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part3-ranking/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part3-ranking/feature-crossing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

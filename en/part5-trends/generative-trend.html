@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Evolution of the Generative Paradigm - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">⏱️ ~32 min read</span>
+  <span style="background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Advanced</span>
+</div>
+<h1 id="evolution-of-the-generative-paradigm"><a class="header" href="#evolution-of-the-generative-paradigm">Evolution of the Generative Paradigm</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Make sure you have read the two paradigms and the four capability-evolution stages in <a href="./../part1-introduction/recommender-system-basics.html">1.1</a>, and the semantic/cold-start foundations in <a href="./cold-start.html">5.2</a>. This chapter is the "hands-on edition" of Part 1's two paradigms — turning abstract concepts into concrete models.</p>
+</blockquote>
+<p>In <a href="./../part1-introduction/recommender-system-basics.html">1.1</a> we planted a thread: recommendation can shift from "discriminative scoring" to "generative sequence generation", much like understanding and producing natural language as a special kind of "language". The earlier chapters of this part followed the discriminative three-stage pipeline through industrial practice; now it is time to return to that thread and see <strong>how the generative paradigm concretely evolves</strong>.</p>
+<p>At its core is a redesign of three elements: <strong>how the input is organized</strong> (from item-ID sequences to heterogeneous event streams), <strong>what the output generates</strong> (from atomic IDs to semantic representations), and <strong>how objectives and architecture trade off</strong> (expressiveness vs computational efficiency). Along these three questions, generative recommendation has taken three clear paths — <strong>generative retrieval, generative ranking, and end-to-end unified generation</strong>.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li><strong>Connect</strong> the capability leap of "memorization · generalization → understanding · reasoning" against Part 1's two paradigms</li>
+<li><strong>Explain</strong> how HSTU unifies heterogeneous information into event streams and how TIGER reshapes the output with semantic IDs</li>
+<li><strong>Distinguish</strong> generative ranking (GenRank / MTGR) from discriminative ranking in essence</li>
+<li><strong>Describe</strong> OneRec's four key innovations in end-to-end generation, especially iterative preference alignment (IPA)</li>
+<li>Work through 4 tiered practice problems to consolidate the mapping from paradigm to model</li>
+</ul>
+<hr />
+<h2 id="530-from-selecting-the-best-to-creating-a-paradigm-shift"><a class="header" href="#530-from-selecting-the-best-to-creating-a-paradigm-shift">5.3.0 From "Selecting the Best" to "Creating": A Paradigm Shift</a></h2>
+<p>Looking back at Part 1's two storylines: the discriminative approach asks "will the user like this candidate?" — <strong>selection</strong>; the generative approach asks "what does the user want to see next?" — <strong>creation</strong>. Generative retrieval (e.g. SASRec) has already validated that treating the user's behavior sequence as "language" and autoregressively predicting the next item is feasible.</p>
+<p>But the real change goes beyond "swapping in a generative objective" — it systematically reshapes the input, the output, and the architecture. The table below contrasts each path's focus:</p>
+<div class="table-wrapper"><table><thead><tr><th>Path</th><th>Element Reshaped</th><th>Representative Models</th></tr></thead><tbody>
+<tr><td>Generative retrieval</td><td>Unified input + semantic output</td><td>HSTU, TIGER</td></tr>
+<tr><td>Generative ranking</td><td>Autoregression brought into the ranking stage</td><td>GenRank, MTGR</td></tr>
+<tr><td>End-to-end unified generation</td><td>A single model replaces the full pipeline from retrieval to ranking</td><td>OneRec</td></tr>
+</tbody></table>
+</div>
+<p><img src="../images/part5-generative-evolution.svg" alt="The three evolutionary paths of generative recommendation: retrieval → ranking → end-to-end" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> These three paths do not replace one another; they are <strong>progressively cumulative</strong> — first prove generation works for retrieval, then push generative thinking into ranking, and finally let one model swallow the entire pipeline. Each step answers one of the questions "input / output / architecture".</p>
+</blockquote>
+<hr />
+<h2 id="531-deepening-generative-retrieval-redoing-the-input-and-the-output"><a class="header" href="#531-deepening-generative-retrieval-redoing-the-input-and-the-output">5.3.1 Deepening Generative Retrieval: Redoing the Input and the Output</a></h2>
+<p>Generative retrieval deepens beyond SASRec in two directions: <strong>HSTU</strong> deepens the understanding of the "input", while <strong>TIGER</strong> fundamentally reshapes the definition of the "output".</p>
+<h3 id="hstu-unifying-everything-into-event-streams"><a class="header" href="#hstu-unifying-everything-into-event-streams">HSTU: Unifying Everything into Event Streams</a></h3>
+<p><strong>HSTU</strong> is no longer content with plain item-ID sequences; it <strong>uniformly encodes all of a user's heterogeneous information — attributes, behavior types, timestamps — into one rich "event stream"</strong>. It learns the conditional distribution <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the user's comprehensive representation at the current moment and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span> is the next candidate item.</p>
+<p>Two technical innovations are especially key:</p>
+<ol>
+<li><strong>Unified feature handling</strong>: categorical features are flattened by timestamp into a unified sequence, e.g. <code>[(feature:age,value:30), (action:login), (action:view,item:A)]</code>; numerical features are modeled implicitly so the model infers them itself.</li>
+<li><strong>Point-wise aggregation</strong>: it abandons the traditional Transformer's softmax normalization in favor of point-wise aggregation <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">ϕ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1279em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord text"><span class="mord">rab</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8779em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">t</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span></span></span></span>. The motivation: in recommendation, the <strong>"intensity" of user interest is a key signal</strong>, but softmax forcibly normalizes all historical attention weights, distorting true preference intensity.</li>
+</ol>
+<p>By switching the prediction target and training head, HSTU can also operate as a ranking rather than retrieval task — a testament to the flexibility of generative architectures.</p>
+<h3 id="-mental-model-from-a-ledger-of-records-to-an-event-stream"><a class="header" href="#-mental-model-from-a-ledger-of-records-to-an-event-stream">🧠 Mental Model: From a "Ledger of Records" to an "Event Stream"</a></h3>
+<blockquote>
+<p>The discriminative approach treats user history as a "list of candidate items" to score one by one; HSTU treats it as a <strong>timestamped, action-typed, context-rich "diary of life"</strong>. Instead of splitting "viewed A", "logged in", and "age 30" apart, it strings them into a chain of events over time, so the model reads the full information of both "intensity" and "order" — like reading a friend's diary rather than only their receipts, you know them far better.</p>
+</blockquote>
+<h3 id="tiger-reshaping-the-output-with-semantic-ids"><a class="header" href="#tiger-reshaping-the-output-with-semantic-ids">TIGER: Reshaping the Output with "Semantic IDs"</a></h3>
+<p><strong>TIGER</strong> argues that predicting semantics-free <strong>atomic IDs</strong> is inefficient and hurts generalization, and instead generates structured <strong>"semantic IDs"</strong> to represent items. The pipeline has two stages:</p>
+<p><strong>Stage 1 — generating semantic IDs</strong>: use a Residual-Quantized Variational AutoEncoder (RQ-VAE). For an item's content feature vector <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span></span>, the encoder maps it to a latent representation <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.08944em;">E</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mclose">)</span></span></span></span>; then <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> quantization layers each find, at layer <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span>, the codeword in the codebook closest to the current residual <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.5021em;vertical-align:-0.7521em;"></span><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.3479em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∥</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7003em;vertical-align:-0.2559em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2559em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>The result is a semantic-ID tuple <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
+<p><strong>Stage 2 — sequence-to-sequence generation</strong>: the user's historical interactions are converted into the corresponding semantic-ID sequence, and an Encoder-Decoder Transformer is trained to <strong>autoregressively generate</strong> the next item's semantic ID. The advantages:</p>
+<ul>
+<li><strong>Semantic sharing</strong>: items with similar content have similar semantic IDs, enabling knowledge sharing;</li>
+<li><strong>Cold-start advantage</strong>: semantic IDs can be generated for brand-new items and recommended directly (echoing content cold start in <a href="./cold-start.html">5.2</a>);</li>
+<li><strong>Structured representation</strong>: multi-layer codewords represent large item corpora efficiently.</li>
+</ul>
+<p>The costs: it may generate <strong>invalid IDs</strong>, and inference is expensive — a trade-off between expressiveness and computational efficiency.</p>
+<blockquote>
+<p><strong>Analysis:</strong> HSTU and TIGER tackle the "input" and the "output" respectively, matching Part 1's capability evolution from <strong>"generalization" (deeply understanding heterogeneous signals) to "understanding" (items encoded as semantics-carrying tokens)</strong>. TIGER's semantic IDs are a natural antidote to cold start — new items are understood without any accumulated behavior. Yet both remain "retrieval-layer" generation and have not yet shaken ranking and re-ranking.</p>
+</blockquote>
+<hr />
+<h2 id="532-generative-ranking-pushing-autoregression-into-the-ranking-stage"><a class="header" href="#532-generative-ranking-pushing-autoregression-into-the-ranking-stage">5.3.2 Generative Ranking: Pushing Autoregression into the Ranking Stage</a></h2>
+<p>Generative ranking brings autoregressive thinking into the traditional ranking stage, along two main technical routes.</p>
+<h3 id="genrank-action-oriented-sequence-organization"><a class="header" href="#genrank-action-oriented-sequence-organization">GenRank: Action-Oriented Sequence Organization</a></h3>
+<p><strong>GenRank</strong> adopts an "action-oriented" design, redefining ranking as predicting the user's <strong>action probability</strong> for a given candidate, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord text"><span class="mord">history</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>. The core insight: predicting <strong>behavioral actions</strong> (click, like) is computationally cheaper than predicting the next item ID — the action space is far smaller than the item space.</p>
+<p>Architecturally, GenRank treats items as known positional context and focuses on predicting the action at each position; the input is the sum of five embeddings (item, action — candidates use a special <code>[MASK]</code> embedding, position, request index, time). It replaces learnable relative attention bias with <strong>ALiBi (attention with linear biases)</strong> — a parameter-free static penalty that cuts attention computation cost by roughly <strong>75%</strong> and speeds up training by <strong>94.8%</strong>.</p>
+<h3 id="mtgr-per-user-sample-aggregation"><a class="header" href="#mtgr-per-user-sample-aggregation">MTGR: Per-User Sample Aggregation</a></h3>
+<p><strong>MTGR</strong> tries to retain a traditional DLRM's rich features while gaining the scalability of a generative architecture. Its core innovation is <strong>per-user sample aggregation</strong>: all <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> candidates of a user are aggregated into a single sample <code>[user_features, [candidate_1_features, ..., candidate_K_features]]</code>, so user-related features are computed once and shared across all candidates.</p>
+<p>To process such heterogeneous sequences, MTGR introduces <strong>Group Layer Normalization (GLN)</strong> — normalizing tokens from different semantic spaces (user profile, item features) separately — and a <strong>dynamic masking strategy</strong> — static user features are visible to all tokens, dynamic user features follow causality, and candidate tokens cannot see each other to prevent information leakage.</p>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> Despite the "generative" label, MTGR is essentially a <strong>ranking model</strong> — its "generative" aspect is mainly architectural style (processing token sequences with a Transformer); the final goal remains discriminative scoring and ranking. Don't be misled by the name: it is discriminative dressed in generative clothing.</p>
+</blockquote>
+<h3 id="-mental-model-the-judge-reads-the-entries-differently"><a class="header" href="#-mental-model-the-judge-reads-the-entries-differently">🧠 Mental Model: The Judge Reads the Entries Differently</a></h3>
+<blockquote>
+<p>In discriminative ranking, the "judge" flips through each contestant's resume and scores it. GenRank/MTGR change the judge's <strong>way of reading</strong> — spreading all candidates side by side and scanning them at once with attention (the compute advantage of generative architectures). But the judge <strong>still ends up scoring and selecting</strong>, and has not become the friend who "writes out the list directly". That is the fundamental divide between generative ranking and end-to-end generation.</p>
+</blockquote>
+<hr />
+<h2 id="533-end-to-end-unified-generation-onerecs-highest-form"><a class="header" href="#533-end-to-end-unified-generation-onerecs-highest-form">5.3.3 End-to-End Unified Generation: OneRec's Highest Form</a></h2>
+<p><strong>OneRec</strong> represents the highest form of generative recommendation — <strong>end-to-end unified generation</strong>, where a single model runs the entire pipeline from retrieval to ranking. Its core innovation is <strong>session-level generation</strong>: instead of predicting a single next item, it directly generates an ordered recommendation list (typically 5–10 items), defined as a "session".</p>
+<p><img src="../images/part5-generative-paradigm.svg" alt="Discriminative cascade vs generative end-to-end architecture" /></p>
+<p>OneRec uses a standard Encoder-Decoder with three important extensions:</p>
+<ol>
+<li><strong>Semantic item representation</strong>: multi-level vector quantization turns each item into a sequence of semantic tokens, so the model understands content meaning rather than bare IDs.</li>
+<li><strong>Sparse Mixture-of-Experts (MoE)</strong>: MoE layers in the decoder's feed-forward networks activate a few expert subnetworks, significantly increasing capacity without a proportional increase in compute.</li>
+<li><strong>Iterative Preference Alignment (IPA)</strong>: the most innovative component, addressing the difficulty of obtaining explicit preference-comparison data in recommendation.</li>
+</ol>
+<p>The IPA mechanism: first train a reward model to predict session quality (watch time, likes, etc.); use the current OneRec to generate multiple candidate sessions for a sample (usually 128); score them with the reward model, taking the highest-scoring as the "chosen" response <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and the lowest-scoring as the "rejected" response <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>; finally update the model with a <strong>DPO (Direct Preference Optimization)</strong> loss.</p>
+<p>Deployed online, OneRec delivered a <strong>1.68% increase in total user watch time</strong>, proving the practical value of end-to-end unified generation. The cost is training complexity: the quantization model, the base generative model, and the reward model must be trained in sequence, followed by an iterative IPA-DPO loop — demanding on engineering.</p>
+<h3 id="-mental-model-from-screening-resumes-in-rounds-to-writing-the-list-in-one-go"><a class="header" href="#-mental-model-from-screening-resumes-in-rounds-to-writing-the-list-in-one-go">🧠 Mental Model: From "Screening Resumes in Rounds" to "Writing the List in One Go"</a></h3>
+<blockquote>
+<p>The discriminative cascade is like hiring via HR: a massive open call first (retrieval), then ranked interviews (ranking), then final headcount decisions (re-ranking) — three teams each owning one stage, with information lost in handoffs and objectives pulling apart. OneRec is like a <strong>manager who knows the business and holds the authority</strong>, writing out the complete hire list in one go (session-level generation) — done in a single stroke, with one unified objective. This is what Part 1 calls "end-to-end dissolving the three pains of the cascade".</p>
+</blockquote>
+<blockquote>
+<p><strong>Analysis:</strong> End-to-end generation gains <strong>unified optimization, no cascade information loss, and concentrated compute</strong>; its costs are steeply higher <strong>training complexity and inference overhead</strong>, plus the supporting cast of DPO/reward models. It is no free lunch — complexity moves from "multi-stage coordination" to "single-model training engineering". Echoing Part 1: the generative approach replaces the discriminative "selection" with "creation", pushing memorization · generalization all the way to <strong>understanding · reasoning</strong>.</p>
+</blockquote>
+<p>The interactive demo below visually contrasts the "discriminative cascade" with "generative end-to-end":</p>
+<iframe src="../viz/part5-generative.html?embed&vizId=part5-generative" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>Click "Next" or "Autoplay" to watch the three-stage cascade being replaced by a single generative model, and see how the paradigm shift maps to the "understanding · reasoning" stage of capability evolution.</p>
+<hr />
+<h2 id="-common-mistakes-in-53"><a class="header" href="#-common-mistakes-in-53">⚠️ Common Mistakes in 5.3</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Taking MTGR as truly generative</td><td>"MTGR generates recommendations end to end"</td><td>It still ends in discriminative scoring; only the architectural style is generative</td><td>Recognize the real objective: generative ranking ≠ end-to-end generation</td></tr>
+<tr><td>2</td><td>Assuming semantic IDs always beat atomic IDs</td><td>Replacing all retrieval with TIGER reflexively</td><td>Semantic IDs can generate invalid tokens and are pricier at inference</td><td>Weigh expressiveness vs efficiency; hybridize when needed</td></tr>
+<tr><td>3</td><td>Confusing HSTU's input and output innovations</td><td>"HSTU uses semantic IDs for its output"</td><td>HSTU works on input unification; semantic IDs belong to TIGER</td><td>Keep them straight: HSTU = input, TIGER = output</td></tr>
+<tr><td>4</td><td>Ignoring OneRec's engineering cost</td><td>Copying end-to-end without the DPO stack</td><td>Without a reward model/IPA, training cannot align preferences</td><td>End-to-end needs the full chain: quantization + generation + reward + DPO</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>HSTU</td><td>Heterogeneous information unified into event streams + point-wise aggregation preserving intensity</td><td>Generative retrieval's deepening of the "input"</td></tr>
+<tr><td>TIGER</td><td>RQ-VAE generates semantic IDs; autoregressive generation</td><td>A fundamental reshaping of the "output"; a natural cold-start fix</td></tr>
+<tr><td>GenRank / MTGR</td><td>Action-oriented / sample aggregation</td><td>Generative thinking enters ranking; MTGR stays discriminative</td></tr>
+<tr><td>OneRec</td><td>Session-level + MoE + IPA (DPO)</td><td>End-to-end unified generation swallowing the whole pipeline</td></tr>
+<tr><td>Paradigm shift</td><td>Discriminative selection → generative creation</td><td>Maps to capability evolution: understanding · reasoning</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: What separates generative retrieval (HSTU/TIGER) from end-to-end generation (OneRec)?</strong></p>
+<blockquote>
+<p>A: The former only replaces per-candidate scoring with candidate generation at the "retrieval" layer; the latter uses one model to directly generate the entire session list, swallowing the full pipeline from retrieval to ranking. The span goes from "point prediction" to "unified generation".</p>
+</blockquote>
+<p><strong>Q2: Why does TIGER ease cold start?</strong></p>
+<blockquote>
+<p>A: Semantic IDs are generated from content features (RQ-VAE), so new items obtain structured tokens without any accumulated behavior and can be generated into recommendations — exactly the "borrowing content" that content cold start in <a href="./cold-start.html">5.2</a> calls for.</p>
+</blockquote>
+<p><strong>Q3: Why does OneRec's IPA use DPO instead of direct supervision?</strong></p>
+<blockquote>
+<p>A: Recommendation rarely has "explicit preference-comparison data". IPA uses the reward model to pick the highest/lowest scorers among 128 candidates as "chosen/rejected" pairs, then aligns with DPO — bypassing the lack of annotations.</p>
+</blockquote>
+<h3 id="connections-to-later-chapters"><a class="header" href="#connections-to-later-chapters">Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>1.1 / 1.2</strong> (paradigms and the map): this chapter grounds those two threads at the model level: discriminative → generative, and memorization · generalization → understanding · reasoning.</li>
+<li><strong>5.2</strong> (cold start): TIGER's semantic IDs and CB2CF reach the same destination by different routes — both let new items be understood by borrowing content.</li>
+<li><strong>The follow-up volume (Ch6–Ch10)</strong> builds on this chapter's OneRec to cover Scaling Laws (HSTU architecture), reasoning recommenders (OneRec-Think), diffusion models, and more.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 5.3.1 — Classifying Generative Models</strong> 🟢 Easy</p>
+<p>Assign each model below to one of the three evolutionary paths (generative retrieval / generative ranking / end-to-end generation):</p>
+<ul>
+<li>(a) HSTU  (b) OneRec  (c) GenRank  (d) TIGER  (e) MTGR</li>
+</ul>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Match each path's focus element and representative models.</p>
+<ul>
+<li>(a) HSTU → <strong>generative retrieval</strong> (reshapes the input: event streams)</li>
+<li>(d) TIGER → <strong>generative retrieval</strong> (reshapes the output: semantic IDs)</li>
+<li>(c) GenRank → <strong>generative ranking</strong> (action-oriented)</li>
+<li>(e) MTGR → <strong>generative ranking</strong> (per-user sample aggregation, but discriminative at heart)</li>
+<li>(b) OneRec → <strong>end-to-end generation</strong> (a single model swallows the full pipeline)</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>HSTU/TIGER sit at the retrieval layer; GenRank/MTGR at the ranking layer; OneRec spans the full pipeline.</li>
+<li>Though called generative, MTGR's objective remains discriminative scoring.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 5.3.2 — Computing TIGER Semantic IDs</strong> 🟢 Easy</p>
+<p>Given an item content feature <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span></span>, the RQ-VAE encodes it to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span></span></span></span></span></span>, with the first-layer residual <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span></span></span></span></span></span>. In the codebook <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span>, the codeword closest to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> has index <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>, corresponding to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>. Write the selection formula for <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and the expression updating the residual <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Apply TIGER's quantization formulas directly.</p>
+<p>Codeword selection:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.5021em;vertical-align:-0.7521em;"></span><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.3479em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∥</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>So <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">ar<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">min</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∥</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>.</p>
+<p>Residual update:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6528em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7003em;vertical-align:-0.2559em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2559em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5944em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">e</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Each layer finds the nearest codeword in the codebook, then subtracts it from the residual.</li>
+<li>Iterating over layers yields the semantic-ID tuple <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mclose">)</span></span></span></span>.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 5.3.3 — Telling "True" From "Fake" Generative</strong> 🟡 Medium</p>
+<p>Someone claims: "MTGR processes token sequences with a Transformer, so it is end-to-end generative recommendation." Point out what is wrong, and explain the key difference between GenRank and OneRec regarding "truly generative or not".</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Judge generativeness by the "final objective", not the "architectural style".</p>
+<p><strong>The error:</strong> although MTGR uses Transformer/attention (generative architectural style), its <strong>final objective is still discriminative scoring for ranking</strong> — the candidates are known and scored one by one. It is merely "discriminative in generative clothing", not end-to-end generation.</p>
+<p><strong>GenRank vs OneRec:</strong> GenRank is still generative <strong>ranking</strong> — it autoregressively models action probabilities, but the candidate set is known, the outputs are actions/scores, and retrieval and re-ranking remain untouched. OneRec is the real <strong>end-to-end generation</strong> — a single model directly generates an ordered session list (5–10 items), replacing the entire pipeline from retrieval to ranking, with the objective shifting from "scoring" to "creating sequences".</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The criterion is "the objective: score-and-select or create sequences", not "whether a Transformer is used".</li>
+<li>Generative ranking ≠ end-to-end generation; the gap is an order of magnitude.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 5.3.4 — Designing OneRec's Alignment Pipeline</strong> 🔴 Hard</p>
+<p>You are to run preference alignment on OneRec. Write out the complete IPA steps (including the number of candidates and the definitions of chosen/rejected responses), explain why DPO rather than direct supervision, and identify the three prerequisite models the pipeline depends on.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Unfold the IPA mechanism step by step.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Train a <strong>reward model</strong> to predict session quality (watch time, likes, etc.).</li>
+<li>Use the current OneRec to generate <strong>128</strong> candidate sessions for a training sample.</li>
+<li>The reward model scores all candidates; the <strong>highest score</strong> becomes the "chosen" response <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, the <strong>lowest</strong> the "rejected" response <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</li>
+<li>Update OneRec's parameters with the <strong>DPO loss</strong>.</li>
+</ol>
+<p><strong>Why DPO rather than direct supervision:</strong> recommendation rarely has "explicit preference-comparison data" (users won't label "which of these two lists is better"). IPA uses the reward model to <strong>construct</strong> "chosen/rejected" pairs from the model's own generated candidates, bypassing the annotation shortage; DPO needs no separate critic and optimizes the policy directly on such comparison pairs — stable and efficient.</p>
+<p><strong>Three prerequisite models:</strong> (1) the <strong>semantic representation model</strong> with multi-level vector quantization (item → tokens); (2) OneRec's <strong>base generative model</strong>; (3) the <strong>reward model</strong>. All three must be in place before the IPA-DPO loop can run.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>IPA = self-generated candidates → reward scoring → chosen/rejected pairs → DPO.</li>
+<li>DPO removes the core obstacle of "no explicit preference annotations".</li>
+<li>End-to-end engineering is costly: the full chain of quantization + generation + reward + DPO.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Arguing a Paradigm Migration</strong></p>
+<p>Suppose your company runs a discriminative three-stage system (retrieval + ranking + re-ranking) whose metrics have hit a plateau. Write an argument of at most 200 words: which <strong>signals</strong> should prompt you to try "generative ranking (e.g. GenRank)" first rather than jumping straight to "end-to-end generation (OneRec)"? Also state the risks and benefits of this incremental path.</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Signals favoring generative ranking first: the ranking stage suffers severe compute fragmentation and high attention cost (GenRank's ALiBi cuts compute by 75%), while mature retrieval/re-ranking stages are best left untouched. The <strong>benefits</strong> of the incremental path: controlled risk, quick local wins, no wholesale rewrite; the <strong>risks</strong>: still constrained by cascade information loss and misaligned objectives — the root cause remains. Once ranking validates the generative value and engineering is ready with quantization + reward + DPO, move up to OneRec for end-to-end. This echoes Part 1's "three pains of the cascade" and the progressive logic of this chapter's three paths.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part5-trends/cold-start.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part6-gr-basic/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part5-trends/cold-start.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part6-gr-basic/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

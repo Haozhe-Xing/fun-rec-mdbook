@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Fast Candidate Retrieval - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h1 style="color: white; margin: 0 0 8px 0;" font-size: 1.7rem;>📗 Part 2: Fast Candidate Retrieval</h1>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">The first gate of the recommender pipeline — filtering a thousand candidates out of a billion-item corpus within milliseconds.</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 5 sections · ⏱️ Estimated 2 weeks · 🎯 Target: master the family of retrieval algorithms, from statistical co-occurrence to vector search</p>
+</div>
+<p>Retrieval is the starting point of the "retrieval — ranking — re-ranking" three-stage funnel. It must quickly narrow a universe of hundreds of millions of items down to a few thousand candidates within millisecond-level latency — following the principle of "rather over-include than miss", its goal is <strong>coverage</strong>, not precision. Even a mediocre retriever can be tolerated, but if it misses the truly relevant items, the downstream ranking and re-ranking stages can do nothing to recover them.</p>
+<p>This part unfolds along the technical evolution in five chapters: starting from the classic <strong>collaborative filtering</strong>, moving to <strong>vector retrieval (I2I)</strong>, which ports sequence modeling ideas into recommendation, then the <strong>two-tower model (U2I)</strong>, which uses deep networks for efficient retrieval, followed by the <strong>sequential/temporal information</strong> ignored by the previous methods (sequential retrieval), and finally stepping outside the "compress inside the model" paradigm to preserve full historical interests with a <strong>streaming index</strong>. Together they form the methodological map of the industrial retrieval layer.</p>
+<hr />
+<h2 id="what-this-part-covers"><a class="header" href="#what-this-part-covers">What This Part Covers</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Section</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>2.1</strong></td><td>Collaborative Filtering</td><td>Co-occurrence statistics over user–item interactions: from ItemCF item similarity, through Swing's industrial optimization and UserCF's user perspective, to matrix factorization opening the door to vectorization</td></tr>
+<tr><td><strong>2.2</strong></td><td>Vector Retrieval (I2I)</td><td>Porting Word2Vec sequence modeling to recommendation: from Item2Vec's direct transfer, to EGES fusing attributes, to Airbnb baking business objectives into the objective</td></tr>
+<tr><td><strong>2.3</strong></td><td>Two-Tower Model (U2I)</td><td>Users and items encoded separately as vectors, represented by FM, DSSM, and YouTubeDNN, enabling efficient vector search</td></tr>
+<tr><td><strong>2.4</strong></td><td>Sequential Retrieval</td><td>Focusing on temporal information: MIND represents diverse interests with multiple vectors, SDM separates long- and short-term preferences and fuses them dynamically with gating</td></tr>
+<tr><td><strong>2.5</strong></td><td>Streaming Index Retrieval</td><td>Stepping outside compression inside the model: Trinity preserves full interests with cluster statistics, Streaming VQ keeps the index adapting in real time</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>Distinguish</strong> neighborhood-based collaborative filtering (ItemCF / UserCF) from model-based matrix factorization, and articulate their respective strengths against sparsity</li>
+<li>🟢 <strong>Explain</strong> how Swing exploits bipartite-graph structure to filter noise, and how EGES uses item-specific attention to solve cold start</li>
+<li>🟡 <strong>Derive</strong> the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">kn</span><span class="mclose">)</span></span></span></span> simplification of FM's second-order interaction term, and show how it can be reorganized into a two-tower inner product</li>
+<li>🟡 <strong>Contrast</strong> the fundamental difference between two-tower models and sequential retrieval (MIND / SDM) in terms of "user representation": single vector vs. multiple vectors / long-short fusion</li>
+<li>🔴 <strong>Analyze</strong> how Trinity and Streaming VQ use cluster statistics and streaming indexes to solve "interest amnesia" and "index staleness"</li>
+<li>🔴 Complete 25+ graded practice problems across the 5 chapters, consolidating the full path from co-occurrence to vector search</li>
+</ul>
+<hr />
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Section</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>Item/user similarity, co-occurrence matrix</td><td>2.1</td><td>The cornerstone of collaborative filtering and a key industrial retrieval channel</td></tr>
+<tr><td>Swing score, Surprise</td><td>2.1</td><td>Similarity optimizations aimed at industrial robustness and complementary items</td></tr>
+<tr><td>Latent vectors, low-rank assumption</td><td>2.1</td><td>The turning point from statistics to representation learning</td></tr>
+<tr><td>Skip-Gram, sequence modeling</td><td>2.2</td><td>Applying the "sentence = behavior sequence" idea to I2I retrieval</td></tr>
+<tr><td>Item-specific attention (EGES)</td><td>2.2</td><td>The key mechanism for solving cold start with attributes</td></tr>
+<tr><td>Two towers, inner-product retrieval, ANN</td><td>2.3</td><td>The engineering backbone of efficient U2I retrieval</td></tr>
+<tr><td>Multi-interest capsules (MIND), gated fusion (SDM)</td><td>2.4</td><td>Sequential retrieval that captures diverse interests and recency</td></tr>
+<tr><td>Cluster histograms, VQ index, EMA</td><td>2.5</td><td>The statistical and real-time-update foundations of streaming index retrieval</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have finished <strong>Part 1</strong> (especially the three-stage funnel in <a href="./../part1-introduction/recommender-system-basics.html">1.1</a> and the technology map in <a href="./../part1-introduction/book-overview.html">1.2</a>)</li>
+<li>Basic linear algebra (vector inner products, matrices), probability (softmax, cosine similarity), and general neural network knowledge</li>
+<li>Familiarity with Python and the basic concept of embeddings</li>
+</ul>
+<blockquote>
+<p>Retrieval-layer methods are relatively lightweight and coverage-oriented, with mostly controllable complexity; but the vectorization approaches (matrix factorization, two-tower, sequential) require you to be comfortable with embeddings and gradient descent.</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>Understand the motivation before the formulas.</strong> Each method exists to fix a limitation of its predecessor — ItemCF is dominated by popular items, hence Swing; co-occurrence is sparse, hence matrix factorization.</li>
+<li><strong>Follow the main thread of "how users/items are represented".</strong> From CF's ID co-occurrence, to MF's latent vectors, to the two-tower's independent encoders, to sequential retrieval's multiple vectors, the representations grow ever more refined.</li>
+<li><strong>Mind retrieval efficiency.</strong> Methods that can precompute item vectors offline (two-tower, I2I) are usually the easiest to scale.</li>
+<li><strong>Practice with the visualizations.</strong> Every chapter's interactive HTML and SVG pieces are worth clicking through yourself, grounding abstract formulas in the intuition of "how the candidate pool shrinks".</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/feature-embedding-basics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part2-retrieval/collaborative-filtering.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/feature-embedding-basics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part2-retrieval/collaborative-filtering.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

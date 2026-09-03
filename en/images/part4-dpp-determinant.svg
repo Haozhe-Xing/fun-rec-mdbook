@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="40" y="40" font-size="15" font-weight="700" fill="#1e293b">Determinant = Volume Spanned by Column Vectors: Larger = More Orthogonal, More Diverse</text>
+
+  <!-- Left: collinear -->
+  <rect x="40" y="70" width="350" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
+  <text x="215" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#ef4444">Collinear · Low Diversity (det = 0)</text>
+  <!-- axes -->
+  <line x1="90" y1="320" x2="90" y2="120" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="90" y1="320" x2="330" y2="320" stroke="#64748b" stroke-width="1.5"/>
+  <!-- two collinear vectors -->
+  <line x1="90" y1="320" x2="250" y2="180" stroke="#f97316" stroke-width="4" marker-end="url(#ah)"/>
+  <line x1="90" y1="320" x2="290" y2="150" stroke="#ea580c" stroke-width="4" marker-end="url(#ah)"/>
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#ea580c"/></marker>
+  </defs>
+  <text x="215" y="345" text-anchor="middle" font-size="12" fill="#64748b">S = [[1, 0.9],[0.9, 1]] → |S| = 0.19</text>
+
+  <!-- Right: orthogonal -->
+  <rect x="410" y="70" width="350" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
+  <text x="585" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">Orthogonal · High Diversity (large det)</text>
+  <line x1="460" y1="320" x2="460" y2="120" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="460" y1="320" x2="700" y2="320" stroke="#64748b" stroke-width="1.5"/>
+  <!-- parallelogram area -->
+  <polygon points="460,320 640,320 640,170 460,170" fill="#10b981" fill-opacity="0.18" stroke="#10b981" stroke-width="1.5"/>
+  <line x1="460" y1="320" x2="640" y2="170" stroke="#f97316" stroke-width="4" marker-end="url(#bh)"/>
+  <line x1="460" y1="320" x2="640" y2="320" stroke="#4A6CF7" stroke-width="4" marker-end="url(#bh)"/>
+  <defs>
+    <marker id="bh" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4A6CF7"/></marker>
+  </defs>
+  <text x="585" y="345" text-anchor="middle" font-size="12" fill="#64748b">S = [[1, 0.1],[0.1, 1]] → |S| = 0.81</text>
+
+  <!-- bottom takeaway -->
+  <rect x="40" y="362" width="720" height="0" />
+  <text x="400" y="372" text-anchor="middle" font-size="11" fill="#64748b">Geometric intuition: vectors collapsing onto one line (high similarity) span less volume - smaller det - lower diversity.</text>
+</svg>

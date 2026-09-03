@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s6" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="a6" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">The Feature Interaction Family: Evolution Paths Built on FM</text>
+
+  <!-- FM base -->
+  <rect x="300" y="60" width="200" height="56" rx="8" fill="#4A6CF7" filter="url(#s6)"/>
+  <text x="400" y="84" text-anchor="middle" font-size="15" fill="#ffffff" font-weight="700">FM</text>
+  <text x="400" y="104" text-anchor="middle" font-size="10.5" fill="#ffffff">All crosses equal (dot product)</text>
+
+  <!-- four branches -->
+  <g font-size="12.5">
+    <rect x="40" y="170" width="160" height="74" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s6)"/>
+    <text x="120" y="196" text-anchor="middle" fill="#1e293b" font-weight="700">AFM</text>
+    <text x="120" y="216" text-anchor="middle" fill="#64748b" font-size="11">Attention weighting</text>
+    <text x="120" y="234" text-anchor="middle" fill="#64748b" font-size="11">Ranks cross importance</text>
+
+    <rect x="240" y="170" width="160" height="74" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s6)"/>
+    <text x="320" y="196" text-anchor="middle" fill="#1e293b" font-weight="700">NFM</text>
+    <text x="320" y="216" text-anchor="middle" fill="#64748b" font-size="11">Feeds crosses to DNN</text>
+    <text x="320" y="234" text-anchor="middle" fill="#64748b" font-size="11">Learns higher orders</text>
+
+    <rect x="440" y="170" width="160" height="74" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s6)"/>
+    <text x="520" y="196" text-anchor="middle" fill="#1e293b" font-weight="700">PNN</text>
+    <text x="520" y="216" text-anchor="middle" fill="#64748b" font-size="11">Inner + outer product</text>
+    <text x="520" y="234" text-anchor="middle" fill="#64748b" font-size="11">Multiple product ops</text>
+
+    <rect x="640" y="170" width="160" height="74" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s6)"/>
+    <text x="720" y="196" text-anchor="middle" fill="#1e293b" font-weight="700">FiBiNET</text>
+    <text x="720" y="216" text-anchor="middle" fill="#64748b" font-size="11">SENET re-weighting</text>
+    <text x="720" y="234" text-anchor="middle" fill="#64748b" font-size="11">Bilinear interaction</text>
+  </g>
+
+  <line x1="360" y1="116" x2="200" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#a6)"/>
+  <line x1="390" y1="116" x2="320" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#a6)"/>
+  <line x1="410" y1="116" x2="520" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#a6)"/>
+  <line x1="440" y1="116" x2="720" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#a6)"/>
+
+  <rect x="120" y="300" width="560" height="70" rx="8" fill="#e8ecff"/>
+  <text x="400" y="328" text-anchor="middle" font-size="11.5" fill="#1e293b">Shared motivation: on top of FM 2nd-order crosses, make interaction more flexible and expressive</text>
+  <text x="400" y="352" text-anchor="middle" font-size="10.5" fill="#64748b">But the 2nd-order form stays rigid → leading to the high-order path of DeepFM / DCN / xDeepFM / AutoInt</text>
+</svg>

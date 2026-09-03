@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>端到端推荐请求链路 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .funnel{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px;}
+  .tier{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center;transition:all .35s;}
+  .dot{width:16px;height:16px;border-radius:50%;background:var(--c-cell);transition:all .3s;}
+  .dot.on{background:var(--c-primary);}
+  .dot.green{background:var(--c-success);}
+  .dot.warn{background:var(--c-warn);}
+  .tier-label{font-size:12px;color:var(--c-light);margin-top:4px;}
+  .count{font-family:"Courier New",monospace;color:var(--c-success);font-weight:bold;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔻 一次推荐请求的端到端链路</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>候选规模漏斗</h3>
+    <div class="funnel" id="funnel"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 用户请求到达", count:1, color:"on",
+    desc:"用户打开首页，前端携带登录态调用 /recommend。系统构建用户特征（画像 + 行为序列），进入推荐管线。",
+    code:["# 前端 → 后端","user_features = build_user_features(user, db)","pipeline.recommend(user_features, config)","# 目标延迟 < 200ms"],
+    hl:1 },
+  { name:"② 冷启动检测", count:1, color:"warn",
+    desc:"若历史交互 < 5 次，判定为冷启动用户，走 UCB 探索 + 偏好类型 + 热门兜底三级策略；否则进入正常流程。",
+    code:["if hist_movie_ids < threshold(5):","    return cold_start_recommend(...)  # UCB/偏好/热门","else:","    pass  # 正常流程"],
+    hl:0 },
+  { name:"③ 多路召回", count:3000, color:"cell",
+    desc:"并行执行 YoutubeDNN 向量召回、物品相似度召回、用户偏好类目召回，从不同角度筛候选。",
+    code:["cands = await gather(","  YouTubeDNNRecall(),  # 向量","  ItemEmbeddingRecall(), # I2I","  UserPrefRecall()     # 偏好",")"],
+    hl:0 },
+  { name:"④ Snake Merge 融合", count:100, color:"on",
+    desc:"用蛇形合并从三路轮流取候选、去重，保证每路代表都进入排序（如 A→B→C→C→B→A…），得召回 Top-100。",
+    code:["merged = _merge_results_round_robin(","    results_list, top_k=100)","# 轮流取 + 去重","assert len(merged) <= 100"],
+    hl:1 },
+  { name:"⑤ DeepFM 精准排序", count:20, color:"green",
+    desc:"用 DeepFM 对 100 候选批量 CTR 预估，按预测分重排，取 Top-20。模型不可用时降级为召回分排序。",
+    code:["scores = ranking_model.predict(batch)","ranked = sort_by_score(scores)","top = ranked[:20]  # CTR 精排","# 失败则 Fallback 用召回分"],
+    hl:1 },
+  { name:"⑥ 多样性重排", count:20, color:"warn",
+    desc:"连续打散：类型与年代各不超过 2 部连续出现，在保序前提下提升列表多样性。",
+    code:["result = items","for s in [GenreDisp, DecadeDisp]:","    result = await s.rerank(result)","# 保序 + 提多样性"],
+    hl:1 },
+  { name:"✅ 结果组装返回", count:20, color:"warn",
+    desc:"查库补全标题、海报、类型、年份，组装前端响应返回。一条平衡相关性、多样性与业务目标的个性化列表送达用户。",
+    code:["movies = get_movies_by_ids(ids)","return assemble(recommendations)","# 亿级 → 20 条，毫秒级"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const funnel = document.getElementById("funnel");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function dotClass(stageIdx){
+  if(stageIdx < cur) return "dot on";
+  if(stageIdx === cur) return "dot " + stages[stageIdx].color;
+  return "dot";
+}
+
+function render(){
+  funnel.innerHTML = "";
+  const maxDots = 36;
+  stages.forEach((s, i)=>{
+    const wrap = document.createElement("div");
+    wrap.style.textAlign="center";
+    const row = document.createElement("div");
+    row.className="tier";
+    const ratio = Math.pow(s.count/3000, 0.18);
+    const n = Math.max(3, Math.round(maxDots * (s.count>=3000?1:ratio)));
+    for(let k=0;k<n;k++){
+      const d=document.createElement("div");
+      d.className = dotClass(i);
+      row.appendChild(d);
+    }
+    const lab=document.createElement("div");
+    lab.className="tier-label";
+    const cnt = s.count>=3000 ? "全库候选" : s.count;
+    lab.innerHTML = s.name + " · <span class='count'>"+cnt+"</span>";
+    if(i===cur) lab.style.color = "#fff";
+    wrap.appendChild(row); wrap.appendChild(lab);
+    funnel.appendChild(wrap);
+  });
+  const s = stages[cur];
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

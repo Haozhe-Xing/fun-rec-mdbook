@@ -1,0 +1,31 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow9c" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">均匀语义映射：用最优传输消解索引冲突</text>
+
+  <!-- Problem -->
+  <rect x="40" y="70" width="330" height="80" rx="10" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadow9c)"/>
+  <text x="205" y="98" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ef4444">问题：标准量化索引冲突</text>
+  <text x="205" y="122" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">不同物品 → 相同索引序列</text>
+  <text x="205" y="142" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">加层会引入语义无关噪声</text>
+
+  <!-- Sinkhorn -->
+  <rect x="240" y="180" width="320" height="80" rx="10" fill="#4A6CF7" filter="url(#shadow9c)"/>
+  <text x="400" y="208" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">Sinkhorn-Knopp 求最优传输</text>
+  <text x="400" y="232" text-anchor="middle" font-family="Courier New" font-size="12" fill="#e8ecff">∑ q(c_H=k|r_H) = |B|/K</text>
+
+  <!-- Result -->
+  <rect x="600" y="70" width="160" height="80" rx="10" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow9c)"/>
+  <text x="680" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">均衡分配</text>
+  <text x="680" y="120" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">唯一语义 ID</text>
+  <text x="680" y="142" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">无需额外层</text>
+
+  <line x1="370" y1="110" x2="240" y2="200" stroke="#1e293b" stroke-width="2"/>
+  <line x1="560" y1="220" x2="600" y2="110" stroke="#10b981" stroke-width="2"/>
+
+  <text x="400" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">核心：最后一层引入均匀分布约束，使物品在码本向量上分配尽可能均衡 → 冲突率显著降低</text>
+</svg>

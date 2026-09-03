@@ -1,0 +1,79 @@
+<svg width="800" height="520" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowBlue2" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="arrowGreen2" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#10b981"/>
+    </marker>
+    <marker id="arrowAmber2" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowRed2" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="520" fill="#f8f9fc"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1e293b">RTB：一次广告展示的时序流程</text>
+  <text x="400" y="52" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">前置阶段：Cookie Mapping 建立用户身份对照表；每次展示需在约 100ms 内完成竞价与返回</text>
+
+  <!-- 角色泳道 -->
+  <line x1="110" y1="70" x2="110" y2="430" stroke="#e8ecff" stroke-width="2"/>
+  <line x1="310" y1="70" x2="310" y2="430" stroke="#e8ecff" stroke-width="2"/>
+  <line x1="510" y1="70" x2="510" y2="430" stroke="#e8ecff" stroke-width="2"/>
+  <line x1="700" y1="70" x2="700" y2="430" stroke="#e8ecff" stroke-width="2"/>
+
+  <rect x="60" y="66" width="100" height="34" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+  <text x="110" y="88" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">用户</text>
+  <rect x="260" y="66" width="100" height="34" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+  <text x="310" y="88" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">媒体 / SSP</text>
+  <rect x="460" y="66" width="100" height="34" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="88" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">ADX</text>
+  <rect x="650" y="66" width="100" height="34" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="700" y="88" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">DSP × N</text>
+
+  <!-- Step 0: Cookie Mapping -->
+  <rect x="60" y="118" width="690" height="44" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="405" y="136" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#ef4444">步骤 0（ 前置 ）：Cookie Mapping</text>
+  <text x="405" y="153" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">DSP 发起，在需求方网站加载隐藏 iframe，建立「媒体 Cookie ↔ DSP 用户 ID」对照表，存于 Demand 端</text>
+
+  <!-- Step 1: 用户访问媒体 -->
+  <line x1="110" y1="182" x2="310" y2="182" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen2)"/>
+  <text x="210" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">① 访问页面，触发广告请求</text>
+
+  <!-- Step 2: SSP -> ADX -->
+  <line x1="310" y1="222" x2="510" y2="222" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen2)"/>
+  <text x="410" y="214" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">② SSP 封装流量信息，发起广告请求</text>
+  <text x="410" y="238" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">携带 Cookie、页面上下文、广告位规格</text>
+
+  <!-- Step 3: ADX 广播询价 -->
+  <line x1="510" y1="278" x2="698" y2="278" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber2)"/>
+  <text x="604" y="270" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">③ 广播询价请求给各 DSP</text>
+
+  <!-- Step 4: DSP 出价 -->
+  <line x1="698" y1="318" x2="512" y2="318" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowBlue2)"/>
+  <text x="605" y="310" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">④ 各 DSP 估算 eCPM，返回出价</text>
+  <text x="605" y="334" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">查 Mapping 表识别用户 → 检索定向广告 → 出价</text>
+
+  <!-- Step 5: 竞价结算 -->
+  <rect x="435" y="356" width="150" height="40" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2" filter="url(#shadow2)"/>
+  <text x="510" y="373" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">⑤ 竞价结算</text>
+  <text x="510" y="389" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">最高出价者赢得本次展示</text>
+
+  <!-- Step 6: 返回广告 -->
+  <path d="M 435 376 L 312 376" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber2)"/>
+  <text x="373" y="368" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">⑥ 返回竞价胜出广告</text>
+
+  <path d="M 310 376 L 112 376" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen2)"/>
+  <text x="210" y="368" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">⑦ 渲染展示给用户</text>
+
+  <!-- 代价说明 -->
+  <rect x="60" y="440" width="690" height="62" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="405" y="462" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#ef4444">RTB 的两笔代价</text>
+  <text x="405" y="480" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">时延：相比直返广告多一次 Round Trip，竞价链路必须压在约 100ms 预算内，否则用户可感知白屏</text>
+  <text x="405" y="496" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">隐私：询价请求携带用户标识与页面信息广播给多家 DSP，存在浏览数据泄露风险</text>
+</svg>

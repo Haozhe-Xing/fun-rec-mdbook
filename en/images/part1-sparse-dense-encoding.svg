@@ -1,0 +1,66 @@
+<svg width="800" height="480" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Two encoding paths: discrete features vs. Dense features</title>
+  <desc id="desc">Discrete features encode the category into a featureSign and look up an Embedding; Dense features put the normalized number into value and scale a fixed parameter vector with it.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#64748b" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="480" rx="16" fill="#f8f9fc"/>
+  <text x="400" y="38" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="20" font-weight="700" fill="#1e293b">One Triple Protocol, Two Different Information Paths</text>
+
+  <text x="36" y="82" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#3347b0">Discrete features: category identity lives in featureSign</text>
+  <g filter="url(#shadow)">
+    <rect x="36" y="102" width="150" height="78" rx="10" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="236" y="102" width="160" height="78" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="446" y="102" width="142" height="78" rx="10" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <rect x="638" y="102" width="126" height="78" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  </g>
+  <text x="111" y="132" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Raw Category</text>
+  <text x="111" y="158" text-anchor="middle" font-family="Courier New, monospace" font-size="14" fill="#3347b0">SEX = male</text>
+  <text x="316" y="128" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Encoded Triple</text>
+  <text x="316" y="151" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#3347b0">slot = SEX</text>
+  <text x="316" y="169" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#3347b0">sign = [SEX][hash(male)]</text>
+  <text x="517" y="128" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Param. Lookup</text>
+  <text x="517" y="153" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#3347b0">E[sign]</text>
+  <text x="517" y="170" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#64748b">value = 1.0</text>
+  <text x="701" y="128" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Model Vector</text>
+  <text x="701" y="156" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#3347b0">[.12, -.03, .45]</text>
+  <line x1="186" y1="141" x2="228" y2="141" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="396" y1="141" x2="438" y2="141" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="588" y1="141" x2="630" y2="141" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <line x1="36" y1="220" x2="764" y2="220" stroke="#dbe3f0" stroke-width="1"/>
+
+  <text x="36" y="260" font-family="Arial, PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#047857">Dense features: continuous magnitude lives in value</text>
+  <g filter="url(#shadow)">
+    <rect x="36" y="280" width="150" height="78" rx="10" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="236" y="280" width="160" height="78" rx="10" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+    <rect x="446" y="280" width="142" height="78" rx="10" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="638" y="280" width="126" height="78" rx="10" fill="#dcfce7" stroke="#10b981" stroke-width="2"/>
+  </g>
+  <text x="111" y="310" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Raw Value</text>
+  <text x="111" y="336" text-anchor="middle" font-family="Courier New, monospace" font-size="14" fill="#047857">CTR = 0.073</text>
+  <text x="316" y="306" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Encoded Triple</text>
+  <text x="316" y="329" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#047857">slot = CTR_DENSE</text>
+  <text x="316" y="347" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#047857">sign = 1, value = .073</text>
+  <text x="517" y="306" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Fixed Param. Vector</text>
+  <text x="517" y="330" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#047857">W = E[1]</text>
+  <text x="517" y="348" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#64748b">value × W</text>
+  <text x="701" y="306" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Model Vector</text>
+  <text x="701" y="334" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#047857">[.0292, -.0146, .0073]</text>
+  <line x1="186" y1="319" x2="228" y2="319" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="396" y1="319" x2="438" y2="319" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="588" y1="319" x2="630" y2="319" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="86" y="398" width="628" height="50" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="400" y="420" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Key difference</text>
+  <text x="400" y="439" text-anchor="middle" font-family="Arial, PingFang SC, sans-serif" font-size="13" fill="#64748b">Discrete: sign picks which parameter row. Dense: value scales one shared row.</text>
+</svg>

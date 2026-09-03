@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s4" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.18"/></filter>
+  </defs>
+  <rect width="800" height="360" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Three Tokenizer Paradigms Compared</text>
+
+  <!-- sparse ID -->
+  <rect x="30" y="70" width="230" height="250" rx="10" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#s4)"/>
+  <text x="145" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">Sparse ID</text>
+  <text x="145" y="120" text-anchor="middle" font-size="11" fill="#64748b">item_10086 / video_9527</text>
+  <g font-size="10" fill="#1e293b">
+    <text x="145" y="150" text-anchor="middle">✓ No collisions, mature stack</text>
+    <text x="145" y="175" text-anchor="middle">✗ Vocab explosion (billions)</text>
+    <text x="145" y="198" text-anchor="middle">✗ 1TB storage / no generalization</text>
+    <text x="145" y="221" text-anchor="middle">✗ Collaborative signal only implicit</text>
+    <text x="145" y="252" text-anchor="middle">e.g. HSTU, GenRec</text>
+  </g>
+
+  <!-- text ID -->
+  <rect x="285" y="70" width="230" height="250" rx="10" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#s4)"/>
+  <text x="400" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#f59e0b">Text ID</text>
+  <text x="400" y="120" text-anchor="middle" font-size="11" fill="#64748b">"Apple iPhone 15 Pro 256G"</text>
+  <g font-size="10" fill="#1e293b">
+    <text x="400" y="150" text-anchor="middle">✓ Semantically rich, zero-shot</text>
+    <text x="400" y="175" text-anchor="middle">✓ Highly interpretable</text>
+    <text x="400" y="198" text-anchor="middle">✗ Inefficient (~30 tokens)</text>
+    <text x="400" y="221" text-anchor="middle">✗ Grounding is hard</text>
+    <text x="400" y="252" text-anchor="middle">e.g. M6-Rec, P5, TallRec</text>
+  </g>
+
+  <!-- semantic ID -->
+  <rect x="540" y="70" width="230" height="250" rx="10" fill="#ffffff" stroke="#10b981" stroke-width="3" filter="url(#s4)"/>
+  <text x="655" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">Semantic ID ★</text>
+  <text x="655" y="120" text-anchor="middle" font-size="10" fill="#64748b">[10, 5, 42] = Sports→Basketball→Dunk</text>
+  <g font-size="10" fill="#1e293b">
+    <text x="655" y="150" text-anchor="middle">✓ Fixed, controllable vocab (K^L)</text>
+    <text x="655" y="175" text-anchor="middle">✓ Naturally hierarchical</text>
+    <text x="655" y="198" text-anchor="middle">✓ From memorization to reasoning</text>
+    <text x="655" y="221" text-anchor="middle">✓ Precise grounding</text>
+    <text x="655" y="252" text-anchor="middle">e.g. TIGER, OneRec, OneSearch</text>
+  </g>
+
+  <text x="400" y="345" text-anchor="middle" font-size="11" fill="#64748b">Green = the industry default for generative recommendation, balancing efficiency · generalization · grounding.</text>
+</svg>

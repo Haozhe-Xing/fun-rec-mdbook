@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr16" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh16"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Pyramid Stack：渐进式蒸馏</text>
+
+  <!-- pyramid of layers -->
+  <g text-anchor="middle" font-size="11">
+    <!-- Layer 1 -->
+    <rect x="330" y="60" width="140" height="44" rx="8" fill="#f0f4ff" stroke="#4A6CF7"/>
+    <text x="400" y="80" fill="#1e293b">Layer 1</text>
+    <text x="400" y="97" fill="#64748b">query 1190 · KV 1190</text>
+    <!-- Layer 2 -->
+    <rect x="350" y="120" width="100" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+    <text x="400" y="138" fill="#1e293b">Layer 2</text>
+    <text x="400" y="154" fill="#64748b">query 595</text>
+    <!-- Layer 3 -->
+    <rect x="365" y="176" width="70" height="38" rx="8" fill="#fef9ec" stroke="#f59e0b"/>
+    <text x="400" y="193" fill="#1e293b">L3</text>
+    <text x="400" y="208" fill="#64748b">297</text>
+    <!-- Layer 4 -->
+    <rect x="378" y="230" width="44" height="36" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+    <text x="400" y="252" fill="#1e293b">L4</text>
+  </g>
+  <line x1="400" y1="104" x2="400" y2="120" stroke="#64748b" marker-end="url(#arr16)"/>
+  <line x1="400" y1="160" x2="400" y2="176" stroke="#64748b" marker-end="url(#arr16)"/>
+  <line x1="400" y1="214" x2="400" y2="230" stroke="#64748b" marker-end="url(#arr16)"/>
+
+  <!-- right explanation -->
+  <rect x="500" y="60" width="260" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh16)"/>
+  <text x="630" y="86" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">机制</text>
+  <g font-size="11.5" fill="#1e293b">
+    <text x="520" y="120">• 每层层只保留尾部 L' 个 query</text>
+    <text x="520" y="145">• Keys/Values 仍用全部 token</text>
+    <text x="520" y="170">• L' 逐层递减：1190→595→…→12</text>
+    <text x="520" y="205" font-size="12" font-weight="700" fill="#4A6CF7">收益</text>
+    <text x="520" y="230">① Progressive Distillation：</text>
+    <text x="535" y="248">长序列信息蒸馏到尾部 NS</text>
+    <text x="520" y="275">② Compute Efficiency：</text>
+    <text x="535" y="293">attn O(LL'd)，L'≪L 大降</text>
+  </g>
+  <text x="630" y="340" font-size="10.5" fill="#64748b" text-anchor="middle">Causal mask 使尾部成汇聚点</text>
+
+  <text x="400" y="385" font-size="12" fill="#64748b" text-anchor="middle">推荐只需最终排序分数，中间序列 token 可逐层丢弃 — 标准 Transformer 需保留全长（LLM 要每位置预测）</text>
+</svg>

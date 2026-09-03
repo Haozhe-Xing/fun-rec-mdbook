@@ -1,0 +1,49 @@
+<svg width="800" height="380" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrD" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="shD" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="380" fill="#f8f9fc" rx="12"/>
+
+  <!-- title -->
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">Bias in Recommender Systems: Source → Outcome → Loop Amplification</text>
+
+  <!-- Data bias box -->
+  <rect x="30" y="70" width="220" height="150" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shD)"/>
+  <text x="140" y="96" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">Data Bias (Collection)</text>
+  <text x="140" y="122" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Selection Bias (MNAR)</text>
+  <text x="140" y="144" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Exposure Bias</text>
+  <text x="140" y="166" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Conformity Bias</text>
+  <text x="140" y="188" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Position Bias</text>
+
+  <!-- Result bias box -->
+  <rect x="290" y="70" width="220" height="150" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shD)"/>
+  <text x="400" y="96" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ef4444">Outcome Bias (Results)</text>
+  <text x="400" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Popularity Bias</text>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial" font-size="10" fill="#1e293b">  (Rich-get-richer / Matthew effect)</text>
+  <text x="400" y="178" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· Unfairness</text>
+  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">  (Systemic discrimination)</text>
+
+  <!-- Model in middle -->
+  <rect x="550" y="100" width="120" height="90" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shD)"/>
+  <text x="610" y="140" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">Biased Model</text>
+  <text x="610" y="162" text-anchor="middle" font-family="Arial" font-size="11" fill="#dbeafe">Amplifies bias</text>
+
+  <!-- arrows data->model, model->result -->
+  <line x1="250" y1="145" x2="548" y2="145" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrD)"/>
+  <line x1="510" y1="160" x2="370" y2="150" stroke="#ef4444" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <!-- feedback loop -->
+  <path d="M400,220 C400,300 120,300 120,225" fill="none" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrD)"/>
+  <text x="230" y="300" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#d97706">Feedback loop: results → interactions → training data; bias snowballs</text>
+
+  <line x1="40" y1="350" x2="760" y2="350" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="369" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">IPS re-weighting or PAL position decoupling breaks this chain</text>
+</svg>

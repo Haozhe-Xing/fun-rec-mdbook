@@ -1,0 +1,471 @@
+/* =========================================================================
+   深度推荐算法实践 — 设计系统 (Design System)
+   配色严格遵循 book-writer 规范：主蓝 #4A6CF7 / 成功绿 #10b981
+   错误红 #ef4444 / 警告黄 #f59e0b / 文字深 #1e293b / 文字浅 #64748b
+   背景 #f8f9fc / 单元格 #e8ecff
+   ========================================================================= */
+
+:root {
+  --c-primary: #4A6CF7;
+  --c-success: #10b981;
+  --c-error: #ef4444;
+  --c-warn: #f59e0b;
+  --c-text: #1e293b;
+  --c-text-light: #64748b;
+  --c-bg: #f8f9fc;
+  --c-cell: #e8ecff;
+  --c-white: #ffffff;
+  --c-border: #e2e8f0;
+  --c-code-bg: #f6f8ff;
+  --c-code-text: #d63384;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", "JetBrains Mono", "Fira Code", Consolas,
+    "Courier New", monospace;
+}
+
+/* ---- 基础排版 ---- */
+html, body {
+  font-family: var(--font-sans);
+  color: var(--c-text);
+  background: var(--c-white);
+  line-height: 1.75;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.content {
+  max-width: 900px;
+}
+
+h1, h2, h3, h4 {
+  color: var(--c-text);
+  font-weight: 700;
+  line-height: 1.35;
+}
+/* 用 em 相对 body 16px：mdbook html 根字号是 12px，rem 会算成
+   1.2rem=14.4px 比 body 还小，h2/h3 看起来没字号差距。 */
+h1 { font-size: 2.4em; margin-top: 0.4em; }
+h2 { font-size: 1.7em; margin-top: 1.6em; }
+h3 { font-size: 1.3em; margin-top: 1.4em; }
+h4 { font-size: 1.1em; margin-top: 1.2em; }
+
+p { margin: 1em 0; }
+
+a { color: var(--c-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- 行内代码 ---- */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--c-code-bg);
+  color: var(--c-code-text);
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+  border: 1px solid var(--c-border);
+}
+
+pre {
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #dbe3f0;
+  border-left: 4px solid var(--c-primary);
+  border-radius: 10px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  line-height: 1.6;
+  box-shadow: 0 2px 10px rgba(30, 41, 59, 0.06);
+}
+pre code,
+pre code.hljs {
+  display: block;
+  background: transparent !important;
+  color: inherit;
+  border: none;
+  padding: 0 !important;
+  font-size: 0.86em;
+}
+
+/* ---- 引用块 / Callout ---- */
+blockquote {
+  border-left: 4px solid var(--c-primary);
+  background: var(--c-bg);
+  padding: 12px 18px;
+  margin: 1.2em 0;
+  border-radius: 0 10px 10px 0;
+  color: var(--c-text);
+}
+blockquote p { margin: 0.4em 0; }
+
+/* ---- 表格 ---- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
+  font-size: 0.95em;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.06);
+}
+thead th {
+  background: var(--c-primary);
+  color: #fff;
+  text-align: left;
+  padding: 11px 14px;
+  font-weight: 600;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--c-bg); }
+tbody tr:hover { background: var(--c-cell); }
+
+/* ---- 徽章头部 ---- */
+.badge-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  border: 1px solid rgba(74, 108, 247, 0.2);
+}
+
+/* ---- Part 概览页 banner（原内联渐变抽出） ---- */
+.part-banner {
+  background: linear-gradient(135deg, #4A6CF7 0%, #6366f1 100%);
+  padding: 24px 32px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+.part-banner h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.7rem;
+}
+.part-banner p { margin: 8px 0 0; color: rgba(255, 255, 255, 0.85); }
+
+/* ---- 分隔线 ---- */
+hr {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  margin: 2.2em 0;
+}
+
+/* ---- 图片居中 ---- */
+img { max-width: 100%; height: auto; display: block; margin: 1.4em auto; border-radius: 10px; }
+
+/* ---- 折叠块 (练习题解答) ---- */
+details {
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 1em 0;
+  background: var(--c-bg);
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--c-primary);
+}
+details[open] { background: var(--c-white); }
+
+/* ---- iframe 可视化 ---- */
+iframe {
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.10);
+  margin: 1.4em 0;
+}
+
+/* ---- 响应式 ---- */
+@media (max-width: 720px) {
+  body { font-size: 15px; }
+  h1 { font-size: 1.6rem; }
+  pre { padding: 14px; }
+}
+
+/* =========================================================================
+   In-Page TOC — 右侧章节内目录
+   ========================================================================= */
+
+/* 外层 flex 容器，让 content 和 sidebar 并排 */
+.iptoc-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  max-width: 100%;
+  position: relative;
+}
+
+/* 让 .content 不再独占宽度，给右侧留空间 */
+.iptoc-wrapper > .content {
+  max-width: 900px;
+  flex: 1 1 auto;
+  min-width: 0; /* 防止 flex 子项溢出 */
+}
+
+/* 右侧粘性导航栏 */
+.iptoc-sidebar {
+  width: 200px;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 80px; /* 留出顶部导航栏高度 */
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  /* 隐藏滚动条但保留功能 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.iptoc-sidebar::-webkit-scrollbar { display: none; }
+
+/* 标题 */
+.iptoc-header {
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-text-light);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--c-primary);
+}
+
+/* 列表 */
+.iptoc-list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.iptoc-list li {
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+  margin: 4px 0;
+}
+
+.iptoc-list li a {
+  display: block;
+  padding: 5px 12px;
+  font-size: 0.85em;
+  color: var(--c-text-light);
+  text-decoration: none !important;
+  line-height: 1.5;
+  border-radius: 0 6px 6px 0;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iptoc-list li a:hover {
+  background: var(--c-cell);
+  color: var(--c-primary);
+}
+
+/* h3 缩进 */
+.iptoc-h3 { padding-left: 16px; }
+
+/* 激活状态 */
+.iptoc-active,
+.iptoc-list li a.iptoc-active {
+  color: var(--c-primary) !important;
+  font-weight: 600 !important;
+  border-left-color: var(--c-primary);
+  background: rgba(74, 108, 247, 0.06);
+}
+
+/* 中屏即隐藏 TOC，避免内容列被挤窄 */
+@media (max-width: 1200px) {
+  .iptoc-wrapper { gap: 16px; }
+  .iptoc-sidebar { display: none; }
+}
+
+/* =========================================================================
+   锚点跳转：避免被顶部 sticky 栏 / 右侧 TOC 遮挡
+   ========================================================================= */
+h2, h3 { scroll-margin-top: 96px; }
+
+/* =========================================================================
+   语义化 Callout（配合 scripts/callouts.js 自动分类）
+   6+ 种语义标记原都渲染成同一种蓝边，现在按类型着色 + 浅底 + 彩色标签
+   ========================================================================= */
+.callout-info,
+.callout-tip,
+.callout-warn,
+.callout-mental,
+.callout-stat,
+.callout-question,
+.callout-analysis {
+  border-left-width: 4px;
+}
+.callout-info     { border-left-color: #185FA5; background: #E6F1FB; }
+.callout-tip      { border-left-color: #0F6E56; background: #E1F5EE; }
+.callout-warn     { border-left-color: #BA7517; background: #FAEEDA; }
+.callout-mental   { border-left-color: #534AB7; background: #EEEDFE; }
+.callout-stat      { border-left-color: #993C1D; background: #FAECE7; }
+.callout-question { border-left-color: #534AB7; background: #EEEDFE; }
+.callout-analysis { border-left-color: #5F5E5A; background: #F1EFE8; }
+
+/* 首行加粗标签上色，强化语义区分 */
+.callout-info     > :first-child strong { color: #0C447C; }
+.callout-tip      > :first-child strong { color: #085041; }
+.callout-warn     > :first-child strong { color: #633806; }
+.callout-mental   > :first-child strong { color: #3C3489; }
+.callout-stat      > :first-child strong { color: #712B13; }
+.callout-question > :first-child strong { color: #3C3489; }
+.callout-analysis > :first-child strong { color: #444441; }
+
+/* =========================================================================
+   左侧导航主题化：覆盖 mdBook 默认灰蓝，统一品牌靛蓝
+   （mdBook 用 CSS 变量驱动主题，这里在 html.light 上覆盖，
+    website.css 加载顺序晚于 variables.css，保证生效）
+   ========================================================================= */
+html.light,
+html[data-theme="light"] {
+  --links: #4A6CF7;
+  --sidebar-active: #4A6CF7;
+  --icons-hover: #4A6CF7;
+  --sidebar-fg: #475063;
+  --theme-hover: #EEF1FE;
+  --searchbar-border-color: #C7CEF5;
+  --searchbar-shadow-color: rgba(74, 108, 247, 0.35);
+}
+
+/* =========================================================================
+   深色模式（mdBook navy 主题）：品牌化深色 token + 组件覆盖
+   website.css 加载晚于 navy.css，此处规则优先级更高，直接覆盖
+   ========================================================================= */
+:is(html.navy, html[data-theme="navy"]) {
+  /* mdBook 原生 chrome 变量 */
+  --bg: #161a23;
+  --fg: #e6e9f0;
+  --sidebar-bg: #1b2029;
+  --sidebar-fg: #c8ccd4;
+  --sidebar-active: #2a3140;
+  --links: #7e9bff;
+  --icons: #a8b0bd;
+  --icons-hover: #9db1ff;
+  --theme-hover: #2a3140;
+  --theme-active: #161a23;
+  --searchbar-bg: #1b2029;
+  --searchbar-fg: #e6e9f0;
+  --searchbar-border-color: #3a4252;
+  --searchbar-shadow-color: rgba(0, 0, 0, 0.4);
+  --table-border-color: #2c3340;
+  --table-header-bg: #222a38;
+  --table-header-fg: #e6e9f0;
+  --table-odd-bg: #1e2330;
+  --table-even-bg: #222838;
+  --table-row-hover: #2a3140;
+  --code-bg: rgba(255, 255, 255, 0.06);
+  --code-fg: #e6e9f0;
+  --blockquote-bg: rgba(255, 255, 255, 0.05);
+  --blockquote-border-color: rgba(255, 255, 255, 0.12);
+
+  /* 设计系统 token（深色版） */
+  --c-primary: #7e9bff;
+  --c-success: #34d399;
+  --c-error: #f87171;
+  --c-warn: #fbbf24;
+  --c-text: #e6e9f0;
+  --c-text-light: #9aa3b2;
+  --c-bg: #161a23;
+  --c-cell: #222838;
+  --c-white: #1e2330;
+  --c-border: #2c3340;
+  --c-code-bg: rgba(255, 255, 255, 0.07);
+  --c-code-text: #f472b6;
+}
+
+:is(html.navy, html[data-theme="navy"]),
+:is(html.navy, html[data-theme="navy"]) body {
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+/* 引用块 / 折叠块 */
+:is(html.navy, html[data-theme="navy"]) blockquote {
+  background: var(--c-bg);
+  border-left-color: var(--c-primary);
+  color: var(--c-text);
+}
+:is(html.navy, html[data-theme="navy"]) details {
+  background: var(--c-bg);
+  border-color: var(--c-border);
+}
+:is(html.navy, html[data-theme="navy"]) details[open] { background: var(--c-white); }
+
+/* 图片在深色下加细边 */
+:is(html.navy, html[data-theme="navy"]) img { border: 1px solid var(--c-border); }
+
+/* Callout：浅底转深色 tint，首行标签提亮 */
+:is(html.navy, html[data-theme="navy"]) .callout-info,
+:is(html.navy, html[data-theme="navy"]) .callout-tip,
+:is(html.navy, html[data-theme="navy"]) .callout-warn,
+:is(html.navy, html[data-theme="navy"]) .callout-mental,
+:is(html.navy, html[data-theme="navy"]) .callout-stat,
+:is(html.navy, html[data-theme="navy"]) .callout-question,
+:is(html.navy, html[data-theme="navy"]) .callout-analysis { color: var(--c-text); }
+
+:is(html.navy, html[data-theme="navy"]) .callout-info     { border-left-color:#5b9bd5; background:#16243a; }
+:is(html.navy, html[data-theme="navy"]) .callout-tip      { border-left-color:#34d399; background:#11271f; }
+:is(html.navy, html[data-theme="navy"]) .callout-warn     { border-left-color:#fbbf24; background:#2a2410; }
+:is(html.navy, html[data-theme="navy"]) .callout-mental   { border-left-color:#8b86f0; background:#1e1c33; }
+:is(html.navy, html[data-theme="navy"]) .callout-stat     { border-left-color:#f08a5a; background:#2a1c14; }
+:is(html.navy, html[data-theme="navy"]) .callout-question { border-left-color:#8b86f0; background:#1e1c33; }
+:is(html.navy, html[data-theme="navy"]) .callout-analysis { border-left-color:#a8a39a; background:#232220; }
+
+:is(html.navy, html[data-theme="navy"]) .callout-info     > :first-child strong { color:#9cc4f0; }
+:is(html.navy, html[data-theme="navy"]) .callout-tip      > :first-child strong { color:#6ee7b7; }
+:is(html.navy, html[data-theme="navy"]) .callout-warn     > :first-child strong { color:#fcd34d; }
+:is(html.navy, html[data-theme="navy"]) .callout-mental   > :first-child strong { color:#b3aef7; }
+:is(html.navy, html[data-theme="navy"]) .callout-stat     > :first-child strong { color:#f6b08a; }
+:is(html.navy, html[data-theme="navy"]) .callout-question > :first-child strong { color:#b3aef7; }
+:is(html.navy, html[data-theme="navy"]) .callout-analysis > :first-child strong { color:#cfcabe; }
+
+/* 行内代码与代码块 */
+:is(html.navy, html[data-theme="navy"]) code {
+  background: var(--c-code-bg);
+  color: var(--c-code-text);
+  border-color: var(--c-border);
+}
+:is(html.navy, html[data-theme="navy"]) pre {
+  background: #111827;
+  color: #e2e8f0;
+  border-color: #334155;
+  border-left-color: var(--c-primary);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.22);
+}
+:is(html.navy, html[data-theme="navy"]) pre code,
+:is(html.navy, html[data-theme="navy"]) pre code.hljs {
+  background: transparent !important;
+  color: inherit;
+  border: none;
+}
+
+/* 表格 */
+:is(html.navy, html[data-theme="navy"]) thead th { background: var(--c-primary); color:#0b1020; }
+:is(html.navy, html[data-theme="navy"]) tbody td { border-bottom-color: var(--c-border); }
+:is(html.navy, html[data-theme="navy"]) tbody tr:nth-child(even) { background: var(--c-bg); }
+:is(html.navy, html[data-theme="navy"]) tbody tr:hover { background: var(--c-cell); }
+
+/* 右侧 TOC */
+:is(html.navy, html[data-theme="navy"]) .iptoc-header { color: var(--c-text-light); border-bottom-color: var(--c-primary); }
+:is(html.navy, html[data-theme="navy"]) .iptoc-list li a { color: var(--c-text-light); }
+:is(html.navy, html[data-theme="navy"]) .iptoc-list li a:hover { background: var(--c-cell); color: var(--c-primary); }
+:is(html.navy, html[data-theme="navy"]) .iptoc-active,
+:is(html.navy, html[data-theme="navy"]) .iptoc-list li a.iptoc-active {
+  color: var(--c-primary) !important;
+  border-left-color: var(--c-primary);
+  background: rgba(126, 155, 255, 0.12);
+}

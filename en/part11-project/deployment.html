@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Deployment - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~24 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="deployment-and-operations"><a class="header" href="#deployment-and-operations">Deployment and Operations</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Read <a href="./frontend.html">11.5</a> and <a href="./online-pipeline.html">11.4</a> first. This section orchestrates them into containers, producing a system you can start with one command, monitor, and debug.</p>
+</blockquote>
+<p>The offline, online, and frontend stages are now developed and run locally. But how do you reproduce everything quickly on another machine? This section uses <strong>Docker Compose</strong> for containerized deployment.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Explain why Docker Compose (environment consistency / fast startup / isolation / easy scaling)</li>
+<li>Read the configuration of the five services in <code>docker-compose.yaml</code> and understand container-to-container communication via service-name DNS</li>
+<li>Describe how the frontend multi-stage build (Node build + Nginx serve) shrinks the image</li>
+<li>Execute the full startup flow: start infrastructure → run the offline pipeline → ingest data → build indexes → browse</li>
+<li>Troubleshoot common issues with <code>docker compose ps</code>, health checks, and <code>redis-cli</code></li>
+<li>Work through 4 tiered practice problems</li>
+</ul>
+<hr />
+<h2 id="1160-why-docker-compose"><a class="header" href="#1160-why-docker-compose">11.6.0 Why Docker Compose</a></h2>
+<p>This project depends on five services: PostgreSQL (business data), Redis (feature cache), Elasticsearch (search), the backend API, and the frontend app. Model files pass between the offline and online stages through a shared directory.</p>
+<p>Manual deployment means installing PG/Redis/ES on every machine, configuring networking, and dealing with version compatibility — tedious, error-prone, and full of environment drift. Docker Compose describes all services and dependencies in <strong>declarative YAML</strong>, and one command starts the whole system. Advantages:</p>
+<ol>
+<li><strong>Environment consistency</strong>: containers bundle every dependency, so dev/test/production match.</li>
+<li><strong>Fast startup</strong>: <code>docker compose up</code> starts services in dependency order automatically — no manual assembly.</li>
+<li><strong>Isolation and safety</strong>: each service runs in its own container without interfering with others.</li>
+<li><strong>Easy to extend</strong>: adding a service only requires a config change — existing services are untouched.</li>
+</ol>
+<hr />
+<h2 id="1161-docker-compose-configuration-in-detail"><a class="header" href="#1161-docker-compose-configuration-in-detail">11.6.1 Docker Compose Configuration in Detail</a></h2>
+<p><code>docker-compose.yaml</code> defines six services (including the backend build). Let's walk through them one by one.</p>
+<p><strong>Database: PostgreSQL</strong>:</p>
+<pre><code class="language-yaml">services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: funrec-postgres
+    environment:
+      POSTGRES_USER: funrec
+      POSTGRES_PASSWORD: funrec123
+      POSTGRES_DB: funrec_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data          # ← KEY LINE: named volume persists data
+    networks:
+      - funrec-network
+</code></pre>
+<p>The named volume <code>postgres_data</code> in <code>volumes</code> persists data — delete the container and the data survives; <code>networks</code> lets it communicate with other services.</p>
+<p><strong>Cache: Redis</strong>:</p>
+<pre><code class="language-yaml">  redis:
+    image: redis:7-alpine
+    container_name: funrec-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - funrec-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5                                       # ← KEY LINE: unhealthy only after consecutive failures
+</code></pre>
+<p>The <code>healthcheck</code> runs <code>redis-cli ping</code> periodically; 5 consecutive timeouts (3s each) mark it unhealthy, so services that depend on it can wait until it's healthy before starting.</p>
+<p><strong>Search: Elasticsearch</strong>:</p>
+<pre><code class="language-yaml">  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.2.0
+    container_name: funrec-elasticsearch
+    environment:
+      - discovery.type=single-node                     # ← KEY LINE: single-node mode, fine for development
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"               # ← KEY LINE: cap the JVM heap so dev machines don't run out of memory
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - funrec-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+</code></pre>
+<p><strong>Backend: FastAPI</strong>:</p>
+<pre><code class="language-yaml">  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    container_name: funrec-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://funrec:funrec123@postgres:5432/funrec_db
+      - REDIS_URL=redis://redis:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - MODEL_DEPLOY_DIR=/app/tmp/web_project/deployed_models
+    volumes:
+      - ./backend:/app
+      - ../tmp:/app/tmp
+      - ${FUNREC_RAW_DATA_PATH}:/data
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - funrec-network
+</code></pre>
+<p>Note that the database/Redis addresses use <strong>service names</strong> (like <code>postgres</code>, <code>redis</code>) rather than <code>localhost</code> — containers resolve each other via Docker DNS. The backend Dockerfile builds in layers (dependencies first, then code), so code changes don't reinstall dependencies:</p>
+<pre><code class="language-dockerfile">FROM python:3.11-slim
+WORKDIR /app
+RUN apt-get update &amp;&amp; apt-get install -y gcc postgresql-client curl \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+RUN pip install uv
+COPY pyproject.toml ./
+RUN uv pip install --system -e .                  # ← KEY LINE: dependency layer first, exploits cache
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+</code></pre>
+<p><strong>Frontend (multi-stage build)</strong>: Node builds the static files first, then Nginx serves them:</p>
+<pre><code class="language-yaml">  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    container_name: funrec-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - funrec-network
+</code></pre>
+<p>The Dockerfile is multi-stage — the final image contains only the build output + Nginx, with no Node or dev dependencies:</p>
+<pre><code class="language-dockerfile"># Build stage
+FROM node:22-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build                                # ← KEY LINE: produce the dist static assets
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html   # ← KEY LINE: copy only the build output — smaller image
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+</code></pre>
+<p><strong>Networks and data</strong>: shared networks and named volumes are defined at the end:</p>
+<pre><code class="language-yaml">volumes:
+  postgres_data:
+  redis_data:
+  elasticsearch_data:
+networks:
+  funrec-network:
+    driver: bridge                             # ← KEY LINE: same bridge network, services reach each other by name
+</code></pre>
+<p><img src="../images/part11-deployment-topology.svg" alt="Deployment topology: five services on funrec-network, shared volumes for persistence, models passed between offline/online via the shared directory" /></p>
+<hr />
+<h2 id="1162-environment-setup-and-startup-flow"><a class="header" href="#1162-environment-setup-and-startup-flow">11.6.2 Environment Setup and Startup Flow</a></h2>
+<p><strong>Prerequisites</strong>: install Docker, Docker Compose (bundled with Desktop), and uv (<code>pip install uv</code>). Verify:</p>
+<pre><code class="language-bash">docker --version
+docker compose version
+uv --version
+</code></pre>
+<p><strong>Data preparation</strong>: download and extract <code>funrec-movielens-1m.zip</code>, and note its absolute path (containing <code>movies.pkl</code>/<code>ratings.pkl</code>/<code>users.pkl</code>/<code>image/</code>).</p>
+<p><strong>Get the code</strong>: all code for this project lives in the <code>web_project/</code> directory of the <a href="https://github.com/datawhalechina/fun-rec">datawhalechina/fun-rec</a> repository:</p>
+<pre><code class="language-bash">git clone https://github.com/datawhalechina/fun-rec.git
+cd fun-rec/web_project
+</code></pre>
+<p><strong>Environment variables</strong>: copy <code>.env.example</code> to <code>.env</code> and set the data paths:</p>
+<pre><code class="language-bash">cd web_project
+cp .env.example .env
+# Edit .env:
+# FUNREC_RAW_DATA_PATH=/path/to/funrec-movielens-1m
+# FUNREC_PROCESSED_DATA_PATH=/path/to/funrec-processed
+</code></pre>
+<p><code>FUNREC_PROCESSED_DATA_PATH</code> holds feature engineering and training intermediates, and must be writable.</p>
+<p><strong>Start the infrastructure</strong>:</p>
+<pre><code class="language-bash">docker compose up --build                    # build images on first run
+docker compose up -d --build                 # run in the background
+docker compose logs -f backend               # follow backend logs
+</code></pre>
+<p><strong>Run the offline pipeline</strong> (train models, initialize data):</p>
+<pre><code class="language-bash">cd backend
+uv sync
+make run-offline-pipeline
+</code></pre>
+<p>It runs in sequence: feature engineering → train YoutubeDNN/DeepFM → push features to Redis → deploy models to the shared directory (roughly 10–20 minutes).</p>
+<p><strong>Load data into the database</strong>:</p>
+<pre><code class="language-bash">make ingest-data-to-database                 # create tables + import users/movies/ratings + create test users
+</code></pre>
+<p><strong>Index movies into Elasticsearch</strong>:</p>
+<pre><code class="language-bash">make index-movies-to-elasticsearch           # title/genre/cast become searchable
+</code></pre>
+<p><strong>Access the app</strong>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Service</th><th>URL</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Frontend</td><td>http://localhost:3000</td><td>User interface</td></tr>
+<tr><td>Backend API</td><td>http://localhost:8000</td><td>API service</td></tr>
+<tr><td>API docs</td><td>http://localhost:8000/docs</td><td>Swagger</td></tr>
+<tr><td>Elasticsearch</td><td>http://localhost:9200</td><td>Search service</td></tr>
+</tbody></table>
+</div>
+<p>Test account: <code>test@funrec.com</code> / <code>test123456</code>. After logging in, you'll see personalized recommendations, search, details, and ratings.</p>
+<hr />
+<h2 id="1163-health-checks-and-debugging"><a class="header" href="#1163-health-checks-and-debugging">11.6.3 Health Checks and Debugging</a></h2>
+<p><strong>Check status</strong>:</p>
+<pre><code class="language-bash">docker compose ps
+# NAME  STATUS  PORTS ... everything should be Up
+</code></pre>
+<p>Any service showing <code>Exited</code>/<code>Restarting</code> failed to start — check its logs.</p>
+<p><strong>Verify each service</strong>:</p>
+<pre><code class="language-bash">curl http://localhost:8000/health           # backend → {"status": "healthy"}
+docker exec -it funrec-postgres pg_isready -U funrec   # PG → accepting connections
+docker exec -it funrec-redis redis-cli ping            # Redis → PONG
+curl http://localhost:9200                          # ES → version info
+</code></pre>
+<p><strong>Inspect Redis data</strong> (verify features went live):</p>
+<pre><code class="language-bash">docker exec -it funrec-redis redis-cli hget user:6041:profile frequent_genres
+docker exec -it funrec-redis redis-cli llen user:6041:history
+</code></pre>
+<p><strong>Troubleshooting common issues</strong>:</p>
+<ul>
+<li><strong>Container fails to start</strong> → <code>docker compose logs backend</code>; check .env paths, port conflicts, and whether dependencies are ready.</li>
+<li><strong>Database connection fails</strong> → <code>docker compose logs postgres</code>, look for <code>ready to accept connections</code>.</li>
+<li><strong>Model loading fails</strong> → <code>ls ${FUNREC_PROCESSED_DATA_PATH}/web_project/deployed_models/</code>; if empty, rerun the offline pipeline.</li>
+<li><strong>Search returns nothing</strong> → <code>curl http://localhost:9200/_cat/indices</code>; if there's no <code>movies</code> index, rerun the indexing command.</li>
+</ul>
+<blockquote>
+<p><strong>Analysis:</strong> The hard part of deployment isn't "writing the config" — it's getting five services healthy in dependency order and being able to pinpoint failures fast. Health checks, named volumes, service-name DNS, logs, and <code>redis-cli</code> probes together form an observable, recoverable delivery baseline.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-116"><a class="header" href="#-common-mistakes-in-116">⚠️ Common Mistakes in 11.6</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Using localhost between containers</td><td>backend connects to localhost:5432</td><td>In-container localhost is the container itself, not PG</td><td>Use the service name postgres</td></tr>
+<tr><td>2</td><td>No persistent volume mounted</td><td>Data lost when the container is removed</td><td>Only named volumes persist</td><td>Mount volumes like postgres_data</td></tr>
+<tr><td>3</td><td>ES memory uncapped</td><td>Default heap eats the dev machine</td><td>Jank/OOM</td><td>Cap at 512m via ES_JAVA_OPTS</td></tr>
+<tr><td>4</td><td>Skipping the offline pipeline</td><td>Recommendations come up empty</td><td>No models/features</td><td>Run make run-offline-pipeline first</td></tr>
+<tr><td>5</td><td>Frontend not built</td><td>Copying source without npm run build</td><td>Nginx has no dist</td><td>Multi-stage build produces dist</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Value of Compose</td><td>Consistent/fast/isolated/extensible</td><td>One-command reproduction of a multi-service system</td></tr>
+<tr><td>Service-name DNS</td><td>postgres/redis reach each other</td><td>Foundation of container networking</td></tr>
+<tr><td>Persistent volumes</td><td>Named volumes hold data</td><td>Data survives container removal</td></tr>
+<tr><td>Multi-stage build</td><td>Node build + Nginx serve</td><td>Minimal frontend image</td></tr>
+<tr><td>Startup flow</td><td>Infra→offline→ingest→index→browse</td><td>Order matters</td></tr>
+<tr><td>Health &amp; debugging</td><td>healthcheck + logs + cli</td><td>Observable and recoverable</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Why does the backend use service names instead of the host IP?</strong></p>
+<blockquote>
+<p>A: Within a Docker network, Compose's built-in DNS resolves service names to container IPs. <code>localhost</code> inside a container points to the container itself, not PG, so it can never connect. Service names are the correct way for containers to talk to each other.</p>
+</blockquote>
+<p><strong>Q2: How do model files get from the offline container to the online one?</strong></p>
+<blockquote>
+<p>A: Through a shared directory (volume mount): the offline <code>deploy_local</code> writes <code>deployed_models/</code>, and the online <code>RecallResourceManager</code> reads from the same mounted path, with <code>active.json</code> pointing at the version. It's fundamentally "file transfer," not "network calls."</p>
+</blockquote>
+<p><strong>Q3: What does the frontend's multi-stage build save?</strong></p>
+<blockquote>
+<p>A: The final image contains only <code>dist/</code> + Nginx — no Node.js, <code>node_modules</code>, or other dev dependencies. Both the image size and the attack surface shrink, making production safer and faster.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li>The <code>make run-offline-pipeline</code> command from <strong>11.3</strong> is the entry point for this section's offline step.</li>
+<li>The <strong>11.4</strong> online service loads the models deployed here via the <code>MODEL_DEPLOY_DIR</code> volume.</li>
+<li>The <strong>11.5</strong> frontend is served statically via this section's Nginx multi-stage build.</li>
+<li><strong>11.1</strong>'s technology choices (PG/Redis/ES/Compose) land here as operational configuration.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.6.1 — Container Communication</strong> 🟢 Easy</p>
+<p>What happens if the backend's <code>DATABASE_URL</code> is <code>postgresql://funrec:funrec123@localhost:5432/funrec_db</code>? What's the correct form?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> Inside the container, <code>localhost</code> points at the backend itself — PostgreSQL is unreachable and startup fails with connection refused. Use the service name instead: <code>@postgres:5432</code> (Compose DNS resolves to the PG container).</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Use service names to reach other containers on the network.</li>
+<li>Inside a container, localhost means "yourself."</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.6.2 — Data Persistence</strong> 🟢 Easy</p>
+<p>Without the <code>postgres_data</code> named volume, what happens to the data after <code>docker compose down</code>? And with the volume mounted?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> No volume: the container filesystem is destroyed along with it — users/movies/ratings are all gone, and you'd need to rerun <code>ingest-data-to-database</code>. With a named volume: data lives in a host-side volume and survives container removal and recreation.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Stateful services must mount persistent volumes.</li>
+<li>Volume and container lifecycles are decoupled.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.6.3 — Startup Order</strong> 🟡 Medium</p>
+<p>If you skip <code>make run-offline-pipeline</code> and go straight to the frontend's home page recommendations, what happens? Give the root cause and the minimal fix.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> The backend's <code>/health</code> may report healthy (the service is up), but the recommendation API can't load models/item embeddings → <code>RecallResourceManager</code> resources are missing, and retrieval fails or returns empty. Root cause: the online stage depends on the models and features the offline stage produces. Fix: <code>cd backend &amp;&amp; uv sync &amp;&amp; make run-offline-pipeline</code>, then <code>make ingest-data-to-database</code> and <code>make index-movies-to-elasticsearch</code>.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Offline "produces" and online "consumes" — the order can't be reversed.</li>
+<li>Healthy ≠ functionally ready; verify that resources exist.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Add Cache Warm-up</strong> 🔴 Hard</p>
+<p>In production, you want the backend to proactively warm Redis with popular movie embeddings and high-frequency user profiles at startup, cutting latency for the first cold requests. Based on this chapter's components, identify which layer this change touches and what to watch out for (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Modify the online service's startup hook (e.g., after <code>RecallResourceManager._ensure_resources_loaded</code>): batch-read high-frequency user profiles/history from PG into Redis; popular movie embeddings are already in item_embeddings.npy and load directly. Watch out for: run warm-up only after the PG/Redis dependencies are healthy (depends_on + retries); warm only hot keys to keep Redis from bloating; use a background task so startup isn't blocked.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/frontend.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part12-computational-advertising/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/frontend.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part12-computational-advertising/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

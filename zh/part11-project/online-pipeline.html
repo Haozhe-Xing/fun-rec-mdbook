@@ -1,0 +1,750 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>在线管线 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~34 min read</span>
+  <span style="background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Advanced</span>
+</div>
+<h1 id="在线流水线"><a class="header" href="#在线流水线">在线流水线</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 请先读完 <a href="./offline-pipeline.html">11.3</a>，理解离线产出了什么（物品向量、编码器、用户塔/排序模型）。本节消费这些产出，把请求变成推荐列表。</p>
+</blockquote>
+<p>在线流水线要在百毫秒级延迟内完成从用户请求到推荐结果的全链路。整个流程封装在统一推荐管线中，按「冷启动检测 → 多路召回 → 精准排序 → 多样性重排」顺序执行，各阶段候选数量与启停开关由配置集中控制。</p>
+<p>读完本章，你将能够：</p>
+<ul>
+<li>描述 <code>RecommendationPipeline</code> 与 <code>PipelineConfig</code> 如何串起全链路</li>
+<li>解释冷启动检测阈值与 UCB 探索-利用公式，并写出分数计算与状态更新代码</li>
+<li>描述三路召回（YoutubeDNN / I2I / 偏好类目）与 <strong>Snake Merge</strong> 融合</li>
+<li>写出 DeepFM 批量排序、特征编码复用、异步执行与降级策略</li>
+<li>解释连续打散（Consecutive Dispersion）如何保序地提升多样性</li>
+<li>完成 5 道分层练习题</li>
+</ul>
+<hr />
+<h2 id="1140-代码结构"><a class="header" href="#1140-代码结构">11.4.0 代码结构</a></h2>
+<p>在线代码位于 <code>web_project/backend/online/</code>：</p>
+<pre><code>online/
+├── pipeline.py               # 推荐主流程
+├── cold_start/               # 冷启动处理
+│   ├── detector.py           # 冷启动检测
+│   ├── service.py            # 冷启动服务
+│   ├── ucb_genre.py          # UCB 类型探索
+│   └── preferred_genre.py    # 偏好类型策略
+├── recall/                   # 多路召回
+│   ├── service.py            # 召回服务与融合
+│   ├── youtubednn.py         # YoutubeDNN 召回
+│   ├── item_based.py         # 物品相似度召回
+│   └── trending.py           # 热门召回
+├── ranking/                  # 排序模型
+│   ├── service.py            # 排序服务
+│   └── deepfm.py             # DeepFM 排序
+└── reranking/                # 重排策略
+    ├── service.py            # 重排服务
+    └── dispersion.py         # 打散策略
+</code></pre>
+<p>离线产出物（共享目录模型、Redis 特征、物品向量）是在线基础。在线需 200ms 内完成，要求推理快、访问高效、阶段协同。</p>
+<p>主流程封装在 <code>RecommendationPipeline</code>：</p>
+<p>下面用交互演示走完一次推荐请求的完整链路：从用户请求到达，经冷启动检测、多路召回、Snake Merge 融合、DeepFM 排序、多样性重排，到结果组装返回。点击「下一步」观察候选规模如何逐级缩小。</p>
+<iframe src="../viz/part11-request-flow.html?embed&vizId=part11-request-flow" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>注意漏斗右侧的候选计数：全库候选经召回缩到 100、排序缩到 20，整个过程目标延迟 &lt; 200ms——这正是工业漏斗架构的工程意义。</p>
+<pre><code class="language-python">class RecommendationPipeline:
+    def __init__(self):
+        self.recall_service = get_recall_service()
+        self.ranking_service = get_ranking_service()
+        self.reranking_service = get_reranking_service()
+        self.cold_start_service = get_cold_start_service()
+
+    async def recommend(self, user_features, item_features_provider=None, config=None):
+        config = config or PipelineConfig()
+        if config.enable_cold_start and self._is_cold_start(user_features, config):
+            return await self._cold_start_recommend(user_features, item_features_provider, config)
+        candidates = await self._recall(user_features, config.recall_top_k)
+        ranked_items, ranking_strategy = await self._rank(
+            user_features, candidates, item_features_provider, config.ranking_top_k)
+        reranked_items, reranking_strategies = await self._rerank(
+            ranked_items, user_features, item_features_provider)
+        return RecommendationResult(items=reranked_items, ...)
+</code></pre>
+<p><code>PipelineConfig</code> 集中控制各阶段行为：</p>
+<pre><code class="language-python">@dataclass
+class PipelineConfig:
+    recall_top_k: int = 100        # 召回阶段返回候选数
+    ranking_top_k: int = 20        # 排序阶段返回结果数
+    enable_ranking: bool = True    # 是否启用排序模型
+    enable_reranking: bool = True  # 是否启用重排
+    enable_cold_start: bool = True
+    cold_start_threshold: int = 5  # 交互少于此值视为冷启动用户
+    cold_start_top_k: int = 20
+</code></pre>
+<hr />
+<h2 id="1141-冷启动检测与处理"><a class="header" href="#1141-冷启动检测与处理">11.4.1 冷启动检测与处理</a></h2>
+<p>冷启动是经典难题：新用户无行为数据，协同过滤与向量召回都失效。本项目用独立冷启动模块处理。</p>
+<p><strong>冷启动检测</strong> 很简单——历史交互少于阈值即冷启动用户：</p>
+<pre><code class="language-python">class ColdStartDetector:
+    def __init__(self, threshold: int = 5):
+        self.threshold = threshold
+    def is_cold_start(self, user_features: Dict[str, Any]) -&gt; bool:
+        hist_movie_ids = user_features.get("hist_movie_ids", [])
+        if not hist_movie_ids:
+            return True
+        return len(hist_movie_ids) &lt; self.threshold             # ← KEY LINE: 交互次数 &lt; 阈值 → 冷启动
+</code></pre>
+<p>阈值需权衡：太低用户偏好未稳就进正常流；太高用户久等不到个性化。默认 <strong>5 次</strong>。</p>
+<p><strong>三种策略</strong> 由 <code>ColdStartService</code> 统一管理：</p>
+<pre><code class="language-python">class ColdStartService:
+    def __init__(self):
+        self.detector = ColdStartDetector(threshold=5)
+        self.strategies = [
+            UCBGenreStrategy(),        # 优先级 1：UCB 探索
+            PreferredGenreStrategy(),  # 优先级 2：用户偏好
+            PopularRecentStrategy(),   # 优先级 3：热门兜底
+        ]
+    async def recommend(self, user_features, top_k=20):
+        applicable = [s for s in self.strategies if s.can_handle(user_features)]
+        if has_ucb_data:
+            allocations = self._get_ucb_weighted_allocation(applicable, top_k)
+        elif has_preferences:
+            allocations = self._get_preference_weighted_allocation(applicable, top_k)
+        else:
+            allocations = self._get_fallback_allocation(applicable, top_k)
+        results = await asyncio.gather(*[self._run_strategy(s, user_features, k)
+                                          for s, k in allocations if k &gt; 0])
+        return self._merge_results(results, top_k)
+</code></pre>
+<p>配额随用户状态动态分配：有评分记录时 UCB 获 70%；只有偏好设置时偏好策略获 80%；什么都没有则全用热门。</p>
+<p><img src="../images/part11-coldstart.svg" alt="冷启动三级策略：UCB 探索 / 偏好类型 / 热门兜底，按信息量动态分配配额" /></p>
+<p><strong>UCB 类型探索</strong> 解决探索-利用（Exploration vs Exploitation）问题：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">UCB</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:3.04em;vertical-align:-1.2065em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8335em;"><span class="svg-align" style="top:-5em;"><span class="pstrut" style="height:5em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9721em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.7935em;"><span class="pstrut" style="height:5em;"></span><span class="hide-tail" style="min-width:1.02em;height:3.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='3.08em' viewBox='0 0 400000 3240' preserveAspectRatio='xMinYMin slice'><path d='M473,2793 c339.3,-1799.3,509.3,-2700,510,-2702 l0 -0 c3.3,-7.3,9.3,-11,18,-11 H400000v40H1017.7 s-90.5,478,-276.2,1466c-185.7,988,-279.5,1483,-281.5,1485c-2,6,-10,9,-24,9 c-8,0,-12,-0.7,-12,-2c0,-1.3,-5.3,-32,-16,-92c-50.7,-293.3,-119.7,-693.3,-207,-1200 c0,-1.3,-5.3,8.7,-16,30c-10.7,21.3,-21.3,42.7,-32,64s-16,33,-16,33s-26,-26,-26,-26 s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,104, 606zM1001 80h400000v40H1017.7z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2065em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8539em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 是类型 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> 的历史平均评分，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 是总推荐次数，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 是类型 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> 被推荐次数，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> 是探索系数。第一项 <strong>利用</strong> （平均分越高越好），第二项 <strong>探索</strong> （推荐越少的不确定越大、奖励越高）。</p>
+<pre><code class="language-python">class UCBGenreStrategy(ColdStartStrategy):
+    def _calculate_ucb_scores(self, stats, total_n):
+        scores = {}
+        for genre in self.available_genres:
+            if genre in stats and stats[genre]["n"] &gt; 0:
+                n = stats[genre]["n"]
+                avg_reward = stats[genre]["reward"] / n
+                exploration_bonus = self.exploration_c * math.sqrt(
+                    math.log(total_n + 1) / (n + 1e-6))            # ← KEY LINE: 探索奖励随被推荐次数递减
+                scores[genre] = avg_reward + exploration_bonus
+            else:
+                scores[genre] = 1.0 + self.exploration_c * 2       # ← KEY LINE: 未探索类型给最高探索分
+        return scores
+</code></pre>
+<p>UCB 统计存 Redis（键 <code>user:{user_id}:genre_ucb</code>），用户评分时更新：</p>
+<pre><code class="language-python">def update_ucb_genre_stats(user_id, movie_genres, rating):
+    normalized_reward = rating / 10.0
+    key = f"user:{user_id}:genre_ucb"
+    for genre in movie_genres:
+        current_raw = redis_client.hget(key, genre)
+        if current_raw:
+            current = json.loads(current_raw)
+            current["n"] = current.get("n", 0) + 1
+            current["reward"] = current.get("reward", 0) + normalized_reward
+        else:
+            current = {"n": 1, "reward": normalized_reward}
+        redis_client.hset(key, genre, json.dumps(current))        # ← KEY LINE: 增量更新类型统计
+</code></pre>
+<p>优点：随评分增多，UCB「利用」成分增加；对未接触类型仍给机会，避免信息茧房。</p>
+<p><strong>偏好类型策略</strong> 若有 <code>preferred_genres</code>，用 Elasticsearch 查这些类型的高评分电影（<code>avg_rating&gt;=6.0</code>、<code>rating_count&gt;=20</code>）。</p>
+<hr />
+<h2 id="1142-多路召回"><a class="header" href="#1142-多路召回">11.4.2 多路召回</a></h2>
+<p>有足够历史行为的用户进入正常流程。第一阶段召回，从全库快速筛候选。</p>
+<p><strong>为何多路召回</strong> ：单一策略有局限——向量召回可能漏掉模型未捕捉的相关性（如新上映小众片样本少、表征不准）；协同过滤对小众覆盖不足；热门缺乏个性化。思路是「别把鸡蛋放一个篮子」，多策略并行再合并。</p>
+<pre><code class="language-python">class RecallService:
+    def __init__(self):
+        self.strategies = [
+            UserPreferenceRecallStrategy(),  # 用户偏好类目召回
+            ItemEmbeddingRecallStrategy(),   # 物品相似度召回
+            YouTubeDNNRecallStrategy(),      # 向量召回
+        ]
+</code></pre>
+<p><strong>YoutubeDNN 向量召回</strong> ：在线算用户向量，再在物品向量空间检索最相似电影。</p>
+<pre><code class="language-python">class YouTubeDNNRecallStrategy(RecallStrategy):
+    def preprocess_user(self, user_features, max_hist_len=10):
+        inputs = {}
+        encoders = self.resource_manager.encoders
+        for feat in ["user_id", "gender", "age", "occupation", "zip_code"]:
+            raw_val = user_features.get(feat)
+            if raw_val is not None and feat in encoders:
+                try:
+                    val = encoders[feat].transform([str(raw_val)])[0] + 1   # ← KEY LINE: 复用离线编码器，+1 对齐
+                except:
+                    val = 0
+            else:
+                val = 0
+            inputs[feat] = np.array([val])
+        # 历史序列：编码电影ID + 展开类型，左填充定长
+        ...
+        return inputs
+
+    def _recall_sync(self, user_context, k):
+        model_inputs = self.preprocess_user(user_context)
+        user_emb = self.resource_manager.user_model.predict(model_inputs, verbose=0)
+        user_emb = user_emb / np.linalg.norm(user_emb, axis=1, keepdims=True)
+        scores = np.dot(user_emb, self.resource_manager.item_embedding_matrix.T)[0]  # ← KEY LINE: 内积≡余弦
+        top_indices = np.argsort(scores)[::-1][:k]
+        ...
+</code></pre>
+<p>用户与物品向量都归一化，内积等价于余弦。库仅 3000+ 时直接内积即可；超百万时用 FAISS 加速。</p>
+<p><strong>物品相似度召回（I2I）</strong> ：用户刚看什么就推相似的——捕捉即时兴趣，复用 YoutubeDNN 物品向量（向量本身蕴含协同过滤信息）。</p>
+<pre><code class="language-python">class ItemEmbeddingRecallStrategy(RecallStrategy):
+    async def recall(self, user_context, k):
+        hist_movie_ids = user_context.get("hist_movie_ids", [])
+        if not hist_movie_ids:
+            return []
+        last_movie_id = hist_movie_ids[0]                            # ← KEY LINE: 取最近观看的电影作种子
+        enc_idx = movie_le.transform([last_movie_id])[0] + 1
+        target_emb = self.resource_manager.item_embedding_matrix[enc_idx]
+        target_emb = target_emb / np.linalg.norm(target_emb)
+        scores = np.dot(self.resource_manager.item_embedding_matrix, target_emb)
+        top_indices = np.argsort(scores)[::-1][:k+2]
+        ...
+</code></pre>
+<p><strong>用户偏好类目召回</strong> ：统计用户偏好类型（离线算 Top3 存 Redis），从这些类型召回热门。优点稳定——即使用户最近偶尔偏差，仍推长期喜欢类型。</p>
+<p><strong>Snake Merge 多路融合</strong> ：简单按分合并会让某路霸榜。Snake Merge 从各路轮流取候选，确保每路有代表进排序：</p>
+<pre><code class="language-python">def _merge_results_round_robin(self, results_list, top_k):
+    merged_candidates = []
+    seen_movie_ids = set()
+    sources = [r if r else [] for r in results_list]
+    source_pointers = [0] * len(sources)
+    direction = 1
+    current_idx = 0
+    while len(merged_candidates) &lt; top_k:
+        all_exhausted = all(source_pointers[i] &gt;= len(sources[i])
+                             for i in range(len(sources)))
+        if all_exhausted:
+            break
+        src_list = sources[current_idx]
+        ptr = source_pointers[current_idx]
+        if ptr &lt; len(src_list):
+            item = src_list[ptr]
+            source_pointers[current_idx] += 1
+            mid = item["movie_id"]
+            if mid not in seen_movie_ids:                          # ← KEY LINE: 去重，避免跨路重复
+                merged_candidates.append(item)
+                seen_movie_ids.add(mid)
+        current_idx += direction
+        if direction == 1 and current_idx &gt;= len(sources):
+            direction = -1
+            current_idx = len(sources) - 1
+        elif direction == -1 and current_idx &lt; 0:
+            direction = 1
+            current_idx = 0
+    return merged_candidates
+</code></pre>
+<p>名称来自遍历顺序：三路 A、B、C 合并顺序 A→B→C→C→B→A→A→B→C…，像蛇来回穿梭。</p>
+<p><img src="../images/part11-multirecall.svg" alt="多路召回：三策略并行 + Snake Merge 蛇形融合去重" /></p>
+<hr />
+<h2 id="1143-精准排序deepfm"><a class="header" href="#1143-精准排序deepfm">11.4.3 精准排序（DeepFM）</a></h2>
+<p>召回筛约 100 候选，但其顺序由召回分决定、不够精准。排序用 DeepFM 对候选做 CTR 预估、重排。</p>
+<p><strong>在线推理核心是特征构造</strong>——每用户-候选对编码成模型输入：</p>
+<pre><code class="language-python">class DeepFMRankingStrategy(RankingStrategy):
+    def _prepare_batch_inputs(self, user_features, candidates):
+        rm = self.resource_manager
+        batch_size = len(candidates)
+        inputs = {}
+        for feat in rm.user_features:                               # ← KEY LINE: 用户特征所有候选共享，复制
+            raw_val = user_features.get(feat)
+            encoded_val = rm.encode_feature(feat, raw_val)
+            inputs[feat] = np.full(batch_size, encoded_val, dtype=np.int32)
+        for feat in rm.item_features:                               # ← KEY LINE: 物品特征每候选不同
+            encoded_values = [rm.encode_feature(feat, c.get(feat)) for c in candidates]
+            inputs[feat] = np.array(encoded_values, dtype=np.int32)
+        return inputs
+</code></pre>
+<p>特征编码复用离线保存的 LabelEncoder， <strong>编码从 1 起、0 留未知</strong> ，与训练一致：</p>
+<pre><code class="language-python">def encode_feature(self, feat_name, raw_value):
+    if raw_value is None:
+        return 0
+    encoder = self.encoders.get(feat_name)
+    if encoder is None:
+        return 0
+    try:
+        if isinstance(encoder.classes_[0], str) and not isinstance(raw_value, str):
+            raw_value = str(raw_value)
+        if raw_value in encoder.classes_:
+            return int(encoder.transform([raw_value])[0]) + 1       # ← KEY LINE: 与离线编码严格一致
+        else:
+            return 0
+    except Exception:
+        return 0
+</code></pre>
+<p>准备好输入后批量预测：</p>
+<pre><code class="language-python">def _rank_sync(self, user_features, candidates):
+    inputs = self._prepare_batch_inputs(user_features, candidates)
+    predictions = self.resource_manager.ranking_model.predict(
+        inputs, verbose=0, batch_size=min(len(candidates), 256))   # ← KEY LINE: 批量预测，利用向量化
+    if predictions.ndim &gt; 1:
+        predictions = predictions.flatten()
+    ranked_results = []
+    for i, candidate in enumerate(candidates):
+        ranked_results.append({
+            "movie_id": candidate["movie_id"],
+            "score": float(predictions[i]),                        # CTR 预测分
+            "recall_score": candidate.get("score", 0.0),
+            "recall_type": candidate.get("recall_type"),
+        })
+    ranked_results.sort(key=lambda x: x["score"], reverse=True)    # ← KEY LINE: 按 CTR 分重排
+    return ranked_results
+</code></pre>
+<p>批量预测对 100 候选通常 10–30ms。模型推理是 CPU 密集，放线程池避免阻塞事件循环；模型不可用时 <strong>降级</strong> 到 <code>FallbackRankingStrategy</code>，直接用召回分排序，保证高可用。</p>
+<hr />
+<h2 id="1144-多样性重排"><a class="header" href="#1144-多样性重排">11.4.4 多样性重排</a></h2>
+<p>召回排序后列表可能多样性不足（如动作片占比高，排序把动作片全排前）。适度多样性提升满意度与留存。</p>
+<p><strong>连续打散（Consecutive Dispersion）</strong> ：不允许超过 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个相同属性连续出现。如 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>，[动作,动作,动作,喜剧] → [动作,动作,喜剧,动作]。</p>
+<pre><code class="language-python">class ConsecutiveDispersionStrategy(RerankingStrategy):
+    def _can_add(self, item, result):
+        if len(result) &lt; self._max_consecutive:
+            return True
+        item_key = self._feature_extractor(item)
+        if item_key is None:
+            return True
+        recent_keys = [self._feature_extractor(r)
+                       for r in result[-(self._max_consecutive - 1):]]
+        return not all(k == item_key for k in recent_keys)         # ← KEY LINE: 最近 N-1 全同则不可加
+    async def rerank(self, items, user_features=None):
+        if len(items) &lt;= self._max_consecutive:
+            return items
+        result, deferred = [], []
+        for item in items:
+            if self._can_add(item, result):
+                result.append(item)
+                self._try_insert_deferred(result, deferred)         # ← KEY LINE: 优先插可加入的候选
+            else:
+                deferred.append(item)
+        result.extend(deferred)                                     # 剩余追加末尾
+        return result
+</code></pre>
+<p>预定义两类： <strong>类型打散</strong> （取首类型）与 <strong>年代打散</strong> （按 10 年分桶，如 1990s）。</p>
+<pre><code class="language-python">class GenreDispersionStrategy(ConsecutiveDispersionStrategy):
+    def __init__(self, max_consecutive=2):
+        super().__init__(_extract_genre, max_consecutive, "genre_dispersion")
+
+class DecadeDispersionStrategy(ConsecutiveDispersionStrategy):
+    def __init__(self, max_consecutive=2):
+        super().__init__(_extract_decade, max_consecutive, "decade_dispersion")
+</code></pre>
+<p><strong>策略链组合</strong>——按顺序执行，输出作下一输入：</p>
+<pre><code class="language-python">class RerankingService:
+    def __init__(self):
+        self._strategies = [
+            GenreDispersionStrategy(max_consecutive=2),
+            DecadeDispersionStrategy(max_consecutive=2),
+        ]
+    async def rerank(self, items, user_features=None):
+        if not items or not self._enabled:
+            return items
+        result = items
+        for strategy in self._strategies:
+            if strategy.is_ready:
+                result = await strategy.rerank(result, user_features)
+        return result
+</code></pre>
+<p>重要特性是 <strong>保序性</strong> ：满足连续约束前提下尽量保原序，高分仍靠前、仅微调位置——既保相关性又增多样性。</p>
+<p><img src="../images/part11-ranking-rerank.svg" alt="排序 + 多样性重排：DeepFM 精排后连续打散保序提多样性" /></p>
+<hr />
+<h2 id="1145-api-集成与服务启动"><a class="header" href="#1145-api-集成与服务启动">11.4.5 API 集成与服务启动</a></h2>
+<p>组件开发完后整合进 FastAPI，对外提供 HTTP 接口。</p>
+<p><strong>推荐 API</strong> 核心逻辑：</p>
+<pre><code class="language-python">@router.post("/recommend")
+async def get_recommendations(request, db=Depends(get_db), current_user=Depends(get_current_user)):
+    pipeline = get_pipeline()
+    if not pipeline.is_ready:
+        raise HTTPException(status_code=503, detail="Recommendation service not ready")
+    user_features = await build_user_features(current_user, db)
+    async def item_features_provider(movie_ids):
+        movies = await get_movies_by_ids(db, movie_ids)
+        return {m.id: {"movie_id": m.id, "genres": m.genres.split("|") if m.genres else [],
+                       "year": m.year, "isAdult": m.is_adult} for m in movies}
+    config = PipelineConfig(recall_top_k=request.recall_top_k or 100,
+                             ranking_top_k=request.top_k or 20, enable_cold_start=True)
+    result = await pipeline.recommend(user_features=user_features,
+                                       item_features_provider=item_features_provider, config=config)
+    movie_ids = [item.movie_id for item in result.items]
+    movies = await get_movies_by_ids(db, movie_ids)
+    movie_map = {m.id: m for m in movies}
+    return {
+        "recommendations": [{
+            "movie_id": item.movie_id, "title": movie_map[item.movie_id].title,
+            "poster_url": movie_map[item.movie_id].poster_url,
+            "genres": movie_map[item.movie_id].genres, "year": movie_map[item.movie_id].year,
+            "score": item.score, "recall_type": item.recall_type,
+        } for item in result.items if item.movie_id in movie_map],
+        "is_cold_start": result.is_cold_start, "ranking_strategy": result.ranking_strategy,
+    }
+</code></pre>
+<p>要点：①用户特征从 DB+Redis 组装；②<code>item_features_provider</code> 回调 <strong>惰性加载</strong> 物品特征，避免召回阶段加载用不到的数据；③流程返回 ID+分，需查库补标题/海报。</p>
+<p><strong>资源加载与单例模式</strong>——模型大，应在进程级共享，<code>RecallResourceManager</code> 用单例 + 惰性加载：</p>
+<pre><code class="language-python">class RecallResourceManager:
+    _instance = None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    def __init__(self):
+        if self._initialized:
+            return
+        self.user_model = None
+        self.item_embedding_matrix = None
+        self.encoders = {}
+        self._initialized = True
+    def _ensure_resources_loaded(self):
+        if self.user_model is not None:
+            return
+        self._load_from_local()                                    # ← KEY LINE: 首次使用才加载
+    def _load_from_local(self):
+        deploy_dir = Path(os.getenv("MODEL_DEPLOY_DIR"))
+        with open(deploy_dir / "model" / "user_recall" / "active.json") as f:
+            version_info = json.load(f)                            # ← KEY LINE: 读版本指针决定加载哪版
+        self.user_model = tf.keras.models.load_model(deploy_dir / version_info["path"])
+        self.item_embedding_matrix = np.load(deploy_dir / "item_embeddings.npy")
+        with open(deploy_dir / "vocab_dict.pkl", "rb") as f:
+            self.encoders = pickle.load(f)
+</code></pre>
+<p><strong>健康检查</strong> <code>/health</code> 暴露各组件状态，便于监控：</p>
+<pre><code class="language-python">def get_health_status(self):
+    return {
+        "cold_start": {"available": ..., "ready": self.is_cold_start_ready, ...},
+        "recall": {"available": ..., "strategies": len(self.recall_service.strategies)},
+        "ranking": {"available": ..., "ready": self.is_ranking_ready, ...},
+        "reranking": {"available": ..., "ready": self.is_reranking_ready, ...},
+    }
+</code></pre>
+<blockquote>
+<p><strong>Analysis:</strong> 在线链路的工程价值在「毫秒级 + 高可用」——批量预测、线程池异步、模型降级、单例缓存、版本指针热加载，每一处都为这两点服务。这也是论文里永远不会写、却决定系统能否上线的细节。</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-114"><a class="header" href="#-common-mistakes-in-114">⚠️ Common Mistakes in 11.4</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>编码与离线不一致</td><td>在线用默认 LabelEncoder</td><td>输入空间错位，预测全乱</td><td>复用同一编码器/词表</td></tr>
+<tr><td>2</td><td>冷启动阈值乱设</td><td>阈值=50</td><td>用户久等不到个性化</td><td>默认 5，按业务调</td></tr>
+<tr><td>3</td><td>单路召回不融合</td><td>只用向量召回</td><td>覆盖/多样性不足</td><td>多路 + Snake Merge</td></tr>
+<tr><td>4</td><td>排序无降级</td><td>模型挂就 503</td><td>可用性崩</td><td>FallbackRankingStrategy</td></tr>
+<tr><td>5</td><td>打散破坏保序</td><td>全局重排</td><td>高分被挤后</td><td>连续约束下保序</td></tr>
+<tr><td>6</td><td>每请求重载模型</td><td>无单例</td><td>内存爆炸、延迟高</td><td>单例 + 惰性加载</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>管线编排</td><td>Pipeline + Config 串全链路</td><td>各阶段可控、可关</td></tr>
+<tr><td>冷启动 UCB</td><td>利用+探索公式，Redis 增量统计</td><td>解决零样本探索-利用</td></tr>
+<tr><td>多路召回</td><td>向量/I2I/偏好 + Snake Merge</td><td>覆盖与多样性兼得</td></tr>
+<tr><td>排序</td><td>DeepFM 批量 CTR 预估 + 降级</td><td>精准且高可用</td></tr>
+<tr><td>多样性重排</td><td>连续打散 + 保序</td><td>相关性与多样性平衡</td></tr>
+<tr><td>资源单例</td><td>版本指针 + 惰性加载</td><td>毫秒级 + 热更新</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: 冷启动阈值 5 是怎么定的？</strong></p>
+<blockquote>
+<p>A: 经验值。太低用户偏好未稳就进正常流（召回/排序仍弱），太高用户久等不到个性化。按业务交互密度调，高频场景可降、低频可升。</p>
+</blockquote>
+<p><strong>Q2: Snake Merge 和直接拼接去重有何不同？</strong></p>
+<blockquote>
+<p>A: 直接拼接按分排序再截前 K，强路易霸榜；Snake Merge 轮流取，结构性保证每路都有代表进排序，多样性更好。</p>
+</blockquote>
+<p><strong>Q3: 排序模型挂了为什么不直接报错？</strong></p>
+<blockquote>
+<p>A: 推荐系统可用性优先。降级用召回分排序，用户仍能拿到（质量略降的）结果，远比 503 好。这是「优雅降级」原则。</p>
+</blockquote>
+<h3 id="-前后关联"><a class="header" href="#-前后关联">🔗 前后关联</a></h3>
+<ul>
+<li><strong>11.3</strong> 提供物品向量、编码器、模型，是在线所有召回/排序的输入。</li>
+<li><strong>2.3（双塔）</strong> 与 <strong>3.x（DeepFM）</strong> 是召回、排序模型的算法依据。</li>
+<li><strong>4.2（多样性重排）</strong> 解释打散策略的理论动机；本项目是其实例。</li>
+<li><strong>11.5</strong> 的推荐 API 即调用本节 <code>pipeline.recommend</code>。</li>
+<li><strong>11.6</strong> 讨论如何让这整套在线服务容器化稳定运行。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.4.1 — 冷启动判定</strong> 🟢 Easy</p>
+<p>某用户历史观影 <code>[101, 202, 303]</code>（3 部），<code>cold_start_threshold=5</code>。<code>is_cold_start</code> 返回什么？若他又评了 3 部（共 6 部）呢？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> 3 &lt; 5 → 返回 True（冷启动）。共 6 部时 6 &gt;= 5 → 返回 False（走正常流程）。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>阈值比较是「少于阈值即冷启动」。</li>
+<li>随行为积累自然过渡到正常流。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.2 — UCB 探索项</strong> 🟢 Easy</p>
+<p>UCB 公式中，类型 A 被推荐 100 次、类型 B 被推荐 2 次，其余相同（<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 大）。仅看探索项 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.84em;vertical-align:-0.6861em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1539em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2819em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5423em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.1139em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.88em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.88em' viewBox='0 0 400000 1944' preserveAspectRatio='xMinYMin slice'><path d='M983 90 l0 -0 c4,-6.7,10,-10,18,-10 H400000v40 H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7 s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744 c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30 c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722 c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5 c53.7,-170.3,84.5,-266.8,92.5,-289.5z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6861em;"><span></span></span></span></span></span></span></span></span>，哪类得分更高？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> B 的探索项 = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/2</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span>，A 的 = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/100</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span>。分母小则值大，故 B 探索奖励更高。这正是「推荐少的类型给更高探索机会」，避免信息茧房。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>探索项随 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 增大而减小。</li>
+<li>未探索类型（n=0）给最高探索分。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.3 — Snake Merge 顺序</strong> 🟡 Medium</p>
+<p>三路召回 A、B、C 各返回候选 [a1,a2]、[b1,b2]、[c1,c2]，top_k=4，且所有 movie_id 不重复。Snake Merge 合并的前 4 个（去重后）依次是什么？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> 顺序 A→B→C→C→B→A…。取 a1,b1,c1，再返回 C 取 c2。前 4 个 = [a1, b1, c1, c2]。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>蛇形在末端反向，保证各路轮流。</li>
+<li>去重避免跨路重复进排序。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.4 — 编码一致性</strong> 🟡 Medium</p>
+<p>离线 LabelEncoder 对 gender 类别为 <code>["F","M"]</code>（transform 得 0/1，+1 后 1/2）。在线收到原始值 <code>"M"</code>，<code>encode_feature</code> 返回什么？若收到训练未见过的 <code>"X"</code> 呢？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>答：</strong> <code>"M"</code> → transform 得 1，+1 后返回 2（与离线一致）。<code>"X"</code> 不在 classes_ → 返回 0（未知值），与离线 padding 语义一致，模型不会崩。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>在线必须复用离线同一编码器，+1 对齐。</li>
+<li>未知值统一编 0，保证鲁棒。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: 设计降级链</strong> 🔴 Hard</p>
+<p>若某次请求中召回正常、但排序模型加载失败、且用户非冷启动。请描述系统应走哪条路径、返回质量如何，并指出一个可能比「直接召回分排序」更好的降级方案（150 字内）。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>路径：冷启动检测 False → 多路召回得候选 → 排序失败触发 FallbackRankingStrategy（按召回分排序）→ 重排 → 返回。质量：相关性下降（无 CTR 精排）但可用。更好方案：用 I2I/偏好召回分作粗排权重，或对未失败的小模型（如逻辑回归）兜底，而非纯召回分，提升个性化。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/offline-pipeline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/frontend.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/offline-pipeline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/frontend.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

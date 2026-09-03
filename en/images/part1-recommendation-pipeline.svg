@@ -1,0 +1,44 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh2" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">Industrial Recommender System: Three-Stage Funnel Pipeline</text>
+
+  <!-- Stage 1 Retrieval -->
+  <rect x="60" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="160" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">① Retrieval</text>
+  <text x="160" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">Billions → Thousands</text>
+  <text x="160" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Speed + coverage</text>
+  <text x="160" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Simple model, few features</text>
+
+  <!-- Stage 2 Ranking -->
+  <rect x="300" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">② Ranking</text>
+  <text x="400" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">Thousands → Hundreds</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Prediction accuracy</text>
+  <text x="400" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Deep model, all features</text>
+
+  <!-- Stage 3 Re-Ranking -->
+  <rect x="540" y="70" width="200" height="120" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh2)"/>
+  <text x="640" y="100" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#4A6CF7">③ Re-Ranking</text>
+  <text x="640" y="126" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">Hundreds → Final list</text>
+  <text x="640" y="148" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">User experience</text>
+  <text x="640" y="168" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">Diversity / Novelty / Business</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="130" x2="296" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow2)"/>
+  <line x1="500" y1="130" x2="536" y2="130" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow2)"/>
+
+  <!-- Funnel notes -->
+  <text x="400" y="240" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">Every stage solves a different problem, one shared goal: from "possibly relevant" to "best match"</text>
+  <rect x="120" y="262" width="560" height="44" rx="8" fill="#fef9ec" stroke="#d97706" stroke-width="1.5"/>
+  <text x="400" y="281" text-anchor="middle" font-family="Arial" font-size="13" fill="#92400e">Retrieval for coverage · Ranking for accuracy · Re-Ranking for experience</text>
+  <text x="400" y="298" text-anchor="middle" font-family="Arial" font-size="12" fill="#92400e">All three are essential: together they form the discriminative backbone</text>
+</svg>

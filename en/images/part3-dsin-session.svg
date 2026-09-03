@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s12" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="a12" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="420" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">DSIN: Hierarchical Sequence Modeling with Sessions as Units</text>
+
+  <!-- raw long sequence -->
+  <text x="40" y="78" font-size="12" fill="#1e293b" font-weight="600">Raw long sequence → split by time gap:</text>
+  <g font-size="10.5">
+    <rect x="40" y="90" width="44" height="26" rx="5" fill="#e8ecff"/><text x="62" y="107" text-anchor="middle" fill="#4A6CF7">Pant</text>
+    <rect x="90" y="90" width="44" height="26" rx="5" fill="#e8ecff"/><text x="112" y="107" text-anchor="middle" fill="#4A6CF7">Pant</text>
+    <rect x="150" y="90" width="44" height="26" rx="5" fill="#cbd5e1"/><text x="172" y="107" text-anchor="middle" fill="#475569">Gap</text>
+    <rect x="200" y="90" width="44" height="26" rx="5" fill="#e8ecff"/><text x="222" y="107" text-anchor="middle" fill="#4A6CF7">Ring</text>
+    <rect x="250" y="90" width="44" height="26" rx="5" fill="#e8ecff"/><text x="272" y="107" text-anchor="middle" fill="#4A6CF7">Ring</text>
+  </g>
+
+  <!-- sessions -->
+  <rect x="40" y="135" width="150" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s12)"/>
+  <text x="115" y="158" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700">Session Q₁</text>
+  <text x="115" y="178" text-anchor="middle" font-size="11" fill="#64748b">Pants ×2</text>
+  <rect x="210" y="135" width="150" height="56" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s12)"/>
+  <text x="285" y="158" text-anchor="middle" font-size="12" fill="#1e293b" font-weight="700">Session Q₂</text>
+  <text x="285" y="178" text-anchor="middle" font-size="11" fill="#64748b">Rings ×2</text>
+
+  <line x1="115" y1="116" x2="115" y2="133" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+  <line x1="285" y1="116" x2="285" y2="133" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+
+  <!-- session interest extractor (self-attention) -->
+  <rect x="40" y="215" width="320" height="60" rx="8" fill="#10b981" filter="url(#s12)"/>
+  <text x="200" y="240" text-anchor="middle" font-size="11.5" fill="#ffffff" font-weight="700">① Session Interest Extractor (Self-Attention)</text>
+  <text x="200" y="261" text-anchor="middle" font-size="11" fill="#ffffff">Aggregate within session → I₁, I₂</text>
+
+  <line x1="115" y1="191" x2="150" y2="213" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+  <line x1="285" y1="191" x2="250" y2="213" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+
+  <!-- Bi-LSTM interaction -->
+  <rect x="40" y="295" width="320" height="58" rx="8" fill="#f59e0b" filter="url(#s12)"/>
+  <text x="200" y="319" text-anchor="middle" font-size="12.5" fill="#1e293b" font-weight="700">② Session Interest Interaction (Bi-LSTM)</text>
+  <text x="200" y="340" text-anchor="middle" font-size="11" fill="#1e293b">Evolution across sessions → H₁, H₂</text>
+
+  <line x1="200" y1="275" x2="200" y2="293" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+
+  <!-- activation -->
+  <rect x="410" y="215" width="340" height="138" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s12)"/>
+  <rect x="410" y="215" width="340" height="32" rx="8" fill="#4A6CF7"/>
+  <text x="580" y="237" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">③ Session Interest Activation (Attention)</text>
+  <text x="430" y="276" font-size="11.5" fill="#1e293b">Uᴵ = Σ aₖᴵ·Iₖ (extractor output)</text>
+  <text x="430" y="300" font-size="11.5" fill="#1e293b">Uᴴ = Σ aₖᴴ·Hₖ (interaction output)</text>
+  <text x="430" y="324" font-size="11" fill="#64748b">Weighted by target item, concat as final repr.</text>
+
+  <line x1="360" y1="324" x2="408" y2="295" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+  <line x1="360" y1="270" x2="408" y2="255" stroke="#64748b" stroke-width="2" marker-end="url(#a12)"/>
+
+  <text x="400" y="400" text-anchor="middle" font-size="11" fill="#64748b">Homogeneous within a session (self-attention) · heterogeneous across sessions (Bi-LSTM) · focused by target (attention)</text>
+</svg>

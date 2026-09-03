@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="540" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Behavioral Targeting: from Raw Behaviors to Label Scores</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">Offline: train weights w → online: recursive scoring λ → threshold decision to assign label → reach/CTR curve evaluation</text>
+
+  <!-- Stage 1: raw behaviors -->
+  <g filter="url(#shadow)">
+    <rect x="28" y="92" width="150" height="170" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="103" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Raw Behaviors b</text>
+    <text x="42" y="146" font-size="12" fill="#1e293b">· Page browsing (URL)</text>
+    <text x="42" y="170" font-size="12" fill="#1e293b">· Search (query terms)</text>
+    <text x="42" y="194" font-size="12" fill="#1e293b">· Ad clicks (landing page)</text>
+    <text x="42" y="218" font-size="12" fill="#1e293b">· Purchases / conversions (item)</text>
+    <text x="42" y="242" font-size="11" fill="#64748b">Organized as event streams keyed by user ID</text>
+  </g>
+
+  <!-- Stage 2: labeling -->
+  <g filter="url(#shadow)">
+    <rect x="212" y="92" width="150" height="170" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="287" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Labeling x_tn(b)</text>
+    <text x="226" y="146" font-size="12" fill="#1e293b">Browsing → contextual labeling</text>
+    <text x="226" y="170" font-size="12" fill="#1e293b">Search → search-engine expansion</text>
+    <text x="226" y="194" font-size="12" fill="#1e293b">or vertical taxonomy (e.g., e-commerce)</text>
+    <text x="226" y="218" font-size="12" fill="#1e293b">Clicks → landing-page content</text>
+    <text x="226" y="242" font-size="11" fill="#64748b">Intensity set to 1, mapped onto label t</text>
+  </g>
+
+  <!-- Stage 3: decay accumulation -->
+  <g filter="url(#shadow)">
+    <rect x="396" y="92" width="170" height="170" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="481" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Time-Decay Accumulation</text>
+    <text x="481" y="150" text-anchor="middle" font-size="14" fill="#10b981" font-weight="bold">x̃(d) = α·x̃(d−1) + x(d)</text>
+    <text x="410" y="180" font-size="12" fill="#1e293b">Rectangular window (sliding window) vs</text>
+    <text x="410" y="202" font-size="12" fill="#1e293b">exponential window (time decay)</text>
+    <text x="410" y="234" font-size="11" fill="#64748b">Engineering prefers the latter: only store</text>
+    <text x="410" y="252" font-size="11" fill="#64748b">yesterday's accumulation + today's behavior</text>
+  </g>
+
+  <!-- Stage 4: GLM scoring -->
+  <g filter="url(#shadow)">
+    <rect x="600" y="92" width="172" height="170" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+    <text x="686" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">GLM Scoring</text>
+    <text x="686" y="150" text-anchor="middle" font-size="13" fill="#f59e0b" font-weight="bold">h ~ Poisson(λ_t)</text>
+    <text x="686" y="174" text-anchor="middle" font-size="13" fill="#f59e0b" font-weight="bold">log λ_t = w_t · x̃</text>
+    <text x="614" y="202" font-size="12" fill="#1e293b">Training: one set of w per label</text>
+    <text x="614" y="224" font-size="12" fill="#1e293b">w_tn tunes the weights of each</text>
+    <text x="614" y="246" font-size="12" fill="#1e293b">behavior type (search/browsing/purchase)</text>
+  </g>
+
+  <!-- Arrows between stages -->
+  <g stroke="#64748b" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="178" y1="177" x2="206" y2="177"/>
+    <line x1="362" y1="177" x2="390" y2="177"/>
+    <line x1="566" y1="177" x2="594" y2="177"/>
+  </g>
+
+  <!-- Online decision row -->
+  <rect x="28" y="292" width="744" height="96" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Decision process (online, no Poisson needed): compute λ → compare with threshold τ → assign label t</text>
+  <text x="400" y="344" text-anchor="middle" font-size="13" fill="#1e293b">Online cache recursive update: λ(d) = α·λ(d−1) + Σ_n w_tn · x_tn(d)</text>
+  <text x="400" y="368" text-anchor="middle" font-size="12" fill="#64748b">Store only scores, multiply by α, then add today's behaviors — far lighter than recomputing all λ each cycle; fast feedback on short-term interests</text>
+
+  <!-- Evaluation row -->
+  <rect x="28" y="412" width="744" height="72" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+  <text x="400" y="438" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Evaluation: reach/CTR curve (must retain each user's score on the label, not the binary result)</text>
+  <text x="400" y="462" text-anchor="middle" font-size="12" fill="#64748b">The curve should decrease monotonically: smaller reach → higher CTR; far-right CTR is fixed at the full-population level; the steeper the head, the stronger the discrimination (echoing 12.5's AUC and calibration)</text>
+
+  <text x="400" y="516" text-anchor="middle" font-size="12" fill="#64748b">Training-set length a multiple of 7 (eliminates weekday periodicity) · smaller time slices give faster feedback on label freshness</text>
+</svg>

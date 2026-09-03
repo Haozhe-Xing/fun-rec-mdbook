@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>计费模式与核心指标 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~40 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="计费模式与核心指标"><a class="header" href="#计费模式与核心指标">计费模式与核心指标</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 建议先读完 12.1（广告生态全景），了解广告主、媒体、平台在交易链路中的角色分工；本章 12.2.4 的点击率建模与 Part 3 的排序模型一脉相承，若你已读过 3.x 的 CTR 模型，可以把本章看作它们在广告场景下的「经济学重述」。</p>
+</blockquote>
+<p>你在搜索框里输入「跑鞋」，结果页的第一条是广告——它凭什么出现在那个位置？平台这一次展示预期收多少钱？这些问题背后没有玄妙的算法黑盒，答案写在两样东西里： <strong>计费模式（Billing Model）</strong> 决定谁在哪个环节付钱， <strong>核心指标（Metrics）</strong> 决定系统用什么尺子比较候选广告。</p>
+<p>推荐系统优化的是用户体验与业务目标的模糊组合，而广告系统从第一天起就把「钱」写进了目标函数。计费模式像一部 <strong>宪法</strong> ：它规定了广告主与媒体之间风险的归属，此后系统里的检索、排序、流量预测、探索策略，都必须在这部宪法的框架下工作。换一种计费模式，整个技术栈的形态都会随之改变。</p>
+<p>本章我们从广告主与媒体的价值模型冲突出发，走过从 CPT 到 CPS 的计费谱系，建立以 eCPM 为统一度量衡的排序逻辑，再进入合约广告的在线分配与点击率预估的工程细节。这些内容是 12.3 竞价机制的地基——先弄清「怎么算账」，才能理解「怎么定价」。</p>
+<p>读完本章，你将能够：</p>
+<ul>
+<li>列举 CPT/CPD、CPM、CPC、CPA/CPS 各计费模式的计费公式、关键决策方与风险归属</li>
+<li>用 CTR、CVR、ROI 三个指标刻画广告效果，并用 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">eCPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">pCTR</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">bid</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span></span></span></span> 完成跨计费模式的排序计算</li>
+<li>说明品牌广告与效果广告在计费方式与交易方式上的分野</li>
+<li>描述 <strong>担保式投送（GD）</strong> 与 <strong>在线分配</strong> 的二部图结构及其求解思路</li>
+<li>解释点击率预估为何是回归问题而非排序问题，以及冷启动 back-off 与 E&amp;E 的应对策略</li>
+<li>完成 5 道分层练习题，打通从指标换算到 GSP 支付的计算链路</li>
+</ul>
+<hr />
+<h2 id="1220-为什么计费模式是广告系统的宪法"><a class="header" href="#1220-为什么计费模式是广告系统的宪法">12.2.0 为什么计费模式是广告系统的「宪法」</a></h2>
+<p>任何商业产品都要回答「怎么收钱」，但在线广告的特别之处在于： <strong>计费单位的选择，本质上是在分配「效果不确定性」带来的风险</strong>。广告从展示到点击、再到转化，每往后走一步，不确定性都更大；在哪一步收费，就等于把这一步之后的所有风险推给了某一方。所以说计费模式是广告系统的宪法——它先于一切算法，定义了博弈的规则。</p>
+<p>先站在 <strong>广告主（Advertiser）</strong> 这一边看。广告主的价值模型核心是 <strong>按最终效果反推单次广告的价值</strong>。假设卖一辆车的营销成本是 2000 元，而从广告展示到最终完成购买的转化率是 0.1%，那么一次广告展示的价值就是 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2000</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">0.1%</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 元——无论媒体觉得自己的首页 banner 多么黄金，广告主心里那杆秤只认这个数。现实中的计算当然更复杂，但原理不变：从钱的方向倒推。按这个逻辑， <strong>CPA（Cost Per Action，按行为付费）</strong> 甚至 <strong>CPS（Cost Per Sales，按销售付费）</strong> 的计价模式是最贴合广告主价值模型的。</p>
+<p>再站到 <strong>媒体/供应方（Supply Side）</strong> 这一边。媒体关心的不是广告主能卖多少车，而是 <strong>单位广告资源能产生多少收入</strong>——首页 banner 今天值多少钱，明天还值多少钱。由此自然产生了 <strong>CPT（Cost Per Time，包时段付费）</strong>、<strong>CPM（Cost Per Mille，千次展示付费）</strong> 这类「卖资源」的计价模型：把广告位当作待出租的商铺，计量直接、收入稳定。</p>
+<p>显然，双方对「广告资源用量」的认知是不同的，必然存在博弈——要警惕的一个误区是，媒体利益与广告主利益是 <strong>相关博弈</strong> 的关系，而非一致。博弈的最终结果，是广告计量演化出两大类。<strong>效果广告（Direct Response）</strong> ：供应方根据广告效果计算广告量，这种模式最初是从广告主利益出发的——早期它确实可能伤害供应方，因为广告创意不佳时，即使分配了大量曝光，点击率依然很低。但随着技术发展，这一问题已被克服：系统通过对广告点击率等数据的分析，自动降低这些「低利润」广告的投放比例，或要求广告主提高出价。<strong>品牌广告（Brand Awareness）</strong> ：根据展示量计费，这对供应方来说更直接，对没有直接转化目标的广告需求（如新品认知）也更适用。</p>
+<h3 id="-mental-model-商铺出租的三种收租方式"><a class="header" href="#-mental-model-商铺出租的三种收租方式">🧠 Mental Model: 商铺出租的三种收租方式</a></h3>
+<blockquote>
+<p>把媒体想成房东。CPT 是「整栋包租」：租客付固定租金，生意好坏与房东无关，风险全在租客。CPC 是「按进店人数收费」：房东得想办法引来可能进店的人流，租客则为每个进店的人买单。CPS 则是「纯提成伙计」：卖出才分成，卖不出分文不取——风险全在替他吆喝的平台一方。计费模式谱系上的每一次移动，本质上都是风险在房东与租客之间的重新分配。</p>
+</blockquote>
+<blockquote>
+<p><strong>Analysis:</strong> 计费模式的选择并非纯技术决策，而取决于双方的数据能力与对转化链路的掌控。当平台对「从展示到成交」的全链路有足够掌控力、且广告主（卖家）的服务流程大体相同时——例如淘宝的广告平台——CPA/CPS 类结算才真正可行。链路越不可控，计费单位就越要往展示端收缩。</p>
+</blockquote>
+<hr />
+<h2 id="1221-计费模式谱系从买时段到买销售"><a class="header" href="#1221-计费模式谱系从买时段到买销售">12.2.1 计费模式谱系：从买时段到买销售</a></h2>
+<p>有了「风险归属」这把钥匙，我们可以把主流计费模式排成一条谱系：从按时间买断，到按展示、按点击、按行为、按销售付费。计费单位离最终转化越近，广告主的价值模型越贴合，平台承担的风险也越大。</p>
+<p><strong>CPT（Cost Per Time，包时段付费）与 CPD（Cost Per Day，包天付费）</strong> 是谱系最左端。国内很多网站至今仍按「一个月多少钱」的固定收费模式售卖广告位，阿里妈妈的按周计费广告、门户网站的包月广告都属于此类。它粗糙——展示给了谁、有没有人看，一概不知，无法保障客户的利益；但也省心，能给网站带来稳定收入，因此常见于 <strong>合约的品牌广告</strong> ，出现在各个网站的核心 banner 模块。相比 CPS，CPD 对合作的基础条件没有过高要求、容易促成双方合作；劣势在于长期合作中不如 CPS 实时有效。</p>
+<p><strong>CPM（Cost Per Mille，千次展示付费）</strong> 向效果迈出了第一步：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">展现</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">消耗</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span></span></span></span></span></p>
+<p>其中「消耗」即广告主投放广告的花费。CPM 意为每千人印象成本，按曝光量收费，让广告开始向「面向效果」方向进化，也是 RTB（实时竞价）系统的常见计费方式。<strong>CPC（Cost Per Click，每点击付费）</strong> 再进一步：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPC</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">点击</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">消耗</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>关键词广告等依据效果付费的形式一般采用这种定价模式，同样是 RTB 中的主流计费方式。<strong>CPA（Cost Per Action，按行为付费）</strong> 则根据每个访问者对网络广告所采取的行动收费，行为有特别定义——形成一次交易、获得一个注册用户等。<strong>CPS（Cost Per Sales，按销售付费）</strong> 按实际销售产品的提成换算广告刊登金额，广告主为规避广告费用风险，按照点击之后产生的实际销售提成付费，常见于网络联盟中各个小网站的计费。</p>
+<p><strong>dCPM（dynamic CPM，动态千次展示付费）</strong> 值得单独一说。它是 DSP（需求方平台）普遍采用的结算体系：与市场上讲的固定 CPM（相应地称为 flat CPM）不同，dCPM 基于 RTB 技术诞生，指的是 <strong>每一次 impression 的出价都是变化的</strong>。其每次出价均依据广告主广告投放的效果（一般是 CPS）来实时计算，以得出对广告主最有利的价格，从而保证广告主的利益；同时又因为以 impression 与媒体结算，也确保了媒体的收益。一句话概括：对媒体按展示结算、对广告主按效果优化——dCPM 正是我们在 12.2.0 说的双方博弈的一个工程化解法。</p>
+<p><img src="../images/part12-billing-spectrum.svg" alt="计费模式谱系：横轴从 CPT 到 CPS，广告主风险递减、平台风险递增，CPC 居中平衡" /></p>
+<p>如图，谱系左端风险压在广告主肩上，右端压在平台肩上，CPC 居中平衡。更精确地说，可以用「谁做关键决策」来标注风险归属： <strong>CPM 市场里 eCPM 固定，相当于决策（与风险）全部交给广告主</strong>——平台保证展示，展示之后能否带来点击与转化，平台概不负责。<strong>CPC 市场是折中</strong> ：点击价值由广告主判断（体现在出价），点击率则由更了解流量的平台动态预估（如 Google）——平台用 CTR 预测来管理自己承担的那部分风险。<strong>CPA/CPS 市场两者均动态，相当于平台做决策，风险归于平台</strong> ；淘宝广告平台采取此类结算，正因为其广告主（卖家）的服务流程大致相同，平台对转化链路的掌控足够强。</p>
+<div class="table-wrapper"><table><thead><tr><th>计费模式</th><th>计费单位</th><th>谁做关键决策</th><th>风险归属</th><th>典型场景</th></tr></thead><tbody>
+<tr><td>CPT/CPD</td><td>时段 / 天</td><td>媒体定价，广告主买断</td><td>广告主</td><td>品牌包段、核心 banner</td></tr>
+<tr><td>CPM</td><td>千次展示</td><td>平台保量，eCPM 固定</td><td>广告主</td><td>RTB 展示竞价、GD 合约</td></tr>
+<tr><td>CPC</td><td>每次点击</td><td>广告主定点击价值，平台预估 CTR</td><td>双方共担（折中）</td><td>关键词广告、广告网络</td></tr>
+<tr><td>CPA</td><td>每次行为</td><td>平台</td><td>平台</td><td>服务流程标准化的生态（如淘宝）</td></tr>
+<tr><td>CPS</td><td>每次销售</td><td>平台</td><td>平台</td><td>网络联盟、返利</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 经济学有句话叫「价格围绕价值上下波动」，好的定价机制应当让价格无限逼近价值。但广告主与供应方对「价值」的认知天然错位，静态定价谈不拢，于是市场给出的答案是——让市场自己定价。竞价模式是目前双方都能认可的定价方式，其核心问题是如何让更多的需求方参与竞价、如何提供更细粒度的竞价，这正是 12.3 的主题。</p>
+</blockquote>
+<hr />
+<h2 id="1222-核心指标体系ecpm-统一度量衡"><a class="header" href="#1222-核心指标体系ecpm-统一度量衡">12.2.2 核心指标体系：eCPM 统一度量衡</a></h2>
+<p>计费模式定了规矩，还需要一套指标来度量「规矩执行得怎么样」。三个最基础的效果指标构成了广告数据分析的通用语言。</p>
+<p><strong>CTR（Click-Through Rate，点击率）</strong> 衡量一个广告在多次展现中用户的平均点击次数：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CTR</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">展现量</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">点击量</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><strong>CVR（Conversion Rate，转化率）</strong> 衡量用户的点击和最后下单之间的关系：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CVR</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">点击量</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">下单量</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><strong>ROI（Return On Investment，投资回报率）</strong> 衡量广告主花钱打广告带来的成交额与广告花费之间的关系：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">ROI</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">消耗金额</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">下单金额</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>这三个指标层层递进：CTR 是平台的「供给侧指标」——它决定了流量质量；CVR 连接点击与转化，刻画需求端的成色；ROI 则是广告主最终投票的依据——ROI 长期低于 1（或行业可接受阈值）的广告主会用脚投票，撤走预算。</p>
+<p>问题来了：当 CPC 计费的广告和 CPM 计费的广告同场竞技时，平台怎么比较它们？答案是 <strong>eCPM（effective CPM，千次展示期望收益）</strong>——每千次展示的期望收益，它把所有计费模式折算到同一把尺子上：</p>
+<ul>
+<li><strong>CPC 计费下</strong> ：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">eCPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">pCTR</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">bid</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span></span></span></span>。其中 pCTR 是平台对这次展示点击率的预估，bid 是广告主按点击出的价；两者相乘即「每次展示的期望收入」，再乘 1000 折算到千次展示。</li>
+<li><strong>CPM 计费下</strong> ：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">eCPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">出价</span></span></span></span></span>。千次展示本身就要付这么多钱，期望收益就是出价本身。</li>
+</ul>
+<p>于是平台的排序逻辑水到渠成： <strong>对每次展示机会，把所有候选广告折算成 eCPM，按 eCPM 降序排列</strong> ，依次分配展示位。看一个数值例子：广告 A 出价 2.0 元、pCTR 3%，广告 B 出价 5.0 元、pCTR 1%，广告 C 出价 1.0 元、pCTR 8%。三个广告的 eCPM 分别是 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">3%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span> 元、<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">1%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">50</span></span></span></span> 元、<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">8%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">80</span></span></span></span> 元。出价最高的 B 反而垫底——它的点击概率太低，赢下这次展示对平台而言并不划算；最终 C 胜出。</p>
+<p><img src="../images/part12-ecpm-rank.svg" alt="eCPM 排序决策流程：多候选广告经 pCTR×bid 折算为 eCPM 后降序排列，数值例中广告 C 胜出" /></p>
+<p>如图所示，eCPM 是广告市场的「通用货币」：无论候选来自哪种计费模式，先兑换成 eCPM 才能同台比较。这也解释了为什么 12.2.0 说计费模式是宪法——eCPM 公式的形态完全由计费模式决定，而 pCTR 是否准确（12.2.4）直接决定这把尺子准不准。</p>
+<h3 id="-mental-model-机场货币兑换柜台"><a class="header" href="#-mental-model-机场货币兑换柜台">🧠 Mental Model: 机场货币兑换柜台</a></h3>
+<blockquote>
+<p>想象一个免税店同时收美元、欧元、日元。收银台不会拿三种货币直接比大小，而是先按汇率全部折成美元再标价。eCPM 就是广告交易的汇率柜台：CPC 的「美元」、CPM 的「欧元」、CPA 的「日元」，统统折成「每千次展示期望多少收益」。汇率（pCTR、bid）一旦算错，标价就失真——这正是下一节 CTR 预估的分量所在。</p>
+</blockquote>
+<p>最后把 12.2.0 的两大广告形态在此收拢： <strong>品牌广告按展示量计费、以合约方式交易</strong> （CPT/CPD/CPM，注重长期影响）， <strong>效果广告按效果计费、以竞价方式交易</strong> （CPC/CPA/CPS，追求短期转化行为）。两类广告在投放时机、创意形态、系统模块上分流，但只要进入同一个广告位，平台仍然用 eCPM 这把尺子统一裁决。</p>
+<hr />
+<h2 id="1223-合约广告与在线分配先保量再保质"><a class="header" href="#1223-合约广告与在线分配先保量再保质">12.2.3 合约广告与在线分配：先保量，再保质</a></h2>
+<p>竞价是现代广告的主角，但在它之前，合约广告统治了互联网广告的第一个十年，至今仍占据高端品牌预算。理解它是理解整个广告系统演化的必要一环。</p>
+<p><strong>担保式投送（Guaranteed Delivery, GD）</strong> 是合约广告的核心机制，其要点可以概括为： <strong>基于合约的广告机制，约定的展示量未完成需要补偿</strong> ；采用「量优先于质」的方式——先把量保住，再谈优化；以 <strong>CPM 结算</strong> ；投送由 <strong>服务端决策</strong> （而非竞价时实时决定）。GD 的受众定向建立在两项预测技术之上： <strong>点击率预测</strong> 与 <strong>流量预测</strong>——前者估计「展示给某人群的效果」，后者估计「未来某类流量有多少」，二者共同支撑「能否在合约期内完成保量」的承诺。</p>
+<p>合约广告的技术核心是 <strong>在线分配（Online Allocation）</strong> 问题：把广告与流量的匹配建模为 <strong>Ad → (Context, User) 的二部图优化</strong>。图的一侧是携带定向条件的广告合约，另一侧是 (上下文, 用户) 联合刻画的一次次流量供给；每次展示到来时，系统要在「满足各广告主合约量」的约束下完成分配。目标函数可根据需要调整（如最大化总收益或总点击），经典解法是 <strong>通过构造对偶问题求解</strong>——把每个合约的量约束转化为对偶变量（影子价格），在线分配时按「收益减影子价格」的净值得失做决策。</p>
+<p><img src="../images/part12-gd-allocation.svg" alt="合约广告在线分配：广告合约与 (Context, User) 流量构成二部图，边代表定向匹配，约束为各合约保量" /></p>
+<p>如图，合约①（汽车品牌，定向男性 25–40 岁）可以匹配 (体育频道, 男性用户) 的流量，也能从 (首页信息流, 全量用户) 中筛出定向人群；合约③定向不限，则与所有供给节点相连。分配算法要在流量预测给出的供给量之上，为每条流量选一个「既能完成保量、又尽量高价值」的合约。</p>
+<p><strong>流量预测</strong> 本身是个有趣的问题：它可以视为以广告 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 为 Query、对 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 空间进行检索的 <strong>反向检索问题</strong>。困难在于 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 联合空间规模过大，需对 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>、<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> 分别处理——这与正向的「以用户请求检索广告」恰好是同一枚硬币的两面。</p>
+<blockquote>
+<p><strong>Analysis:</strong> 在线分配与竞价（12.3）的分工可以这样理解：合约的定向粒度粗（按人群包、频道售卖），竞价的定向粒度细（到单次展示、单次出价）；合约卖确定性（保量、补偿），竞价卖不确定性（价高者得）。GD 的缺点是受众定向分类不够细致，且合约销售中品牌广告主对曝光有<strong>独占要求</strong>（如竞品排斥），进一步收紧了分配的自由度。当一个市场的流量供给和需求都足够稠密时，粗粒度合约会逐步让位于细粒度竞价——这就是广告形态从展示量合约走向 RTB 的经济学动因。</p>
+</blockquote>
+<hr />
+<h2 id="1224-点击率预测承接排序模型的新使命"><a class="header" href="#1224-点击率预测承接排序模型的新使命">12.2.4 点击率预测：承接排序模型的新使命</a></h2>
+<p>12.2.2 已经埋下伏笔：CPC 计费下 eCPM = pCTR × bid × 1000，点击率预估的准确度直接决定排序这把尺子准不准。现在我们把 CTR 预估当作一个独立的建模问题来看——它与你在 Part 3 见过的排序模型既同源、又不同命。</p>
+<p>CTR 预测的标准形式是概率模型 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord text"><span class="mord">click</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>：给定广告 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>、用户 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>、上下文 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>，估计用户点击的概率。你可能会想：这不就是 Part 3 的点击率模型换个场景吗？模型结构确实可以复用，但 <strong>任务性质变了——回归比排序更合适</strong>。推荐系统的排序模型只需保证候选间相对顺序正确（AUC 高即可），而广告的实际排序依据是 eCPM：CTR 预估要 <strong>乘以出价</strong> 之后再比较。一个系统性高估CTR 的模型，会把低出价广告推到不该有的高位；系统性低估则相反。换言之，广告系统需要的是 <strong>尽可能准确的 CTR 绝对值</strong> ，而不仅是候选间的相对排序正确——这是 CTR 建模区别于推荐排序的第一性原理。</p>
+<h3 id="新广告冷启动层级结构-back-off"><a class="header" href="#新广告冷启动层级结构-back-off">新广告冷启动：层级结构 back-off</a></h3>
+<p>新广告上线时没有任何点击统计，pCTR 从何而来？答案是 <strong>利用广告的层级结构</strong> ： <strong>creative → solution → campaign → advertiser</strong> （创意 → 投放单元 → 广告计划 → 广告主）。新创意没有统计，但它所属的 campaign 可能有；campaign 也没有，就再往上退到 advertiser 一层，用同广告主历史广告的 CTR 及广告标签来估计。这种 <strong>back-off（回退）</strong> 策略与推荐系统处理新物品的思路一致：用结构先验弥补统计缺失。</p>
+<h3 id="动态特性动态特征与在线学习的权衡"><a class="header" href="#动态特性动态特征与在线学习的权衡">动态特性：动态特征与在线学习的权衡</a></h3>
+<p>广告市场的分布变化极快——素材疲劳、季节波动、突发热点都会让昨天训练的模型今天失准。应对之道有两个方向，各有代价。<strong>动态特征</strong> ：在标签组合维度上聚合点击反馈统计，作为特征喂给模型（即多层次点击反馈），特点是「快速调整特征」——模型不动、特征实时变；其优势是工程架构扩展性强、对新 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 组合有较强的 back-off，缺点是在线特征存储量大、更新要求高。<strong>在线学习</strong> ：让模型本身随新数据流式更新，「快速调整模型」，代价是训练与服务的工程复杂度。工业系统常两者并用：动态特征兜住短周期波动，在线学习跟上中长期漂移。</p>
+<h3 id="探索与利用为长尾组合积累统计量"><a class="header" href="#探索与利用为长尾组合积累统计量">探索与利用：为长尾组合积累统计量</a></h3>
+<p>无论特征多好、模型多新，都绕不开一个冷峻的事实：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 组合空间近乎无限，绝大多数组合从未获得过展示，其 CTR 无从估计。<strong>E&amp;E（Exploration &amp; Exploitation，探索与利用）</strong> 框架的任务就是：为长尾 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 组合创造合适的展示机会以累积统计量，从而更准确地估计 CTR、提升整体广告收入。探索不是做慈善——今天的「浪费」是一次投资，为的是明天更准的预估；但探索的量和有效性需要严格控制，否则直接侵蚀当下收益。三种经典策略：</p>
+<ul>
+<li><strong>ε-greedy</strong> ：以 ε 比例的流量随机探索，其余流量利用当前最优。实现最简单，探索效率也最低。</li>
+<li><strong>UCB（Upper Confidence Bound，上置信界）</strong> ：为每个候选计算期望收益的上置信界，选 UCB 最大的 arm；被选择次数越多，UCB 越接近真实期望收益——天然兼顾「没试过的要多试」与「表现好的要多用」。</li>
+<li><strong>Contextual Bandit（上下文老虎机）</strong> ：对每次展示，用 arm 的 <strong>特征矢量</strong> 代替 arm 本身做决策，实现降维——不必为每个具体广告单独估计，而是在特征空间中泛化，恰好呼应 back-off 的层级思想。</li>
+</ul>
+<blockquote>
+<p><strong>Analysis:</strong> E&amp;E 的三种策略在广告场景中的适用性：ε-greedy 适合作为保底策略或冷启动初期；UCB 在候选集合较小时收益明确，但候选数巨大时上界计算与存储都是负担；Contextual Bandit 用特征降维绕开了候选爆炸，是现代广告系统探索模块的主流形态。共同的原则是：探索流量必须「花在刀刃上」——优先探索那些一旦估准、期望收益提升最大的长尾组合。</p>
+</blockquote>
+<p>到这里，一次广告请求的决策链已经完整：候选广告经定向检索进入排序，pCTR 模型给出点击概率，与出价相乘折算成 eCPM，降序排列后由高到低分配展示。但请注意——<strong>eCPM 排序只是入场券，它决定谁上场；真正决定平台「收多少钱」的，是竞价机制</strong>。同一个 eCPM 第一名，按 GSP（广义第二高价）机制支付的价格可能与自己的出价相去甚远。谁该付多少、为什么诚实出价可能是（也可能不是）最优策略、VCG 如何用「外部性」定价——这些问题属于机制设计的领地，我们在 12.3 展开。</p>
+<hr />
+<h2 id="-common-mistakes-in-122"><a class="header" href="#-common-mistakes-in-122">⚠️ Common Mistakes in 12.2</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>把 CTR 预估当排序问题</td><td>「AUC 够高就行，绝对值无所谓」</td><td>广告按 eCPM 排序，CTR 要乘以出价；系统性高估/低估都会改变排序与计费</td><td>按回归/校准问题评估，关注预估绝对值与真实值的偏差</td></tr>
+<tr><td>2</td><td>混淆 eCPM 与 CPM</td><td>「eCPM 就是千次展示成本」</td><td>CPM 是计费模式（成本口径），eCPM 是千次展示 <strong>期望收益</strong> （收入口径），是排序的统一度量衡</td><td>记住 e = expected / effective，eCPM 服务于平台排序决策</td></tr>
+<tr><td>3</td><td>认为 CPA/CPS 对平台更优</td><td>「按效果收费平台肯定赚得多」</td><td>CPA/CPS 下点击率与价值皆动态，决策与风险全归平台，转化链路不可控时平台血亏</td><td>只有链路掌控强、服务流程标准化的生态（如淘宝）才适用</td></tr>
+<tr><td>4</td><td>认为越精准的广告市场价值越大</td><td>「精准投放 + 大数据必然显著提高营收」</td><td>媒体与广告主是相关博弈关系，精准投放的收益归属取决于计费与定价机制</td><td>从风险归属与博弈角度分析每一方的激励</td></tr>
+<tr><td>5</td><td>忽视 dCPM 与 flat CPM 的区别</td><td>「dCPM 不就是 CPM 吗」</td><td>flat CPM 千次价格固定；dCPM 每次印象的出价都随投放效果实时变化</td><td>区分「与媒体按展示结算」和「对广告主按效果优化」两个口径</td></tr>
+<tr><td>6</td><td>合约分配只做 CTR 预测、不做流量预测</td><td>「模型够准就能完成保量」</td><td>GD 的量约束靠流量预测支撑；供给估计错了，保量承诺必然落空</td><td>在线分配 = 点击率预测 + 流量预测，二者缺一不可</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>计费模式即宪法</td><td>计费单位决定风险归属：广告主按效果反推价值，媒体关心单位资源收入</td><td>一切广告算法都在计费模式划定的博弈规则下工作</td></tr>
+<tr><td>计费谱系</td><td>CPT/CPD → CPM → CPC → CPA/CPS，风险从广告主渐移向平台</td><td>选错计费模式的平台会把风险揽到自己身上</td></tr>
+<tr><td>三大指标</td><td>CTR=点击/展现，CVR=下单/点击，ROI=下单金额/消耗</td><td>广告数据分析的通用语言</td></tr>
+<tr><td>eCPM</td><td>CPC 下 = pCTR×bid×1000；CPM 下 = 出价；按其降序排序</td><td>跨计费模式的统一度量衡，排序的尺子</td></tr>
+<tr><td>GD 与在线分配</td><td>保量、未完成需补偿、量优先于质、CPM 结算；Ad→(Context,User) 二部图，对偶求解</td><td>合约广告的技术核心，与竞价形成粗/细粒度互补</td></tr>
+<tr><td>CTR 预估</td><td>回归而非排序（需要绝对值准确）；冷启动用 creative→advertiser 层级 back-off；动态特征 vs 在线学习；E&amp;E 积累长尾统计</td><td>eCPM 排序的准确性完全依赖 pCTR 的校准</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: CPC 计费下，平台如何管理自己承担的风险？</strong></p>
+<blockquote>
+<p>A: 平台对点击率更了解（如 Google），通过 CTR 预估把「展示后会不会被点击」的不确定性管起来：对 pCTR 低的广告降低展示比例或要求更高出价。这正是 CPC 被称为风险折中点的原因——广告主判断点击价值并出价，平台预估点击率并兜住流量质量。</p>
+</blockquote>
+<p><strong>Q2: 为什么 CPM 计费下 eCPM 就等于出价？</strong></p>
+<blockquote>
+<p>A: CPM 计费按千次展示收费，广告主的出价本身就是「千次展示愿意付的钱」，也就是平台千次展示的期望收益，无需再乘 pCTR。这也意味着 CPM 市场的 eCPM 固定，决策与风险全部交给了广告主。</p>
+</blockquote>
+<p><strong>Q3: 合约广告与竞价广告的本质区别是什么？</strong></p>
+<blockquote>
+<p>A: 三点：交易方式上，合约是提前协商的担保式售卖，竞价是实时交易；计费上，合约以 CPM 展示量结算、量优先于质，竞价按 CPC/CPA 等效果计费；定向粒度上，合约按人群包/频道等粗粒度售卖且品牌主有独占要求，竞价可细到单次展示。市场供需越稠密，越有利于细粒度竞价。</p>
+</blockquote>
+<h3 id="-前后关联"><a class="header" href="#-前后关联">🔗 前后关联</a></h3>
+<ul>
+<li><strong>12.1</strong> （广告生态全景）中的广告主、媒体、平台角色分工，是本章风险归属分析的前提。</li>
+<li><strong>12.3</strong> （竞价机制）承接本章结尾：eCPM 排序决定谁上场，GSP/VCG 等机制决定收多少钱。</li>
+<li><strong>3.x</strong> （排序模型）的 CTR 模型结构是本章 pCTR 建模的基础，但广告场景对绝对值校准提出了更高要求。</li>
+<li><strong>8.3</strong> （端到端生成式广告）把竞价机制内嵌进生成模型，可视为本章 eCPM 排序与 12.3 竞价机制在前沿架构下的统一。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 12.2.1 — 指标换算</strong> 🟢 Easy</p>
+<p>某电商广告主一天消耗 600 元，获得 150,000 次展示、3,000 次点击、120 个订单，订单总金额 3,600 元。请计算 CPM、CPC、CTR、CVR、ROI。</p>
+<p><strong>Sample Input:</strong> <code>消耗 600 元；展示 150,000；点击 3,000；订单 120；下单金额 3,600 元</code>
+<strong>Sample Output:</strong> <code>CPM = 4 元，CPC = 0.2 元，CTR = 2%，CVR = 4%，ROI = 6</code></p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 直接套用五个指标的公式。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">150000</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">600</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">4</span><span class="mord text"><span class="mord"> </span><span class="mord cjk_fallback">元</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">CPC</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3000</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">600</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">0.2</span><span class="mord text"><span class="mord"> </span><span class="mord cjk_fallback">元</span></span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CTR</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">150000</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3000</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">2%</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">CVR</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3000</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">120</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">4%</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">ROI</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">600</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3600</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span></span></p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>CPM 与 CPC 互为倒数关系换算：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">CTR</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">CPC</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span></span></span></span>，代入 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">2%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0.2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 验证一致。</li>
+<li>ROI = 6 意味着每花 1 元广告费带来 6 元成交额——这是广告主续投的核心依据。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.2.2 — eCPM 排序</strong> 🟡 Medium</p>
+<p>某广告位一次请求收到三个 CPC 计费的候选：广告 A 出价 1.5 元、pCTR 2%；广告 B 出价 6.0 元、pCTR 0.5%；广告 C 出价 3.0 元、pCTR 1.2%。请计算各自的 eCPM 并给出展示顺序。若还有一个 CPM 计费的广告 D 直接出价 40 元（千次展示），它应排在第几位？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> CPC 计费用 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">eCPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">pCTR</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">bid</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span></span></span></span>，CPM 计费 eCPM 即出价。</p>
+<ul>
+<li>A：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">2%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">30</span></span></span></span> 元</li>
+<li>B：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">0.5%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">6.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">30</span></span></span></span> 元</li>
+<li>C：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">1.2%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">36</span></span></span></span> 元</li>
+<li>D：CPM 计费，eCPM = 40 元</li>
+</ul>
+<p>降序排列： <strong>D（40）&gt; C（36）&gt; A（30）= B（30）</strong>。A 与 B eCPM 相同，可按次要规则（如质量分、出价）打破平局。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>eCPM 让不同计费模式的广告同台竞技：D 不需要乘 pCTR，因为它的期望收益与点击无关。</li>
+<li>B 出价最高（6 元）却与出价最低的 A 并列垫底——高出价救不了低点击率。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.2.3 — CTR 预估的校准问题</strong> 🟡 Medium</p>
+<p>模型甲与模型乙在同一个广告位上 AUC 完全相同（候选间相对顺序一致），但模型甲对所有广告的 pCTR 系统性低估一半（真实 CTR 2% 时预估 1%）。在 CPC 计费、存在 CPM 广告竞争的环境下，这会对排序和平台收入造成什么影响？</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> eCPM = pCTR × bid × 1000，pCTR 被低估一半等价于所有 CPC 广告的 eCPM 被砍半。</p>
+<p>排序上：CPC 广告的 eCPM 整体下移，本应胜过高 eCPM CPM 广告（如出价 40 元）的优质 CPC 广告可能落败——例：某广告真实 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">eCPM</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">2%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span>，被低估后只剩 30，输给了 40 元的 CPM 广告。收入上：平台错失期望收益更高的展示，同时低点击率广告的惩罚也被同比例弱化，流量质量下滑。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>这就是「回归比排序更合适」的原因：AUC 衡量相对序，而 eCPM 排序需要 CTR 绝对值准确。</li>
+<li>广告系统对 CTR 模型的校准（calibration）要求，是它区别于推荐排序模型的关键工程约束。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.2.4 — UCB 探索策略</strong> 🔴 Hard</p>
+<p>某 E&amp;E 模块用 UCB 管理两个候选广告的探索。目前总请求 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">200</span></span></span></span> 次：广告甲被选 100 次、平均点击率 0.10；广告乙被选 10 次、平均点击率 0.08。按 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">UCB</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">2</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span> 计算两者的 UCB（<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">200</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5.30</span></span></span></span>），判断下一次展示选谁，并解释为什么平均点击率更低的反而可能胜出。</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 分别计算置信半径 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">2</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span> 再加均值。</p>
+<ul>
+<li>甲：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">5.30/100</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1328em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord">0.106</span></span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.326</span></span></span></span>，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">UCB</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">甲</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0.10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.326</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.426</span></span></span></span></li>
+<li>乙：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">5.30/10</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1328em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord">1.06</span></span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.030</span></span></span></span>，<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">UCB</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">乙</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0.08</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.030</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.110</span></span></span></span></li>
+</ul>
+<p>下一次展示选 <strong>广告乙</strong>。乙平均点击率虽低，但只被试了 10 次，估计的不确定性（置信半径）极大，其真实点击率可能远高于当前观测——UCB 为长尾组合创造展示机会以累积统计量，正是 E&amp;E 的核心动机。随着乙被选择次数增多，其半径收缩，UCB 将逐渐逼近真实期望。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>UCB 项 = 均值 + 不确定度，天然平衡探索（半径大）与利用（均值高）。</li>
+<li>探索的量必须严格控制：本例中若把大部分流量都给乙，短期收入会受损——E&amp;E 是投资而非慈善。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: eCPM 排序 + GSP 支付</strong></p>
+<p>某广告位（CPC 计费）有三个候选：广告 A 出价 3.0 元、pCTR 2%；广告 B 出价 4.0 元、pCTR 1%；广告 C 出价 2.0 元、pCTR 2.5%。(a) 计算 eCPM 并给出排序；(b) 若采用 GSP（广义第二高价）机制，胜者按「下一名的 eCPM 折算到自己计费口径」支付，即支付 CPC = 下一名 eCPM ÷ 胜者 pCTR ÷ 1000，求胜者的实际点击单价；(c) 验证该单价不超过胜者出价（个体理性），并说明 GSP 的完整博弈性质在 12.3 哪里展开。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>(a) A：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">2%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span>；B：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">1%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">40</span></span></span></span>；C：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.0833em;"></span><span class="mord">2.5%</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">50</span></span></span></span>。排序 A &gt; C &gt; B。</p>
+<p>(b) 胜者 A 支付 = 下一名 C 的 eCPM ÷ (A 的 pCTR × 1000) = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">50/20</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.5</span></span></span></span> 元/点击。</p>
+<p>(c) <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">2.5</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3.0</span></span></span></span> 满足个体理性——广告主永远不会支付超过自己的出价。注意支付价由 <strong>下一名</strong> 的 eCPM 与 <strong>自己</strong> 的 pCTR共同决定：这正是「eCPM 排序决定谁上场、竞价机制决定收多少钱」的含义。GSP 并非 truth-telling（与 VCG 不同），广告主有压价博弈的激励，完整的机制分析（VCG、GSP 的均衡性质）见 12.3。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part12-computational-advertising/advertising-panorama.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part12-computational-advertising/auction-mechanisms.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part12-computational-advertising/advertising-panorama.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part12-computational-advertising/auction-mechanisms.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

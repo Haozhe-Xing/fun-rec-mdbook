@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">GFP 一价拍卖的出价震荡：追逐 → 逼近估值 → 崩落 → 再爬升</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">两人单坑位：蓝线 = A 出价（v_A = 1.10），黄线 = B 出价（v_B = 1.05），单位：元/点击</text>
+
+  <!-- plot frame -->
+  <rect x="90" y="90" width="650" height="240" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+
+  <!-- grid -->
+  <line x1="90" y1="290" x2="740" y2="290" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="90" y1="250" x2="740" y2="250" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="90" y1="210" x2="740" y2="210" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="82" y="294" text-anchor="end" font-size="11" fill="#64748b">0.90</text>
+  <text x="82" y="254" text-anchor="end" font-size="11" fill="#64748b">0.95</text>
+  <text x="82" y="214" text-anchor="end" font-size="11" fill="#64748b">1.00</text>
+
+  <!-- valuation ceilings -->
+  <line x1="90" y1="170" x2="740" y2="170" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="746" y="166" text-anchor="start" font-size="11" fill="#f59e0b">v_B=1.05</text>
+  <line x1="90" y1="130" x2="740" y2="130" stroke="#4A6CF7" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="746" y="126" text-anchor="start" font-size="11" fill="#4A6CF7">v_A=1.10</text>
+
+  <!-- axes -->
+  <line x1="90" y1="90" x2="90" y2="330" stroke="#64748b" stroke-width="2"/>
+  <line x1="90" y1="330" x2="740" y2="330" stroke="#64748b" stroke-width="2"/>
+  <text x="40" y="215" text-anchor="middle" font-size="12" fill="#64748b" transform="rotate(-90 40 215)">出价</text>
+  <text x="415" y="350" text-anchor="middle" font-size="12" fill="#64748b">竞拍轮次</text>
+  <g font-size="10" fill="#64748b" text-anchor="middle">
+    <text x="110" y="344">1</text><text x="167" y="344">2</text><text x="224" y="344">3</text>
+    <text x="281" y="344">4</text><text x="338" y="344">5</text><text x="395" y="344">6</text>
+    <text x="452" y="344">7</text><text x="509" y="344">8</text><text x="566" y="344">9</text>
+    <text x="623" y="344">10</text><text x="680" y="344">11</text><text x="737" y="344">12</text>
+  </g>
+
+  <!-- A bid line (blue) -->
+  <polyline points="110,210 167,194 224,178 281,178 338,282 395,282 452,266 509,266 566,250 623,250 680,234 737,234"
+            fill="none" stroke="#4A6CF7" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- B bid line (yellow) -->
+  <polyline points="110,202 167,186 224,170 281,290 338,290 395,274 452,274 509,258 566,258 623,242 680,242 737,226"
+            fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- point markers -->
+  <g fill="#4A6CF7">
+    <circle cx="110" cy="210" r="4"/><circle cx="167" cy="194" r="4"/><circle cx="224" cy="178" r="4"/>
+    <circle cx="281" cy="178" r="4"/><circle cx="338" cy="282" r="4"/><circle cx="395" cy="282" r="4"/>
+    <circle cx="452" cy="266" r="4"/><circle cx="509" cy="266" r="4"/><circle cx="566" cy="250" r="4"/>
+    <circle cx="623" cy="250" r="4"/><circle cx="680" cy="234" r="4"/><circle cx="737" cy="234" r="4"/>
+  </g>
+  <g fill="#f59e0b">
+    <circle cx="110" cy="202" r="4"/><circle cx="167" cy="186" r="4"/><circle cx="224" cy="170" r="4"/>
+    <circle cx="281" cy="290" r="4"/><circle cx="338" cy="290" r="4"/><circle cx="395" cy="274" r="4"/>
+    <circle cx="452" cy="274" r="4"/><circle cx="509" cy="258" r="4"/><circle cx="566" cy="258" r="4"/>
+    <circle cx="623" cy="242" r="4"/><circle cx="680" cy="242" r="4"/><circle cx="737" cy="226" r="4"/>
+  </g>
+
+  <!-- numbered callout markers on chart -->
+  <g font-size="12" font-weight="700" text-anchor="middle">
+    <circle cx="196" cy="150" r="11" fill="#64748b"/><text x="196" y="155" fill="#fff">1</text>
+    <circle cx="262" cy="312" r="11" fill="#64748b"/><text x="262" y="317" fill="#fff">2</text>
+    <circle cx="358" cy="312" r="11" fill="#64748b"/><text x="358" y="317" fill="#fff">3</text>
+    <circle cx="688" cy="196" r="11" fill="#64748b"/><text x="688" y="201" fill="#fff">4</text>
+  </g>
+
+  <!-- legend / explanation box -->
+  <rect x="60" y="362" width="680" height="66" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="76" y="384" font-size="12" fill="#1e293b">① 落后者只需比对手高一丁点（+0.01）即可抢位　　② B 贴到估值 1.05 无利可图，崩落回撤 0.90</text>
+  <text x="76" y="406" font-size="12" fill="#1e293b">③ A 无需高价，回落到刚好压制 B（0.91）　　　　④ 循环重启，锯齿震荡永不收敛</text>
+  <text x="76" y="424" font-size="12.5" font-weight="700" fill="#dc2626">⇒ 无纯策略纳什均衡：任何出价组合下，赢家可微降省钱、输家可微升抢位 —— 市场永远在寻找不存在的平衡点</text>
+</svg>

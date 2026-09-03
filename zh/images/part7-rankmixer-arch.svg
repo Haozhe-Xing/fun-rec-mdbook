@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr11" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh11"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">RankMixer 整体架构</text>
+
+  <!-- Tokenization -->
+  <rect x="285" y="55" width="230" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+  <text x="400" y="80" font-size="12" fill="#1e293b" text-anchor="middle">特征 Tokenization → T 个 token</text>
+  <line x1="400" y1="95" x2="400" y2="120" stroke="#64748b" marker-end="url(#arr11)"/>
+
+  <!-- L blocks -->
+  <rect x="230" y="123" width="340" height="150" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh11)"/>
+  <text x="400" y="146" font-size="13" font-weight="700" fill="#4A6CF7" text-anchor="middle">L 层 RankMixer Block 堆叠</text>
+  <rect x="255" y="158" width="290" height="46" rx="8" fill="#f0f4ff" stroke="#4A6CF7"/>
+  <text x="400" y="178" font-size="12.5" fill="#1e293b" text-anchor="middle">① Multi-head Token Mixing</text>
+  <text x="400" y="196" font-size="11" fill="#64748b" text-anchor="middle">特征维混合，替代 Self-Attention</text>
+  <rect x="255" y="212" width="290" height="46" rx="8" fill="#fef9ec" stroke="#f59e0b"/>
+  <text x="400" y="232" font-size="12.5" fill="#1e293b" text-anchor="middle">② Per-Token FFN（异参数）</text>
+  <text x="400" y="250" font-size="11" fill="#64748b" text-anchor="middle">每 token 独立 FFN，捕捉异质性</text>
+  <line x1="400" y1="273" x2="400" y2="295" stroke="#64748b" marker-end="url(#arr11)"/>
+
+  <!-- Mean pooling -->
+  <rect x="300" y="298" width="200" height="40" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="400" y="323" font-size="12.5" fill="#1e293b" text-anchor="middle">Mean Pooling → 输出 logit</text>
+
+  <!-- right annotations -->
+  <rect x="600" y="123" width="170" height="150" rx="10" fill="#f8f9fc" stroke="#e8ecff"/>
+  <text x="685" y="148" font-size="12" font-weight="700" fill="#64748b" text-anchor="middle">复杂度</text>
+  <text x="685" y="178" font-size="12" fill="#1e293b" text-anchor="middle">整体 O(L·T·D²)</text>
+  <text x="685" y="208" font-size="12" fill="#1e293b" text-anchor="middle">Sparse MoE 版：</text>
+  <text x="685" y="230" font-size="11" fill="#64748b" text-anchor="middle">PFFN→专家网络</text>
+  <text x="685" y="256" font-size="11" fill="#64748b" text-anchor="middle">推理成本不变扩参</text>
+
+  <text x="400" y="385" font-size="12" fill="#64748b" text-anchor="middle">三大原则：全为矩阵乘法 · 计算图简洁 · 保表达能力 → MFU 4%→45%</text>
+</svg>

@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Generative Recommendation Paradigm - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">⏱️ ~30 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="foundations-of-the-generative-recommendation-paradigm"><a class="header" href="#foundations-of-the-generative-recommendation-paradigm">Foundations of the Generative Recommendation Paradigm</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Please read the "two fundamental paradigms" section of <a href="./../part1-introduction/recommender-system-basics.html">1.1</a> and the discriminative retrieval/ranking in <a href="./../part2-retrieval/">2.x</a> first. This chapter pushes the discriminative-vs-generative contrast from intuition into modeling philosophy and architecture, and it is the theoretical starting point for all later generative chapters.</p>
+</blockquote>
+<p>Over the past decade, recommender systems have evolved from traditional machine learning to deep learning, with ever-stronger models and ever-better business metrics. Yet one fact is easy to overlook: <strong>no matter how the models changed, the underlying modeling paradigm never did — we have been doing "discrimination" all along.</strong></p>
+<p>Given a set of candidate items, a discriminative model judges whether the user will like each one — at its core, a classification or ranking problem. This framework is extremely mature in industry, but it has gradually exposed deep limitations: misaligned objectives from multi-stage cascades, the difficulty of capturing sequential dependencies when scoring each item independently, and embedding parameters too sparse to feed modern hardware.</p>
+<p>It is against this backdrop that <strong>Generative Recommendation</strong> has emerged as a brand-new paradigm. It no longer treats recommendation as "scoring a candidate set," but redefines it as a <strong>sequence generation task</strong> — the model directly learns "which items the user will interact with next." This seemingly subtle shift brings fundamental changes: from local scoring decisions to global probability modeling, from multi-stage cascades to end-to-end optimization, from a fixed candidate set to an open generation space.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Write down the core conditional probability formulas of <strong>discriminative</strong> and <strong>generative</strong> models, and explain how the "questions they ask" differ</li>
+<li>List the inherent limitations of the discriminative paradigm in <strong>parameter efficiency, semantic modeling, and multi-stage cascades</strong></li>
+<li>Explain how generative <strong>autoregressive modeling</strong> naturally captures sequential dependencies and opens the door to end-to-end optimization</li>
+<li>Compare the essential differences between the two paradigms along three dimensions: <strong>objective function, information flow, and model architecture</strong></li>
+<li>Complete 4 tiered practice problems to consolidate the "discriminative vs. generative" modeling philosophy</li>
+</ul>
+<hr />
+<h2 id="610-discriminative-recommendation-how-we-have-always-done-it"><a class="header" href="#610-discriminative-recommendation-how-we-have-always-done-it">6.1.0 Discriminative Recommendation: How We Have Always Done It</a></h2>
+<p>The core of discriminative recommendation is learning a <strong>conditional probability distribution</strong> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> that predicts the probability of a positive interaction (click, purchase, etc.) between user <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> and item <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> under context <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>. This modeling approach is intuitive and efficient, and it is by far the dominant approach in industry.</p>
+<p>Modern deep learning recommendation models almost all follow the "<strong>Embedding &amp; MLP</strong>" paradigm: user IDs, item IDs, and various features are first mapped to dense vectors through embedding layers, then processed by MLPs or more sophisticated feature interaction modules, and finally a scalar score is produced indicating the strength of the user's interest in the item. It is highly flexible — different feature interaction modules (FM, DeepFM, DCN, etc.) capture high-order feature crossing, while sequence modeling modules (DIN, SIM, etc.) characterize short-term and long-term preferences.</p>
+<p><img src="../images/part6-1-discriminative.svg" alt="Discriminative recommendation: learning a scoring function that evaluates candidates one by one" /></p>
+<p>By integrating user features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>, item features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span>, and context features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>, discriminative recommendation scores every candidate item one by one, predicting the probability of "a positive interaction occurring."</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The inputs of a discriminative model are exactly the same as a generative one (both must understand the user, items, and context), but the <strong>question it asks</strong> is "should this item be recommended" — a local, per-candidate binary classification problem.</p>
+</blockquote>
+<h3 id="three-inherent-limitations-of-the-discriminative-paradigm"><a class="header" href="#three-inherent-limitations-of-the-discriminative-paradigm">Three Inherent Limitations of the Discriminative Paradigm</a></h3>
+<p>However, this "score each item independently" modeling approach also brings three problems that are hard to cure at the root.</p>
+<p><strong>① Parameter inefficiency.</strong> Embedding layers typically account for more than 90% of model parameters, yet these parameters are sparse and inefficient, hard to fully utilize on modern GPUs/TPUs. Huge numbers of parameters "sleep" in sparse ID lookup tables, and hardware utilization (MFU) stays persistently low.</p>
+<p><strong>② Missing semantic modeling.</strong> A discriminative model treats every item as an independent <strong>atomic unit</strong>. There is no semantic relationship between item IDs whatsoever. The IDs of two "sci-fi thrillers" have no prior connection in vector space; the model can only "memorize by brute force" their similarity from massive behavioral data, making the <strong>cold-start</strong> problem hard to solve.</p>
+<p><strong>③ The multi-stage cascade dilemma.</strong> To handle massive item catalogs and millisecond-level latency, industrial systems have to adopt a multi-stage cascade of "retrieval — coarse ranking — fine ranking — re-ranking." Each stage is handled by a different model with different optimization objectives (retrieval cares about relevance, ranking cares about CTR), so <strong>global objectives are hard to align</strong>; worse, every cascade stage loses information — high-quality items filtered out during retrieval by crude similarity computation <strong>never even get seen</strong> by later stages. This level-by-level filtering guarantees efficiency, but it traps the system in a "local optimum" and makes true end-to-end optimization impossible.</p>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> These three limitations are not "engineering flaws" of discriminative models — they are intrinsic properties of the "per-candidate scoring" modeling paradigm. Curing them requires working on the paradigm itself, which is precisely the motivation for generative recommendation.</p>
+</blockquote>
+<hr />
+<h2 id="611-generative-recommendation-redefining-the-task"><a class="header" href="#611-generative-recommendation-redefining-the-task">6.1.1 Generative Recommendation: Redefining the Task</a></h2>
+<p>Generative recommendation fundamentally redefines the recommendation task. Instead of treating recommendation as a discriminative problem of scoring a candidate set, it models recommendation as a <strong>sequence generation process</strong>. Given user <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>, context <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>, and the historical interaction sequence <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, generative recommendation learns the generation probability of this sequence:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0954em;vertical-align:-1.2671em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∏</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1774em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span></span></p>
+<p>This formula looks plain, but it hides a profound modeling idea: it no longer views each item in isolation, but treats the user's interaction behavior as a <strong>continuously evolving process</strong>. What the model learns is not "should a certain item be recommended," but "given the known history of behavior, which item is the user most likely to interact with next."</p>
+<p><img src="../images/part6-1-generative.svg" alt="Generative recommendation: autoregressive sequence generation" /></p>
+<p>Conditioned on the user's historical interaction sequence, generative recommendation directly generates the next item (or the next segment of items) through autoregressive decoding — no need to evaluate candidates one by one.</p>
+<h3 id="-mental-model-judge-scoring-vs-friend-recommending"><a class="header" href="#-mental-model-judge-scoring-vs-friend-recommending">🧠 Mental Model: Judge Scoring vs. Friend Recommending</a></h3>
+<blockquote>
+<p>Picture the two paradigms as two kinds of people. The <strong>discriminative model</strong> is like a talent-show judge: contestants (candidate items) fill the stage, the judge scores each one individually and hands out passes by score — it never "calls out the list directly," only scores. The <strong>generative model</strong> is like a friend who knows your taste well: without going through every option, they just say "you should watch these next," because they already understand the thread of your preferences. The former <strong>selects the best</strong>; the latter <strong>creates</strong>.</p>
+</blockquote>
+<h3 id="why-autoregressive-modeling-is-the-watershed"><a class="header" href="#why-autoregressive-modeling-is-the-watershed">Why Autoregressive Modeling Is the Watershed</a></h3>
+<p>The advantage of autoregressive modeling goes beyond capturing sequential dependencies — it opens the door to <strong>end-to-end optimization</strong>:</p>
+<ul>
+<li><strong>Eliminating error accumulation</strong>: the model generates recommendation results in a single forward pass, without depending on a multi-stage cascade, thus eliminating cascade-induced error accumulation and objective misalignment.</li>
+<li><strong>Supporting global objectives</strong>: a generative model can optimize global objectives (such as long-term user satisfaction, platform ecosystem balance) with end-to-end reinforcement learning — nearly impossible under a discriminative framework.</li>
+<li><strong>Sequential dependencies built in</strong>: the prediction at the current moment depends on the outputs of all previous moments, naturally capturing long-range behavioral dependencies.</li>
+</ul>
+<p>In addition, generative recommendation is more flexible in <strong>item representation</strong>: items can be represented by text descriptions or <strong>Semantic IDs</strong>, which carry semantic information by construction. New items can be recommended without accumulating behavioral data, greatly easing cold start.</p>
+<blockquote>
+<p>🤔 <strong>Why does this shift matter?</strong> The discriminative approach assumes "the candidate set is already determined by retrieval," and the task is to rank within a bounded space; the generative approach <strong>does not presuppose a candidate set</strong> — the model generates directly from the full item space. The former is a "top-down" engineering mindset; the latter is closer to the nature of human decision-making — when we choose, we usually do not score options one by one, but <strong>generate</strong> a candidate plan from experience.</p>
+</blockquote>
+<hr />
+<h2 id="612-the-essential-differences-between-the-two-paradigms"><a class="header" href="#612-the-essential-differences-between-the-two-paradigms">6.1.2 The Essential Differences Between the Two Paradigms</a></h2>
+<p>The differences between discriminative and generative models go beyond formulas — they show up more deeply along three dimensions: <strong>objective function, information flow, and model architecture</strong>.</p>
+<h3 id="objective-function-local-decisions-vs-global-distributions"><a class="header" href="#objective-function-local-decisions-vs-global-distributions">Objective Function: Local Decisions vs. Global Distributions</a></h3>
+<p>A discriminative model optimizes a <strong>local decision boundary</strong> — given a candidate set, it learns to separate positive from negative samples, driving positive scores up and negative scores down. This approach is direct, but it is confined to the candidate set and struggles to characterize the global item distribution.</p>
+<p>A generative model optimizes a <strong>complete probability distribution</strong> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>. It cares not only about "which items should be recommended" but also about "how the whole interaction sequence is generated." This global modeling lets the model better capture preference evolution, and provides a more natural framework for multi-objective optimization.</p>
+<h3 id="information-flow-feed-forward-independence-vs-autoregressive-recurrence"><a class="header" href="#information-flow-feed-forward-independence-vs-autoregressive-recurrence">Information Flow: Feed-Forward Independence vs. Autoregressive Recurrence</a></h3>
+<p>Discriminative models typically use feed-forward networks: information flows from the input layer through stacked transformations to the output layer, and <strong>each item's score is computed independently</strong> — efficient, but it ignores dependencies among items in the recommendation list.</p>
+<p>Generative models use an autoregressive structure: the current prediction depends on all previous outputs, and information <strong>recirculates along the time dimension</strong>. This captures long-range dependencies and lays the groundwork for advanced optimization techniques such as reinforcement learning.</p>
+<p><img src="../images/part6-1-info-flow.svg" alt="Information flow comparison of the two paradigms" /></p>
+<p>Left: a discriminative feed-forward network scoring each candidate independently; right: generative autoregression, where information flows back along time and tokens are generated one by one.</p>
+<h3 id="model-architecture-heterogeneous-specialization-vs-unified-transformer"><a class="header" href="#model-architecture-heterogeneous-specialization-vs-unified-transformer">Model Architecture: Heterogeneous Specialization vs. Unified Transformer</a></h3>
+<p>To adapt to different stages, discriminative systems often need multiple specialized modules — two-tower or graph networks for retrieval, complex feature interaction networks for ranking, list-level constraints for re-ranking. These modules are heterogeneous and highly customized, making the system complex and costly to maintain.</p>
+<p>Generative recommendation instead favors a <strong>unified Transformer architecture</strong>, handling all tasks through stacked self-attention and feed-forward networks. Its dense matrix computation fits GPUs/TPUs well, achieves hardware utilization (MFU) far beyond discriminative models, and enables parameter scaling (Scaling) by plain stacking.</p>
+<h3 id="one-level-deeper-the-difference-in-modeling-philosophy"><a class="header" href="#one-level-deeper-the-difference-in-modeling-philosophy">One Level Deeper: The Difference in Modeling Philosophy</a></h3>
+<p>Pulling the perspective up one more level, the fundamental difference between the two paradigms lies in <strong>modeling philosophy</strong>: discriminative models pursue "making the optimal choice given a candidate set," while generative models attempt to "learn the generation process of user behavior." The former suits well-defined optimization problems; the latter is closer to the nature of human decision-making, and opens new possibilities for deeply fusing recommender systems with language models and multimodal models.</p>
+<blockquote>
+<p>📊 <strong>Data Point:</strong> To be objective: fully end-to-end generative recommendation <strong>still faces challenges</strong> in industry today (training cost, inference latency, system stability). Research therefore proceeds along three parallel paths — ① progressive (borrowing LLM-style Scaling capability on top of cascade architectures); ② knowledge-enhanced (injecting LLM world knowledge); ③ fully generative (unifying retrieval/ranking/re-ranking into one generative model). This chapter focuses on foundations; later chapters cover each path in turn.</p>
+</blockquote>
+<p>The interactive demo below places the two paradigms side by side, so you can step through how the same recommendation request is processed along the "discriminative scoring" path versus the "generative sequence generation" path:</p>
+<iframe src="../viz/part6-paradigm.html?embed&vizId=part6-paradigm" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<hr />
+<h2 id="-common-mistakes-in-61"><a class="header" href="#-common-mistakes-in-61">⚠️ Common Mistakes in 6.1</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Reading generative models as "scoring each candidate"</td><td>"Generative is just another way to compute CTR"</td><td>Generative models directly produce sequences; there is no per-candidate evaluation</td><td>Remember: discriminative <strong>selects</strong>, generative <strong>creates</strong></td></tr>
+<tr><td>2</td><td>Treating discriminative problems as "just bad engineering"</td><td>"A bigger model will fix the cascade"</td><td>Error accumulation / missing semantics are intrinsic to the paradigm</td><td>Understand the limitations at the paradigm level, not by stacking parameters</td></tr>
+<tr><td>3</td><td>Confusing the two directions of conditional probability</td><td>Writing <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> as <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> and calling it generative</td><td>The former is a sequence generation distribution; the latter is per-candidate discrimination</td><td>Look carefully at which side the "condition" is on</td></tr>
+<tr><td>4</td><td>Assuming generative models have no notion of a candidate set</td><td>"Generative models have no candidate space at all"</td><td>Generative models internalize the candidate space as the generation distribution; it still exists</td><td>Understand "no presupposed candidates" ≠ "no item space"</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Discriminative recommendation</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>, per-candidate scoring</td><td>The industrial mainstream — mature and stable, but with three inherent limitations</td></tr>
+<tr><td>Three limitations</td><td>Parameter inefficiency, missing semantics, cascade dilemma</td><td>The fundamental motivation driving the paradigm shift</td></tr>
+<tr><td>Generative recommendation</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0497em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∏</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1308em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1774em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span></td><td>Autoregressive, end-to-end, with semantic representation built in</td></tr>
+<tr><td>Essential differences</td><td>Objective function / information flow / architecture</td><td>Determines whether global optimization and Scaling are possible</td></tr>
+<tr><td>Three paths</td><td>Progressive / knowledge-enhanced / fully generative</td><td>The realistic landscape of current industrial adoption</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Is generative always better than discriminative?</strong></p>
+<blockquote>
+<p>A: No. Discriminative models are stable and efficient in mature scenarios; generative models have greater potential for end-to-end optimization, cold start, and semantic understanding. Both coexist in industry today — choose according to your business stage.</p>
+</blockquote>
+<p><strong>Q2: What exactly does autoregressive modeling solve?</strong></p>
+<blockquote>
+<p>A: It lets the model generate results in a single forward pass, eliminating the error accumulation and objective misalignment of multi-stage cascades; it naturally captures sequential dependencies and paves the way for end-to-end reinforcement learning.</p>
+</blockquote>
+<p><strong>Q3: Why is missing semantics a "paradigm problem" rather than a "data problem"?</strong></p>
+<blockquote>
+<p>A: The discriminative approach treats items as atomic IDs with no prior relationships, so similarity can only be "memorized" from behavioral statistics; generative models use semantic IDs so that similarity relationships are <strong>encoded in the representation structure itself</strong>, easing cold start at the root.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>6.2</strong> (Foundations of Generative Architectures) picks up this section's "unified Transformer" claim and expands on self-attention, positional encoding, and the two architectural paradigms.</li>
+<li><strong>6.3</strong> (LLM Foundations) systematically explains the three-stage training methodology of generative models (pretraining / instruction tuning / preference alignment).</li>
+<li><strong>6.4</strong> (Codebook Quantization) answers the key question planted here — how generative models represent items with semantic IDs.</li>
+<li><strong>1.1</strong> (the two paradigms) contrasts them at the intuition level; this chapter deepens the contrast to the level of modeling philosophy and architecture.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 6.1.1 — Distinguishing Paradigms</strong> 🟢 Easy</p>
+<p>Given the two system descriptions below, decide whether each is closer to <strong>discriminative</strong> or <strong>generative</strong>, and explain why.</p>
+<ul>
+<li>(a) The system computes a "user click probability" for every candidate ad, ranks by probability, and shows the top 5.</li>
+<li>(b) The system reads the user's last 20 plays and directly outputs "the 3 video IDs you might want to watch next."</li>
+</ul>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Grasp the difference in the "questions asked" — per-candidate scoring, or directly producing a sequence.</p>
+<ul>
+<li><strong>(a) Discriminative</strong>: it computes a click probability for each candidate separately and then ranks — exactly the "score one by one and pick the best" of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>.</li>
+<li><strong>(b) Generative</strong>: it directly decodes a sequence of recommendation IDs from the history, without per-candidate evaluation — corresponding to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>.</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Discriminative = candidates known, scored one by one; generative = directly "creates" a sequence.</li>
+<li>The key question: does the system enumerate and evaluate every single candidate?</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 6.1.2 — Listing the Three Limitations</strong> 🟢 Easy</p>
+<p>Write down the three inherent limitations of the discriminative paradigm that are repeatedly criticized on the road toward generative models, with one sentence each on the consequence.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong></p>
+<ol>
+<li><strong>Parameter efficiency</strong>: embedding layers hold 90%+ of parameters yet are sparse and inefficient, keeping hardware utilization (MFU) low.</li>
+<li><strong>Missing semantic modeling</strong>: items are atomic IDs with no semantic relationships, so cold start is hard to solve.</li>
+<li><strong>Multi-stage cascade dilemma</strong>: stage objectives are misaligned, and information is lost at every stage (quality items wrongly filtered at retrieval are never seen again).</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>All three stem from the "per-candidate scoring + cascade" paradigm itself; engineering alone cannot erase them.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 6.1.3 — Restating the Formula</strong> 🟡 Medium</p>
+<p>The discriminative per-candidate score can be written as <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span>. Restate the core generative formula <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2809em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∏</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9812em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1774em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> in natural language, and point out the essential difference from the discriminative case on the "conditioning" side.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Translate the formula piece by piece.</p>
+<p><strong>Answer:</strong> The formula reads: "the probability that user <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> produces the entire interaction sequence <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> in context <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> equals the product over each time step <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> of the probability of generating the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>-th item, conditioned on all previous interactions <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8369em;vertical-align:-0.1774em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1774em;"><span></span></span></span></span></span></span></span></span></span>, the user <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>, and the context <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>."</p>
+<p>Essential difference: the discriminative "condition" is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> — item <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> is given; the generative "condition" is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1774em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> — the item is <strong>the variable to be generated</strong>, and previous items in the sequence flow back in as conditions. The former scores candidates; the latter creates candidates from conditions.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The product structure = autoregression; every token depends on history.</li>
+<li>Whether item <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> appears on the conditioning side is the watershed between discrimination and generation.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Arguing a Paradigm Choice</strong></p>
+<p>A team must rebuild recommendations for an e-commerce scenario with "100K new items per day and a high long-tail share." In about 150 words, argue why the generative approach (semantic ID route) has more long-term value here than a purely discriminative one. Focus on "cold start, parameter efficiency, cascade information loss," and point out which discriminative components should still be kept in deployment.</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Long-tail / high-volume new items → atomic discriminative IDs struggle to accumulate behavior, so cold start is severe; semantic IDs let new items gain representations from content alone, and prefix generalization eases the long tail. On parameter efficiency, a unified Transformer scales more easily than heterogeneous multi-stage modules. Still, keep discriminative <strong>retrieval/re-ranking</strong> as a candidate constraint and experience safety net for the generative output, adopting a "progressive + knowledge-enhanced" hybrid path for a smooth transition.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part6-gr-basic/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part6-gr-basic/gr-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part6-gr-basic/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part6-gr-basic/gr-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

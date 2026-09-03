@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Book Overview &amp; Technology Map - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~20 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="book-overview-and-technology-map"><a class="header" href="#book-overview-and-technology-map">Book Overview and Technology Map</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Please read the three perspectives in <a href="./recommender-system-basics.html">1.1</a> first. This chapter unfolds that "three-dimensional understanding" into a navigable <strong>technology map</strong>, helping you locate every chapter that follows.</p>
+</blockquote>
+<p>Once you understand the core logic of recommender systems, the real challenge is turning that understanding into actionable technical solutions. Researchers and engineers have proposed hundreds of algorithms, and beginners often feel lost: how do these models relate to each other? Which one for which scenario? How do you assemble a complete system?</p>
+<p>This chapter gives you a map. The book is organized along two main storylines — <strong>discriminative</strong> and <strong>generative</strong> — while also threading together the capability evolution from "memorization and generalization" to "understanding and reasoning."</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>State the logic behind the book's <strong>two halves</strong> and where each lands</li>
+<li>Map every chapter of the <strong>fundamentals half (Ch0–Ch4)</strong> onto the three-stage pipeline or frontier trends</li>
+<li>Explain why "retrieval → ranking → re-ranking" is the organizing thread of the discriminative storyline</li>
+<li>Anticipate how the <strong>generative storyline</strong> will unfold in later versions (Ch5–Ch10)</li>
+<li>Complete 4 leveled practice problems to verify your grasp of the technology map</li>
+</ul>
+<hr />
+<h2 id="120-one-map-two-storylines"><a class="header" href="#120-one-map-two-storylines">1.2.0 One Map, Two Storylines</a></h2>
+<p>The book's organization can be summarized in one diagram: the horizontal axis is <strong>time/capability evolution</strong> (from pure-ID memorization to LLM reasoning), and the vertical axis is <strong>the two paradigm storylines</strong> (discriminative vs generative).</p>
+<p><img src="../images/part1-ability-map.svg" alt="Capability evolution of recommendation algorithms and the book&#39;s chapter map" /></p>
+<ul>
+<li><strong>First half: industrial practice of discriminative recommendation</strong> — progressively deepening along the "retrieval → ranking → re-ranking" pipeline; the main battlefield of memorization and generalization capabilities.</li>
+<li><strong>Second half: the technology landscape of generative recommendation</strong> — starting from the foundational paradigm, through Scaling Laws, end-to-end modeling, and reasoning capability to diffusion models; the exploration ground of understanding and reasoning capabilities.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The two storylines <strong>are not isolated</strong>. Generative architectures often "end-to-end-ify" mature discriminative modules; meanwhile, discriminative techniques such as semantic IDs and feature crossing provide the representational foundation for generative approaches.</p>
+</blockquote>
+<hr />
+<h2 id="121-first-half-industrial-practice-of-discriminative-recommendation-covered-in-this-edition"><a class="header" href="#121-first-half-industrial-practice-of-discriminative-recommendation-covered-in-this-edition">1.2.1 First Half: Industrial Practice of Discriminative Recommendation (Covered in This Edition)</a></h2>
+<p>This edition (the fundamentals half) fully covers the first half plus the bridging trends chapter — 5 parts in total:</p>
+<div class="table-wrapper"><table><thead><tr><th>Part</th><th>Theme</th><th>Position in the Pipeline</th><th>Core Content</th></tr></thead><tbody>
+<tr><td><strong>Part 1</strong></td><td>Introduction and Overview</td><td>—</td><td>Two paradigms, three-stage funnel, ecosystem triangle, feature and Embedding basics</td></tr>
+<tr><td><strong>Part 2</strong></td><td>Fast Candidate Retrieval</td><td>① Retrieval</td><td>Collaborative filtering / vector retrieval / two-tower / sequence retrieval / streaming index</td></tr>
+<tr><td><strong>Part 3</strong></td><td>Accurate Preference Prediction</td><td>② Ranking</td><td>Wide&amp;Deep / feature crossing / sequence modeling / multi-objective / multi-scenario</td></tr>
+<tr><td><strong>Part 4</strong></td><td>Re-ranking and Diversity Modeling</td><td>③ Re-ranking</td><td>Greedy re-ranking (MMR/DPP) / personalized re-ranking (PRM)</td></tr>
+<tr><td><strong>Part 5</strong></td><td>Frontier Trends</td><td>Cross-stage</td><td>Model debiasing / cold start / evolution of the generative paradigm</td></tr>
+</tbody></table>
+</div>
+<h3 id="retrieval-from-100-million-to-thousands-part-2"><a class="header" href="#retrieval-from-100-million-to-thousands-part-2">Retrieval: From 100 Million to Thousands (Part 2)</a></h3>
+<p>Retrieval is the pipeline's starting point: it must filter from hundreds of millions of items down to thousands of candidates within milliseconds. Its technical evolution unfolds across five sections:</p>
+<ul>
+<li><strong>Collaborative filtering</strong> — the classic starting point: from ItemCF's item similarity, through Swing's industrial optimization and UserCF's user perspective, to matrix factorization mapping users/items into latent vectors, pioneering vectorization.</li>
+<li><strong>I2I vector retrieval</strong> — transplanting Word2Vec's sequence-modeling ideas into recommendation: from Item2Vec's direct transfer, to EGES fusing side attributes, to Airbnb embedding business objectives into sequence construction.</li>
+<li><strong>Two-tower models (U2I)</strong> — encoding users and items separately as vectors, represented by FM, DSSM, and YoutubeDNN, enabling efficient vector retrieval.</li>
+<li><strong>Sequence retrieval</strong> — attending to the temporal information earlier methods ignored: MIND uses multiple vectors to represent diverse interests; SDM separates long- and short-term preferences and fuses them dynamically with gating.</li>
+<li><strong>Streaming index retrieval</strong> — stepping outside model-internal compression: Trinity uses clustering statistics to preserve full historical interests; Streaming VQ lets the index structure adapt to data distribution in real time.</li>
+</ul>
+<h3 id="ranking-from-thousands-to-hundreds-part-3"><a class="header" href="#ranking-from-thousands-to-hundreds-part-3">Ranking: From Thousands to Hundreds (Part 3)</a></h3>
+<p>Ranking scores thousands of candidates precisely — the main battlefield of deep generalization:</p>
+<ul>
+<li><strong>Wide &amp; Deep</strong> — jointly training a linear model and a deep network, establishing the foundational "memorization + generalization" framework.</li>
+<li><strong>Feature crossing</strong> — from FM's second-order crossing, through DeepFM and xDeepFM, toward automatic high-order crossing.</li>
+<li><strong>Sequence modeling</strong> — DIN uses attention to dynamically activate history based on the candidate; DIEN explicitly models the temporal evolution of interests.</li>
+<li><strong>Multi-objective / multi-scenario</strong> — MMoE and ESMM balance multiple objectives; multi-tower and dynamic weights adapt to cross-scenario differences.</li>
+</ul>
+<h3 id="re-ranking-from-hundreds-to-one-screen-part-4"><a class="header" href="#re-ranking-from-hundreds-to-one-screen-part-4">Re-ranking: From Hundreds to One Screen (Part 4)</a></h3>
+<p>Ranking output is often highly homogeneous; re-ranking optimizes the whole-list experience while preserving relevance:</p>
+<ul>
+<li><strong>Greedy re-ranking</strong> — MMR linearly combines relevance and diversity; DPP uses a determinant framework to control diversity more precisely.</li>
+<li><strong>Personalized re-ranking</strong> — PRM uses a Transformer to model mutual influence among items, achieving end-to-end personalized list generation.</li>
+</ul>
+<hr />
+<h2 id="122-preview-of-the-second-half-generative-recommendation-covered-in-later-versions-ch5ch10"><a class="header" href="#122-preview-of-the-second-half-generative-recommendation-covered-in-later-versions-ch5ch10">1.2.2 Preview of the Second Half: Generative Recommendation (Covered in Later Versions, Ch5–Ch10)</a></h2>
+<p>To help you build a complete picture, here is a brief preview of the second half, so you know where the road leads after this edition:</p>
+<div class="table-wrapper"><table><thead><tr><th>Chapter</th><th>Theme</th><th>In One Sentence</th></tr></thead><tbody>
+<tr><td><strong>Ch5</strong></td><td>Generative foundations</td><td>Transformer / diffusion models / LLM workflows / item tokenization (semantic IDs)</td></tr>
+<tr><td><strong>Ch6</strong></td><td>Scaling Law architectures</td><td>HSTU turns per-candidate scoring into user-level sequence modeling; RankMixer builds a hardware-aware unified architecture</td></tr>
+<tr><td><strong>Ch7</strong></td><td>End-to-end generation</td><td>OneRec (recommendation) / OneSug·OneSearch (search) / EGA (ads) replace the pipeline with a single model</td></tr>
+<tr><td><strong>Ch8</strong></td><td>Recommenders that think</td><td>Semantic alignment (LC-Rec) → reasoning activation (OneRec-Think) → autonomous reasoning (RecZero)</td></tr>
+<tr><td><strong>Ch9</strong></td><td>Diffusion-model recommendation</td><td>DiffuASR data augmentation / AsymDiffRec·DMSG feature and diversity optimization</td></tr>
+<tr><td><strong>Ch10</strong></td><td>Production-grade project</td><td>Full-stack movie recommendation: offline training + online serving + frontend + Docker deployment</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>📝 <strong>Note:</strong> This edition focuses on the fundamentals half (Ch0–Ch4). The second half will be continued in later editions under the same book-writer conventions.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-12"><a class="header" href="#-common-mistakes-in-12">⚠️ Common Mistakes in 1.2</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Treating chapters as isolated algorithms</td><td>"This chapter covers DIN, the next covers DIEN — they're unrelated"</td><td>Chapters are consecutive stages on one pipeline; each chapter's output feeds the next</td><td>Always understand each chapter through its "pipeline position"</td></tr>
+<tr><td>2</td><td>Memorizing model names without motivations</td><td>Reciting FM/DeepFM but unable to explain why high-order crossing is needed</td><td>Models exist to solve specific limitations; learning without motivation doesn't stick</td><td>For every model, first ask "what shortcoming of the previous method does it solve"</td></tr>
+<tr><td>3</td><td>Mistakenly believing generative replaces discriminative</td><td>"Now that I've studied generative, I can skip the first half"</td><td>The two develop in parallel; generative approaches often build on discriminative representations</td><td>Treat the two storylines as complementary, not substitutes</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Two storylines</td><td>Discriminative (first half) / generative (second half)</td><td>The book's organizational skeleton — it determines how you categorize every model</td></tr>
+<tr><td>Three-stage thread</td><td>Retrieval→ranking→re-ranking runs through the first half</td><td>Understand each chapter's position in the pipeline</td></tr>
+<tr><td>Capability evolution</td><td>Memorization→generalization→understanding→reasoning</td><td>Explains why the technology keeps iterating rather than simply being replaced</td></tr>
+<tr><td>Edition boundary</td><td>Covers Ch0–Ch4 (fundamentals half)</td><td>Clarifies this edition's scope and avoids misplaced expectations</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Why does the fundamentals half stop at Ch4 instead of including Ch5's generative content?</strong></p>
+<blockquote>
+<p>A: Ch5 is the cornerstone of the generative storyline, and its conceptual density rises sharply (semantic IDs, Transformers, diffusion models). First solidifying the industrial practice of discriminative recommendation, then moving into generative, makes for steadier learning.</p>
+</blockquote>
+<p><strong>Q2: Must retrieval, ranking, and re-ranking all use deep learning?</strong></p>
+<blockquote>
+<p>A: No. Retrieval often uses lightweight methods (collaborative filtering, two-tower); only ranking deploys the most complex deep models; re-ranking can use rules or lightweight models. Complexity increases as candidates shrink.</p>
+</blockquote>
+<p><strong>Q3: What order should I read in?</strong></p>
+<blockquote>
+<p>A: Strictly in Part 1→5 order. Later chapters often presuppose earlier ones (e.g., sequence modeling builds on feature crossing).</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>Part 2 Retrieval (Ch2.1–2.5)</strong> expands this chapter's "Retrieval: from 100 million to thousands" into five algorithm families.</li>
+<li><strong>Part 3 Ranking (Ch3.1–3.5)</strong> dives into the industrial implementation of the discriminative scoring function <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>.</li>
+<li><strong>Part 4 Re-ranking (Ch4.1–4.2)</strong> wraps up the three-stage pipeline and connects to the trends chapter.</li>
+<li><strong>Part 5 Trends (Ch5.1–5.3)</strong> bridges with "debiasing / cold start / generative," pointing toward the second half in later editions.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<hr />
+<p><strong>Problem 1.2.1 — Locating Chapters</strong> 🟢 Easy</p>
+<p>Place each of the following algorithms into its correct position in the pipeline (write the corresponding Part/chapter):
+(a) DPP re-ranking　(b) YoutubeDNN two-tower　(c) DeepFM feature crossing　(d) Swing collaborative filtering</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Recall the three stages and the representative models of each.</p>
+<div class="table-wrapper"><table><thead><tr><th>Algorithm</th><th>Position</th></tr></thead><tbody>
+<tr><td>(a) DPP re-ranking</td><td>Part 4 Re-ranking (Ch4.1 greedy re-ranking)</td></tr>
+<tr><td>(b) YoutubeDNN two-tower</td><td>Part 2 Retrieval (Ch2.3 two-tower U2I)</td></tr>
+<tr><td>(c) DeepFM feature crossing</td><td>Part 3 Ranking (Ch3.2 feature crossing)</td></tr>
+<tr><td>(d) Swing collaborative filtering</td><td>Part 2 Retrieval (Ch2.1 collaborative filtering)</td></tr>
+</tbody></table>
+</div>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Retrieval-side methods are lightweight and coverage-oriented; ranking-side methods deploy complex deep models.</li>
+<li>Re-ranking happens after ranking and optimizes list-level experience.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.2.2 — Classifying Capability Stages</strong> 🟢 Easy</p>
+<p>Classify the following techniques into one of the four capability stages — "memorization / generalization / understanding / reasoning":
+(a) Collaborative-filtering co-occurrence　(b) Deep feature crossing　(c) Semantic IDs (RQ-VAE)　(d) OneRec-Think explicit reasoning</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Check against the capability-evolution curve.</p>
+<ul>
+<li>(a) Memorization (pure-ID co-occurrence)</li>
+<li>(b) Generalization (deep networks extrapolating to unseen combinations)</li>
+<li>(c) Understanding (items encoded as semantics-carrying tokens)</li>
+<li>(d) Reasoning (the model explicitly analyzes intent and gives reasons)</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The four stages stack rather than replace; the same evolution curve threads the whole book.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.2.3 — Probing Motivations</strong> 🟡 Medium</p>
+<p>Why did "feature crossing" evolve from FM's second order to xDeepFM's automatic high order? Use a concrete example to illustrate: what kind of pattern would second-order crossing alone miss?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Start from "what limitation is the model trying to solve." FM's second-order crossing only models <strong>pairwise feature</strong> combinations (e.g., gender×category). But in real businesses, value often comes from <strong>higher-order interactions</strong> — for example, the three-way combination "tier-1 city × young female × beauty category" is what triggers strong interest.</p>
+<p>With only second-order crossing, the model cannot explicitly capture such third-order (and higher) synergy signals; it can only approximate them implicitly, limiting expressiveness. xDeepFM and its kin use vectors/neural networks to learn arbitrary-order crossings <strong>automatically</strong>, escaping manual feature engineering and covering high-order patterns.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Second-order crossing = pairwise combinations; high-order crossing = multi-feature joint patterns.</li>
+<li>Evolution motive: insufficient expressiveness → automated high-order interaction.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Designing Your Reading Route</strong></p>
+<p>Suppose a colleague "only knows SQL and basic logistic regression, has never touched deep learning," but urgently needs to get up to speed on your company's recommendation ranking module within two weeks. Based on this chapter's technology map, design a <strong>two-week learning route</strong> for them (listing which chapters to read per day/phase, what to skip, and why), and explain your reasoning (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Prioritize the "pipeline mainline": Part1 → Part2 retrieval → Part3 ranking (Wide&amp;Deep, feature crossing, sequence modeling); re-ranking and trends can be deferred; generative (Ch5+) can be skipped for now. The reasoning: the ranking module depends most on Part3, and the deep-learning foundation can be approached smoothly through Wide&amp;Deep.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/recommender-system-basics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part1-introduction/feature-embedding-basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/recommender-system-basics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part1-introduction/feature-embedding-basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="420" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">HSTU Block：三大架构创新</text>
+
+  <!-- Input -->
+  <rect x="320" y="55" width="160" height="36" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+  <text x="400" y="78" font-size="12.5" fill="#1e293b" text-anchor="middle">输入 X（序列 token）</text>
+  <line x1="400" y1="91" x2="400" y2="115" stroke="#64748b" marker-end="url(#arr2)"/>
+
+  <!-- QKV projections -->
+  <rect x="320" y="118" width="160" height="38" rx="8" fill="#ffffff" stroke="#4A6CF7"/>
+  <text x="400" y="142" font-size="13" fill="#1e293b" text-anchor="middle">Q / K / V 投影</text>
+  <line x1="400" y1="156" x2="400" y2="180" stroke="#64748b" marker-end="url(#arr2)"/>
+
+  <!-- Pointwise Aggregation -->
+  <rect x="288" y="183" width="224" height="52" rx="8" fill="#f0fdf4" stroke="#10b981" filter="url(#sh2)"/>
+  <text x="400" y="205" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">① Pointwise Aggregation</text>
+  <text x="400" y="223" font-size="11" fill="#1e293b" text-anchor="middle">SiLU(QKᵀ + rab) ⊙ V（非 Softmax）</text>
+  <text x="400" y="240" font-size="10.5" fill="#64748b" text-anchor="middle">保留兴趣「绝对强度」</text>
+  <line x1="400" y1="235" x2="400" y2="262" stroke="#64748b" marker-end="url(#arr2)"/>
+
+  <!-- RAB -->
+  <rect x="560" y="183" width="200" height="52" rx="8" fill="#fef9ec" stroke="#f59e0b" filter="url(#sh2)"/>
+  <text x="660" y="205" font-size="13" font-weight="700" fill="#d97706" text-anchor="middle">② 相对时间偏置 rab</text>
+  <text x="660" y="223" font-size="11.5" fill="#1e293b" text-anchor="middle">f(位置差, 时间差, 类型)</text>
+  <text x="660" y="240" font-size="10.5" fill="#64748b" text-anchor="middle">建模非均匀时间衰减</text>
+  <line x1="560" y1="209" x2="502" y2="209" stroke="#64748b" marker-end="url(#arr2)"/>
+
+  <!-- Gated FFN -->
+  <rect x="300" y="266" width="200" height="52" rx="8" fill="#f0f4ff" stroke="#4A6CF7" filter="url(#sh2)"/>
+  <text x="400" y="288" font-size="13" font-weight="700" fill="#4A6CF7" text-anchor="middle">③ 门控前馈 Gate(X)</text>
+  <text x="400" y="306" font-size="11.5" fill="#1e293b" text-anchor="middle">替代显式 4× FFN</text>
+  <text x="400" y="323" font-size="10.5" fill="#64748b" text-anchor="middle">激活内存 33d→14d</text>
+  <line x1="400" y1="318" x2="400" y2="345" stroke="#64748b" marker-end="url(#arr2)"/>
+
+  <!-- Output -->
+  <rect x="320" y="348" width="160" height="40" rx="8" fill="#e8ecff" stroke="#4A6CF7"/>
+  <text x="400" y="373" font-size="12.5" fill="#1e293b" text-anchor="middle">LayerNorm + 残差输出</text>
+
+  <text x="70" y="300" font-size="12" fill="#64748b" text-anchor="middle">注：SiLU 不做全局</text>
+  <text x="70" y="318" font-size="12" fill="#64748b" text-anchor="middle">归一化，权重可累加 &gt;1</text>
+</svg>

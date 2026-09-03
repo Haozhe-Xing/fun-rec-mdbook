@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>System Architecture Design - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~22 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="system-architecture-design"><a class="header" href="#system-architecture-design">System Architecture Design</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Finish <a href="./project-intro.html">11.1</a> first — the technology choices and the offline/online differences. This section turns those choices into components and data flows, building the top-level mental model of the system.</p>
+</blockquote>
+<p>A production recommender is multiple subsystems working in concert. This section covers the overall design, the core components, and how data moves between them. It is the "map" for all the implementation chapters that follow.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Describe the responsibility boundary and decoupling between the <strong>offline system</strong> (production) and the <strong>online system</strong> (serving)</li>
+<li>Point out the four component groups in the overall architecture diagram: the data storage layer, the offline pipeline, the online pipeline, and the frontend</li>
+<li>Explain the offline data flow (CSV → features/models → shared directory + Redis) and the online data flow (request → retrieval → ranking → re-ranking → assembly)</li>
+<li>Articulate the four key design decisions: the funnel architecture, multi-route retrieval fusion, cold-start handling, and separating feature storage from computation</li>
+<li>Work through 4 tiered practice problems</li>
+</ul>
+<hr />
+<h2 id="1120-the-offline-and-online-systems"><a class="header" href="#1120-the-offline-and-online-systems">11.2.0 The Offline and Online Systems</a></h2>
+<p>An industrial recommendation architecture splits into two parts: the <strong>offline system</strong> and the <strong>online system</strong>.</p>
+<p>The <strong>offline system</strong> is responsible for "production": processing the full historical data, training models, and computing item embeddings and similarity matrices. Compute time is plentiful (hours or even days); it optimizes for model quality rather than response speed, and outputs model files, embedding indexes, feature dictionaries, and the like.</p>
+<p>The <strong>online system</strong> is responsible for "serving": receiving real-time requests, invoking models, assembling recommendation results, and returning them. Response time is limited (sub-second); it must balance quality against latency, and it depends on the models and features the offline side produces.</p>
+<p>The offline system runs on a schedule (daily/weekly) and writes its outputs to shared storage; the online system loads from that shared storage. The two are <strong>decoupled through the storage layer</strong>: offline can afford more complex algorithms and larger data volumes; online focuses on low-latency serving.</p>
+<p><img src="../images/part11-system-architecture.svg" alt="Offline &quot;production&quot; and online &quot;serving&quot; decoupled through the storage layer: offline outputs models and features for the online side to load" /></p>
+<p>The interactive demo below gives you an intuitive feel for how data and models flow between offline "production" and online "consumption": starting from raw rating data, through feature engineering, training, and embedding precomputation, landing in the storage layer, then being loaded by the online service for real-time inference. Click "Next" to watch how each step's outputs get handed off.</p>
+<iframe src="../viz/part11-offline-online.html?embed&vizId=part11-offline-online" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>Note step five, "storage-layer hand-off": the <code>active.json</code> version pointer and the item embeddings written out by the offline side are exactly the input to the online loading stage — this decoupling is what lets offline retrain at leisure while online serves in milliseconds.</p>
+<hr />
+<h2 id="1121-overall-architecture-and-core-components"><a class="header" href="#1121-overall-architecture-and-core-components">11.2.1 Overall Architecture and Core Components</a></h2>
+<p>The system consists of four core component groups, expanded one by one below.</p>
+<p><img src="../images/part11-architecture-components.svg" alt="Complete movie recommender architecture: data storage layer + offline pipeline + online pipeline + frontend application" /></p>
+<h3 id="data-storage-layer"><a class="header" href="#data-storage-layer">Data Storage Layer</a></h3>
+<ul>
+<li><strong>PostgreSQL (business database)</strong>: stores the user table (gender/age/occupation), the movie table (title/genres/year/poster), and the ratings table (rating + timestamp).</li>
+<li><strong>Redis (feature cache)</strong>: holds the real-time features needed for online inference — user profiles <code>user:{id}:profile</code>, behavior sequences <code>user:{id}:history</code>, and the item embedding index.</li>
+<li><strong>Shared file directory</strong>: stores model files (user_model, ranking_model), the item embedding matrix (item_embeddings.npy), and feature encoding dictionaries (vocab_dict.pkl).</li>
+<li><strong>Elasticsearch (search engine)</strong>: builds inverted indexes over movie titles, genres, and actors to power search.</li>
+</ul>
+<h3 id="offline-pipeline"><a class="header" href="#offline-pipeline">Offline Pipeline</a></h3>
+<p>Executes in order: feature engineering → retrieval model training (YoutubeDNN) → ranking model training (DeepFM) → model deployment → feature ingestion. See <a href="./offline-pipeline.html">11.3</a>.</p>
+<h3 id="online-pipeline"><a class="header" href="#online-pipeline">Online Pipeline</a></h3>
+<p>Every request passes through: cold-start detection → multi-route retrieval → precise ranking → diversity re-ranking → result assembly. See <a href="./online-pipeline.html">11.4</a>.</p>
+<h3 id="frontend-application"><a class="header" href="#frontend-application">Frontend Application</a></h3>
+<p>Built on Vue 3, with four core pages — home, movie detail, search, and personal center (<a href="./frontend.html">11.5</a>).</p>
+<hr />
+<h2 id="1122-offline-data-flow"><a class="header" href="#1122-offline-data-flow">11.2.2 Offline Data Flow</a></h2>
+<p>The offline pipeline turns raw rating data into models and features the online side can use:</p>
+<p><img src="../images/part11-offline-flow.svg" alt="Offline data flow: from raw CSV through feature engineering and training, finally written into the shared directory and Redis" /></p>
+<ol>
+<li><strong>Feature engineering</strong>: extract training features (user/item/behavior sequences) from the raw ratings.</li>
+<li><strong>Retrieval model training</strong>: train the YoutubeDNN two-tower to learn the user/item embedding mapping.</li>
+<li><strong>Ranking model training</strong>: train DeepFM to learn the click probability of user-item pairs.</li>
+<li><strong>Model deployment</strong>: write the model files to the shared directory for online loading.</li>
+<li><strong>Feature ingestion</strong>: write user profiles, behavior sequences, and item information to Redis.</li>
+</ol>
+<p>The correspondence between offline outputs and online needs is the key to understanding the whole system — offline "figures out how to compute it," online "fetches it fast and uses it."</p>
+<hr />
+<h2 id="1123-online-data-flow"><a class="header" href="#1123-online-data-flow">11.2.3 Online Data Flow</a></h2>
+<p>The online pipeline handles every user request; take "opening the homepage" as an example:</p>
+<p><img src="../images/part11-online-flow.svg" alt="Online data flow: the full path of one recommendation request, with the target latency kept under 200 milliseconds" /></p>
+<ol>
+<li><strong>Cold-start detection</strong>: decide whether the user is new (fewer historical behaviors than a threshold); new users go through cold start, everyone else through the normal flow.</li>
+<li><strong>Multi-route retrieval</strong>: run YoutubeDNN vector retrieval, item-similarity retrieval, and preferred-genre retrieval in parallel.</li>
+<li><strong>Precise ranking</strong>: DeepFM estimates the CTR of each candidate and sorts by score.</li>
+<li><strong>Diversity re-ranking</strong>: scattering strategies to avoid consecutive movies of the same genre or year.</li>
+<li><strong>Result assembly</strong>: query the database to fill in titles, posters, and so on, and assemble the frontend response.</li>
+</ol>
+<p>The target end-to-end latency is under <strong>200 milliseconds</strong>.</p>
+<hr />
+<h2 id="1124-key-design-decisions"><a class="header" href="#1124-key-design-decisions">11.2.4 Key Design Decisions</a></h2>
+<h3 id="separating-retrieval-and-ranking-the-funnel-architecture"><a class="header" href="#separating-retrieval-and-ranking-the-funnel-architecture">Separating Retrieval and Ranking (the Funnel Architecture)</a></h3>
+<p>In theory you could train one model to score the entire catalog directly, but that is computationally infeasible: with a catalog of 100,000 movies, running the ranking model over the full catalog on every request would take 100 seconds even at 1 ms per inference.</p>
+<p>Hence the <strong>funnel architecture</strong>: the retrieval stage uses a light model to quickly filter down to a few hundred candidates; the ranking stage uses a complex model to score precisely those few hundred.</p>
+<p><img src="../images/part11-funnel.svg" alt="Funnel architecture: a universe of items narrowed to hundreds by retrieval, then to tens by ranking" /></p>
+<h3 id="multi-route-retrieval-and-fusion-snake-merge"><a class="header" href="#multi-route-retrieval-and-fusion-snake-merge">Multi-Route Retrieval and Fusion (Snake Merge)</a></h3>
+<p>Any single retrieval strategy has blind spots: vector retrieval can miss relevance the model never captured; collaborative filtering covers new or niche movies poorly; popular recommendations lack personalization. Fusing multiple strategies lets them cover one another's weaknesses. This project uses <strong>Snake Merge</strong>: candidates are drawn round-robin from each route, guaranteeing that every route sends representatives into ranking.</p>
+<h3 id="cold-start-handling"><a class="header" href="#cold-start-handling">Cold-Start Handling</a></h3>
+<p>New users lack behavior, so collaborative filtering and vector retrieval fail. This project designs a dedicated cold-start flow: (1) detect via an interaction-count threshold; (2) if the user set preferred genres, prioritize quality movies of those genres; (3) otherwise fall back to popular items or UCB exploration; (4) transition to the normal flow as behavior accumulates.</p>
+<h3 id="separating-feature-storage-from-computation"><a class="header" href="#separating-feature-storage-from-computation">Separating Feature Storage from Computation</a></h3>
+<p>Online inference is latency-sensitive. If every request queried historical behavior from PostgreSQL, the database would become the bottleneck. So high-frequency features are precomputed and written to Redis: user profiles are written at registration/update time; behavior sequences are updated after every rating; item embeddings are written in offline batches. Redis read latency is typically &lt;1 ms — one to two orders of magnitude faster than a database.</p>
+<blockquote>
+<p><strong>Analysis:</strong> The four decisions all point to one principle — <strong>put the heavy work offline, the fast work online, and the hot data in memory</strong>. The funnel solves compute, fusion solves coverage, cold start solves zero samples, and storage separation solves latency.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-112"><a class="header" href="#-common-mistakes-in-112">⚠️ Common Mistakes in 11.2</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Scoring the full catalog with one model</td><td>"Just rank the whole catalog with one model"</td><td>100k candidates × inference = hundreds of seconds; unservable</td><td>Funnel: retrieval narrows the candidates, ranking scores them precisely</td></tr>
+<tr><td>2</td><td>Offline/online feature mismatch</td><td>Offline uses a new encoder, online the old one</td><td>Train-serve skew; performance collapses</td><td>Share the same vocab_dict/encoders</td></tr>
+<tr><td>3</td><td>Querying the database for features on every request</td><td>Reading PG history in real time</td><td>The database becomes the latency bottleneck</td><td>Pre-write high-frequency features to Redis</td></tr>
+<tr><td>4</td><td>Single-route retrieval</td><td>Using only vector retrieval</td><td>Insufficient coverage; niche/new movies get missed</td><td>Multi-route retrieval + Snake Merge fusion</td></tr>
+<tr><td>5</td><td>Mixing cold start into the normal flow</td><td>Treating new users the same as everyone</td><td>Poor experience for new users; recommendations break</td><td>Dedicated cold-start detection and a three-tier strategy</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Offline/online decoupling</td><td>Offline produces, online serves; the storage layer bridges them</td><td>The engineering balance of quality and latency</td></tr>
+<tr><td>Four component groups</td><td>PG/Redis/shared dir/ES + offline/online/frontend</td><td>The physical layout of the system</td></tr>
+<tr><td>Offline data flow</td><td>CSV → features → training → deployment + ingestion</td><td>The training-time view</td></tr>
+<tr><td>Online data flow</td><td>Request → retrieval → ranking → re-ranking → assembly</td><td>The serving-time view (&lt;200 ms)</td></tr>
+<tr><td>Four design decisions</td><td>Funnel / fusion / cold start / storage separation</td><td>The foundation of engineering feasibility</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: The offline side runs on a schedule while the online side serves in real time — don't models go stale?</strong></p>
+<blockquote>
+<p>A: They do; that's the norm in industry. This project uses a version pointer (active.json) for transparent hot updates (see Section 11.3): after offline retraining, flipping the pointer is all it takes — no downtime.</p>
+</blockquote>
+<p><strong>Q2: Why are item embeddings computed offline but user embeddings online?</strong></p>
+<blockquote>
+<p>A: The item catalog is relatively static and large — compute it once offline and index it. The user is only known at request time, so their embedding must be computed online. Building the library offline + querying it online is exactly what makes the two-tower scale (see Section 2.3).</p>
+</blockquote>
+<p><strong>Q3: How is Snake Merge different from simply merging by score?</strong></p>
+<blockquote>
+<p>A: Score-based merging lets one route (e.g., vector retrieval) dominate the list; Snake Merge draws round-robin so that every route sends representatives into ranking, improving diversity and coverage.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>11.1</strong>'s technology choices land here as components and data flows.</li>
+<li><strong>11.3</strong> goes deep into every step of the offline pipeline's implementation.</li>
+<li><strong>11.4</strong> goes deep into every step of the online pipeline's implementation.</li>
+<li><strong>2.3 (two-tower)</strong> and <strong>3.x (DeepFM)</strong> are the algorithmic basis of the retrieval and ranking models.</li>
+<li><strong>4.2 (diversity re-ranking)</strong> explains the theoretical motivation for the scattering strategies in the re-ranking stage.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.2.1 — Draw the Data Flow</strong> 🟢 Easy</p>
+<p>In one sentence: which component produces the offline-trained <code>item_embeddings.npy</code>, which component consumes it, and at which online stage is it used?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> The offline pipeline's "model deployment" writes it to the shared directory; the online pipeline's retrieval service (<code>RecallResourceManager</code>) loads it; it is used at the vector-search stage of YoutubeDNN / item-similarity retrieval.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>A classic case of offline production and online consumption.</li>
+<li>It embodies "decoupling through the storage layer."</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.2.2 — The Funnel's Compute Bill</strong> 🟢 Easy</p>
+<p>A catalog of 50,000 movies; retrieval uses a light model (0.1 ms per candidate) to shortlist 200; ranking uses a heavy model (1 ms per candidate) to score those 200. How long would full-catalog ranking take? How long does the funnel take?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> Full-catalog ranking = 50,000 × 1 ms = 50 seconds. Funnel = retrieval 50,000 × 0.1 ms = 5 s + ranking 200 × 1 ms = 0.2 s ≈ 5.2 s. And retrieval over a prebuilt index is far faster than 5 s, so the funnel's advantage is even bigger in practice.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The funnel turns "heavy model over the full catalog" into "light model over the full catalog + heavy model over a subset."</li>
+<li>Real retrieval uses vector indexes and hardly scans the full catalog (see Section 2.3.4).</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.2.3 — Why Features Live in Redis</strong> 🟡 Medium</p>
+<p>A product manager argues: "Just query user features straight from PostgreSQL — save yourself the trouble of maintaining Redis." Point out the risks, and quantify why Redis is the better fit.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> Every recommendation request reads the user profile + behavior sequence. Querying PG (typically several to a dozen-plus ms per read), stacked on top of retrieval/ranking/re-ranking, easily blows the 200 ms budget; and PG becomes a bottleneck under high concurrency. Redis in-memory reads are &lt;1 ms — one to two orders of magnitude faster than PG — and its List/Hash types naturally express history sequences and profiles. The cost is maintaining one more copy of the data and its consistency, but the latency win far outweighs it.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Online features are "high-frequency, low-latency, structurally simple" → an in-memory store fits naturally.</li>
+<li>PG suits durable business data, not hot-path feature reads.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Propose One Improvement to the Architecture</strong> 🔴 Hard</p>
+<p>Based on this architecture, propose one change that would noticeably improve recommendation quality or stability in a production environment (e.g., real-time feature updates, model A/B testing, online learning). State the problem it solves and which layer it touches (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Options: (1) a real-time feature pipeline — update the Redis behavior sequence near-real-time after each rating (instead of only in offline batches) to improve freshness; touches offline "feature ingestion" + an online write-back. (2) Model A/B — extend <code>active.json</code> to multi-version traffic splitting; touches online resource loading. (3) Upgrade vector search to FAISS — replace brute-force inner product once the catalog exceeds a million items; touches the retrieval service. Arguing any one of these is enough.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/project-intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/offline-pipeline.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/project-intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/offline-pipeline.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

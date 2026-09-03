@@ -1,0 +1,50 @@
+<svg width="800" height="360" viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a81" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="s81" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="360" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16.5" font-weight="bold" fill="#1e293b">语义 ID：多模态表示 → 分层离散 Token</text>
+
+  <!-- left: multimodal input -->
+  <rect x="30" y="60" width="200" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s81)"/>
+  <text x="130" y="84" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">① 协同感知表示</text>
+  <text x="130" y="108" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">标题/标签/ASR/OCR</text>
+  <text x="130" y="126" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">封面/帧 → miniCPM-V</text>
+  <text x="130" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">1280 Token → QFormer</text>
+  <text x="130" y="168" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">4 查询向量</text>
+  <text x="130" y="192" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">+ I2I 对比学习</text>
+
+  <!-- arrow -->
+  <line x1="230" y1="135" x2="280" y2="135" stroke="#64748b" stroke-width="2.5" marker-end="url(#a81)"/>
+
+  <!-- middle: RQ-Kmeans residual -->
+  <rect x="285" y="60" width="240" height="150" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" filter="url(#s81)"/>
+  <text x="405" y="84" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#d97706">② RQ-Kmeans 量化</text>
+  <text x="405" y="110" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">残差逐层 K-means</text>
+  <text x="405" y="132" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">L1: s¹ = argmin ‖R¹−c‖</text>
+  <text x="405" y="154" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">R² = R¹ − c^{(1)}</text>
+  <text x="405" y="178" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">重复 3 层 → 由粗到细</text>
+  <text x="405" y="198" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">非端到端、直接建码本</text>
+
+  <!-- arrow -->
+  <line x1="525" y1="135" x2="575" y2="135" stroke="#64748b" stroke-width="2.5" marker-end="url(#a81)"/>
+
+  <!-- right: semantic ID output -->
+  <rect x="580" y="60" width="190" height="150" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#s81)"/>
+  <text x="675" y="84" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">③ 语义 ID</text>
+  <text x="675" y="115" text-anchor="middle" font-family="Courier New" font-size="15" fill="#1e293b">[ s¹ , s² , s³ ]</text>
+  <text x="675" y="142" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">L_t = 3 个 Token</text>
+  <text x="675" y="164" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">编码空间 N_t^{L_t}</text>
+  <text x="675" y="192" text-anchor="middle" font-family="Arial" font-size="12" fill="#10b981">≫ 物品数 → 全覆盖</text>
+
+  <!-- bottom note -->
+  <rect x="60" y="240" width="680" height="86" rx="8" fill="#fef9ec" stroke="#d97706" stroke-width="1.5"/>
+  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="13" fill="#92400e">为何不用原子 ID？ 数十亿物品 → Softmax 词表爆炸（O(|V|) 不可行）</text>
+  <text x="400" y="290" text-anchor="middle" font-family="Arial" font-size="13" fill="#92400e">语义 ID：把物品压到可控词表，且语义相近物品共享前缀 Token</text>
+  <text x="400" y="314" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#64748b">这是连接「生成模型」与「离散物品」的桥梁 — 也是 8.2 搜索、8.3 广告共用的暗线</text>
+</svg>

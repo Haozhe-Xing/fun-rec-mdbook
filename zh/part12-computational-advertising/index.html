@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>计算广告 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">💰 Part 12: 计算广告</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">推荐系统的孪生兄弟——从广告生态、计费模式、竞价机制、在线分配到定向检索、数据交易、反作弊、合约售卖与原生信息流，补齐「流量变现」的完整知识库。</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 13 节 · ⏱️ Estimated 10.5 hours · 🎯 Target: 建立计算广告全景认知，掌握竞价机制、智能出价、预估校准、定向检索、数据合规与反作弊的完整链路</p>
+</div>
+<p>推荐与广告共享同一套技术底座——召回、排序、特征工程、点击率预估——但广告在这之上叠加了一层推荐系统没有的东西： <strong>经济学机制</strong>。广告位是稀缺资源，每一次展示都要在多个广告主之间分配，并向赢家收取费用；分配规则与定价规则的设计，直接决定了广告主「怎么出价才划算」，进而决定了整个市场的稳定性与平台的长期收益。</p>
+<p>本部分以刘鹏《计算广告学》公开课体系为骨架、近年 KDD/SIGIR/RecSys 工业论文为延伸。阅读主线有两条：</p>
+<ul>
+<li><strong>机制主线（12.1 → 12.7）</strong>：从生态全景与计费模式出发，压轴在竞价机制（GFP/GSP/VCG 的权衡），再沿智能出价、校准、开闭环、在线分配展开——这一条回答「广告主的钱怎么收、怎么花」。</li>
+<li><strong>工程全景主线（12.8 → 12.11）</strong>：定向、检索、数据交易、实验与反作弊，补齐从业者需要的基础设施知识。</li>
+</ul>
+<p>末尾两章（12.12 合约广告、12.13 信息流与原生广告）回补产品形态：前者是 12.7 在线分配算法的商业前置，后者是与推荐工程结合最深的一章。各章要点见下表。</p>
+<p><img src="../images/part12-ecosystem.svg" alt="程序化广告生态全景" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 推荐系统优化的是「单个用户与物品的匹配」，广告系统在此基础上还要优化「多个广告主之间的博弈规则」。<strong>机制设计是广告与推荐的最大分水岭</strong>——理解了 GFP → GSP → VCG 这条主线，你才能读懂 8.3 中 EGA 为何要把激励相容（IC）约束嵌入生成过程。</p>
+</blockquote>
+<hr />
+<h2 id="本章涵盖"><a class="header" href="#本章涵盖">本章涵盖</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>章节</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>12.1</strong></td><td>计算广告全景与生态</td><td>从「广告主↔媒体直签」到「DSP-ADX-SSP 程序化交易」，投放模式三次跃迁，每一步都在整合供需、细化竞价粒度</td></tr>
+<tr><td><strong>12.2</strong></td><td>计费模式与核心指标</td><td>CPT→CPM→CPC→CPA 的谱系本质是 <strong>风险归属</strong> 的转移；eCPM 是统一度量衡，平台按它排序、广告主按它博弈</td></tr>
+<tr><td><strong>12.3</strong></td><td>竞价机制：从一价到二价</td><td>一价（GFP）无稳定均衡、二价（GSP）成为工业主流、VCG 说真话但难落地——机制设计在稳定性与激励兼容之间的权衡</td></tr>
+<tr><td><strong>12.4</strong></td><td>智能出价与预算控制</td><td>oCPC/oCPM 平台代管出价、预算 pacing 的 PID 反馈控制、一价市场 bid shading 最大化期望 surplus——出价栈四层逐层展开</td></tr>
+<tr><td><strong>12.5</strong></td><td>广告系统中的偏差与校准</td><td>位置偏差（PAL）、样本选择偏差（ESMM）、胜出偏差与延迟反馈；Platt/保序回归校准体系——预测的绝对精度是广告系统的地基</td></tr>
+<tr><td><strong>12.6</strong></td><td>开环广告与闭环广告</td><td>转化是否发生在平台可观测域内，决定平台能做多深的优化——闭环训练深度 pCVR、做深度转化出价，开环困于归因与隐私</td></tr>
+<tr><td><strong>12.7</strong></td><td>在线分配与流量管理</td><td>保量合约写成二部图带约束优化：紧凑分配方案用 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span> 级对偶变量恢复 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span> 级分配率，HWM 是工程上真实在用的启发式</td></tr>
+<tr><td><strong>12.8</strong></td><td>受众定向技术</td><td>t(c)/t(u)/t(a,u) 三类标签：上下文打标、行为定向泊松 GLM 建模与时间衰减、人口属性预测——主题模型已成历史，embedding/LLM 打标是现在</td></tr>
+<tr><td><strong>12.9</strong></td><td>广告检索与语义召回</td><td>从十亿候选到毫秒竞价：布尔两层索引 + WAND 剪枝保 Top-K，DSSM/双塔语义召回演进到 HNSW/IVF-PQ 多路召回</td></tr>
+<tr><td><strong>12.10</strong></td><td>数据加工与交易</td><td>第一方/第二方/第三方数据的加工链路与交易闭环；cookie 映射已死，CDP + UID2 + clean room 是合规时代的答案</td></tr>
+<tr><td><strong>12.11</strong></td><td>实验框架与反作弊</td><td>分层实验保证「度量可信」，异常检测 + 设备指纹 + 图分析保证「流量真实」——广告系统的两条底线</td></tr>
+<tr><td><strong>12.12</strong></td><td>合约广告：产品形态与售卖模式</td><td>「先有广告位后有广告」：CPT/CPD 排期与轮替、从卖位置到卖人群的售卖演进——保量合约的商业逻辑是 12.7 在线分配的前置</td></tr>
+<tr><td><strong>12.13</strong></td><td>信息流与原生广告</td><td>广告与内容形态的融合：信息流混排是「与推荐工程同构」的问题，激励视频、oCPX 产品链路与原生 RTB 的合流</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>解释</strong> 广告与推荐的本质差异：非同质匹配、转化终点、回报率导向，以及机制设计约束</li>
+<li>🟢 <strong>描述</strong> DSP / ADX / SSP / DMP 各自的职责与一次 RTB 竞价的完整时序</li>
+<li>🟡 <strong>辨析</strong> 各计费模式下的风险归属：谁做决策、谁承担效果不确定性</li>
+<li>🟡 <strong>推导</strong> eCPM 排序逻辑与 GSP 支付公式 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>🔴 <strong>证明</strong> 单坑位二价拍卖下如实出价是占优策略，并说明多坑位 GSP 为何失去严格激励兼容</li>
+<li>🔴 <strong>对比</strong> GSP 与 VCG 的收费水平、均衡性质与工业可行性，理解程序化市场「回到一价」的动因</li>
+<li>🔴 <strong>推导</strong> 期望 surplus <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathbb">E</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord text"><span class="mord">win</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span> 的最优出价逻辑，解释 bid shading 为何同时改善广告主 ROI 与 DSP surplus</li>
+<li>🔴 <strong>设计</strong> 位置偏差（PAL）与样本选择偏差（ESMM）的治理方案，并用可靠性图与 ECE 评估校准质量</li>
+<li>🔴 <strong>辨析</strong> 开环/闭环的本质判据，说明闭环为何支撑深度转化出价、开环为何必须依赖回传与归因模型，以及 ATT/SKAN 如何让确定性归因坍缩</li>
+<li>🔴 <strong>建模</strong> 在线分配问题：写出供给/需求约束与紧凑方案的恢复公式 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ia</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">))</span></span></span></span>，解释 HWM 的优先级折减逻辑</li>
+<li>🔴 <strong>设计</strong> 受众定向标签体系：区分 t(c)/t(u)/t(a,u) 的适用场景，用泊松 GLM + 时间衰减给行为兴趣打分，说清 reach/CTR 权衡</li>
+<li>🔴 <strong>优化</strong> 广告检索漏斗：解释布尔表达式两层索引与 WAND 剪枝为何能把十亿候选压到毫秒级，比较 LSH/图索引 ANN 的取舍</li>
+<li>🔴 <strong>辨析</strong> 数据合规边界：划分三方数据、指出 cookie 映射为何失效，说清 GDPR/PIPL 约束下 DMP→CDP 与 clean room 的演进逻辑</li>
+<li>🔴 <strong>对抗</strong> 广告作弊：识别 click flooding/click injection 等手法的动机与痕迹，用分层实验与异常检测守住「度量可信、流量真实」两条底线</li>
+<li>🔴 <strong>理解</strong> 合约售卖逻辑：说清 CPT/CPD/轮替/排期的产品语义，解释「卖位置→卖人群」如何让流量可拆分售卖，并把它与 12.7 的保量分配衔接</li>
+<li>🔴 <strong>融合</strong> 广告与内容：分析信息流混排的体验-收益权衡，区分各原生形态的适用场景，走通 oCPX 从转化追踪到按转化优化的产品闭环</li>
+<li>🏆 用交互式竞价模拟器验证「虚报出价会发生什么」、用 bid shading 模拟器找最优出价、用归因模拟器对比五种归因模型的功劳分配、用在线分配模拟器跑通 HWM 规划与执行，完成各节分层练习题</li>
+</ul>
+<hr />
+<h2 id="核心概念"><a class="header" href="#核心概念">核心概念</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>章节</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>广告有效性模型</td><td>12.1</td><td>曝光→关注→理解→接受→保持→决策，广告效果的六阶段地图</td></tr>
+<tr><td>程序化交易生态（DSP/ADX/SSP/DMP）</td><td>12.1</td><td>现代广告投放的基础设施</td></tr>
+<tr><td>RTB 实时竞价</td><td>12.1</td><td>按次展示粒度的开放竞价，Cookie Mapping 是前置条件</td></tr>
+<tr><td>eCPM</td><td>12.2</td><td>跨计费模式统一排序的度量衡</td></tr>
+<tr><td>担保式投送（GD）与在线分配</td><td>12.7</td><td>合约广告的二部图优化框架：紧凑分配方案 + HWM</td></tr>
+<tr><td>紧凑分配方案 / SHALE</td><td>12.7</td><td>只存合约级对偶变量 α，恢复分配率；原始对偶迭代求解并支持增量合约</td></tr>
+<tr><td>位置拍卖（Position Auction）</td><td>12.3</td><td>多坑位广告分配与计价的统一模型</td></tr>
+<tr><td>广义第二高价（GSP）</td><td>12.3</td><td>搜索广告二十年的主流定价机制</td></tr>
+<tr><td>VCG 机制</td><td>12.3</td><td>理论最优的 truth-telling 定价，工业落地的取舍基准</td></tr>
+<tr><td>激励相容（IC）/ 个体理性（IR）</td><td>12.3</td><td>机制设计两大性质，8.3 EGA 的核心约束</td></tr>
+<tr><td>预算平滑消耗（Budget Pacing）</td><td>12.4</td><td>PID/PI 反馈控制让消耗进度沿 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">t</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 轨迹推进</td></tr>
+<tr><td>Bid Shading</td><td>12.4</td><td>一价拍卖下的出价下压策略，赢率与利润的乘积最优</td></tr>
+<tr><td>位置偏差与 PAL</td><td>12.5</td><td>点击 = 被看到 × 相关；双塔解耦、线上只用 pCTR 塔</td></tr>
+<tr><td>ESMM</td><td>12.5</td><td>pCTCVR = pCTR × pCVR 全空间建模，同时解决 SSB 与数据稀疏</td></tr>
+<tr><td>校准（Calibration）</td><td>12.5</td><td>Platt scaling / 保序回归把分数后处理为真实概率，PCOC/ECE 度量</td></tr>
+<tr><td>闭环 / 开环广告</td><td>12.6</td><td>转化是否发生在平台可观测域内的二分，决定优化深度的上限</td></tr>
+<tr><td>受众定向标签体系 t(c)/t(u)/t(a,u)</td><td>12.8</td><td>上下文/用户/组合三类定向标签的分类框架</td></tr>
+<tr><td>行为定向泊松建模</td><td>12.8</td><td>兴趣强度 h~Poisson(λt)，时间衰减 λ(d)=αλ(d−1)+w·x 在线更新</td></tr>
+<tr><td>布尔表达式检索与 WAND</td><td>12.9</td><td>两层倒排 + 上界剪枝，Top-K 广告检索的工业骨架</td></tr>
+<tr><td>语义召回 / ANN</td><td>12.9</td><td>DSSM→双塔→HNSW/IVF-PQ，从关键词匹配走向向量检索</td></tr>
+<tr><td>三方数据与 DMP</td><td>12.10</td><td>第一/二/三方数据划分，DMP 加工人群包供 DSP 出价</td></tr>
+<tr><td>CDP 与 clean room</td><td>12.10</td><td>后 cookie 时代的一一方数据基建与「可用不可见」合规交易</td></tr>
+<tr><td>分层实验</td><td>12.11</td><td>流量分层正交切分，让多个实验并行且互不污染</td></tr>
+<tr><td>click flooding / click injection</td><td>12.11</td><td>两类典型归因作弊手法及其识别信号</td></tr>
+<tr><td>CPT / CPD / 轮替</td><td>12.12</td><td>广告位按天售卖的三件套：独占、排期与随机起始序号轮播</td></tr>
+<tr><td>从卖位置到卖人群</td><td>12.12</td><td>定向标签让广告位可拆分售卖，催生保量合约与在线分配</td></tr>
+<tr><td>信息流混排</td><td>12.13</td><td>广告与自然内容按统一分数竞争位置——与推荐工程同构的问题</td></tr>
+<tr><td>激励视频</td><td>12.13</td><td>用户主动换权益的完播形态，eCPM 最高</td></tr>
+<tr><td>oCPX 产品链路</td><td>12.13</td><td>转化追踪 + 转化出价 + 预算表达（bid/cost cap）的产品闭环</td></tr>
+<tr><td>归因（Attribution）</td><td>12.6</td><td>识别转化由哪个渠道带来的分配规则，是约定而非客观测量</td></tr>
+<tr><td>SKAdNetwork（SKAN）</td><td>12.6</td><td>Apple 隐私保护归因：聚合、延迟、群组匿名，开环归因的确定性坍缩</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="前置知识"><a class="header" href="#前置知识">前置知识</a></h2>
+<ul>
+<li>已读完 <strong>1.1</strong> （推荐系统是什么）——本部分经常以推荐系统为参照系做对比</li>
+<li>了解基本的概率与期望值计算（<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord">⋅</span><span class="mclose">]</span></span></span></span>），12.3 有少量博弈论推导，不需要先修博弈论</li>
+<li><strong>12.3</strong> 的 IC/IR 与 <strong>8.3</strong> （端到端生成式广告）互为镜像：先读其一再读另一，理解会加深</li>
+</ul>
+<blockquote>
+<p>本部分定位为<strong>专题补充</strong>，不依赖下篇生成式主线的任何章节；但 12.3 的机制设计视角会反过来照亮 8.3 中 EGA「分配与支付解耦」的设计动机。</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>带着「谁承担风险」读 12.2。</strong> 每种计费模式都可以用一句话概括：决策权在谁手里、效果不确定性由谁兜底。这条线索比死记公式有效得多。</li>
+<li><strong>12.3 动手算，别只看。</strong> GSP 支付公式 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 看似简单，坑位点击率折算极易出错。先手推一遍 12.3.3 的三坑位数值例子，再玩交互模拟器。</li>
+<li><strong>把机制当「制度」而不是「公式」。</strong> 一价、二价的差异不在代数，而在它们激励出的广告主行为：震荡追逐 vs 稳定均衡。读完 12.3 你应该能向别人解释清楚 1998 年 Overture 的市场为什么乱、2002 年 Google 改了什么。</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/deployment.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part12-computational-advertising/advertising-panorama.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/deployment.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part12-computational-advertising/advertising-panorama.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

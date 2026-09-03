@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr12" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh12"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">Token Mixing：特征维混合替代 QKᵀ</text>
+
+  <!-- Left Self-Attention -->
+  <rect x="40" y="60" width="350" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh12)"/>
+  <text x="215" y="86" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">Self-Attention（O(T²D)）</text>
+  <g font-size="10" text-anchor="middle" fill="#64748b">
+    <rect x="70" y="110" width="30" height="22" rx="4" fill="#e8ecff"/><text x="85" y="125">t1</text>
+    <rect x="110" y="110" width="30" height="22" rx="4" fill="#e8ecff"/><text x="125" y="125">t2</text>
+    <rect x="150" y="110" width="30" height="22" rx="4" fill="#e8ecff"/><text x="165" y="125">t3</text>
+    <rect x="190" y="110" width="30" height="22" rx="4" fill="#e8ecff"/><text x="205" y="125">t4</text>
+  </g>
+  <!-- T x T similarity matrix -->
+  <rect x="250" y="105" width="110" height="110" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="305" y="125" font-size="11" font-weight="700" fill="#ef4444" text-anchor="middle">QKᵀ 相似度</text>
+  <g fill="#ef4444" opacity="0.5">
+    <rect x="258" y="135" width="14" height="14"/><rect x="272" y="135" width="14" height="14"/><rect x="300" y="135" width="14" height="14"/>
+    <rect x="258" y="149" width="14" height="14"/><rect x="286" y="149" width="14" height="14"/><rect x="314" y="149" width="14" height="14"/>
+  </g>
+  <text x="215" y="250" font-size="11" fill="#64748b" text-anchor="middle">需算所有 token pair 相似度</text>
+  <text x="215" y="275" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">+ Softmax 归一化</text>
+  <text x="215" y="305" font-size="11" fill="#64748b" text-anchor="middle">T² 项 + 额外 reduction kernel</text>
+  <text x="215" y="335" font-size="11" fill="#64748b" text-anchor="middle">memory-bound，GPU 利用率低</text>
+
+  <!-- arrow -->
+  <line x1="395" y1="210" x2="435" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arr12)"/>
+  <text x="415" y="200" font-size="10" fill="#10b981" text-anchor="middle">重排</text>
+
+  <!-- Right Token Mixing -->
+  <rect x="450" y="60" width="310" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh12)"/>
+  <text x="605" y="86" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">Token Mixing（O(TD²)）</text>
+  <g font-size="10" text-anchor="middle" fill="#64748b">
+    <rect x="475" y="110" width="120" height="22" rx="4" fill="#f0fdf4" stroke="#10b981"/><text x="535" y="125">head₁（按 head 重组）</text>
+    <rect x="475" y="140" width="120" height="22" rx="4" fill="#f0fdf4" stroke="#10b981"/><text x="535" y="155">head₂</text>
+    <rect x="475" y="170" width="120" height="22" rx="4" fill="#f0fdf4" stroke="#10b981"/><text x="535" y="185">head₃</text>
+  </g>
+  <rect x="610" y="110" width="130" height="82" rx="6" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="675" y="135" font-size="11" font-weight="700" fill="#10b981" text-anchor="middle">特征维线性变换</text>
+  <text x="675" y="158" font-size="10" fill="#1e293b" text-anchor="middle">SplitHead → Concat</text>
+  <text x="675" y="175" font-size="10" fill="#1e293b" text-anchor="middle">同 head 内 token 紧排</text>
+  <text x="605" y="235" font-size="11" fill="#64748b" text-anchor="middle">单层 = feature-level mixing</text>
+  <text x="605" y="262" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">多层堆叠 → L 阶交互</text>
+  <text x="605" y="295" font-size="11" fill="#64748b" text-anchor="middle">无 Softmax，可融为单 GEMM kernel</text>
+  <text x="605" y="325" font-size="11" fill="#64748b" text-anchor="middle">去 T² 项，compute-bound</text>
+
+  <text x="400" y="388" font-size="12" fill="#64748b" text-anchor="middle">推荐要的是「信息混合」而非「动态相似度加权」——多层 Token Mixing 即足够</text>
+</svg>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#ef4444"/></marker>
+  </defs>
+
+  <text x="400" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">GSP 定价：按下一名的 eCPM 折算到自己的点击率</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">示例：甲 b=4.0、乙 b=3.0、丙 b=2.0（元/点击）；x₁=0.40，x₂=0.20，x₃=0.10；保留价 r=0.50</text>
+
+  <!-- column headers -->
+  <g font-size="12" fill="#64748b" text-anchor="middle">
+    <text x="120" y="80">坑位</text>
+    <text x="330" y="80">广告主（按出价降序）</text>
+    <text x="610" y="80">每点击支付 p</text>
+  </g>
+
+  <!-- row 1 : slot 1 -->
+  <rect x="50" y="92" width="140" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="120" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">坑位 1</text>
+  <text x="120" y="135" text-anchor="middle" font-size="12" fill="#64748b">CTR x₁ = 0.40</text>
+
+  <rect x="230" y="92" width="200" height="56" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+  <text x="330" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">甲　b₁ = 4.0</text>
+  <text x="330" y="135" text-anchor="middle" font-size="12" fill="#64748b">eCPM₁ = 4.0×0.40 = 1.60</text>
+
+  <rect x="470" y="92" width="280" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="610" y="115" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="#1e293b">p₁ = b₂·x₂ / x₁ = 3.0×0.20/0.40</text>
+  <text x="610" y="137" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">= 1.50 元/点击</text>
+
+  <!-- row 2 : slot 2 -->
+  <rect x="50" y="200" width="140" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="120" y="223" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">坑位 2</text>
+  <text x="120" y="243" text-anchor="middle" font-size="12" fill="#64748b">CTR x₂ = 0.20</text>
+
+  <rect x="230" y="200" width="200" height="56" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+  <text x="330" y="223" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">乙　b₂ = 3.0</text>
+  <text x="330" y="243" text-anchor="middle" font-size="12" fill="#64748b">eCPM₂ = 3.0×0.20 = 0.60</text>
+
+  <rect x="470" y="200" width="280" height="56" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+  <text x="610" y="223" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="#1e293b">p₂ = b₃·x₃ / x₂ = 2.0×0.10/0.20</text>
+  <text x="610" y="245" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">= 1.00 元/点击</text>
+
+  <!-- row 3 : slot 3 -->
+  <rect x="50" y="308" width="140" height="56" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="120" y="331" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">坑位 3</text>
+  <text x="120" y="351" text-anchor="middle" font-size="12" fill="#64748b">CTR x₃ = 0.10</text>
+
+  <rect x="230" y="308" width="200" height="56" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+  <text x="330" y="331" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">丙　b₃ = 2.0</text>
+  <text x="330" y="351" text-anchor="middle" font-size="12" fill="#64748b">eCPM₃ = 2.0×0.10 = 0.20</text>
+
+  <rect x="470" y="308" width="280" height="56" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="331" text-anchor="middle" font-size="13" font-family="Courier New, monospace" fill="#1e293b">p₃ = 保留价 r（末位无下一名）</text>
+  <text x="610" y="353" text-anchor="middle" font-size="14" font-weight="700" fill="#f59e0b">= 0.50 元/点击</text>
+
+  <!-- arrows: next-ranked advertiser's eCPM converted up -->
+  <path d="M 380 200 Q 430 160 468 138" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="426" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#ef4444">下一名 eCPM ÷ x₁ 折算</text>
+  <path d="M 380 308 Q 430 268 468 246" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="426" y="260" text-anchor="middle" font-size="12" font-weight="700" fill="#ef4444">下一名 eCPM ÷ x₂ 折算</text>
+
+  <!-- bottom formula banner -->
+  <rect x="50" y="384" width="700" height="48" rx="8" fill="#f8f9fc" stroke="#4A6CF7" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="400" y="405" text-anchor="middle" font-size="14" font-weight="700" font-family="Courier New, monospace" fill="#4A6CF7">pᵢ = bᵢ₊₁ · xᵢ₊₁ / xᵢ　（末位付保留价 r）</text>
+  <text x="400" y="424" text-anchor="middle" font-size="12" fill="#64748b">你付的 eCPM 恰好等于下一名在其位置的 eCPM —— 即保住第 i 名所需的最小出价</text>
+</svg>

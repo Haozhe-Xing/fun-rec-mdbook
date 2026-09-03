@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- titles -->
+  <text x="40" y="40" font-size="16" font-weight="700" fill="#1e293b">Ranking Output (Head Homogenization)</text>
+  <text x="440" y="40" font-size="16" font-weight="700" fill="#1e293b">Re-Ranking Goal (Diversity)</text>
+
+  <!-- left panel -->
+  <rect x="30" y="60" width="340" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
+  <g>
+    <!-- 10 similar items, all orange (same category) -->
+    <rect x="50" y="80" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="120" y="80" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="190" y="80" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="260" y="80" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="50" y="140" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="120" y="140" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="190" y="140" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="260" y="140" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="50" y="200" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="120" y="200" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  </g>
+  <text x="200" y="290" text-anchor="middle" font-size="12" fill="#64748b">Same category / style pile-up → fatigue</text>
+  <text x="200" y="312" text-anchor="middle" font-size="12" fill="#ef4444" font-weight="600">Long-tail content suppressed</text>
+
+  <!-- arrow -->
+  <line x1="372" y1="200" x2="436" y2="200" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="404" y="190" text-anchor="middle" font-size="11" fill="#64748b">Re-Rank</text>
+
+  <!-- right panel -->
+  <rect x="430" y="60" width="340" height="280" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" filter="url(#sh)"/>
+  <g>
+    <!-- varied categories -->
+    <rect x="450" y="80" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="520" y="80" width="60" height="44" rx="8" fill="#4A6CF7" stroke="#3b56c4" stroke-width="1.5"/>
+    <rect x="590" y="80" width="60" height="44" rx="8" fill="#10b981" stroke="#0c8f6a" stroke-width="1.5"/>
+    <rect x="660" y="80" width="60" height="44" rx="8" fill="#f59e0b" stroke="#c2810a" stroke-width="1.5"/>
+    <rect x="450" y="140" width="60" height="44" rx="8" fill="#4A6CF7" stroke="#3b56c4" stroke-width="1.5"/>
+    <rect x="520" y="140" width="60" height="44" rx="8" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="590" y="140" width="60" height="44" rx="8" fill="#ef4444" stroke="#c23030" stroke-width="1.5"/>
+    <rect x="660" y="140" width="60" height="44" rx="8" fill="#10b981" stroke="#0c8f6a" stroke-width="1.5"/>
+    <rect x="450" y="200" width="60" height="44" rx="8" fill="#f59e0b" stroke="#c2810a" stroke-width="1.5"/>
+    <rect x="520" y="200" width="60" height="44" rx="8" fill="#4A6CF7" stroke="#3b56c4" stroke-width="1.5"/>
+  </g>
+  <text x="600" y="290" text-anchor="middle" font-size="12" fill="#64748b">Mixed categories / styles → better UX</text>
+  <text x="600" y="312" text-anchor="middle" font-size="12" fill="#10b981" font-weight="600">Long-tail gets impressions</text>
+
+  <!-- legend -->
+  <g font-size="10" fill="#64748b">
+    <rect x="200" y="340" width="14" height="14" rx="3" fill="#f97316"/><text x="220" y="351">Same category</text>
+    <rect x="300" y="340" width="14" height="14" rx="3" fill="#4A6CF7"/><text x="320" y="351">Other category</text>
+    <rect x="410" y="340" width="14" height="14" rx="3" fill="#10b981"/><text x="430" y="351">Long-tail</text>
+    <rect x="490" y="340" width="14" height="14" rx="3" fill="#f59e0b"/><text x="510" y="351">Complementary</text>
+  </g>
+</svg>

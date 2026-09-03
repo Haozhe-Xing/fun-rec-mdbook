@@ -1,0 +1,32 @@
+<svg width="800" height="330" viewBox="0 0 800 330" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="330" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">离线「生产」 vs 在线「服务」的核心差异</text>
+
+  <rect x="60" y="70" width="320" height="180" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="220" y="100" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#10b981">离线系统 Offline</text>
+  <text x="220" y="132" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 全量历史数据，训练模型</text>
+  <text x="220" y="160" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 无延迟约束（小时/天级）</text>
+  <text x="220" y="188" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 产出模型 / 向量 / 特征</text>
+  <text x="220" y="216" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 追求质量</text>
+
+  <rect x="420" y="70" width="320" height="180" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="580" y="100" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#4A6CF7">在线系统 Online</text>
+  <text x="580" y="132" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 实时请求，低延迟服务</text>
+  <text x="580" y="160" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 百毫秒级响应</text>
+  <text x="580" y="188" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 加载产出物做推理</text>
+  <text x="580" y="216" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">· 追求延迟+质量平衡</text>
+
+  <line x1="380" y1="160" x2="420" y2="160" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial" font-size="11" fill="#f59e0b">存储层解耦</text>
+
+  <rect x="180" y="278" width="440" height="38" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="302" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#1e293b">共享存储：PostgreSQL · Redis · 共享目录 · Elasticsearch</text>
+</svg>

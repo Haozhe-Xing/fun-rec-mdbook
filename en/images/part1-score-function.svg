@@ -1,0 +1,44 @@
+<svg width="800" height="260" viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="260" fill="#f8f9fc" rx="12"/>
+
+  <!-- Inputs -->
+  <rect x="40" y="60" width="150" height="64" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="115" y="92" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">User U</text>
+  <text x="115" y="112" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Interests / profile / intent</text>
+
+  <rect x="40" y="150" width="150" height="64" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="115" y="182" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Item I</text>
+  <text x="115" y="202" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Attributes / social proof</text>
+
+  <rect x="230" y="105" width="150" height="64" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="305" y="137" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">Context C</text>
+  <text x="305" y="157" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">Time / place / scene</text>
+
+  <!-- Function -->
+  <rect x="430" y="95" width="130" height="84" rx="8" fill="#4A6CF7" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="495" y="135" text-anchor="middle" font-family="Courier New" font-size="30" font-weight="bold" fill="#ffffff">f</text>
+  <text x="495" y="160" text-anchor="middle" font-family="Arial" font-size="12" fill="#e8ecff">Score function</text>
+
+  <!-- Output -->
+  <rect x="630" y="105" width="140" height="64" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="700" y="137" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#ffffff">Score</text>
+  <text x="700" y="157" text-anchor="middle" font-family="Arial" font-size="12" fill="#d1fae5">Interaction prob.</text>
+
+  <!-- Arrows -->
+  <line x1="190" y1="92" x2="424" y2="120" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="182" x2="424" y2="155" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="380" y1="137" x2="424" y2="137" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="560" y1="137" x2="624" y2="137" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Formula bar -->
+  <rect x="0" y="220" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="244" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">Discriminative:  Score = f(User, Item, Context)  →  score every candidate, pick the best</text>
+</svg>

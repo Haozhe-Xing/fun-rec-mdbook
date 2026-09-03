@@ -1,0 +1,37 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow10h" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow10h" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">DMSG：条件扩散生成多样化 Slate</text>
+
+  <g font-family="Arial" font-size="12" text-anchor="middle">
+    <rect x="30" y="70" width="160" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10h)"/>
+    <text x="110" y="98" fill="#1e293b">文本 Prompt</text>
+    <text x="110" y="120" font-size="11" fill="#64748b">τ(y) → c</text>
+    <rect x="230" y="70" width="160" height="70" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow10h)"/>
+    <text x="310" y="98" fill="#1e293b">编码模块</text>
+    <text x="310" y="120" font-size="11" fill="#64748b">φ(w) → x₀</text>
+    <rect x="430" y="70" width="170" height="70" rx="8" fill="#4A6CF7" filter="url(#shadow10h)"/>
+    <text x="515" y="98" fill="#ffffff" font-weight="bold">Diffusion</text>
+    <text x="515" y="120" font-size="11" fill="#e8ecff">Transformer</text>
+    <text x="540" y="70" font-family="Courier New" font-size="11" fill="#e8ecff">v-pred</text>
+    <rect x="630" y="70" width="140" height="70" rx="8" fill="#fef3cd" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow10h)"/>
+    <text x="700" y="98" fill="#1e293b">Rounding</text>
+    <text x="700" y="120" font-size="11" fill="#64748b">→ 离散 slate</text>
+  </g>
+  <line x1="190" y1="105" x2="226" y2="105" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10h)"/>
+  <line x1="390" y1="105" x2="426" y2="105" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow10h)"/>
+  <line x1="600" y1="105" x2="626" y2="105" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow10h)"/>
+
+  <rect x="30" y="180" width="740" height="110" rx="10" fill="#1e293b" filter="url(#shadow10h)"/>
+  <text x="48" y="206" font-family="Arial" font-size="12" fill="#94a3b8">v-prediction（DMSG 第三种参数化）：</text>
+  <text x="48" y="230" font-family="Courier New" font-size="12" fill="#e2e8f0">v_t = α_t·ε − σ_t·x₀,   α_t=√ᾱₜ, σ_t=√(1−ᾱₜ</text>
+  <text x="48" y="256" font-family="Arial" font-size="12" fill="#cbd5e1">优势：损失权重 SNR+1，高低信噪比都能给合理梯度，训练更稳。DDIM 加速到 50 步，毫秒级延迟。</text>
+  <text x="48" y="280" font-family="Arial" font-size="12" fill="#cbd5e1">多样性：随机采样 → 低频长尾物品也有机会；同 prompt 多次生成不同 slate（BERTScore≈0.8 稳定）。</text>
+</svg>

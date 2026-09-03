@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s18" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="a18" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="420" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">STAR: Star Topology FCN + Partitioned Normalization + Auxiliary Network</text>
+
+  <!-- main branch: Star FCN -->
+  <rect x="40" y="70" width="350" height="150" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s18)"/>
+  <rect x="40" y="70" width="350" height="32" rx="8" fill="#4A6CF7"/>
+  <text x="215" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Backbone: Star FCN (star topology)</text>
+  <text x="60" y="135" font-size="11" fill="#1e293b">Per layer: Wₚ* = Wₚ ⊗ W (shared x private)</text>
+  <text x="60" y="158" font-size="11.5" fill="#1e293b">bₚ* = bₚ + b</text>
+  <text x="60" y="185" font-size="10.5" fill="#64748b">Partitioned Norm (PN): per-scenario BN statistics</text>
+  <text x="60" y="203" font-size="11" fill="#64748b">Avoids mixing cross-scenario distributions</text>
+
+  <!-- aux branch -->
+  <rect x="410" y="70" width="350" height="150" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s18)"/>
+  <rect x="410" y="70" width="350" height="32" rx="8" fill="#10b981"/>
+  <text x="585" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Auxiliary Network (Aux DNN)</text>
+  <text x="430" y="135" font-size="11" fill="#1e293b">Scenario features → shallow net → aux logits</text>
+  <text x="430" y="158" font-size="11.5" fill="#1e293b">Added to the main network logits</text>
+  <text x="430" y="185" font-size="11" fill="#64748b">pCTR = σ(Logits_main + Logits_aux)</text>
+  <text x="430" y="203" font-size="11" fill="#64748b">Boosts direct impact of scenario features</text>
+
+  <!-- merge -->
+  <line x1="215" y1="220" x2="400" y2="270" stroke="#64748b" stroke-width="2" marker-end="url(#a18)"/>
+  <line x1="585" y1="220" x2="420" y2="270" stroke="#64748b" stroke-width="2" marker-end="url(#a18)"/>
+
+  <rect x="340" y="275" width="120" height="48" rx="8" fill="#1e293b" filter="url(#s18)"/>
+  <text x="400" y="304" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">Add → σ</text>
+
+  <line x1="400" y1="323" x2="400" y2="358" stroke="#64748b" stroke-width="2" marker-end="url(#a18)"/>
+
+  <rect x="250" y="362" width="300" height="44" rx="8" fill="#e8ecff"/>
+  <text x="400" y="384" text-anchor="middle" font-size="9.5" fill="#1e293b" font-weight="700">Commonality (shared W) + specificity (private Wₚ / PN stats)</text>
+  <text x="400" y="401" text-anchor="middle" font-size="10" fill="#64748b">Star center plus per-scenario spokes, modeled jointly</text>
+</svg>

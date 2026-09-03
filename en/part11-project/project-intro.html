@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Project Introduction &amp; Goals - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~18 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="project-introduction-and-goals"><a class="header" href="#project-introduction-and-goals">Project Introduction and Goals</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Finish the three-stage pipeline overview in <a href="./project-intro.html">1.1</a> first. This chapter integrates the previously scattered <strong>retrieval, ranking, and re-ranking</strong> modules into a runnable system — the focus is not on new algorithms, but on making them work together.</p>
+</blockquote>
+<p>Many learners share a very real frustration: they can follow the models in papers and even get the code running, but when asked "how would you deploy a recommender in a real setting?" they have no idea where to start. The gap comes from the distance between <strong>offline experimentation and online serving</strong> — papers answer "is the model good?" but not "how does the system run?"</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Describe the six fundamental differences between offline evaluation and online deployment</li>
+<li>State this project's four goals: functionally complete, technically realistic, algorithms applied, architecture clear</li>
+<li>List the backend and frontend technology stacks, and explain why FastAPI + Vue + PostgreSQL + Redis + Elasticsearch</li>
+<li>Outline the five-stage learning path from system architecture to deployment</li>
+<li>Work through 4 tiered practice problems to consolidate your picture of the whole project</li>
+</ul>
+<hr />
+<h2 id="1110-project-background-from-good-model-to-working-system"><a class="header" href="#1110-project-background-from-good-model-to-working-system">11.1.0 Project Background: From "Good Model" to "Working System"</a></h2>
+<p>The preceding chapters introduced the core modules of a recommender — retrieval, ranking, and re-ranking. They are the building blocks, but how to assemble them into a complete system is something papers don't teach. The real questions you face are:</p>
+<ul>
+<li>When a user opens the app, how does the system return recommendations within <strong>100 milliseconds</strong>?</li>
+<li>A user has just rated a movie — how does that behavior <strong>immediately affect</strong> the next recommendation?</li>
+<li>How are models deployed? Where do features live? How do retrieval and ranking <strong>cooperate</strong>?</li>
+<li>A brand-new user with no history opens the app for the first time — what should the system <strong>recommend</strong>?</li>
+</ul>
+<p>No single paper answers these questions; you have to think at the <strong>system level</strong>. This chapter walks you through building a complete movie recommender from scratch: users browse, search, and rate in the browser, backed by a full engineering chain of offline training + online inference + containerized deployment.</p>
+<p><img src="../images/part11-system-overview.svg" alt="FunRec movie recommender: users browse, search, rate, and see personalized recommendations in the browser" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The hard part of engineering practice is not any single algorithm — it is turning discrete modules into a <strong>system that runs in concert</strong>. Papers give you the parts; this chapter gives you the assembly drawing.</p>
+</blockquote>
+<h3 id="-mental-model-lego-parts-vs-a-finished-ship"><a class="header" href="#-mental-model-lego-parts-vs-a-finished-ship">🧠 Mental Model: LEGO Parts vs. a Finished Ship</a></h3>
+<blockquote>
+<p>Reading the algorithm chapters is like collecting LEGO parts — each piece is exquisitely made. But users don't want parts; they want a ship that actually floats and sails. This Part is the process of assembling the parts into a ship — and keeping it afloat for real.</p>
+</blockquote>
+<hr />
+<h2 id="1111-offline-vs-online"><a class="header" href="#1111-offline-vs-online">11.1.1 Offline vs. Online</a></h2>
+<p>Many readers meet recommender systems through competitions or papers — settings that focus on <strong>offline evaluation</strong>; this chapter's project focuses on <strong>end-to-end deployment</strong> — putting a usable system in front of real users. The differences are significant:</p>
+<div class="table-wrapper"><table><thead><tr><th>Dimension</th><th>Offline Experiments</th><th>Online Systems</th></tr></thead><tbody>
+<tr><td>Evaluation</td><td>Offline metrics (AUC, recall)</td><td>Real users actually interacting</td></tr>
+<tr><td>Data flow</td><td>Static datasets</td><td>Real-time user behavior</td></tr>
+<tr><td>Latency requirement</td><td>None (batch processing)</td><td>Millisecond-level response</td></tr>
+<tr><td>Cold start</td><td>Usually ignored</td><td><strong>Must be handled</strong></td></tr>
+<tr><td>Infrastructure</td><td>Local Python scripts</td><td>Databases, caches, search engines, container orchestration</td></tr>
+<tr><td>Final output</td><td>Prediction result files</td><td>An accessible web application</td></tr>
+</tbody></table>
+</div>
+<p><img src="../images/part11-offline-vs-online.svg" alt="The different constraints on offline &quot;production&quot; and online &quot;serving&quot; across six dimensions" /></p>
+<p>The offline system produces at leisure: it processes the full historical data, trains models, and computes embeddings, outputting model files and embedding indexes. The online system serves in real time: it receives requests, invokes models, and assembles results, returning within a few hundred milliseconds. The two are decoupled through the <strong>storage layer</strong> (Redis, shared files).</p>
+<blockquote>
+<p><strong>Analysis:</strong> This decoupling is the pivotal engineering trade-off — offline can chase quality with more complex algorithms and larger data volumes; online only loads the artifacts and focuses on low-latency serving. Understand this boundary, and you understand half of industrial recommender systems.</p>
+</blockquote>
+<hr />
+<h2 id="1112-technology-choices-and-dataset"><a class="header" href="#1112-technology-choices-and-dataset">11.1.2 Technology Choices and Dataset</a></h2>
+<p><strong>Dataset</strong>: we choose <strong>MovieLens-1M</strong> — one of the most classic benchmarks in recommendation, with about 1 million ratings, nearly 4,000 movies, and more than 6,000 users. The scale is just right: large enough to exercise the complete architecture, small enough not to blow up your compute budget. We also enrich it with posters, actors, directors, and other metadata from IMDB for a richer display.</p>
+<p><strong>Backend stack</strong></p>
+<ul>
+<li><strong>FastAPI</strong>: a modern Python web framework, natively async, with auto-generated API docs</li>
+<li><strong>PostgreSQL</strong>: the relational store for core business data — users, movies, ratings</li>
+<li><strong>Redis</strong>: the in-memory store caching user profiles and real-time behavior sequences</li>
+<li><strong>Elasticsearch</strong>: the search engine powering movie search</li>
+<li><strong>Shared file directory</strong>: stores the trained models and item embeddings</li>
+</ul>
+<p><strong>Frontend stack</strong></p>
+<ul>
+<li><strong>Vue.js 3</strong>: a progressive JS framework for building the reactive UI</li>
+<li><strong>Tailwind CSS</strong>: a CSS framework for rapid UI implementation</li>
+</ul>
+<p><strong>Models and algorithms</strong></p>
+<ul>
+<li><strong>Retrieval</strong>: YoutubeDNN two-tower, item-similarity retrieval, user-preferred-genre retrieval</li>
+<li><strong>Ranking</strong>: <strong>DeepFM</strong> (FM second-order crossings + DNN high-order nonlinearity)</li>
+<li><strong>Re-ranking</strong>: diversity strategies that scatter by genre and by era</li>
+<li><strong>Cold start / exploration</strong>: <strong>UCB (Upper Confidence Bound)</strong> balancing exploration and exploitation</li>
+</ul>
+<p><strong>Infrastructure</strong></p>
+<ul>
+<li><strong>Docker Compose</strong>: container orchestration to start all services with one command</li>
+<li><strong>uv</strong>: a Python package manager for fast dependency installation</li>
+</ul>
+<p><img src="../images/part11-tech-stack.svg" alt="The complete technology stack of this project: frontend, backend, storage, and infrastructure layers" /></p>
+<hr />
+<h2 id="1113-learning-path"><a class="header" href="#1113-learning-path">11.1.3 Learning Path</a></h2>
+<p>This chapter proceeds from macro to micro, and from offline to online:</p>
+<ol>
+<li><strong>System architecture design</strong> (<a href="./project-architecture.html">11.2</a>): a top-level view of the components, the offline/online boundary, and how data flows.</li>
+<li><strong>Offline pipeline</strong> (<a href="./offline-pipeline.html">11.3</a>): starting from raw data, complete feature engineering, model training, evaluation, and deployment.</li>
+<li><strong>Online pipeline</strong> (<a href="./online-pipeline.html">11.4</a>): build the real-time inference service, implementing cold start, multi-route retrieval, ranking, and re-ranking end to end.</li>
+<li><strong>Frontend and interaction</strong> (<a href="./frontend.html">11.5</a>): design the UI and implement core features such as search, recommendations, and ratings.</li>
+<li><strong>Deployment and operations</strong> (<a href="./deployment.html">11.6</a>): deploy with Docker Compose, and discuss monitoring, logging, and performance tuning.</li>
+</ol>
+<p>Every part ships with complete code. You can read and build along, or get the project running first and dig into the details afterwards.</p>
+<blockquote>
+<p>📊 <strong>Data Point:</strong> All runnable code for this project is in the <code>web_project/</code> directory of the <code>datawhalechina/fun-rec</code> repository; the dataset is the preprocessed <code>funrec-movielens-1m</code>.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-111"><a class="header" href="#-common-mistakes-in-111">⚠️ Common Mistakes in 11.1</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Treating offline metrics as launch criteria</td><td>"High AUC means it's ready to serve"</td><td>Offline has no latency constraint; online must return within a few hundred milliseconds</td><td>Distinguish the six dimensions separating offline evaluation from online serving</td></tr>
+<tr><td>2</td><td>Ignoring cold start</td><td>Assuming every user has history</td><td>New users have no behavior; collaborative filtering and vector retrieval fail</td><td>Design a dedicated cold-start flow (see Section 11.4)</td></tr>
+<tr><td>3</td><td>Over-engineering the stack</td><td>Spinning up a K8s cluster for a small project</td><td>More operational complexity, slower delivery</td><td>One Docker Compose file is enough</td></tr>
+<tr><td>4</td><td>Skipping the architecture and diving into code</td><td>Writing services before drawing the data flow</td><td>Blurry module boundaries, tangled feature hand-offs</td><td>Read Section 11.2 first to build the architectural mental model</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>The offline/online gap</td><td>Six-dimension differences: evaluation, data, latency, cold start, and more</td><td>Papers don't teach it, but engineering must answer it</td></tr>
+<tr><td>System goals</td><td>Functionally complete / technically realistic / algorithms applied / architecture clear</td><td>The yardstick for whether a project feels "industrial"</td></tr>
+<tr><td>Technology stack</td><td>FastAPI + Vue + PG + Redis + ES + Compose</td><td>Close to industry, reproducible with one command</td></tr>
+<tr><td>Learning path</td><td>Architecture → offline → online → frontend → deployment</td><td>Macro to micro, offline to online</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Does this project use generative models, or traditional discriminative ones?</strong></p>
+<blockquote>
+<p>A: The mainline here is a "discriminative three-stage funnel" (YoutubeDNN retrieval + DeepFM ranking + diversity re-ranking) — the classic industrial architecture. It serves as the <strong>engineering baseline</strong> for the generative recommendation concepts in the later chapters: understanding it is what lets you appreciate what the generative architectures of Chapters 8–10 aim to replace.</p>
+</blockquote>
+<p><strong>Q2: Why not just use one large model to generate recommendations end to end?</strong></p>
+<blockquote>
+<p>A: At this project's scale and latency budget, the funnel architecture is more efficient, controllable, and interpretable. End-to-end generative architectures (see Section 8.2) suit larger scale and more complex needs, but their engineering complexity rises steeply. The two are an evolution, not a replacement.</p>
+</blockquote>
+<p><strong>Q3: Is MovieLens-1M big enough?</strong></p>
+<blockquote>
+<p>A: Enough for teaching and demonstrating the architecture. It runs the full pipeline on a single machine yet contains realistic sparse interactions. Production would use bigger catalogs, but the module boundaries stay the same.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>1.1 (three-stage pipeline)</strong> is the theoretical source of this project's architecture — the funnel structure lands directly here.</li>
+<li><strong>2.3 (two-tower / YoutubeDNN)</strong> and <strong>3.x (DeepFM ranking)</strong> provide the algorithmic basis for this project's retrieval and ranking models.</li>
+<li><strong>11.2</strong> immediately unfolds the system architecture, turning this section's technology choices into components and data flows.</li>
+<li><strong>8.2 (end-to-end generation)</strong> shows the "generative alternative" to this project's architecture, as an advanced contrast.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.1.1 — Offline or Online?</strong> 🟢 Easy</p>
+<p>Decide whether each description below belongs to the <strong>offline system</strong> or the <strong>online system</strong>, and justify your answer:</p>
+<ul>
+<li>(i) Every night, recompute all movie embeddings in a batch job and write them to the shared directory.</li>
+<li>(ii) A user opens the homepage and receives a personalized recommendation list within 200 ms.</li>
+</ul>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> (i) Offline system — batch processing, no latency constraint, produces embeddings for the online side to consume. (ii) Online system — real-time request, sub-second latency, serves real users.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Offline optimizes for quality, online for latency; the storage layer decouples them.</li>
+<li>Memorize the six-dimension difference table and you can judge quickly.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.1.2 — Matching the Technology Stack</strong> 🟢 Easy</p>
+<p>Match each requirement to a component of this project: (a) storing user rating records; (b) caching a user's real-time behavior sequence; (c) fuzzy search over movie titles; (d) starting five services with one command.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> (a) PostgreSQL; (b) Redis; (c) Elasticsearch; (d) Docker Compose.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Relational data goes to PG, low-latency features to Redis, full-text search to ES, orchestration to Compose.</li>
+<li>Each component solves one well-defined constraint.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.1.3 — Why Cold Start Gets Its Own Path</strong> 🟡 Medium</p>
+<p>A product manager says: "Our retrieval model is accurate — there's no need to handle cold start separately; vector retrieval will recommend just fine." Point out the problem with this claim, and describe how this project deals with it.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> Vector retrieval encodes the user vector from historical behavior; a new user has none, so the user vector cannot be built meaningfully and retrieval degrades or fails outright. This project sets up a dedicated cold-start flow: a three-tier strategy of UCB exploration + preference genres set by the user + popular fallback, transitioning to the normal pipeline once behavior accumulates.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Cold start is a structural failure caused by "no behavior" — a better retrieval model cannot cure it.</li>
+<li>Offline evaluation usually ignores cold start, but online must handle it.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Design a Minimal Runnable System</strong> 🔴 Hard</p>
+<p>If you had to build a movie recommender that "recommends and deploys" with the fewest components, list the core components you would keep (paring down from PG/Redis/ES/FastAPI/Vue/Compose), and justify your choices (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Minimal set: PostgreSQL (stores data and profiles), FastAPI (retrieval + ranking service), Vue (presentation), Docker Compose (orchestration). Redis and ES can be deferred in the minimal version — features can be read straight from PG (at a latency cost), and search can be replaced by PG fuzzy matching (at a retrieval-quality cost). The essence is closing the loop: request → retrieval → ranking → response.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/project-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/project-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

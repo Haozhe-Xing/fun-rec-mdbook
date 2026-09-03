@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">归因模型谱系：同一条多触点路径，五种模型的功劳分配</text>
+  <text x="400" y="50" text-anchor="middle" font-size="12" fill="#64748b">上：用户旅程「广告A曝光 → 广告B点击 → 广告C点击 → 转化」；下：各模型对 A/B/C 三个触点的功劳分配</text>
+
+  <!-- ═══════ 顶部：用户旅程路径 ═══════ -->
+  <g font-size="13" font-weight="700" text-anchor="middle">
+    <rect x="52"  y="78" width="120" height="48" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+    <text x="112" y="98" fill="#4A6CF7">广告 A</text>
+    <text x="112" y="116" fill="#1e293b">曝光</text>
+
+    <rect x="212" y="78" width="120" height="48" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+    <text x="272" y="98" fill="#f59e0b">广告 B</text>
+    <text x="272" y="116" fill="#1e293b">点击</text>
+
+    <rect x="372" y="78" width="120" height="48" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+    <text x="432" y="98" fill="#10b981">广告 C</text>
+    <text x="432" y="116" fill="#1e293b">点击</text>
+
+    <rect x="532" y="78" width="140" height="48" rx="8" fill="#e8ecff" stroke="#ef4444" stroke-width="2" filter="url(#sh)"/>
+    <text x="602" y="98" fill="#ef4444">转化</text>
+    <text x="602" y="116" fill="#1e293b">下单</text>
+  </g>
+  <line x1="172" y1="102" x2="210" y2="102" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="332" y1="102" x2="370" y2="102" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="492" y1="102" x2="530" y2="102" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- ═══════ 底部：五个归因模型的柱状图 ═══════ -->
+  <!-- 面板：宽 144，间距 10，起点 20。基线 y=400。柱高 = pct * 1.85 -->
+  <!-- 模型0 最后点击 -->
+  <g>
+    <rect x="20" y="168" width="144" height="252" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+    <text x="92" y="190" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">最后点击</text>
+    <text x="92" y="206" text-anchor="middle" font-size="10" fill="#64748b">Last-click</text>
+    <!-- A 0% -->
+    <rect x="44"  y="397" width="24" height="3" rx="1.5" fill="#cbd5e1"/>
+    <text x="56"  y="391" text-anchor="middle" font-size="10" fill="#64748b">0%</text>
+    <!-- B 0% -->
+    <rect x="80"  y="397" width="24" height="3" rx="1.5" fill="#cbd5e1"/>
+    <text x="92"  y="391" text-anchor="middle" font-size="10" fill="#64748b">0%</text>
+    <!-- C 100% -->
+    <rect x="116" y="215" width="24" height="185" rx="4" fill="#10b981"/>
+    <text x="128" y="209" text-anchor="middle" font-size="10" font-weight="700" fill="#10b981">100%</text>
+    <text x="56"  y="418" text-anchor="middle" font-size="11" fill="#64748b">A</text>
+    <text x="92"  y="418" text-anchor="middle" font-size="11" fill="#64748b">B</text>
+    <text x="128" y="418" text-anchor="middle" font-size="11" fill="#64748b">C</text>
+  </g>
+
+  <!-- 模型1 首次点击 -->
+  <g>
+    <rect x="174" y="168" width="144" height="252" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+    <text x="246" y="190" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">首次点击</text>
+    <text x="246" y="206" text-anchor="middle" font-size="10" fill="#64748b">First-click</text>
+    <rect x="198" y="215" width="24" height="185" rx="4" fill="#4A6CF7"/>
+    <text x="210" y="209" text-anchor="middle" font-size="10" font-weight="700" fill="#4A6CF7">100%</text>
+    <rect x="234" y="397" width="24" height="3" rx="1.5" fill="#cbd5e1"/>
+    <text x="246" y="391" text-anchor="middle" font-size="10" fill="#64748b">0%</text>
+    <rect x="270" y="397" width="24" height="3" rx="1.5" fill="#cbd5e1"/>
+    <text x="282" y="391" text-anchor="middle" font-size="10" fill="#64748b">0%</text>
+    <text x="210" y="418" text-anchor="middle" font-size="11" fill="#64748b">A</text>
+    <text x="246" y="418" text-anchor="middle" font-size="11" fill="#64748b">B</text>
+    <text x="282" y="418" text-anchor="middle" font-size="11" fill="#64748b">C</text>
+  </g>
+
+  <!-- 模型2 线性 -->
+  <g>
+    <rect x="328" y="168" width="144" height="252" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+    <text x="400" y="190" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">线性</text>
+    <text x="400" y="206" text-anchor="middle" font-size="10" fill="#64748b">Linear</text>
+    <rect x="352" y="339" width="24" height="61" rx="4" fill="#4A6CF7"/>
+    <text x="364" y="333" text-anchor="middle" font-size="10" font-weight="700" fill="#4A6CF7">33%</text>
+    <rect x="388" y="339" width="24" height="61" rx="4" fill="#f59e0b"/>
+    <text x="400" y="333" text-anchor="middle" font-size="10" font-weight="700" fill="#f59e0b">33%</text>
+    <rect x="424" y="339" width="24" height="61" rx="4" fill="#10b981"/>
+    <text x="436" y="333" text-anchor="middle" font-size="10" font-weight="700" fill="#10b981">33%</text>
+    <text x="364" y="418" text-anchor="middle" font-size="11" fill="#64748b">A</text>
+    <text x="400" y="418" text-anchor="middle" font-size="11" fill="#64748b">B</text>
+    <text x="436" y="418" text-anchor="middle" font-size="11" fill="#64748b">C</text>
+  </g>
+
+  <!-- 模型3 时间衰减 -->
+  <g>
+    <rect x="482" y="168" width="144" height="252" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+    <text x="554" y="190" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">时间衰减</text>
+    <text x="554" y="206" text-anchor="middle" font-size="10" fill="#64748b">Time-decay</text>
+    <rect x="506" y="374" width="24" height="26" rx="4" fill="#4A6CF7"/>
+    <text x="518" y="368" text-anchor="middle" font-size="10" font-weight="700" fill="#4A6CF7">14%</text>
+    <rect x="542" y="346" width="24" height="54" rx="4" fill="#f59e0b"/>
+    <text x="554" y="340" text-anchor="middle" font-size="10" font-weight="700" fill="#f59e0b">29%</text>
+    <rect x="578" y="295" width="24" height="105" rx="4" fill="#10b981"/>
+    <text x="590" y="289" text-anchor="middle" font-size="10" font-weight="700" fill="#10b981">57%</text>
+    <text x="518" y="418" text-anchor="middle" font-size="11" fill="#64748b">A</text>
+    <text x="554" y="418" text-anchor="middle" font-size="11" fill="#64748b">B</text>
+    <text x="590" y="418" text-anchor="middle" font-size="11" fill="#64748b">C</text>
+  </g>
+
+  <!-- 模型4 位置加权 -->
+  <g>
+    <rect x="636" y="168" width="144" height="252" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+    <text x="708" y="190" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">位置加权</text>
+    <text x="708" y="206" text-anchor="middle" font-size="10" fill="#64748b">Position-based</text>
+    <rect x="660" y="326" width="24" height="74" rx="4" fill="#4A6CF7"/>
+    <text x="672" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#4A6CF7">40%</text>
+    <rect x="696" y="363" width="24" height="37" rx="4" fill="#f59e0b"/>
+    <text x="708" y="357" text-anchor="middle" font-size="10" font-weight="700" fill="#f59e0b">20%</text>
+    <rect x="732" y="326" width="24" height="74" rx="4" fill="#10b981"/>
+    <text x="744" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#10b981">40%</text>
+    <text x="672" y="418" text-anchor="middle" font-size="11" fill="#64748b">A</text>
+    <text x="708" y="418" text-anchor="middle" font-size="11" fill="#64748b">B</text>
+    <text x="744" y="418" text-anchor="middle" font-size="11" fill="#64748b">C</text>
+  </g>
+
+  <!-- 基线 -->
+  <line x1="20" y1="400" x2="780" y2="400" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- footer -->
+  <rect x="60" y="436" width="680" height="18" rx="8" fill="#f8f9fc" stroke="#e8ecff" stroke-width="1"/>
+  <text x="400" y="449" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">同一条旅程，五种立场：归因模型是「分配规则」的约定，而非「客观事实」的测量</text>
+</svg>

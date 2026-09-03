@@ -1,5 +1,0 @@
-/* PDF 导出样式：分页控制与打印优化 */
-@page { margin: 2cm; }
-h1, h2, h3 { page-break-after: avoid; }
-pre, table, img { page-break-inside: avoid; }
-a { color: #1a1a1a; text-decoration: none; }

@@ -1,0 +1,523 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Data Processing and Trading - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(217,119,6,0.2);">⏱️ ~45 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="data-processing-and-trading"><a class="header" href="#data-processing-and-trading">Data Processing and Trading</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> This chapter requires reading 12.2 (Billing Models and Core Metrics) first — data surcharges are settled on a CPM basis, and the eCPM frame of reference must be established beforehand; as well as 12.3 (Auction Mechanisms) — the RTB inquiry flow is the vehicle that data trading "hitches a ride" on. 12.4 (Smart Bidding) will show you where the labels ultimately flow: targeting and bidding features. 12.6 (Open-Loop and Closed-Loop Advertising) has already covered the identity-signal side — ATT/SKAN/Privacy Sandbox — while this chapter handles only the data compliance and trading side; the two are two sides of the same coin.</p>
+</blockquote>
+<p>Precise targeting and aggressive bidding both rest on one premise: "you understand this user better than anyone else does." The <strong>user labels</strong> we have used repeatedly in earlier chapters — interests, intent, audience attributes — do not appear out of thin air: they come from the collection and processing of behavioral data, and in the programmatic trading market they are themselves a commodity that can be priced, bought, and sold. This chapter pulls the camera back from "how to serve ads" to "where does advertising's fuel come from": which data is genuinely valuable? Who turns raw logs into labels? How are labels priced and delivered? And — when you collect and trade user data, where are the legal and security boundaries?</p>
+<p>The data industry originally existed to serve advertising, but today it has grown into a relatively independent industry. Understanding this chapter is not just understanding a supporting link of advertising — it is understanding the general craft of "how personalized systems turn behavior into assets."</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Distinguish first-party, second-party, and third-party data, and judge the ownership and use of any given data item in advertising trading</li>
+<li>Rank various types of user behavioral data on the value ladder, and explain the logic behind two value rules</li>
+<li>Compare the responsibilities, business models, and product cases of first-party DMPs and third-party DMPs</li>
+<li>Describe the data trading mechanism relayed through the ADX: CPM pricing, delivery based on actual won impressions, and the economic problem of "data prices shifting into traffic prices"</li>
+<li>Master the basic principles of privacy protection, the ideas of quasi-identifiers and K-anonymity, identify data security risks on both the supply and demand sides of programmatic trading, and complete 5 tiered practice problems</li>
+</ul>
+<hr />
+<h2 id="12100-three-party-data-the-fuel-of-targeting-and-bidding"><a class="header" href="#12100-three-party-data-the-fuel-of-targeting-and-bidding">12.10.0 Three-Party Data: The Fuel of Targeting and Bidding</a></h2>
+<p>Every decision an ad system makes — which candidates to retrieve, how high to estimate the click rate, how much to bid — is essentially "trading data for judgment." The auction mechanisms of 12.3 gave traffic a market price, and what makes the same traffic carry a different price in the eyes of different DSPs is precisely the data each of them holds. So the collection, processing, and trading of data is just as important as the ad-serving technology itself.</p>
+<p>User data used in advertising falls into three classes by source. <strong>First-party data</strong> comes from the advertiser: their own CRM, order records, and website visitor behavior. <strong>Second-party data</strong> comes from the advertising platform: behavioral data generated by users on the media or platform and held by the platform itself. <strong>Third-party data</strong> comes from data providers that do not directly participate in ad trading — small and mid-sized media, membership systems, and various data companies. Under the ad network model, second-party data was the main guide for delivery; in the era of real-time bidding (12.3), the game changed: first-party data could be activated, and the third-party processing and trading of data developed along with it.</p>
+<p>The three classes of data are not equal in standing. First-party data is generally small in volume, yet it is the <strong>soul</strong> of all data — it relates directly to your business, has the clearest semantics, and sits closest to conversion. Building on first-party data and making good use of second-party and third-party data is the most important methodology of the RTB era. The ecosystem diagram below is this chapter's roadmap: data departs from the three source classes, is processed by DMPs into labels, is traded through the ADX and attached to every bid request, ultimately becomes ammunition for targeting and bidding in the DSP, and delivery outcomes flow back as new data — closing the loop.</p>
+<p><img src="../images/part12-data-market.svg" alt="Three-party data and the DMP data trading loop: three data source classes processed by two kinds of DMPs into labels, traded through the ADX on a CPM basis, paid for by the DSP on actual wins, with performance data flowing back to close the loop" /></p>
+<h3 id="-mental-model-the-oil-refinery"><a class="header" href="#-mental-model-the-oil-refinery">🧠 Mental Model: The Oil Refinery</a></h3>
+<blockquote>
+<p>Picture the data ecosystem as the petroleum industry. Raw behavioral logs are crude oil — buried underground, unable to drive anything directly; the DMP is the refinery — fractionating crude into gasoline and diesel (standardized user labels); the ADX is the gas station and fuel meter — selling refined fuel by the liter (labels attached to traffic on a CPM basis); the DSP is the engine — burning fuel to produce power (targeting and bidding); and the exhaust emitted at the end (conversion data) is recovered and refined again — the loop's feedstock never runs out. Remember one contrast: your own oilfield (first-party data) has modest output, but the best quality and ownership; the wholesale market (third-party data) is abundant and cheap, but of uneven quality.</p>
+</blockquote>
+<hr />
+<h2 id="12101-valuable-data-sources"><a class="header" href="#12101-valuable-data-sources">12.10.1 Valuable Data Sources</a></h2>
+<p>Data is the core of the precision advertising market, but not all data is worth collecting and processing. Which data directly contributes to the advertising business? We go through each class and provide a framework for judging value.</p>
+<p><strong>User identifiers.</strong> Determining which behaviors come from the same user is the most easily underestimated problem. A stable user identity is like the 1 in front of a string of 0s: no matter how much behavioral data you can obtain, if you cannot link it to the person in the delivery system, the data is useless. The foundational solution of the browser era was the cookie — although multiple browsers, expiration, and users actively clearing them all break long-term consistency, recent behavior is what matters most in advertising anyway, so cookies remained a widely adopted industry solution; if the domain operating the ads also provides permanent identity services such as email or social networking, expired cookies can be recovered through the permanent identity. Mobile diverged: iOS uses the advertising-specific identifier IDFA, similar in nature to a cookie; Android has no dedicated ad ID, so device identifiers such as the Android ID or IMEI are generally used. A high-quality user identifier is itself a valuable asset that can be exchanged and sold in the marketplace — we will pick this thread up again in the modern notes of 12.10.2.</p>
+<p><strong>User behavior.</strong> The industry broadly agrees that the online behaviors worth collecting at scale, with a clear effect on targeting, include: conversions, pre-conversions, search ad clicks, display ad clicks, search clicks, searches, shares, page views, ad views, and so on. By their effectiveness for performance advertising, they fall into four tiers:</p>
+<ul>
+<li><strong>Decision behaviors</strong>: conversions and pre-conversions — both happen on the advertiser's own site. In e-commerce, a conversion corresponds to the final order, while a pre-conversion covers the preparatory actions before ordering: searching, browsing, comparing prices, adding to cart, and so on. These behaviors point most clearly at intent, carry the highest value, and are also the hardest for supply-side or ad platforms to obtain; using them for retargeting or personalized retargeting is the most direct exploitation. The volume is not large, but they cannot be ignored.</li>
+<li><strong>Active behaviors</strong>: ad clicks, searches, search clicks — produced actively by the user under explicit intent, rich in information. Ad clicks are too few in number to serve as the main source of targeting; <strong>search is the most important active behavior obtainable at scale</strong>, and deserves special mining.</li>
+<li><strong>Semi-active behaviors</strong>: shares, page views — arising from content consumption with weaker purpose; they capture the domain of interest but with limited content precision. Their guidance value is limited, yet their volume is the largest of all behavior classes.</li>
+<li><strong>Passive behaviors</strong>: ad views — strictly speaking not a behavioral basis for targeting, but their frequency is negatively correlated with clicks on ads of the corresponding category, so they remain usable in behavioral targeting models.</li>
+</ul>
+<p><img src="../images/part12-data-sources.svg" alt="The value ladder of behavioral data: decision behaviors have the highest value but the smallest volume, passive behaviors have large volume and low value; the criteria are active intent and distance from conversion" /></p>
+<p>There are two basic rules for judging value. First, <strong>as the user's active intent rises, the value of the behavioral data increases</strong>. Second, <strong>the closer a behavior is to conversion, the more precise its guidance for performance advertising</strong>. But there is one easily overlooked caveat here: the fundamental purpose of advertising is to "reach <strong>potential</strong> users at low cost." Behaviors close to conversion are more precise because that population already stands at the final stage of the decision — in other words, they are less and less "potential users." Targeting solely by conversion ROI collapses coverage to the very bottom of the funnel. The right approach is to balance effectiveness and coverage according to the advertiser's audience-reach goals.</p>
+<p><strong>Demographic attributes.</strong> Commonly used targeting labels, but limited in source: generally only services that can be bound to real-name identities can obtain them directly. Predicting demographic attributes from behavioral data is a common practice, but accuracy is limited and labeled calibration data is still needed for training. Certain special signals can actually yield accurate judgments — for example, the voice signals recorded by voice services can distinguish male from female fairly reliably.</p>
+<p><strong>Geographic location.</strong> Its usefulness changes drastically with precision. IP mapping only reaches city level, which is already valuable for many campaigns; in mobile environments GPS or cellular positioning can reach a few hundred meters of accuracy, capturing users' offline store-visit interests and making precise location targeting possible for local advertisers such as restaurants.</p>
+<p><strong>Social relationships.</strong> Social connections imply the reasonable inference of "similar interests," which can be used for <strong>smoothing user interests</strong>: when a user's behavioral data is insufficient for precise targeting, one can borrow the behaviors and interests of the user's social-network friends — a person whose Weibo friends mostly love football probably loves football too. Such smoothing applies only to long-term stable interests, not to short-term purchase interests; hence strong-tie social networks have an advantage over weak-tie ones.</p>
+<p><strong>Device information.</strong> Mobile devices can supply far richer data than PCs: the installed app list, device model, gyroscope readings, even status information such as battery level — all very helpful for identifying usage contexts. Deep processing of device information has particular significance for mobile advertising.</p>
+<blockquote>
+<p><strong>Analysis:</strong> There is no single universal "ranking" across the six data classes, because value depends on the use: in performance campaigns, decision behaviors overwhelm everything; brand-awareness campaigns should precisely avoid the conversion-adjacent population, and the large volume of semi-active behaviors becomes the friend of coverage. The truly universal judgment framework is those two rules (active intent, distance from conversion) plus one reverse reminder (too close to conversion means no longer a potential user). Before collecting and processing, run the data through this framework once: whose goal does this data serve?</p>
+</blockquote>
+<hr />
+<h2 id="12102-the-data-management-platform-dmp"><a class="header" href="#12102-the-data-management-platform-dmp">12.10.2 The Data Management Platform (DMP)</a></h2>
+<p>Given raw data, who refines it into usable audience labels? Products that organize and process data into directly usable information and support monetization are collectively called <strong>Data Management Platforms (DMPs)</strong>. In the market, DMPs come in two settings — first-party and third-party: the technical steps are basically the same, but the product direction and business model differ greatly.</p>
+<p>First, a technical detail left over from 12.10.0: <strong>cookie mapping</strong>. When the advertising business domain differs from the domain holding the permanent identity, and with the latter's consent, mapping technology can align user identities across the two — this is the infrastructure of data integration and trading, and the star topology of data trading described later is optimized precisely around it.</p>
+<p><strong>First-party DMP: data hosting and processing service.</strong> For advertisers or media without technical accumulation, building a dedicated team for data processing is not worthwhile, so products specializing in this business emerged. They have two core functions: one is providing audience targeting capabilities for websites (media or advertiser sites), processing both general-purpose labels and custom audiences according to the website's own label taxonomy; the other is letting advertisers conveniently connect their data with ad purchasing channels. The value of the latter can be understood this way: an advertiser doing external retargeting needs to notify ad platforms of its user set — if every platform installed tracking code on the site, first the pages would grow ever heavier, and second visitor accumulation would take weeks at a time, making retargeting inefficient. Having the DMP uniformly handle user accumulation and segmentation, then pass segments to ad platforms through data interfaces, solves both problems at once.</p>
+<p>The first-party DMP collects and processes data according to the needs of the data provider (DP), charging the DP a service fee. It is a <strong>data hosting and processing service that does not aim to monetize the data itself</strong>: it must never treat client data as its own property for secondary monetization, nor mix data across different DPs — this is the bottom line of this product's business model. Its clients are mostly mid-to-large media and advertisers; capable advertisers can also build their own DMP.</p>
+<p><strong>Third-party DMP: the data trading platform.</strong> Its main product function is aggregating online user behavioral data from various sources, processing it into valuable user labels, and monetizing by selling the labels, with revenue shared proportionally back to the data providers. It often also carries the processing capabilities of a first-party DMP, but the key difference is that a data trading platform <strong>builds its label taxonomy and processes data according to its own logic, not the media's needs</strong> — hence it offers its product from the third-party data standpoint and is called a third-party DMP. Its DPs are mainly small and mid-sized media and data owners — players with plenty of data for whom standalone monetization is not worthwhile.</p>
+<blockquote>
+<p><strong>Analysis:</strong> The two DMP business models side by side. First-party DMP: sells a "service" — clients pay hosting and processing fees, data ownership stays with the client, and the product emphasizes flexible integration and custom labels. Third-party DMP: sells "data" — processes under its own label taxonomy and sells to DSPs, sharing revenue with DPs; the product emphasizes label coverage and category operations. The former follows a to-B service logic — stable profits but a low ceiling; the latter follows a commodity-circulation logic — large upside but full responsibility for data quality and compliance. This divide determines the trajectory of all the product cases that follow.</p>
+</blockquote>
+<p><strong>Product cases.</strong> The international market once had three representatives. <strong>BlueKai</strong> was the archetypal third-party DMP: it built its Data Exchange database in 2008, on one side having small and mid-sized websites contribute traffic and membership data, and on the other processing it and selling it to advertisers; it insisted on not providing media bidding/purchasing services in order to stay neutral and integrate with multiple DSPs — this "independent DMP" route was highly successful for a time, with over 300 million active users and 80% of the top 20 ad networks and portals using its data; in 2014 it was acquired by Oracle for 400 million dollars. Its label taxonomy was open-ended: Intent (recent search terms indicating demand, over 1.6 billion users), B2B (from Bizo), Past Purchase (Addthis, Alliant), Geo/Demo (blending multiple sources such as Bizo, Datalogix, and Expedia), Interest/Lifestyle, and more, continuously expanded by source and market demand — fine-grained categories like "people interested in P&amp;G shampoo" or "people planning a trip to Japan" were highly meaningful to performance advertisers and sold at a premium. <strong>AudienceScience</strong> represented another path: it proposed the concept of audience targeting earliest, mainly providing first-party DMP services (e.g., processing finance and sports user labels for The New York Times), while also running its own performance ad network for monetization — it did not sell labels directly; instead it shared the revenue created by labels with the media that provided the data, because "after deducting revenue shares, the profit margin of data processing alone was too small, and running one's own ad network offered larger arbitrage." It shut down in May 2017, which also reflected that standalone data services had rather limited scale and profitability. <strong>TalkingData</strong> was the representative in the Chinese market: it entered through an app analytics tool, accumulated massive independent-device data, and then launched its marketing cloud, MarketingCloud, with features including user ID mapping and management (linking the same user across ID systems such as CRM, offline stores, online browsing, and official accounts), an open third-party label library (over 800 fine-grained dimensions), geofenced target audiences, and marketing process monitoring and management — its business model was closer to a first-party DMP, making it a pioneer of the "data-driven marketing automation" direction.</p>
+<blockquote>
+<p>💡 <strong>Modern Notes (2026):</strong> The cases above read like a documentary from "the pre-smartphone era." Third-party cookies have been blocked in Safari (ITP) and Firefox, and Chrome has moved to a user-choice model — <strong>cookie mapping as industry infrastructure has in fact ended</strong>, and the identity-signal degradation described in 12.6 is precisely its final act. The replacement is a new suite of first-party data infrastructure: the <strong>CDP (Customer Data Platform)</strong> unifies data from a brand's own touchpoints (website, app, mini-program, CRM) into persistent customer profiles, replacing most scenarios of the old first-party DMP; cross-domain identity relies on <strong>Unified ID 2.0 (UID2)</strong> — an open identity framework led by The Trade Desk, rooted in hashed email addresses/phone numbers — and on the <strong>first-party IDs</strong> of giants like Amazon built on their own account systems. The former independent DMPs (BlueKai, LiveRamp, etc.) were either absorbed through M&amp;A or transformed into identity and data collaboration service providers. The business-model lessons in the old book have not aged: <strong>data capability is concentrating in the hands of whoever holds the logged-in state, and neutral third-party data is being squeezed out by compliance and technology alike.</strong></p>
+</blockquote>
+<hr />
+<h2 id="12103-the-basic-process-of-data-trading"><a class="header" href="#12103-the-basic-process-of-data-trading">12.10.3 The Basic Process of Data Trading</a></h2>
+<p>The labels are processed — how to sell them? <strong>Data trading is generally completed with the ADX or SSP as the intermediary</strong>: the DMP's various user labels are delivered to the ADX in batch transmission and sold to DSPs as the ADX's auxiliary product. Labels are generally priced on a CPM basis: if a DSP chooses to buy a certain label, then during ad inquiries the ADX passes that request's user labels to the DSP along with the request, and the final charge is the <strong>DSP's actually won impressions × the CPM price</strong> as the data surcharge.</p>
+<p>Conducting data trading piggybacked on ad trading is far more sensible than direct DMP-to-DSP trading, for four reasons:</p>
+<ol>
+<li><strong>Transmission cost</strong>. Data volumes can be huge, and the transmission cost of direct connections is non-negligible; attaching user labels to ad requests brings almost no additional serving overhead — total transmission cost reduces to the single hop from DMP to ADX.</li>
+<li><strong>Star topology</strong>. Every DSP and data provider only needs to do cookie mapping with the ADX, and the ADX's user reach far exceeds that of any single DSP or DMP — minimizing the data loss caused by mapping.</li>
+<li><strong>Partial trading</strong>. A DSP rarely needs all of a DMP's data; by transmitting data within the trading process, the DSP can freely limit the scope it needs — a DSP serving only Shanghai, once it selects the Shanghai region, will only receive Shanghai data.</li>
+<li><strong>Natural billing</strong>. The ADX happens to stand between buyer and seller, incidentally completing data-usage monitoring and billing — it is already the party counting the money.</li>
+</ol>
+<h3 id="-mental-model-tap-water-and-the-water-meter"><a class="header" href="#-mental-model-tap-water-and-the-water-meter">🧠 Mental Model: Tap Water and the Water Meter</a></h3>
+<blockquote>
+<p>Data trading is like water supply. DMP-to-DSP direct trading is like every household digging its own well and laying its own pipes — N pipelines, each requiring settlement, costs exploding; trading through the ADX is like a water utility laying one unified pipe network (batch transmission + star mapping), with the meter installed at the ADX (each won impression × CPM), paying by usage. Even better is "partial trading": you can order only Shanghai's water (limit the label scope) without buying the entire reservoir. But tap water and mineral water differ in one fundamental way: <strong>the same data can be resold to many buyers, and everyone is drinking from the same aquifer</strong> — which is exactly the trouble discussed below.</p>
+</blockquote>
+<p>The uniqueness of data as an information commodity lies in two points: it can be <strong>resold</strong> (like software in this respect); but unlike software, all users of the same data face the <strong>same pool of users</strong>, so a game-theoretic relationship exists among them. From this arise two deep problems.</p>
+<p>First, <strong>reselling data causes data prices to shift into traffic prices</strong>. Consider an example: a DMP knows a certain user is a golf enthusiast and sells this information to one DSP — that DSP uses it to earn high returns and can naturally afford a high data procurement price. But if the DMP sells it to multiple DSPs, when these DSPs target the same user they will inevitably bid up the traffic cost against each other, diluting the returns gained from this data and indirectly depressing the data's monetization price. The more it is sold, the more each copy's value is diluted by bidding — profit shifts from "data dividend" to "traffic price." Second, under resale <strong>data cannot be sold by auction</strong>. The online advertising market owes its large gains in customer count and monetization precisely to the auction model (12.3), so we naturally hope data can be auctioned too. The direction is <strong>limited-quantity selling</strong>: each piece of information should be offered to only a limited few buyers within a given time window, which is the only way an auction model could develop while protecting data providers' interests. But exactly how many buyers to limit, and how to design the auction mechanism, remain open questions.</p>
+<blockquote>
+<p><strong>Analysis:</strong> The design essence of this mechanism is "hitching a ride": embedding the trading of a new commodity (labels) into an already mature market (RTB), reusing its transmission channels, identity mapping, billing, and monitoring facilities, at near-zero marginal cost. Compared with the inquiry flow of 12.3, data trading adds not a single extra round trip. The limitation comes from the same place: data value is unverifiable before delivery (only an A/B test tells whether the label is worth it), so pricing can only be a one-size-fits-all CPM; add the dilution effect of resale, and the market ultimately moved toward the compliant form described in the next section.</p>
+</blockquote>
+<blockquote>
+<p>💡 <strong>Modern Notes (2026):</strong> Trading plaintext audience segments has shrunk dramatically in mature markets, and the mainstream compliant form is the <strong>Data Clean Room</strong>: advertisers import their first-party data and platforms import behavioral data into a controlled environment, where matching, overlap analysis, and effectiveness measurement are done under the premise that <strong>neither side can see the other's raw records</strong> — only aggregated reports are output (often with differential-privacy noise added), never raw audience segments. Google Ads Data Hub, Amazon Marketing Cloud, Meta's advanced analytics tools, and neutral offerings such as LiveRamp all belong to this form. The differential privacy and GDPR/PIPL compliance requirements of 12.10.4 are precisely the technical foundation of the clean room; together with UID2, it forms the new paradigm of data collaboration in the 2020s — <strong>data usable but not visible</strong>.</p>
+</blockquote>
+<hr />
+<h2 id="12104-privacy-protection-and-data-security"><a class="header" href="#12104-privacy-protection-and-data-security">12.10.4 Privacy Protection and Data Security</a></h2>
+<p>Advertising is a typical personalized system: targeting depends on user behavioral data, and the trading market is busy buying and selling that data. So two classes of security problems must be considered together — <strong>user privacy</strong> (whether personal information leaks), and <strong>the commercial data security of data owners</strong> (whether an advertiser's key data gets exploited by the platform or competitors).</p>
+<p><strong>The real difficulty of privacy is subtler than "bulk leakage."</strong> Beyond mass leaks of user records, the bigger challenge is <strong>privacy prying aimed at acquaintances</strong>: the pryer already holds some background information about the target and uses it to dig out more privacy. Such attacks may combine human and machine effort and are insensitive to cost, hence the most damaging — there was a real case of someone pinpointing another person's home address on social media by analyzing posts and photos.</p>
+<p>Against this background, the industry converged on several consensus principles of privacy protection:</p>
+<ol>
+<li><strong>Strictly avoid using personally identifiable information (PII)</strong> — ID numbers, phone numbers, email addresses, home addresses, and the like, which can conveniently locate a specific person, must be protected unconditionally and strictly. The prevailing understanding at the time was that user identifiers such as cookies and IMEIs do not conveniently identify a person and are not PII (an understanding that needs revision under today's legal environment — see the modern notes).</li>
+<li><strong>Users have the right to stop being tracked</strong>. Behaviorally targeted ads should give a clear notice (such as the AdChoices mark in the top-right corner of the creative), and users can use an <strong>Opt-Out</strong> action to notify the system to stop recording and using their behavioral data — handing the decision of whether to accept personalized advertising to the user.</li>
+<li><strong>User behavioral data should not be retained long-term</strong>. Long retention adds little targeting value while magnifying leak risk; expired data with no direct business relevance should no longer be stored.</li>
+<li><strong>Strict permission assignment and minimal data access</strong>. Sampled, anonymized data subsets for debugging; raw data accessible in production only through special keys; even developers, and management, should have no data access rights.</li>
+</ol>
+<p><strong>Quasi-identifiers: is removing PII enough?</strong> Take this record: "age 36; works in a certain office building in Shanghai; male; test engineer; hobby badminton; monthly salary 15,000 yuan" — name and phone number are hidden, but his friend can still identify him at a glance via the combination of "age + workplace + job title + hobby," and thereby read the privacy of "monthly salary." Such information — <strong>individually unidentifying but capable of locating a person in combination</strong> — is called a <strong>quasi-identifier</strong>. The countermeasure is <strong>generalization</strong>: generalize "36 years old" to "30–40 years old," "a certain building" to "Shanghai" — if, after generalization, every group of quasi-identifier instances in the dataset has K records identical to it, <strong>K-anonymity</strong> is achieved. With K chosen reasonably, leakage risk drops significantly.</p>
+<p><strong>Sparse behavioral data: K-anonymity cannot save personalized systems.</strong> A personalized system's description of a user includes a large amount of behavioral data, and behavioral data is extremely sparse — the behaviors of any two users are almost never identical, so K-anonymity has no foothold. The risk has real precedents: the famous Netflix Prize recommendation competition released a dataset from which PII had been removed and K-anonymity applied, but viewing histories and ratings were left untouched — researchers found that by simply matching these sparse behavioral data against public data such as IMDb, users could be re-identified with fairly high accuracy; earlier, users had already been identified from others' viewing records (including some films on homosexual themes). This line of research greatly raised industry awareness of privacy and spurred the study of <strong>differential privacy</strong>: modifying the dataset to a certain degree so as to minimize leakage risk with as little loss of query accuracy as possible (Apple claimed to have integrated the technique in iOS 10). Frankly, the risk of sparse behavioral data still has no mature solution to this day — it is the sword of Damocles hanging over the large-scale use of behavioral data, and data trading and disclosure must treat it with reverence.</p>
+<p><strong>Data security in programmatic trading.</strong> RTB brings the data of both the supply and demand sides together in a single transaction, and this double-edged sword cuts on both sides.</p>
+<p><strong>Supply-side data security</strong>: the ADX broadcasts every impression's URL and cookie to the bidding DSPs, so in theory a DSP could surveil a media's user behavior at scale — a malicious DSP bids an extremely low price on all requests, aiming not to win traffic but to collect user behavior on the media. Fortunately the actual harm is controllable: due to bandwidth limits, the ADX performs inquiry optimization (sending inquiries only to the DSPs most likely to win), so a data-collecting DSP would ideally be shut out of most inquiries.</p>
+<p><strong>Demand-side data security</strong>: the more serious side. After custom labels were introduced into RTB, the advertiser's first-party data is also exposed in the trading process. Imagine two English-education advertisers both doing retargeting through a DSP: each one's visitor set is the advertiser's most commercially valuable private data, yet the DSP, ADX, and media may all obtain them during the RTB process. If the DSP wants to create a more intense bidding environment, it can merge the two advertisers' visitor sets, tag them with a vague label like "English-education audience," and attract both sides to bid — <strong>in effect trafficking in visitor sets between competitors</strong>, and in a very covert way. The fiercer the bidding, the more profit that originally belonged to the advertisers shifts to other links of the market. This issue determines whether advertisers dare to procure via RTB with confidence, and the market's current attention and solutions are both inadequate — when using first-party data with powerful ad platforms, advertisers must be especially vigilant about data security (the modern countermeasure is exactly the clean room in the 12.10.3 notes: visitor matching completed in an environment where neither side sees the other's records).</p>
+<p><strong>GDPR: the legislative benchmark of privacy protection.</strong> In April 2016 the European Parliament passed the General Data Protection Regulation (GDPR), effective May 2018, binding any organization that collects, transmits, retains, or processes personal information of EU member-state residents. Three key points. First, it explicitly lists sensitive data — racial or ethnic origin, political opinions, religious/philosophical beliefs, trade-union membership, health/sex life/sexual orientation, genetic data, and biometric data (the last two being reasonable extensions for the new era). Second, processing must rest on <strong>explicit consent</strong>, and consent language must state clearly what information is collected and how it is stored and used — vague clauses are no longer allowed. Third, it grants users four rights — the <strong>right of data access</strong> (to learn how a company uses one's data), the <strong>right to be forgotten</strong> (to demand deletion of collected data), the <strong>right to restriction of processing</strong> (to forbid use in marketing or disclosure to third parties), and the <strong>right to data portability</strong> (to take one's personal data along when leaving a platform).</p>
+<blockquote>
+<p>💡 <strong>Modern Notes (2026):</strong> The precise upper bound of GDPR penalties is "the higher of 20 million euros or 4% of global annual turnover" — that is the actual teeth of "the strictest in history," far more deterrent than a vague "tens of millions of euros." The book's original criticisms of GDPR (execution standards left vague, enterprises themselves unable to explain how data is used in the deep learning era, retrofit costs favoring oligopolies) remain worth debating, but history has delivered its verdict: legislation worldwide followed GDPR, and China's Personal Information Protection Law (<strong>PIPL</strong>) took effect in November 2021, establishing principles such as informed consent, minimal necessity, and withdrawable consent, and likewise distinguishing sensitive personal information; cookie-type identifiers have been brought into the scope of personal information across multiple jurisdictions — the 8.4-era belief that "cookies are not PII" is now history. As for how the <strong>signal-side</strong> privacy infrastructure — ATT/SKAN/Privacy Sandbox — adapts in delivery, 12.6 covered it in detail and this chapter does not repeat it; one-sentence cross-link: <strong>12.6 covers "how to advertise after signals weaken," this chapter covers "how data is governed in trading and compliance."</strong></p>
+</blockquote>
+<hr />
+<h2 id="12105-closing-the-data-monetization-loop"><a class="header" href="#12105-closing-the-data-monetization-loop">12.10.5 Closing: The Data Monetization Loop</a></h2>
+<p>Fit this chapter's parts back into one picture (recall the ecosystem diagram of 12.10.0):</p>
+<p><strong>Data sources → DMP processing → trading → DSP application → performance flowing back.</strong></p>
+<ul>
+<li><strong>Data sources</strong>: first-party (advertisers, the soul), second-party (ad platforms), third-party (other data providers), ranked by "active intent × distance from conversion";</li>
+<li><strong>DMP processing</strong>: first-party DMPs do hosting and custom processing for a service fee; third-party DMPs process labels under their own logic and sell to monetize, sharing revenue with data sources — the modern form evolved into the identity infrastructure of CDP + UID2/first-party IDs;</li>
+<li><strong>Trading</strong>: labels are ingested into the ADX in bulk, attached to bid requests and priced on CPM, delivered on the DSP's actually won impressions — the modern form evolved into the clean room's "usable but not visible" collaboration;</li>
+<li><strong>DSP application</strong>: labels enter targeting and bidding (12.3's auctions, 12.4's smart bidding), with the purchase scope limited on demand;</li>
+<li><strong>Performance flowing back</strong>: conversion data flows back to the data-source side, becoming the feedstock of the next round of processing — 12.6's closed-loop measurement is the modern incarnation of this return flow.</li>
+</ul>
+<p>A few engineering and business judgments worth taking away: the value of data lies not in quantity but in its match with the business goal — performance advertising wants decision behaviors, brand reach wants coverage; the market design of data trading is far from complete — price dilution from resale and the absence of an auction mechanism are textbook-grade open problems; and privacy and data security are not a compliance cost but the pressure-bearing wall of this fuel system — the Netflix re-identification and visitor-set trafficking cases remind us that any crack in that wall costs the entire ecosystem its trust.</p>
+<hr />
+<h2 id="-common-mistakes-in-1210"><a class="header" href="#-common-mistakes-in-1210">⚠️ Common Mistakes in 12.10</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Targeting only with behaviors close to conversion</td><td>Using only purchasers/cart-adders as the lookalike seed</td><td>That population is already at the end of the decision funnel and is no longer "potential users"; coverage collapses, violating the fundamental purpose of "reaching potential users at low cost"</td><td>Balance ROI and coverage by the advertiser's reach goal: performance campaigns weight decision behaviors, brand campaigns turn to the volume of semi-active behaviors for coverage</td></tr>
+<tr><td>2</td><td>Treating the first-party DMP as a data monetizer</td><td>The DMP privately selling client audience segments to other buyers, or mixing data across clients to build new labels</td><td>A first-party DMP is a data hosting and processing service; secondary monetization of client data destroys the business model and trust outright</td><td>Write data ownership into contracts; monetization appears only in the third-party DMP model, and must share revenue with data providers</td></tr>
+<tr><td>3</td><td>Believing that removing PII eliminates privacy risk</td><td>Publishing de-identified behavioral details externally</td><td>Quasi-identifier combinations can locate individuals; sparse behavioral data is nearly impossible to K-anonymize (the Netflix re-identification case)</td><td>Generalize quasi-identifiers and aggregate before output; route detail data through a clean room, outputting only aggregated results with differential privacy added</td></tr>
+<tr><td>4</td><td>Billing the data surcharge on inquiries rather than wins</td><td>The DSP charged for every labeled request received</td><td>Data trading's delivery basis is "actually won impressions × CPM"; billing on inquiries makes the DSP pay for traffic it never bought</td><td>Reconcile against the ADX's win logs; the scope limits of partial trading (region/category) must also be checked into the billing</td></tr>
+<tr><td>5</td><td>Ignoring demand-side data security</td><td>Opening retargeting audience segments directly to DSP custom labels with no isolation clauses</td><td>The DSP/ADX may merge visitor sets and resell them to competitors, engineering bidding that inflates traffic costs and shifting profit to the market</td><td>Sign data-use restriction clauses; do visitor matching in a clean room; monitor abnormal drift in win rate and traffic cost</td></tr>
+<tr><td>6</td><td>Copying cookie-era solutions into 2026</td><td>Designing label distribution that depends on third-party cookie mapping, or claiming cookies are not personal information</td><td>Third-party cookies are dead in Safari/Firefox and Chrome has moved to user choice; multiple jurisdictions have brought identifiers into the scope of personal information</td><td>First-party data goes through CDP + UID2/first-party IDs; cross-party collaboration goes through clean rooms; compliance follows the GDPR/PIPL standard</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Three-party data</td><td>First-party = advertisers (the soul), second-party = ad platforms, third-party = other data providers; RTB-era methodology: build on first-party data and use second- and third-party data well</td><td>The source of all targeting and bidding differences, and the basis for judging data asset ownership</td></tr>
+<tr><td>Data value ranking</td><td>Decision &gt; active &gt; semi-active &gt; passive; two rules: stronger active intent means higher value, closer to conversion means more precise guidance; reverse reminder: proximity to conversion means losing "potential" status</td><td>The investment judgment framework before collecting and processing data</td></tr>
+<tr><td>Two DMP models</td><td>First-party DMP: hosting and processing for a service fee, never secondary monetization; third-party DMP (data trading platform): process and sell under its own logic, sharing revenue with DPs; modern evolution: CDP + UID2/first-party IDs</td><td>Understanding the genealogy of data-product business models and 2026 first-party data infrastructure</td></tr>
+<tr><td>Data trading mechanism</td><td>Relay through the ADX: bulk label transfer, attached to inquiry requests, surcharge billed as actually won impressions × CPM; four benefits: transmission cost, star mapping, partial trading, natural billing; open problems: resale shifts price into traffic, auction model unexplored</td><td>The standard form of label circulation in programmatic markets and its economic limitations</td></tr>
+<tr><td>Privacy protection</td><td>Four principles (avoid PII / Opt-Out / no long-term retention / minimal access); quasi-identifiers and K-anonymity; no mature solution for sparse behavioral data (Netflix case); differential privacy</td><td>The safety bottom line of data use in personalized systems, and the technical root of the clean room</td></tr>
+<tr><td>Trading data security</td><td>Supply side: malicious low-bid DSPs surveilling, mitigated by inquiry optimization; demand side: visitor sets merged and resold, profit shifting to the market — more critical than the supply side</td><td>Determines whether advertisers dare to plug first-party data into programmatic trading</td></tr>
+<tr><td>GDPR / PIPL</td><td>GDPR: sensitive data list, explicit consent, four rights (access / erasure / restriction / portability), penalty cap max(€20M, 4% of global revenue); PIPL effective 2021</td><td>The two great foundations of global data compliance, unavoidable for multi-jurisdiction businesses</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Is the era of the third-party DMP completely over?</strong></p>
+<blockquote>
+<p>Trading of plaintext audience segments has indeed shrunk, but the need to "aggregate data from many sources and process it into commercially usable labels" has not disappeared — it changed form: from independent DMPs to platform-internal data markets (rooted in the platform's own identity system), clean room data collaboration, and audience solutions built on open identities like UID2. The old model died from collapsing identity infrastructure and compliance pressure; what was learned — label taxonomy design, data quality operations, revenue-sharing mechanisms — is all reusable in the new forms.</p>
+</blockquote>
+<p><strong>Q2: What does "data prices shifting into traffic prices" mean for the data buyer?</strong></p>
+<blockquote>
+<p>It means the dividend of "buying data" automatically dilutes with competition: when multiple DSPs hold the same label and bid on the same traffic, the data advantage converts into a higher win price, and profit shifts from the data side to the traffic side. The buyer's countermeasure is to use data on "cross combinations others don't have" (the more exclusive the better), and to keep validating the data's marginal contribution with incremental experiments, rather than paying for mere possession.</p>
+</blockquote>
+<p><strong>Q3: Should an advertiser build its own DMP/CDP or use an external service?</strong></p>
+<blockquote>
+<p>Depends on data scale and team. With large data volumes, an engineering team, and data as core competitiveness (large retail, finance), building your own gives the best control; otherwise use an external first-party DMP/CDP service, but hold two bottom lines: the contract must state data ownership and use restrictions, and the provider must never be allowed to mix your data with other clients' or monetize it a second time. Either way, high-value audience collaboration such as visitor matching should always go through a clean room.</p>
+</blockquote>
+<h3 id="-connections-to-other-chapters"><a class="header" href="#-connections-to-other-chapters">🔗 Connections to Other Chapters</a></h3>
+<ul>
+<li><strong>12.1</strong> (Panorama and Ecosystem): this chapter's data loop is embedded in the full advertising ecosystem — the supply-side answer to "where do targeting and bidding come from"</li>
+<li><strong>12.2</strong> (Billing Models and Core Metrics): the CPM basis of the data surcharge and the eCPM definitions rest entirely on 12.2</li>
+<li><strong>12.3 / 12.4</strong> (Auction Mechanisms / Smart Bidding): after labels are traded through the ADX, they ultimately enter these two chapters' decision engines as targeting conditions and bidding features</li>
+<li><strong>12.6</strong> (Open-Loop and Closed-Loop Advertising): the signal-side ATT/SKAN/Privacy Sandbox is covered there, while this chapter handles the data compliance and trading side; the performance-return loop is modernized in 12.6's closed-loop measurement</li>
+<li><strong>12.7</strong> (Online Allocation): traffic forecasting aggregates traffic by label combinations — the quality of the label taxonomy directly determines forecasting and allocation accuracy</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 12.10.1 — Ranking Behavioral Data by Value Tier</strong> 🟢 Easy</p>
+<p>Classify the following online behaviors into the four tiers "decision / active / semi-active / passive," and identify which one is "the most important active behavior obtainable at scale":</p>
+<p><code>e-commerce order</code>, <code>add to cart</code>, <code>ad click</code>, <code>share</code>, <code>page view</code>, <code>search</code>, <code>search click</code>, <code>ad view</code>, <code>price comparison before ordering</code></p>
+<p><strong>Sample Input:</strong> the 9 behaviors above
+<strong>Sample Output:</strong> Decision: {e-commerce order, add to cart, price comparison before ordering}; Active: {ad click, search, search click}; Semi-active: {share, page view}; Passive: {ad view}; largest-volume active behavior: search</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+**Approach:** Decision behaviors = conversion + pre-conversion, all occurring on the advertiser's site; active behaviors = clicks and searches under explicit intent; semi-active behaviors = weak-purpose content consumption; passive behaviors = the ad exposure itself.
+<ul>
+<li>The e-commerce order is a conversion; adding to cart and comparing prices before ordering are typical pre-conversions — all three are decision behaviors.</li>
+<li>Ad clicks, searches, and search clicks are all active behaviors; among them ad clicks are too few in volume, and only search is "the most important active behavior obtainable at scale."</li>
+<li>Shares and page views are semi-active behaviors; ad views are passive behaviors — their frequency is negatively correlated with clicks on similar ads, and they remain usable for modeling.</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Pre-conversions (price comparison, cart addition) belong to decision behaviors — they occur on the advertiser's site with clear intent</li>
+<li>The judgment criteria are "strength of active intent × distance from conversion," not data volume</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.10.2 — Computing the Data Trading Surcharge</strong> 🟢 Easy</p>
+<p>A DSP buys the "parent-and-baby audience" label from an ADX at a CPM price of ¥2.50. This month all impressions it won that carried this label total 120,000 (all matching the label's definition).</p>
+<p>(a) What is this month's data surcharge?
+(b) If these impressions bring 480 conversions, what is the data cost per conversion?
+(c) Next month the DSP serves only Shanghai; under the "partial trading" rule it receives only 90,000 won impressions matching the label. What does the surcharge become? Which of the four benefits of data trading does this illustrate?</p>
+<p><strong>Sample Input:</strong> label CPM ¥2.50; won impressions {120000, 90000}; conversions 480
+<strong>Sample Output:</strong> (a) ¥300 (b) ¥0.625/conversion (c) ¥225; partial trading</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+**Approach:** Delivery basis = actually won impressions × CPM price.
+<ul>
+<li>(a) <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">120000/1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">120</span></span></span></span> mille, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">120</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.50</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">300</span></span></span></span>, surcharge ¥300.</li>
+<li>(b) <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">300/480</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.625</span></span></span></span>, data cost per conversion ¥0.625. This number feeds directly into ROI accounting: purchasing pays off only when the incremental conversion value the label brings exceeds ¥0.625 per conversion.</li>
+<li>(c) <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">90000/1000</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">90</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">90</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.50</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">225</span></span></span></span>, surcharge ¥225. The DSP bought data for the single region of Shanghai and is billed only on wins within that scope — precisely the benefit of "partial trading": the DSP freely limits the data scope it needs and pays nothing for data it cannot use.</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The billing base is "actually won impressions," not the number of inquiry requests (contrast Common Mistakes #4)</li>
+<li>Partial trading plus win-based billing together form the data trade's protection for the buyer</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.10.3 — Three-Party Data Ownership and DMP Selection</strong> 🟡 Medium</p>
+<p>Determine the ownership class (first-/second-/third-party) of the data in each of the three scenarios below, and for each scenario pick the most suitable data product route (A: first-party DMP/CDP self-built or hosted; B: connect to a third-party DMP/data trading platform; C: a combination of both), with reasons.</p>
+<ol>
+<li>The New York Times: owns massive first-party users and online data, but its core business is neither advertising nor data processing.</li>
+<li>A small online clothing shop: has its own user search and purchase behavior, but the data volume is too small to be worth analyzing and monetizing on its own.</li>
+<li>A large e-commerce platform: holds massive in-platform behavior, and also needs external retargeting and off-site user acquisition.</li>
+</ol>
+<p><strong>Sample Input:</strong> descriptions of the three scenarios
+<strong>Sample Output:</strong> 1 → second-party data + route A (the AudienceScience model); 2 → third-party data + route B (the BlueKai model); 3 → first-/second-party data + route C (the TalkingData MarketingCloud model)</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+**Approach:** First determine ownership by "who holds the data and who directly participates in the trading," then choose the route by "data scale × whether standalone processing is worthwhile."
+<ol>
+<li>The data is generated on the media's own site and held directly by the media — for an ad platform it is second-party data. The NYT does not want to run its own data processing → host it with a first-party DMP (like AudienceScience processing its finance and sports user labels), with the labels flowing back for its own BI and content operations → route A.</li>
+<li>The small shop's behavioral data is its own first-hand data, but in the market it appears as "a data provider that does not directly participate in ad trading," i.e., third-party data. Volume too small to justify standalone processing → hand the data to a data trading platform for aggregation and processing, and take a share of sales (BlueKai specialized in aggregating exactly this kind of small and mid-sized site data) → route B.</li>
+<li>In-platform behavior is second-party data; CRM/orders are first-party data. The scale justifies self-building, while external data is still needed to cover off-site scenarios → combine both: self-build first-party data infrastructure (the modern form being a CDP), and connect to external labels and identity solutions as needed → route C.</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>First-/second-/third-party are defined "relative to one's position in the ad trade"; the same data has different ownership for different parties</li>
+<li>The core variable of the selection is data scale: small volume → host or sell; large volume → operate yourself</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.10.4 — Quasi-Identifier Generalization and K-Anonymity</strong> 🔴 Hard</p>
+<p>An employee dataset contains 5 records (quasi-identifiers = age, city; sensitive attribute = monthly salary):</p>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Age</th><th>City</th><th>Monthly Salary</th></tr></thead><tbody>
+<tr><td>1</td><td>36</td><td>Shanghai</td><td>15,000</td></tr>
+<tr><td>2</td><td>38</td><td>Shanghai</td><td>17,000</td></tr>
+<tr><td>3</td><td>52</td><td>Beijing</td><td>25,000</td></tr>
+<tr><td>4</td><td>54</td><td>Beijing</td><td>22,000</td></tr>
+<tr><td>5</td><td>33</td><td>Beijing</td><td>14,000</td></tr>
+</tbody></table>
+</div>
+<p>The goal is to publish the dataset satisfying K-anonymity (K = 2). (a) Generalizing only age into 10-year buckets ([30,40), [50,60)), is K-anonymity satisfied? Give the equivalence classes. (b) Give a minimal additional generalization that satisfies K = 2, and verify it. (c) If you prefer not to generalize further, what alternative operation remains?</p>
+<p><strong>Sample Input:</strong> the table above; K = 2
+<strong>Sample Output:</strong> (a) Not satisfied; equivalence classes {[30,40)·Shanghai]={1,2}, [50,60)·Beijing]={3,4}, [30,40)·Beijing]={5}}, the last of size 1 &lt; 2; (b) after generalizing city to "first-tier city," equivalence class sizes {3, 2}, K = 2 ✓; (c) suppress (delete) record 5</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+**Approach:** K-anonymity requires that after generalization every quasi-identifier equivalence class contain at least K records; try generalization levels in turn and find the minimal change satisfying the constraint.
+<ul>
+<li>(a) After age binning: records 1, 2 → ([30,40), Shanghai); records 3, 4 → ([50,60), Beijing); record 5 → ([30,40), Beijing). The first two classes have size 2, but ([30,40), Beijing) has only 1 record — K-anonymity is violated, and record 5's salary (14,000) can still be pinned on him by anyone who knows him.</li>
+<li>(b) Generalize city to "first-tier city": the equivalence classes become ([30,40), first-tier) = {1, 2, 5} (size 3) and ([50,60), first-tier) = {3, 4} (size 2). Both classes ≥ 2, so the dataset satisfies K = 2. ✔</li>
+<li>(c) The alternative is <strong>suppression</strong>: delete record 5 outright, leaving two equivalence classes of 2 records each, satisfying K = 2 — at the cost of losing one record's information. Generalization preserves the data but reduces precision; suppression preserves precision but discards data. In engineering, weigh which segment of data the business is more sensitive about.</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The risk of quasi-identifiers comes from <strong>combination</strong>: attributes with no identifying power individually can uniquely identify a person once crossed</li>
+<li>K-anonymity's equivalence-class sizes must be verified at the "final generalization granularity" — being satisfied midway does not count</li>
+<li>A real-world reminder (contrast the main text): behavioral data is extremely sparse — any two users barely overlap — so K-anonymity simply cannot get started on the behavioral details of personalized systems; this is exactly why the clean room + differential privacy take over</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 12.10.5 — Detecting and Defending Against Visitor-Set Trafficking</strong> 🏆 Challenge</p>
+<p>You run performance campaigns for an education brand and do retargeting through a DSP. Over the past month you observe: average CPC on retargeting traffic rose about 40%, win rate declined, and an "English-education audience" label you never bid for and never authorized for export now appears on the traffic you win. Design a diagnosis + defense plan: list at least 3 hypotheses to investigate (distinguishing market factors from data security factors), a verification method for each, and — if a data security hypothesis holds — defense measures (at least 3).</p>
+<p><strong>Sample Input:</strong> CPC drift +40%, win rate decline, appearance of an unfamiliar competitor label
+<strong>Sample Output:</strong> a table of hypothesis × verification method × defense measures</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+**Approach:** Rule out normal market factors first, then verify data security factors — do not accuse competitors the moment prices rise.
+<div class="table-wrapper"><table><thead><tr><th>Hypothesis</th><th>Verification method</th><th>Conclusion path</th></tr></thead><tbody>
+<tr><td>Industry-wide bidding is heating up (market factor)</td><td>Pull the same-period industry CPM/CPC index and compare against the cost of your unlabeled ordinary traffic: if the whole market rose in sync, it is a market factor</td><td>Market-wide rise → adjust budgets and bidding strategy; unrelated to data security</td></tr>
+<tr><td>A competitor added budget (market factor)</td><td>Monitor changes in competitors' creative delivery density and time coverage in ad library tools</td><td>Competitor scaling up → normal competition; optimize your own bidding and frequency control</td></tr>
+<tr><td>Visitor sets merged and resold by the DSP/ADX (data security)</td><td>Check whether an audience label highly overlapping with your own retargeting audience (e.g., "English-education audience") appears outside your contract's authorization scope; sample-compare the overlap between your own audience segment and non-owned traffic; observe whether the price rise concentrates on traffic hit by these labels</td><td>High overlap and the rise concentrated on that label → strongly suspect trafficking</td></tr>
+</tbody></table>
+</div>
+<p>Defense measures if the data security hypothesis holds:</p>
+<ol>
+<li><strong>Contract layer</strong>: sign data-use restriction clauses with the DSP/ADX, stipulating that first-party audience segments may be used only for this advertiser's own delivery, with secondary processing and resale prohibited, plus agreed audit rights.</li>
+<li><strong>Technical layer</strong>: move visitor matching to a clean room — audience segments enter the controlled environment in encrypted/hashed form, only match results are output, and the platform side cannot see the raw records, cutting off the operational path of "merging visitor sets and minting new labels" at the root.</li>
+<li><strong>Monitoring layer</strong>: build sentinel metrics for first-party data leakage — per-label drift of win rate and CPC, periodic sampling of overlap between your retargeting audience and commercially sold labels, premium monitoring on traffic hit by unfamiliar labels — triggering review on any anomaly.</li>
+<li><strong>Strategic layer</strong>: prioritize auditable, clean-room-capable channels for high-value scenarios such as retargeting; for powerful platforms' custom label features, default to minimal openness.</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The main-text conclusion: demand-side data security is more critical than the supply side — it determines whether advertisers dare to plug first-party data into programmatic trading</li>
+<li>The diagnosis must first bisect "market factors" vs "data security factors"; the evidence is "whether the price rise concentrates on traffic hit by overlapping labels"</li>
+<li>The defense's main line echoes the modern notes of 12.10.3: the clean room makes data "usable but not visible" — the structural solution to the trafficking problem</li>
+</ul>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part12-computational-advertising/ad-retrieval-semantic-recall.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part12-computational-advertising/experiment-and-antifraud.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part12-computational-advertising/ad-retrieval-semantic-recall.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part12-computational-advertising/experiment-and-antifraud.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

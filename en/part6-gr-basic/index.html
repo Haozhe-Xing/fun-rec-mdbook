@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Foundations of Generative Recommendation - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">📜 Part 6: Foundations of the Generative Recommendation Paradigm</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">The paradigm shift from "discriminative scoring" to "generative sequences" — the underlying foundation of architectures, LLM training pipelines, and semantic IDs.</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 4 sections · ⏱️ Estimated 2–3 weeks · 🎯 Target: build a complete foundational understanding of generative recommendation</p>
+</div>
+<p>Generative recommendation is shifting recommender systems from the discriminative paradigm of "scoring and ranking a candidate set" to the generative paradigm of "directly generating recommendation results." This is more than an upgrade in model architecture — it is a fundamental rethinking of the modeling philosophy. As the starting point of the "generative recommendation mainline," this part systematically builds four pillars: from <strong>paradigm motivation</strong> (why generative is needed), to <strong>architectural foundations</strong> (which models implement generation), then to the <strong>LLM modeling pipeline</strong> (how to train such models), and finally to <strong>Tokenizer technology</strong> (how recommendation data adapts to the interfaces of generative models). The four pillars build on one another, together forming the complete foundation you need for the later chapters — from scaling architectures to end-to-end generation, from thinking recommenders to diffusion models.</p>
+<hr />
+<h2 id="what-this-part-covers"><a class="header" href="#what-this-part-covers">What This Part Covers</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Section</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>6.1</strong></td><td>Introduction to the Generative Recommendation Paradigm</td><td>Discriminative vs. generative: local scoring decisions vs. global probability modeling; three inherent limitations driving the paradigm shift</td></tr>
+<tr><td><strong>6.2</strong></td><td>Foundations of Generative Architectures</td><td>Transformer self-attention / positional encoding / two architectural paradigms / causal masking, complemented by Diffusion</td></tr>
+<tr><td><strong>6.3</strong></td><td>LLM Foundations</td><td>The pretraining–instruction tuning–preference alignment three-stage paradigm, and its mapping and challenges for generative recommendation</td></tr>
+<tr><td><strong>6.4</strong></td><td>Codebook Quantization and Semantic IDs</td><td>Sparse ID / text / semantic ID paradigms; VQ-VAE, RQ-VAE, RQ-Kmeans, and RQ-OPQ industrial solutions</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>Distinguish</strong> the core formulas and "questions asked" of discriminative vs. generative models, and list the three inherent limitations of the discriminative paradigm</li>
+<li>🟢 <strong>Explain</strong> the Q/K/V mechanism of self-attention, positional encoding (including time-aware variants), and the role of causal masking</li>
+<li>🟡 <strong>Compare</strong> the strengths, weaknesses, and applicable scenarios of Encoder-Decoder vs. Decoder-Only architectures</li>
+<li>🟡 <strong>Restate</strong> the three-stage LLM paradigm (pretraining / SFT / RLHF / DPO) and map it to recommendation scenarios</li>
+<li>🔴 <strong>Derive</strong> the three VQ-VAE losses and RQ-VAE residual quantization, and explain the three key values of semantic IDs</li>
+<li>🔴 Complete 18+ tiered practice problems across 4 chapters, consolidating the full chain from paradigm to semantic ID</li>
+</ul>
+<hr />
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Section</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>Discriminative / generative paradigms</td><td>6.1</td><td>The master switch of the book's generative mainline</td></tr>
+<tr><td>Self-attention / positional encoding / causal masking</td><td>6.2</td><td>Core mechanisms of Transformer generative architectures</td></tr>
+<tr><td>Encoder-Decoder vs. Decoder-Only</td><td>6.2</td><td>The fundamental trade-off in generative architecture selection</td></tr>
+<tr><td>Diffusion models</td><td>6.2</td><td>A generation mechanism complementary to Transformer</td></tr>
+<tr><td>Pretraining / SFT / RLHF / DPO</td><td>6.3</td><td>The methodological framework of LLM training paradigms</td></tr>
+<tr><td>Item tokenization / semantic IDs</td><td>6.4</td><td>The bridge connecting recommendation data to generative models</td></tr>
+<tr><td>VQ-VAE / RQ-VAE / RQ-Kmeans / RQ-OPQ</td><td>6.4</td><td>The technology spectrum for discretizing semantic IDs</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have finished <strong>Part 1</strong> (the two paradigms in <a href="./../part1-introduction/recommender-system-basics.html">1.1</a>, the technology map in <a href="./../part1-introduction/book-overview.html">1.2</a>)</li>
+<li>You have finished <strong>Part 2</strong> (the inner product and vector-space intuition of the <a href="./../part2-retrieval/two-tower.html">two-tower</a> model in 2.3)</li>
+<li>Basic linear algebra (matrices, inner products), probability (softmax, KL divergence), and general neural network knowledge</li>
+</ul>
+<blockquote>
+<p>This part covers frontier material with recent terminology (generative retrieval, semantic IDs, RQ-VAE, Scaling Laws, etc.). Every term is given in both Chinese and English on first appearance, with mental models and diagrams.</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>Look at the motivation before the technology.</strong> The "why generative" discussion in 6.1 is the key to everything that follows — each technology responds to a specific discriminative limitation.</li>
+<li><strong>Grasp the "unified architecture" mainline.</strong> From the Transformer in 6.2, to the LLM in 6.3, to semantic IDs in 6.4, "unified, scalable, end-to-end" is the design philosophy throughout.</li>
+<li><strong>Get hands-on with the visualizations.</strong> The interactive HTML and SVG demos in each chapter are worth walking through yourself, grounding abstract formulas in intuition about "how sequences are generated" and "how vectors are quantized."</li>
+<li><strong>Think against the discriminative paradigm.</strong> Whenever you meet a generative component, first ask: "which discriminative limitation does it solve?"</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part5-trends/generative-trend.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part6-gr-basic/gr-paradigm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part5-trends/generative-trend.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part6-gr-basic/gr-paradigm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

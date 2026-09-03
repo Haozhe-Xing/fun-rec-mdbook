@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>IPS 纠偏 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-red:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:13px;}
+  .bar-row .lbl{width:150px;color:var(--c-light);}
+  .bar{height:18px;border-radius:4px;background:var(--c-cell);transition:width .5s, background .5s;}
+  .bar.h{background:var(--c-red);}
+  .bar.r{background:var(--c-primary);}
+  .metric{font-family:"Courier New",monospace;font-size:22px;font-weight:bold;margin:4px 0;}
+  .metric.ok{color:var(--c-success);}
+  .metric.bad{color:var(--c-red);}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(16,185,129,.25);display:block;border-left:3px solid var(--c-success);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚖️ IPS 逆倾向得分：从有偏估计到无偏估计</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>恐怖片 vs 爱情片：平均评分（观测视角）</h3>
+    <div class="bar-row"><span class="lbl">恐怖片（观测）</span><div class="bar r" id="barH" style="width:0%"></div><span id="vH">—</span></div>
+    <div class="bar-row"><span class="lbl">爱情片（观测）</span><div class="bar h" id="barR" style="width:0%"></div><span id="vR">—</span></div>
+    <div style="margin-top:18px;font-size:13px;color:var(--c-light);" id="weightNote"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码 / 公式</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const stages = [
+  { name:"① 有偏的观测数据",
+    desc:"恐怖片爱好者频繁评分恐怖片（P=0.8）但罕见评分爱情片（P=0.1）。观测到的爱情片低分样本极少，朴素统计会高估两类偏好差距。",
+    h:4.5, r:4.3, gap:"0.2 (被低估)",
+    wH:"权重 1.25×", wR:"权重 10×",
+    naive:true, ipson:false,
+    code:["# 观测数据","H_obs_avg = 4.5   # 大量样本","R_obs_avg = 4.3   # 样本极少(低分被淹没)","# 朴素: 认知差距仅 0.2"],
+    hl:0 },
+  { name:"② 朴素估计量（有偏）",
+    desc:"朴素估计量直接在观测数据上求平均。因为罕见「恐怖迷给爱情片低分」的样本几乎不参与统计，模型误以为两类电影偏好接近——真实差距被严重掩盖。",
+    h:4.5, r:4.3, gap:"0.2 (偏离真实)",
+    wH:"权重 1.0×", wR:"权重 1.0×",
+    naive:true, ipson:false,
+    code:["R_hat = (1/|D_O|) Σ (y - ŷ)²","# 忽略 P(O=1)","# 罕见样本贡献 ≈ 0","# E[R_hat] ≠ R  ← 有偏"],
+    hl:3 },
+  { name:"③ IPS 加权（无偏）",
+    desc:"引入倾向得分倒数作权重：罕见的低分观测（P=0.1）获 10× 权重，常见的恐怖片高分（P=0.8）仅 1.25×。逆向加权还原真实偏好分布，得到无偏风险估计。",
+    h:4.5, r:2.0, gap:"2.5 (接近真实)",
+    wH:"权重 1.25×", wR:"权重 10×",
+    naive:false, ipson:true,
+    code:["R_IPS = (1/|U||I|) Σ 1/P(O) · loss","# w = 1 / P(observed)","# P=0.1 → w=10× (放大)","# P=0.8 → w=1.25× (压低)","# E[R_IPS|P] = R  ← 无偏"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+const barH = document.getElementById("barH");
+const barR = document.getElementById("barR");
+const vH = document.getElementById("vH");
+const vR = document.getElementById("vR");
+const wn = document.getElementById("weightNote");
+
+function render(){
+  const s = stages[cur];
+  const maxS = 5;
+  barH.style.width = (s.h/maxS*100)+"%";
+  barR.style.width = (s.r/maxS*100)+"%";
+  vH.textContent = s.h.toFixed(1);
+  vR.textContent = s.r.toFixed(1);
+  wn.innerHTML = "权重方案：" + s.wH + " ｜ " + s.wR;
+
+  const cls = s.ipson ? "ok" : (s.naive ? "bad" : "bad");
+  stateEl.innerHTML = "<h3>当前阶段状态</h3>" +
+    "<p><span class='k'>阶段：</span>"+s.name+"</p>" +
+    "<p>"+s.desc+"</p>" +
+    "<p><span class='k'>估计的偏好差距：</span><span class='metric "+cls+"'>"+s.gap+"</span></p>" +
+    (s.ipson ? "<p>逆向加权后估计逼近真实差距（真实≈2.5）。</p>" : "<p>注意：朴素估计掩盖了真实差距。</p>");
+
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },2000); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>贪心重排：MMR 与 DPP · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#f97316; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .slider{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--c-light);}
+  .slider input{accent-color:var(--c-primary);}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  /* visual */
+  .row-label{font-size:12px;color:var(--c-light);margin:14px 0 6px;}
+  .cards{display:flex;flex-wrap:wrap;gap:8px;}
+  .card{width:74px;height:64px;border-radius:10px;background:var(--c-cell);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border:2px solid transparent;transition:all .3s;}
+  .card .id{font-size:14px;font-weight:700;}
+  .card .rel{font-size:10px;color:var(--c-light);}
+  .card .mr{font-size:11px;color:var(--c-warn);font-family:"Courier New",monospace;}
+  .card.sel{border-color:var(--c-success);background:rgba(16,185,129,.18);}
+  .card.picked{box-shadow:0 0 0 3px var(--c-primary);}
+  .card .order{position:absolute;top:-8px;left:-8px;width:20px;height:20px;border-radius:50%;background:var(--c-success);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .pool .card:not(.sel){background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.4);}
+  /* state + code */
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(249,115,22,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+  .dpp-note{font-size:12.5px;color:var(--c-light);line-height:1.6;margin-top:8px;}
+  .dpp-note b{color:var(--c-success);}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔶 贪心重排：MMR 逐步挑选 + DPP 视角</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+    <span class="slider">λ <input id="lam" type="range" min="0" max="1" step="0.05" value="0.7"/> <span id="lamv">0.70</span></span>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>候选池与已选列表</h3>
+    <div class="row-label">已选列表 S（绿框，数字=挑选顺序）</div>
+    <div class="cards selrow" id="selrow"></div>
+    <div class="row-label">候选池（橙框，显示当前 MR 分数）</div>
+    <div class="cards pool" id="pool"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前步骤状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const items = [
+  {id:"A", rel:0.95}, {id:"B", rel:0.90}, {id:"C", rel:0.85},
+  {id:"D", rel:0.80}, {id:"E", rel:0.75}
+];
+const SIM = { // Sim(i,j)
+  "A":{"A":1,"B":0.2,"C":0.8,"D":0.1,"E":0.3},
+  "B":{"A":0.2,"B":1,"C":0.1,"D":0.7,"E":0.4},
+  "C":{"A":0.8,"B":0.1,"C":1,"D":0.3,"E":0.6},
+  "D":{"A":0.1,"B":0.7,"C":0.3,"D":1,"E":0.5},
+  "E":{"A":0.3,"B":0.4,"C":0.6,"D":0.5,"E":1}
+};
+let lambda = 0.7;
+let traj = [];
+let cur = 0, timer = null;
+
+function mr(it, selected, lam){
+  if(selected.length === 0) return lam * it.rel;
+  let maxs = Math.max(...selected.map(s => SIM[it.id][s]));
+  return lam * it.rel - (1 - lam) * maxs;
+}
+function computeTrajectory(lam){
+  let selected = [];
+  let pool = items.slice();
+  let t = [{selected:[], scores:null, picked:null}];
+  while(selected.length < 3 && pool.length){
+    let scores = {};
+    pool.forEach(it => scores[it.id] = mr(it, selected, lam));
+    let best = pool.reduce((a,b) => scores[a.id] > scores[b.id] ? a : b);
+    selected.push(best.id);
+    pool = pool.filter(x => x.id !== best.id);
+    t.push({selected:selected.slice(), scores:Object.assign({},scores), picked:best.id});
+  }
+  t.push({selected:selected.slice(), scores:null, picked:null, dpp:true});
+  return t;
+}
+function render(){
+  const s = traj[cur];
+  // selected row
+  const selrow = document.getElementById("selrow");
+  selrow.innerHTML = "";
+  s.selected.forEach((id, idx) => {
+    const it = items.find(x => x.id === id);
+    const d = document.createElement("div");
+    d.className = "card sel" + (id === s.picked ? " picked" : "");
+    d.innerHTML = `<div class="order">${idx+1}</div><div class="id">${id}</div><div class="rel">R=${it.rel.toFixed(2)}</div>`;
+    selrow.appendChild(d);
+  });
+  if(s.selected.length === 0){
+    const ph = document.createElement("div");
+    ph.style.color = "var(--c-light)"; ph.style.fontSize = "12px";
+    ph.textContent = "（空）";
+    selrow.appendChild(ph);
+  }
+  // pool
+  const poolEl = document.getElementById("pool");
+  poolEl.innerHTML = "";
+  const remaining = items.filter(x => !s.selected.includes(x.id));
+  remaining.forEach(it => {
+    const d = document.createElement("div");
+    d.className = "card";
+    const score = s.scores ? s.scores[it.id] : null;
+    d.innerHTML = `<div class="id">${it.id}</div><div class="rel">R=${it.rel.toFixed(2)}</div>` +
+                  (score !== null ? `<div class="mr">MR=${score.toFixed(2)}</div>` : `<div class="mr">—</div>`);
+    poolEl.appendChild(d);
+  });
+  if(remaining.length === 0){
+    const ph = document.createElement("div");
+    ph.style.color = "var(--c-light)"; ph.style.fontSize = "12px";
+    ph.textContent = "（已选完）";
+    poolEl.appendChild(ph);
+  }
+  // state
+  let st = `<h3>当前步骤状态</h3><p><span class="k">λ =</span>${lambda.toFixed(2)}（相关性权重）</p>`;
+  if(s.dpp){
+    st += `<p><b style="color:var(--c-success)">最终列表：[${s.selected.join(", ")}]</b></p>`;
+    st += `<p>MMR 视角：每步只避开了「与最相似已选项」撞车的内容。</p>`;
+    st += `<div class="dpp-note"><b>DPP 视角：</b>改用核矩阵 L=Diag(r)·S·Diag(r) 的<b>行列式体积</b>衡量整组多样性——能联合捕捉「三个相似物品叠加」的冗余，而 MMR 的 max 惩罚做不到。两者目标形态相同，实现哲学不同。</div>`;
+  } else if(s.picked){
+    st += `<p>第 ${s.selected.length} 步：从候选中挑出 <b style="color:var(--c-primary)">${s.picked}</b>（MR 最高）。</p>`;
+    st += `<p>已选 S = [${s.selected.join(", ")}]。下轮将惩罚与 S 中最相似者的物品。</p>`;
+  } else {
+    st += `<p>初始状态：候选池共 ${items.length} 个物品，按精排相关性 R 从高到低。</p>`;
+    st += `<p>点击「下一步」开始 MMR 贪心挑选（每轮选 MR 最大的物品）。</p>`;
+  }
+  document.getElementById("state").innerHTML = st;
+  // code
+  let code;
+  if(s.dpp){
+    code = ["# DPP 替代视角（精确集合级多样性）","L = Diag(r) · S · Diag(r)","# 选使 log det(L_Y∪{i}) 最大的 i","j = argmax_i log(d_i^2)","# 最终列表同样为 [A,B,E] 形态","display(final)"];
+  } else if(s.picked){
+    code = ["for item in candidates:","  max_sim = max(Sim(item, s) for s in S)","  score = λ*Rel - (1-λ)*max_sim  # MMR","best = argmax(score)","S.append(best)  # ← 本轮选 " + s.picked];
+  } else {
+    code = ["# 候选池：精排输出的物品","candidates = [A(0.95), B(0.90), C(0.85),","              D(0.80), E(0.75)]","S = []  # 重排结果","# 下一步开始贪心挑选"];
+  }
+  const hl = s.dpp ? 2 : (s.picked ? 2 : 4);
+  document.getElementById("codepre").innerHTML = code.map((l,i)=> i===hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  document.getElementById("foot").textContent = "步骤 "+(cur+1)+" / "+traj.length+" — "+(s.dpp?"DPP 视角对比":(s.picked?("挑选 "+s.picked):"初始候选池"));
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+function rebuild(){ traj = computeTrajectory(lambda); if(cur >= traj.length) cur = traj.length-1; render(); }
+function next(){ if(cur<traj.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; rebuild(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=traj.length-1){stopAuto();return;} next(); },1800); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.getElementById("lam").oninput=(e)=>{
+  lambda = parseFloat(e.target.value);
+  document.getElementById("lamv").textContent = lambda.toFixed(2);
+  cur = 0; rebuild();
+};
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+rebuild();
+</script>
+</body>
+</html>

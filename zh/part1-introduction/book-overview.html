@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>本书概览与技术地图 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~20 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="本书概览与技术地图"><a class="header" href="#本书概览与技术地图">本书概览与技术地图</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> 请先读完 <a href="./recommender-system-basics.html">1.1</a> 的三种视角。本章把那张「立体认知」展开成一张可导航的<strong>技术地图</strong>，帮你定位后续每一章。</p>
+</blockquote>
+<p>理解了推荐系统的核心逻辑后，真正的挑战是把认知变成可操作的技术方案。研究者与工程师提出过数百种算法，初学者常陷入迷茫：这些模型有什么关系？什么场景选哪种？如何拼出完整系统？</p>
+<p>本章给你一张地图。本书沿 <strong>判别式</strong> 与 <strong>生成式</strong> 两条主线组织，同时串起从「记忆·泛化」到「理解·推理」的能力演进。</p>
+<p>读完本章，你将能够：</p>
+<ul>
+<li>说出本书 <strong>上下两篇</strong> 的划分逻辑与各自的落脚点</li>
+<li>把 <strong>基础篇（Part 1–5）</strong> 每一章对应到三阶段流水线或前沿趋势</li>
+<li>解释为何「召回→排序→重排」是判别式的组织线索</li>
+<li>预判 <strong>生成式主线</strong> 在后续版本（Part 6–11）将如何展开</li>
+<li>完成 4 道分层练习题，检验对技术地图的掌握</li>
+</ul>
+<hr />
+<h2 id="120-一张地图两条主线"><a class="header" href="#120-一张地图两条主线">1.2.0 一张地图，两条主线</a></h2>
+<p>本书的编排可用一张图概括：横轴是 <strong>时间/能力演进</strong> （从纯 ID 记忆到 LLM 推理），纵轴是 <strong>两条范式主线</strong> （判别式 vs 生成式）。</p>
+<p><img src="../images/part1-ability-map.svg" alt="推荐算法能力演进与本书章节地图" /></p>
+<ul>
+<li><strong>上篇：判别式推荐的工业实践</strong>——沿「召回 → 排序 → 重排」流水线逐步深入，是记忆与泛化能力的主战场。</li>
+<li><strong>下篇：生成式推荐的技术图景</strong>——从基础范式出发，经 Scaling Law、端到端建模、推理能力到扩散模型，是理解与推理能力的探索场。</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 两条主线<strong>不是割裂的</strong>。生成式架构往往在判别式成熟模块的基础上「端到端化」；而判别式的语义 ID、特征交叉等技术，又为生成式提供了表示基石。</p>
+</blockquote>
+<hr />
+<h2 id="121-上篇判别式推荐的工业实践本版覆盖"><a class="header" href="#121-上篇判别式推荐的工业实践本版覆盖">1.2.1 上篇：判别式推荐的工业实践（本版覆盖）</a></h2>
+<p>本版（基础篇）完整收录上篇及承上启下的趋势章，共 5 个 Part：</p>
+<div class="table-wrapper"><table><thead><tr><th>Part</th><th>主题</th><th>在流水线中的位置</th><th>核心内容</th></tr></thead><tbody>
+<tr><td><strong>Part 1</strong></td><td>引言与概览</td><td>—</td><td>两种范式、三阶段漏斗、生态三角、特征与 Embedding 基础</td></tr>
+<tr><td><strong>Part 2</strong></td><td>快速候选召回</td><td>① 召回</td><td>协同过滤 / 向量召回 / 双塔 / 序列召回 / 流式索引</td></tr>
+<tr><td><strong>Part 3</strong></td><td>精准偏好预测</td><td>② 排序</td><td>Wide&amp;Deep / 特征交叉 / 序列建模 / 多目标 / 多场景</td></tr>
+<tr><td><strong>Part 4</strong></td><td>重排多样性建模</td><td>③ 重排</td><td>贪心重排（MMR/DPP）/ 个性化重排（PRM）</td></tr>
+<tr><td><strong>Part 5</strong></td><td>前沿趋势</td><td>跨阶段</td><td>模型去偏 / 冷启动 / 生成式范式演进</td></tr>
+</tbody></table>
+</div>
+<h3 id="召回从亿到千part-2"><a class="header" href="#召回从亿到千part-2">召回：从亿到千（Part 2）</a></h3>
+<p>召回是流水线起点，要在毫秒级从亿级物品筛出千级候选。其技术演进沿五节展开：</p>
+<ul>
+<li><strong>协同过滤</strong>——经典起点：从 ItemCF 的物品相似度，经 Swing 工业优化、UserCF 用户视角，到矩阵分解把用户/物品映射为隐向量，开启向量化先河。</li>
+<li><strong>I2I 向量召回</strong>——把 Word2Vec 序列建模思想迁移到推荐：从 Item2Vec 直接迁移，到 EGES 融合属性，再到 Airbnb 把业务目标融入序列构建。</li>
+<li><strong>双塔模型（U2I）</strong>——用户与物品分别编码为向量，以 FM、DSSM、YoutubeDNN 为代表，实现高效向量检索。</li>
+<li><strong>序列召回</strong>——关注被前面方法忽略的时序信息：MIND 用多向量表示多元兴趣，SDM 分离长短期偏好并以门控动态融合。</li>
+<li><strong>流式索引召回</strong>——跳出模型内部压缩：Trinity 用聚类统计保留全量历史兴趣，Streaming VQ 让索引结构实时适应数据分布。</li>
+</ul>
+<h3 id="排序从千到百part-3"><a class="header" href="#排序从千到百part-3">排序：从千到百（Part 3）</a></h3>
+<p>排序对千级候选精准打分，是深度泛化的主战场：</p>
+<ul>
+<li><strong>Wide &amp; Deep</strong>——联合训练线性模型与深度网络，确立「记忆 + 泛化」基础框架。</li>
+<li><strong>特征交叉</strong>——从 FM 二阶交叉，经 DeepFM、xDeepFM，走向自动高阶交叉。</li>
+<li><strong>序列建模</strong>——DIN 用注意力按候选动态激活历史；DIEN 显式建模兴趣时序演化。</li>
+<li><strong>多目标 / 多场景</strong>——MMoE、ESMM 平衡多目标；多塔与动态权重适配多场景差异。</li>
+</ul>
+<h3 id="重排从百到一屏part-4"><a class="header" href="#重排从百到一屏part-4">重排：从百到一屏（Part 4）</a></h3>
+<p>排序输出常高度同质化，重排在保相关性的前提下优化整张列表体验：</p>
+<ul>
+<li><strong>贪心重排</strong>——MMR 线性组合相关性与多样性；DPP 用行列式框架更精确控制多样性。</li>
+<li><strong>个性化重排</strong>——PRM 用 Transformer 建模物品间相互影响，实现端到端个性化列表生成。</li>
+</ul>
+<hr />
+<h2 id="122-下篇预览生成式推荐后续版本覆盖-part-611"><a class="header" href="#122-下篇预览生成式推荐后续版本覆盖-part-611">1.2.2 下篇预览：生成式推荐（后续版本覆盖 Part 6–11）</a></h2>
+<p>为帮你建立完整认知，这里简要预告下篇，让你知道本版之后的路通向何方：</p>
+<div class="table-wrapper"><table><thead><tr><th>Part</th><th>主题</th><th>一句话</th></tr></thead><tbody>
+<tr><td><strong>Part 6</strong></td><td>生成式基础</td><td>Transformer / 扩散模型 / LLM 流程 / 物品 Token 化（语义 ID）</td></tr>
+<tr><td><strong>Part 7</strong></td><td>Scaling Law 架构</td><td>HSTU 把逐候选打分转为用户级序列建模；RankMixer 做硬件感知统一架构</td></tr>
+<tr><td><strong>Part 8</strong></td><td>端到端生成</td><td>OneRec（推荐）/ OneSug·OneSearch（搜索）/ EGA（广告）用一个模型替代流水线</td></tr>
+<tr><td><strong>Part 9</strong></td><td>会思考的推荐</td><td>语义对齐（LC-Rec）→ 推理激活（OneRec-Think）→ 自主推理（RecZero）</td></tr>
+<tr><td><strong>Part 10</strong></td><td>扩散模型推荐</td><td>DiffuASR 数据增强 / AsymDiffRec·DMSG 特征与多样性优化</td></tr>
+<tr><td><strong>Part 11</strong></td><td>生产级项目</td><td>电影推荐全链路：离线训练 + 在线服务 + 前端 + Docker 部署</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>📝 <strong>Note:</strong> 本版聚焦基础篇（Part 1–5）。下篇内容将在后续版本以相同 book-writer 规范续写。</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-12"><a class="header" href="#-common-mistakes-in-12">⚠️ Common Mistakes in 1.2</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>把章节当孤立算法</td><td>「这一章讲 DIN，下一章讲 DIEN，没关系」</td><td>章节是流水线上的连续环节，前一章是后一章的输入</td><td>始终用「流水线位置」理解每章</td></tr>
+<tr><td>2</td><td>只记模型名不记动机</td><td>背下 FM/DeepFM 却说不清为何要高阶交叉</td><td>模型是为解决具体局限而生，脱离动机学不牢</td><td>每学一模型，先问「它解决了前一方法的什么不足」</td></tr>
+<tr><td>3</td><td>误以为生成式取代判别式</td><td>「学了生成式就不用看上篇了」</td><td>二者并行发展，生成式常建立在判别式表示之上</td><td>把两条主线当作互补而非替代</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="本章小结"><a class="header" href="#本章小结">本章小结</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>两条主线</td><td>判别式（上篇）/ 生成式（下篇）</td><td>全书组织骨架，决定你如何归类每个模型</td></tr>
+<tr><td>三阶段线索</td><td>召回→排序→重排 贯穿上篇</td><td>理解每章在流水线上的位置</td></tr>
+<tr><td>能力演进</td><td>记忆→泛化→理解→推理</td><td>解释为何技术不断迭代而非简单替代</td></tr>
+<tr><td>本版边界</td><td>覆盖 Part 1–5（基础篇）</td><td>明确本版范围，避免期待错位</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: 基础篇为什么停在 Part 5，不连同生成式主线一起？</strong></p>
+<blockquote>
+<p>A: 生成式主线的基石（Part 6），概念密度陡增（语义 ID、Transformer、扩散模型）。先夯实判别式工业实践，再进生成式，认知更稳。</p>
+</blockquote>
+<p><strong>Q2: 召回、排序、重排必须都用深度学习吗？</strong></p>
+<blockquote>
+<p>A: 不一定。召回常用轻量方法（协同过滤、双塔）；排序才动用最复杂深度模型；重排可用规则或轻量模型。复杂度随候选收缩而递增。</p>
+</blockquote>
+<p><strong>Q3: 我该按什么顺序读？</strong></p>
+<blockquote>
+<p>A: 严格按 Part 1→5 顺序。后一章常以前一章为前置（如序列建模建立在特征交叉之后）。</p>
+</blockquote>
+<h3 id="前后关联"><a class="header" href="#前后关联">前后关联</a></h3>
+<ul>
+<li><strong>Part 2 召回（2.1–2.5）</strong> 把本章「召回：从亿到千」展开为五个算法家族。</li>
+<li><strong>Part 3 排序（3.1–3.5）</strong> 深入判别式打分函数 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 的工业实现。</li>
+<li><strong>Part 4 重排（4.1–4.2）</strong> 收尾三阶段流水线，并衔接趋势章。</li>
+<li><strong>Part 5 趋势（5.1–5.3）</strong> 用「去偏 / 冷启动 / 生成式」承上启下，指向后续版本的下篇。</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<hr />
+<p><strong>Problem 1.2.1 — 定位章节</strong> 🟢 Easy</p>
+<p>把下列算法拖入（写出对应 Part/章节）它在流水线中的正确位置：
+(a) DPP 重排　(b) YoutubeDNN 双塔　(c) DeepFM 特征交叉　(d) Swing 协同过滤</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 回忆三阶段与各环节代表模型。</p>
+<div class="table-wrapper"><table><thead><tr><th>算法</th><th>位置</th></tr></thead><tbody>
+<tr><td>(a) DPP 重排</td><td>Part 4 重排（4.1 贪心重排）</td></tr>
+<tr><td>(b) YoutubeDNN 双塔</td><td>Part 2 召回（2.3 双塔 U2I）</td></tr>
+<tr><td>(c) DeepFM 特征交叉</td><td>Part 3 排序（3.2 特征交叉）</td></tr>
+<tr><td>(d) Swing 协同过滤</td><td>Part 2 召回（2.1 协同过滤）</td></tr>
+</tbody></table>
+</div>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>召回侧方法偏轻量、覆盖导向；排序侧动用复杂深度模型。</li>
+<li>重排发生在排序之后，优化列表级体验。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.2.2 — 能力阶段归类</strong> 🟢 Easy</p>
+<p>将下列技术归入「记忆 / 泛化 / 理解 / 推理」四个能力阶段之一：
+(a) 协同过滤共现　(b) 深度特征交叉　(c) 语义 ID（RQ-VAE）　(d) OneRec-Think 显式推理</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 对照能力演进曲线。</p>
+<ul>
+<li>(a) 记忆（纯 ID 共现）</li>
+<li>(b) 泛化（深度网络推广到未见组合）</li>
+<li>(c) 理解（物品编码为携带语义的 Token）</li>
+<li>(d) 推理（模型显式分析意图、给出理由）</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>四阶段层层叠加而非替代；同一条演进曲线串起全书。</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.2.3 — 动机追问</strong> 🟡 Medium</p>
+<p>为什么「特征交叉」要从 FM 的二阶，演进到 xDeepFM 的自动高阶？请用一个具体例子说明：仅用二阶交叉会遗漏什么类型的模式。</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> 从「模型要解决什么局限」切入。FM 的二阶交叉只建模 <strong>两两特征</strong> 的组合（如 性别×品类）。但真实业务中，价值常来自 <strong>更高阶的交互</strong>——例如「一线城市 × 年轻女性 × 美妆品类」的三阶组合才触发强兴趣。</p>
+<p>若只有二阶交叉，模型无法显式捕捉这种三阶（及以上）协同信号，只能靠隐式近似，表达力受限。xDeepFM 等用向量/神经网络 <strong>自动</strong> 学习任意阶交叉，摆脱人工特征工程，覆盖高阶模式。</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>二阶交叉 = 两两组合；高阶交叉 = 多特征联合。</li>
+<li>演进动机：表达力不足 → 自动化高阶交互。</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: 设计你的阅读路线</strong></p>
+<p>假设一位同事「只会写 SQL 和简单 LR，没碰过深度学习」，但又急需两周内上手贵司的推荐排序模块。请基于本章技术地图，为他设计一份 <strong>两周学习路线</strong> （列出每日/每阶段该读哪几章、跳过哪些、为什么），并说明理由（150 字内）。</p>
+<details>
+<summary>💡 Hint</summary>
+<p>优先保「流水线主线」：Part1→Part2 召回→Part3 排序（Wide&amp;Deep、特征交叉、序列建模），重排与趋势可后置；生成式主线（Part 6+）暂跳过。理由是排序模块最依赖 Part3，且深度基础可从 Wide&amp;Deep 平滑切入。</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/recommender-system-basics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part1-introduction/feature-embedding-basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/recommender-system-basics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part1-introduction/feature-embedding-basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

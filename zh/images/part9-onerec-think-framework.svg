@@ -1,0 +1,36 @@
+<svg width="800" height="240" viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9e" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1e293b"/>
+    </marker>
+    <filter id="shadow9e" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="240" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">OneRec-Think 三阶段训练框架</text>
+
+  <g font-family="Arial" font-size="14" text-anchor="middle">
+    <rect x="30" y="80" width="220" height="110" rx="12" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow9e)"/>
+    <text x="140" y="110" font-weight="bold" fill="#4A6CF7">① 物品对齐</text>
+    <text x="140" y="135" font-size="12" fill="#64748b">多任务预训练</text>
+    <text x="140" y="155" font-size="12" fill="#64748b">让 LLM「认识」物品</text>
+    <text x="140" y="178" font-size="12" fill="#64748b">ID→文本 / 文本→ID</text>
+
+    <rect x="290" y="80" width="220" height="110" rx="12" fill="#fef3cd" stroke="#f59e0b" stroke-width="2" filter="url(#shadow9e)"/>
+    <text x="400" y="110" font-weight="bold" fill="#d97706">② 推理激活</text>
+    <text x="400" y="135" font-size="12" fill="#64748b">推理脚手架</text>
+    <text x="400" y="155" font-size="12" fill="#64748b">让模型「学会思考」</text>
+    <text x="400" y="178" font-size="12" fill="#64748b">画像→评估→推荐</text>
+
+    <rect x="550" y="80" width="220" height="110" rx="12" fill="#e8f5ee" stroke="#10b981" stroke-width="2" filter="url(#shadow9e)"/>
+    <text x="660" y="110" font-weight="bold" fill="#16a34a">③ 推理增强</text>
+    <text x="660" y="135" font-size="12" fill="#64748b">推荐特定奖励</text>
+    <text x="660" y="155" font-size="12" fill="#64748b">GRPO 精炼路径</text>
+    <text x="660" y="178" font-size="12" fill="#64748b">更准确·更多样</text>
+  </g>
+
+  <line x1="250" y1="135" x2="286" y2="135" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arrow9e)"/>
+  <line x1="510" y1="135" x2="546" y2="135" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arrow9e)"/>
+  <text x="400" y="218" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">从「认识物品」→「学会思考」→「精进推理」的能力演化</text>
+</svg>

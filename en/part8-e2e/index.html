@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>End-to-End Generative Applications - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">📦 Part 8: End-to-End Generative Applications</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">Unify recommendation, search, and advertising into end-to-end generative systems that go directly from "user input → generated results."</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 3 sections · ⏱️ Estimated 2 weeks · 🎯 Target: master the architectures and alignment methods of industrial-grade end-to-end generative recommendation/search/advertising</p>
+</div>
+<p>For over a decade, recommendation, search, and advertising have almost all been built on the <strong>Multi-stage Cascading Architecture (MCA)</strong>: retrieval, pre-ranking, ranking, re-ranking... data is filtered layer by layer like a funnel. This design historically balanced efficiency and complexity, but as data scales exploded and user-experience expectations rose, its structural flaws became increasingly apparent — conflicting objectives, information loss, and fragmented computation.</p>
+<p>This part stops treating each sub-task in isolation. Instead, along the <strong>generative paradigm</strong> thread, we look at how industry uses a unified neural network to <strong>generate final results directly from user input</strong>, completely overturning the "cascading funnel." We focus on real deployments in three core business scenarios: Kuaishou's <strong>OneRec</strong> (end-to-end generative recommendation), e-commerce search's <strong>OneSug + OneSearch</strong> (end-to-end generative search), and online advertising's <strong>EGA + GPR</strong> (end-to-end generative advertising).</p>
+<p><img src="../images/part8-mca-pain.svg" alt="Three structural dilemmas of the traditional cascading architecture" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The end-to-end practices across the three scenarios share one common thread — <strong>semantic IDs are the bridge connecting generative models to business data; the Encoder-Decoder is the workhorse architecture for fusing context; and reinforcement learning is the key tool for aligning the generation process with online business objectives</strong>.</p>
+</blockquote>
+<hr />
+<h2 id="what-this-part-covers"><a class="header" href="#what-this-part-covers">What This Part Covers</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Section</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>8.1</strong></td><td>End-to-End Generative Recommendation</td><td>OneRec-V1/V2 use semantic IDs + Encoder-Decoder + reinforcement learning to redefine recommendation as a generation task: "user context → semantic ID sequence"</td></tr>
+<tr><td><strong>8.2</strong></td><td>End-to-End Generative Search</td><td>OneSug handles query completion and OneSearch handles product retrieval, covering the full e-commerce search pipeline with a unified generative architecture</td></tr>
+<tr><td><strong>8.3</strong></td><td>End-to-End Generative Advertising</td><td>EGA embeds the auction mechanism into generation and GPR uses pre-training to unify ultra-long heterogeneous sequences across scenarios, deeply integrating mechanism constraints with the generative model</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>Explain</strong> the three structural flaws of the traditional MCA and how they gave rise to the end-to-end generative paradigm</li>
+<li>🟢 <strong>Describe</strong> how semantic IDs compress hundreds of millions of items into a finite vocabulary, making generative recommendation mathematically feasible</li>
+<li>🟡 <strong>Contrast</strong> the fundamental difference in compute allocation between OneRec-V1's Encoder-Decoder and V2's Lazy Decoder-Only</li>
+<li>🟡 <strong>Distinguish</strong> the essential difference between the search scenario's "relevance first, personalization second" and the recommendation scenario's optimization objective</li>
+<li>🔴 <strong>Explain</strong> how EGA embeds incentive compatibility (IC) and individual rationality (IR) constraints into the generation process</li>
+<li>🔴 <strong>Outline</strong> how GPR's heterogeneous hierarchical decoder and value-guided Beam Search solve the cross-scenario and ultra-long-sequence challenges</li>
+<li>🏆 Complete the tiered practice problems in each section, working through semantic ID encoding, reward modeling, and constrained decoding by hand</li>
+</ul>
+<hr />
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Section</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>Multi-stage Cascading Architecture (MCA)</td><td>8.1</td><td>The traditional industrial skeleton overturned by the end-to-end paradigm</td></tr>
+<tr><td>Semantic ID</td><td>8.1</td><td>The core bridge connecting generative models to discrete items/products/ads</td></tr>
+<tr><td>Encoder-Decoder generative architecture</td><td>8.1 / 8.2 / 8.3</td><td>The workhorse structure for fusing context and autoregressively generating sequences</td></tr>
+<tr><td>Lazy Decoder-Only</td><td>8.1</td><td>Concentrates compute on target tokens, cutting decoding cost by 94%</td></tr>
+<tr><td>RL alignment (ECPO/GBPO/DPO)</td><td>8.1 / 8.2 / 8.3</td><td>Aligns the generation process with online multi-objective business signals</td></tr>
+<tr><td>Incentive compatibility (IC) and individual rationality (IR)</td><td>8.3</td><td>Economic constraints from mechanism design in the advertising scenario</td></tr>
+<tr><td>Value-guided Trie Beam Search</td><td>8.3</td><td>Embeds constraints into decoding and improves inference efficiency</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have finished <strong>1.1</strong> (the two paradigms and the motivation for end-to-end generation) and <strong>2.x</strong> (two-tower models and a first look at semantic IDs)</li>
+<li>Familiarity with the basic Transformer structure (self-attention, cross-attention, encoder/decoder)</li>
+<li>A preliminary understanding of reinforcement learning basics (policy, reward, advantage) — this part develops them gradually through case studies</li>
+</ul>
+<blockquote>
+<p>This part is the industrial-deployment chapter of the generative thread and leans Advanced — there are many formulas, but remember: <strong>better to lean on the figures than to wrestle with the formulas</strong>. The point is to understand the "why" behind each architectural choice.</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>Follow the hidden thread of "semantic IDs."</strong> All three sections — recommendation, search, advertising — repeatedly solve the same problem: how to turn discrete business objects into token sequences a generative model can "speak out." Understand semantic IDs first and the rest follows naturally.</li>
+<li><strong>Read the three sections comparatively.</strong> Each follows "MCA pain points → generative solution → alignment with online objectives," but the business constraints differ: recommendation pursues interests, search protects relevance first, and advertising must additionally satisfy economic mechanisms.</li>
+<li><strong>Pay attention to the engineering trade-offs between compute and constraints.</strong> OneRec-V2's Lazy architecture and GPR's Trie-constrained decoding are both classic examples of trading architecture for efficiency and compliance.</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part7-scaling/onetrans.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part8-e2e/e2e-recommendation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part7-scaling/onetrans.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part8-e2e/e2e-recommendation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

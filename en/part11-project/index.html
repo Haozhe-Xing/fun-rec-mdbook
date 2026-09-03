@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Building a Generative Recommender in Practice - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">🚀 Part 11: Generative Recommender Systems in Practice</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">Build a runnable, industrial-grade movie recommender from scratch, covering offline training, online inference, frontend interaction, and containerized deployment end to end.</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 6 sections · ⏱️ Estimated 3–4 weeks · 🎯 Target: turn discrete algorithms into an end-to-end servable recommender</p>
+</div>
+<p>The preceding chapters covered the core algorithm modules — retrieval, ranking, and re-ranking. But a model that runs in a paper is not the same as a model you can deploy in a real setting — a gap nearly every recommender-system learner runs into. This part uses an <strong>end-to-end movie recommender</strong> project to string the scattered algorithms into a complete system that runs, serves, and deploys, answering the engineering question: how do you build a production-grade recommender from scratch?</p>
+<hr />
+<h2 id="chapters"><a class="header" href="#chapters">Chapters</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Chapter</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>11.1</strong></td><td>Project Introduction and Goals</td><td>Clarify the gap between offline evaluation and online deployment; settle the technology choices and the learning path</td></tr>
+<tr><td><strong>11.2</strong></td><td>System Architecture Design</td><td>Decouple offline from online; the classic funnel of retrieval → ranking → re-ranking</td></tr>
+<tr><td><strong>11.3</strong></td><td>Offline Pipeline</td><td>Feature engineering, YoutubeDNN/DeepFM training, embedding generation, feature ingestion, and model deployment</td></tr>
+<tr><td><strong>11.4</strong></td><td>Online Pipeline</td><td>Cold start (UCB), multi-route retrieval (Snake Merge), DeepFM ranking, diversity re-ranking</td></tr>
+<tr><td><strong>11.5</strong></td><td>Frontend and Interaction</td><td>Five Vue 3 pages, Pinia state, search debouncing, a rating-driven data feedback loop</td></tr>
+<tr><td><strong>11.6</strong></td><td>Deployment and Operations</td><td>Orchestrate five services with one Docker Compose command; health checks and troubleshooting</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-you-will-be-able-to-do-after-this-part"><a class="header" href="#what-you-will-be-able-to-do-after-this-part">What You Will Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>Describe</strong> the responsibility boundary between the offline and online systems, and how the storage layer decouples them</li>
+<li>🟢 <strong>Explain</strong> why the funnel architecture is necessary: light models filter candidates in retrieval, heavy models score precisely in ranking</li>
+<li>🟡 <strong>Implement</strong> the training loop for YoutubeDNN retrieval and DeepFM ranking, and understand why item embeddings are precomputed</li>
+<li>🟡 <strong>Design</strong> a cold-start strategy (UCB exploration + preferred genres + popular fallback) and multi-route retrieval fusion (Snake Merge)</li>
+<li>🔴 <strong>Deploy</strong> a multi-container system with PostgreSQL/Redis/Elasticsearch/backend/frontend, and troubleshoot common problems</li>
+<li>🟢 <strong>Complete</strong> the tiered practice problems in each section to consolidate the engineering essentials</li>
+</ul>
+<hr />
+<h2 id="key-concepts"><a class="header" href="#key-concepts">Key Concepts</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Section</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>Offline vs. online</td><td>11.2</td><td>The fundamental boundary of recommender engineering; the quality-vs-latency trade-off</td></tr>
+<tr><td>Funnel architecture (retrieval → ranking → re-ranking)</td><td>11.2</td><td>The backbone of industrial recommendation</td></tr>
+<tr><td>Item embedding precomputation</td><td>11.3</td><td>The prerequisite for millisecond-level online vector search</td></tr>
+<tr><td>Cold start / UCB</td><td>11.4</td><td>The exploration-exploitation balance for new users with no behavior</td></tr>
+<tr><td>Multi-route retrieval + Snake Merge</td><td>11.4</td><td>Fusion compensates for the coverage gaps of any single strategy</td></tr>
+<tr><td>Data feedback loop</td><td>11.5</td><td>Frontend behavior feedback drives feature updates and recommendation improvements</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>The three-stage pipeline mental model from <a href="./project-intro.html">1.1</a>, and an understanding of how retrieval/ranking/re-ranking divide the work</li>
+<li>The basics of the two-tower model in <a href="./project-architecture.html">2.3</a> (YoutubeDNN) and the ranking models in <a href="./project-architecture.html">3.x</a> (DeepFM)</li>
+<li>Working knowledge of Python, basic neural networks, and SQL; familiarity with Docker basics is a plus</li>
+</ul>
+<blockquote>
+<p>The code for this project lives in the <code>web_project/</code> directory of the <code>datawhalechina/fun-rec</code> repository — you can run it as you read.</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>Get it running before nitpicking the details.</strong> Launch the full project with one Docker Compose command and build overall intuition first.</li>
+<li><strong>Grasp the offline/online boundary.</strong> This is the core mental framework for engineered systems.</li>
+<li><strong>Pay attention to the steps papers never mention:</strong> how features move across systems, how models update without downtime, and how cold start degrades gracefully.</li>
+</ol>
+<hr />
+<p>Let's build it! 🛠️</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part10-diffusion/diffusion-application.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/project-intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part10-diffusion/diffusion-application.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/project-intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

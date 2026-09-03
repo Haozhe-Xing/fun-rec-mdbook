@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>What Is a Recommender System - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~25 min read</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Beginner</span>
+</div>
+<h1 id="what-is-a-recommender-system"><a class="header" href="#what-is-a-recommender-system">What Is a Recommender System</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> This chapter is the foundational starting point and requires no prior recommender systems knowledge. You only need to know one basic fact: "machine learning is letting a model learn patterns from data."</p>
+</blockquote>
+<p>When you open your phone in the morning to catch up on news, or browse around an e-commerce app, you may not realize it: a sophisticated system is making thousands of judgments within milliseconds, deciding what you see and what you miss. This is the <strong>recommender system</strong> — one of the most fundamental pieces of infrastructure in the modern internet.</p>
+<p>But "helping users find content they're interested in" is only a surface-level description. To truly understand it, we need to observe it from three levels: from the most microscopic <strong>single prediction</strong>, to the industrial-scale <strong>process at scale</strong>, to the macroscopic <strong>ecosystem balance</strong>. Only by moving through these levels in turn can you grasp the core logic of recommender systems.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Explain in <strong>one sentence</strong> the microscopic problem recommender systems solve, and distinguish its two fundamental paradigms</li>
+<li>Write down the core formulas of <strong>discriminative</strong> and <strong>generative</strong> recommendation, and explain how the questions they ask differ</li>
+<li>Explain why industrial recommendation adopts the <strong>three-stage funnel</strong> of "retrieval—ranking—re-ranking," and what each stage is responsible for</li>
+<li>Describe how <strong>end-to-end generative architectures</strong> dissolve the three major pain points of cascading architectures</li>
+<li>Understand the long-term value of recommender systems from the <strong>ecosystem triangle</strong> (users/creators, content, platform)</li>
+<li>Complete 4 leveled practice problems to consolidate the three perspectives</li>
+</ul>
+<hr />
+<h2 id="110-three-perspectives-from-micro-to-macro"><a class="header" href="#110-three-perspectives-from-micro-to-macro">1.1.0 Three Perspectives: From Micro to Macro</a></h2>
+<p>The biggest mistake in understanding recommender systems is "seeing only the algorithms." The same system looks completely different when viewed at different scales:</p>
+<div class="table-wrapper"><table><thead><tr><th>Perspective</th><th>Object of Observation</th><th>Core Question</th></tr></thead><tbody>
+<tr><td>🔬 Micro</td><td>A single "user—item" judgment</td><td>How do the two fundamental paradigms define recommendation?</td></tr>
+<tr><td>🏭 Industrial</td><td>Hundreds of millions of items → one list</td><td>How to perform large-scale filtering within milliseconds?</td></tr>
+<tr><td>🌍 Macro</td><td>A multi-party ecosystem</td><td>Is a technically "accurate" system necessarily a good system?</td></tr>
+</tbody></table>
+</div>
+<p>Let's unpack each in turn.</p>
+<hr />
+<h2 id="111-the-micro-perspective-two-fundamental-paradigms-of-the-recommendation-problem"><a class="header" href="#111-the-micro-perspective-two-fundamental-paradigms-of-the-recommendation-problem">1.1.1 The Micro Perspective: Two Fundamental Paradigms of the Recommendation Problem</a></h2>
+<p>Let's start from the most basic unit. The core problem facing a recommender system seems simple — <strong>how do we find the most valuable content for a user?</strong> But there are two fundamentally different approaches to answering this question.</p>
+<p>Whichever approach is taken, the system must first deeply understand three key elements:</p>
+<ul>
+<li><strong>Understanding the User</strong> — who you are and what your interests are. Historical behavior is the most important signal; explicit feedback (like a "not interested" button) and profile information (age, region) provide clues; real-time intent (what you just searched) is equally critical.</li>
+<li><strong>Understanding the Item</strong> — its content attributes (category, duration, quality) and statistical attributes (view count, ratings, engagement trends).</li>
+<li><strong>Understanding the Context</strong> — a weekday morning or a weekend night? Commuting on the subway or relaxing at home? Subtle differences significantly affect preferences.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The two paradigms share <strong>the same inputs</strong> (both must understand user, item, and context), but they <strong>ask fundamentally different questions</strong>. This point determines all subsequent differences in architecture and optimization objectives.</p>
+</blockquote>
+<h3 id="the-first-approach-discriminative-recommendation"><a class="header" href="#the-first-approach-discriminative-recommendation">The First Approach: Discriminative Recommendation</a></h3>
+<p>It defines recommendation as: given a specific "user—item—context" triple, predict the probability that the user will take a positive action on that item. The core is a <strong>scoring function</strong>:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.02778em;">ser</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></span></p>
+<p>The system evaluates each candidate item one by one, computes a score, and then recommends the best. This is like a judge who scores every contestant one by one and finally selects the top scorers.</p>
+<p><img src="../images/part1-score-function.svg" alt="The core of discriminative recommendation: a scoring function" /></p>
+<p>Discriminative recommendation integrates user features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>, item features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span>, and context features <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> to score each candidate item one by one, predicting the likelihood of a "valuable connection."</p>
+<h3 id="-mental-model-the-talent-show-judge"><a class="header" href="#-mental-model-the-talent-show-judge">🧠 Mental Model: The Talent-Show Judge</a></h3>
+<blockquote>
+<p>Think of recommendation as a "talent-show judge." The stage is full of contestants (candidate items), and the judge (the model) scores <strong>each</strong> contestant individually, then hands out passes by score. The judge never "announces the list directly" — scoring is the judge's only job.</p>
+</blockquote>
+<h3 id="the-second-approach-generative-recommendation"><a class="header" href="#the-second-approach-generative-recommendation">The Second Approach: Generative Recommendation</a></h3>
+<p>It fundamentally redefines the problem: instead of evaluating candidates one by one, the model <strong>directly "creates" the recommendation result</strong> based on its understanding of the user and context. The core is a <strong>generation function</strong>:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.02778em;">ser</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></span></p>
+<p>The model takes the user's historical interaction sequence and current context as input, and directly generates a sequence of recommended items through autoregressive decoding. This is like a friend who knows your taste — no need to comb through all the options; they just say "here's what you should watch next."</p>
+<p><img src="../images/part1-e2e-generative.svg" alt="The core of generative recommendation: sequence generation" /></p>
+<p>Generative recommendation takes the user's historical interactions and context as input, and directly outputs a sequence of recommended items through a generative model — no need to evaluate candidates one by one.</p>
+<blockquote>
+<p>🤔 <strong>Why do both paradigms coexist?</strong> Discriminative recommendation is extremely mature and stable at "selecting the best from a finite candidate set"; generative recommendation has huge potential for "creating in an open space." The former asks "will the user like this item?", while the latter asks "what does the user want to see next?" — the former <strong>selects</strong>; the latter <strong>creates</strong>.</p>
+</blockquote>
+<h3 id="four-stages-of-capability-evolution"><a class="header" href="#four-stages-of-capability-evolution">Four Stages of Capability Evolution</a></h3>
+<p>Looking at a longer timeline, recommendation algorithms show a clear trajectory of capability evolution, one that runs through both paradigms:</p>
+<ol>
+<li><strong>Memorization on pure IDs</strong> — collaborative filtering treats items as opaque symbols, memorizing co-occurrence patterns like "people who watched A also watched B."</li>
+<li><strong>Generalization through deep learning</strong> — deep networks generalize knowledge to unseen user—item combinations through feature crossing and sequence modeling, but items remain atomic IDs.</li>
+<li><strong>Understanding through semantic IDs</strong> — when items are encoded as structured tokens carrying semantics, the system begins to truly "understand" content meaning; new items can be recommended without accumulating behavioral data.</li>
+<li><strong>Reasoning with large models</strong> — instead of implicitly computing scores, the model explicitly analyzes intent, evaluates matches, and gives reasons, evolving from a "pattern matcher" into a "reasoner that can explain its decisions."</li>
+</ol>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> These four stages <strong>do not linearly replace one another</strong>; they stack and coexist. In today's industrial systems, ID-based collaborative filtering remains a major retrieval channel, deep generalization supports every stage from retrieval to ranking, while semantic IDs and large-model reasoning are emerging at the frontier.</p>
+</blockquote>
+<hr />
+<h2 id="112-the-industrial-perspective-two-technology-routes-at-scale"><a class="header" href="#112-the-industrial-perspective-two-technology-routes-at-scale">1.1.2 The Industrial Perspective: Two Technology Routes at Scale</a></h2>
+<p>Having understood the two basic paradigms, we immediately face a shared practical challenge: <strong>scale</strong>. A typical video platform has hundreds of millions of users and over a hundred million items, and recommendation must complete the entire process — from a massive item pool to a personalized list — within millisecond-level latency. If the page takes more than a few seconds to load, most users will leave.</p>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> The core tension in recommender-system engineering is — <strong>how do we find the best result from a massive candidate pool within extremely limited time?</strong> The two paradigms offer fundamentally different answers.</p>
+</blockquote>
+<h3 id="the-discriminative-answer-a-multi-stage-pipeline"><a class="header" href="#the-discriminative-answer-a-multi-stage-pipeline">The Discriminative Answer: A Multi-Stage Pipeline</a></h3>
+<p>The core difficulty of the discriminative paradigm is that computing a match score between every user and every item would instantly overwhelm even the strongest servers. Industry's answer is a <strong>staged funnel architecture</strong>, using the three-stage "retrieval—ranking—re-ranking" pipeline to progressively narrow the candidates, balancing efficiency and effectiveness.</p>
+<p><img src="../images/part1-recommendation-pipeline.svg" alt="The three-stage pipeline architecture of an industrial recommender system" /></p>
+<ul>
+<li><strong>① Retrieval</strong> — quickly filter a few thousand possibly relevant candidates from the full item pool. Its motto is "better to over-include than to miss," prioritizing coverage over precision; models are simple and features are limited (e.g., using collaborative filtering to find similar users, or retrieving based on content similarity).</li>
+<li><strong>② Ranking</strong> — where the prediction function <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> truly shines. It deploys the most complex deep models, fusing the full set of user/item/context features to compute a precise score for each candidate, maximizing prediction accuracy.</li>
+<li><strong>③ Re-ranking</strong> — the final optimization over the ranked list. It solves the problem that "the highest-scoring list ≠ the best-experience list": introducing diversity and novelty to avoid aesthetic fatigue when the top ten are all similar content, while handling business rules such as ads and operations.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The essence of the three-stage pipeline is — <strong>use different strategies at different stages, progressively filtering from "possibly relevant" to "best match."</strong> Retrieval pursues coverage, ranking pursues precision, re-ranking pursues experience; all three are indispensable.</p>
+</blockquote>
+<h3 id="the-generative-answer-end-to-end-generation"><a class="header" href="#the-generative-answer-end-to-end-generation">The Generative Answer: End-to-End Generation</a></h3>
+<p>Generative recommendation proposes a radically different approach: if the model can directly "generate" results, why do we still need multi-stage filtering? Generative recommendation treats the user's historical interaction sequence as "context," and directly decodes a sequence of item tokens through autoregressive models like Transformers — <strong>the entire process is completed end-to-end within a single unified model</strong>, with no retrieval/ranking/re-ranking cascade.</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The end-to-end architecture eliminates three core pain points of cascading architectures:</p>
+<ul>
+<li><strong>Objective misalignment</strong> — retrieval optimizes relevance, ranking optimizes click-through rate, re-ranking optimizes diversity, each fighting its own war;</li>
+<li><strong>Information loss</strong> — high-quality items filtered out at retrieval are forever invisible to later stages;</li>
+<li><strong>Computational fragmentation</strong> — different stages use different models, making it hard to fully exploit modern GPU capacity.</li>
+</ul>
+</blockquote>
+<p>The interactive demo below lets you experience the funnel process of "hundreds of millions → one list" firsthand:</p>
+<iframe src="../viz/part1-pipeline.html?embed&vizId=part1-pipeline" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>Click "Next Step" or "Autoplay" to watch the candidate pool shrink step by step from hundreds of millions down to the final list of 10, and observe the different responsibilities each stage carries.</p>
+<blockquote>
+<p>📊 <strong>Data Point:</strong> The two architectures currently <strong>develop in parallel</strong> in industry: the discriminative pipeline serves mature scenarios stably through "divide and conquer"; the generative architecture shows huge potential in frontier exploration through "end-to-end optimization."</p>
+</blockquote>
+<hr />
+<h2 id="113-the-macro-perspective-building-a-win-win-ecosystem"><a class="header" href="#113-the-macro-perspective-building-a-win-win-ecosystem">1.1.3 The Macro Perspective: Building a Win-Win Ecosystem</a></h2>
+<p>Placing recommender systems in a broader view reveals a deeper question: <strong>is a technically perfect recommender system necessarily a truly excellent one?</strong> The answer is often no.</p>
+<p>Consider the classic <strong>"accuracy trap"</strong>: a user has just added a phone to their cart, and the system recommends that same phone to them. Click-through and conversion rates may approach 100%. By the metrics this is extremely "accurate," but what value does it create? Almost none — the user was going to buy it anyway; the recommendation merely repeats information the user already knows, with no incremental value.</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The ultimate goal of a recommender system is <strong>not to blindly maximize technical metrics, but to build a healthy ecosystem where all participants benefit long-term</strong>. The ecosystem rests on three pillars: <strong>users and creators, content, and the platform</strong> — the three are interdependent.</p>
+</blockquote>
+<p><img src="../images/part1-ecosystem.svg" alt="The triangular relationships in the recommender-system ecosystem" /></p>
+<ul>
+<li><strong>Users and creators</strong> — sitting at the two ends of content consumption and supply. Users are the ultimate service target; the system should help them discover content they are "genuinely interested in but haven't yet encountered," rather than trapping them in an "ever-narrowing" filter bubble. Creators are the core of content supply; distribution capability directly determines their survival space and motivation. The supply side is shifting from primarily professional teams (PGC) toward ordinary users creating spontaneously (UGC) as the main body, with AI-assisted generation (AIGC) emerging as well, blurring the boundary between consumers and producers.</li>
+<li><strong>Content</strong> — the medium connecting users and creators, and the true "atomic unit" of distribution. A healthy system must not only distribute popular content, but also continuously surface promising content, avoiding "concentration at the head, drowning of the long tail."</li>
+<li><strong>The platform</strong> — the ecosystem's coordinator. It must optimize effectiveness — satisfaction and time spent — while also attending to long-term health (diversity, suppressing low quality, protecting creator motivation), sometimes sacrificing short-term metrics in exchange for long-term trust.</li>
+</ul>
+<blockquote>
+<p>⚡ <strong>Pro Tip:</strong> A truly excellent recommender system is a <strong>delicate balancer</strong> — finding dynamic equilibrium among users, creators, content quality, and platform development. This requires designers to be not only technical experts, but also to possess an <strong>ecosystem mindset</strong>.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-11"><a class="header" href="#-common-mistakes-in-11">⚠️ Common Mistakes in 1.1</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Equating recommendation with "ranking"</td><td>"A recommender system is just a click-through-rate prediction model"</td><td>Ranking is only one of three stages; retrieval comes before it and re-ranking after</td><td>Always understand recommendation through the full "retrieval→ranking→re-ranking" picture</td></tr>
+<tr><td>2</td><td>Confusing the questions the two paradigms ask</td><td>Assuming generative recommendation also "scores every candidate"</td><td>The generative approach directly produces a sequence and does no per-candidate evaluation</td><td>Remember: discriminative <strong>selects</strong>, generative <strong>creates</strong></td></tr>
+<tr><td>3</td><td>Metrics-only thinking</td><td>Using a 100%-conversion "post-add-to-cart recommendation" to prove the system is excellent</td><td>No incremental value — falling into the accuracy trap</td><td>Ask: does the recommendation create value the user would not otherwise have gotten?</td></tr>
+<tr><td>4</td><td>Ignoring the ecosystem's long-term nature</td><td>Mindlessly pushing clickbait for short-term watch time</td><td>Destroys trust and the creator ecosystem, collapsing in the long run</td><td>Evaluate trade-offs with the ecosystem triangle; dare to sacrifice short-term metrics</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Discriminative recommendation</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span></span></span></span>, scoring and selecting among candidates one by one</td><td>The backbone of industrial recommendation — mature and stable</td></tr>
+<tr><td>Generative recommendation</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">..</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span></span></span></span>, directly generating a sequence</td><td>End-to-end with huge potential — the frontier direction</td></tr>
+<tr><td>Three-stage pipeline</td><td>Retrieval (coverage) → ranking (precision) → re-ranking (experience)</td><td>Balances efficiency and effectiveness within millisecond latency</td></tr>
+<tr><td>End-to-end generation</td><td>A single model replaces the multi-stage cascade</td><td>Solves objective misalignment, information loss, and compute fragmentation</td></tr>
+<tr><td>Ecosystem triangle</td><td>Users/creators, content, platform</td><td>Look beyond metrics to understand the system's long-term value</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Which is better, discriminative or generative?</strong></p>
+<blockquote>
+<p>A: Neither is absolutely superior. Discriminative approaches are stable and efficient in mature scenarios; generative approaches have great potential in frontier exploration. The two currently <strong>develop in parallel</strong> in industry — choose based on your business stage.</p>
+</blockquote>
+<p><strong>Q2: Why not just show users the entire item pool and let them pick?</strong></p>
+<blockquote>
+<p>A: Among hundreds of millions of items, users will only look at a tiny fraction. The value of recommendation is precisely <strong>doing subtraction on the user's behalf within a space of hundreds of millions</strong>, and doing so within milliseconds — this is an engineering reality, not a design preference.</p>
+</blockquote>
+<p><strong>Q3: Why can the retrieval stage use "simple models"?</strong></p>
+<blockquote>
+<p>A: Retrieval's motto is "better to over-include than to miss"; its goal is <strong>coverage</strong>, not precision. The candidate set will be finely filtered by ranking afterward, so the retrieval side can trade lightweight models for speed.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>1.2</strong> (book overview) maps this section's three perspectives onto the book's technology map, locating each chapter on the capability-evolution curve.</li>
+<li><strong>2.1–2.5</strong> (retrieval) expands the concrete algorithm families of "retrieval" within the three stages.</li>
+<li><strong>3.1–3.5</strong> (ranking) dives into the engineering implementation of the discriminative scoring function <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>.</li>
+<li><strong>5.3</strong> (evolution of the generative paradigm) echoes this section, systematically tracing the leap from discriminative to generative.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 1.1.1 — Distinguishing Paradigms</strong> 🟢 Easy</p>
+<p>Given the following two system descriptions, determine whether each is closer to the <strong>discriminative</strong> or <strong>generative</strong> paradigm, and explain why.</p>
+<ul>
+<li>(a) The system computes a "probability the user clicks" for each candidate ad, ranks by probability, and shows the top 5.</li>
+<li>(b) The system reads the user's last 20 plays and directly outputs "the 3 video IDs you might want to watch next."</li>
+</ul>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Grasp the difference in the "questions asked" by the two paradigms — is it per-candidate scoring, or directly producing a sequence?</p>
+<ul>
+<li><strong>(a) Discriminative:</strong> computing a click probability separately for each candidate ad and then ranking is exactly the "score one by one, select the best" of <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span></span></span></span>.</li>
+<li><strong>(b) Generative:</strong> directly decoding a sequence of recommended IDs from the history, with no per-candidate evaluation, corresponds to <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span></span></span></span>.</li>
+</ul>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Discriminative = candidates known, scored one by one; generative = directly "creates" a sequence.</li>
+<li>The key to judging is whether the system enumerates and evaluates every single candidate.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.1.2 — Completing the Pipeline</strong> 🟢 Easy</p>
+<p>A recommender system faces 100 million items and finally shows 10. Fill in the correct stage names in the brackets so it matches the industrial funnel:</p>
+<p><code>Full item pool (100M) → [ ① ] → Candidates (~2000) → [ ② ] → Candidates (~200) → [ ③ ] → Final list (10 items)</code></p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Recall the "progression of responsibilities" in the three-stage funnel.</p>
+<pre><code>Full item pool (100M) → [ Retrieval ] → Candidates (~2000)
+                      → [ Ranking ] → Candidates (~200)
+                      → [ Re-ranking ] → Final list (10 items)
+</code></pre>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Retrieval pursues <strong>coverage</strong>, ranking pursues <strong>precision</strong>, re-ranking pursues <strong>experience</strong> (diversity/business).</li>
+<li>The scale shrinks level by level: 100M → thousands → hundreds → ten.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.1.3 — Analyzing the Accuracy Trap</strong> 🟡 Medium</p>
+<p>A news app finds that immediately recommending another "World Cup final" story to a user who just finished reading one achieves a 95% click-through rate. The product manager concludes the recommendation is "highly precise." Point out what's wrong with this conclusion, and propose a more reasonable evaluation perspective.</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Approach:</strong> Use the "accuracy trap" framework to examine the mismatch between metrics and value.</p>
+<p><strong>Answer:</strong> The 95% click-through rate merely "repeats information the user already knows," creating no incremental value — the user would have opened follow-up stories on the same topic anyway. This falls into the accuracy trap: high metrics ≠ a good system.</p>
+<p>More reasonable evaluation perspectives:</p>
+<ol>
+<li><strong>Incremental value:</strong> does the recommendation lead the user to discover content they "would not have sought out on their own" (diversity, exploration)?</li>
+<li><strong>Ecosystem health:</strong> is the system sinking into an "ever-narrowing" filter bubble that damages long-term retention?</li>
+<li><strong>Multi-objective balance:</strong> beyond CTR, does the system also weigh long-term metrics like watch time, shares, and follows?</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>High technical metrics do not equal high user value.</li>
+<li>Evaluation should look beyond single-point accuracy to the long term and the ecosystem.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Making the Design Trade-off</strong></p>
+<p>Suppose you need to build a recommender system from scratch for a new app with 10 million daily active users. Write an argument of no more than 150 words explaining: given sparse early-stage data and limited compute, why should you <strong>prioritize the discriminative three-stage pipeline</strong> over an end-to-end generative architecture? Also indicate which kinds of scenarios could pilot generative approaches once the business matures.</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Compare the two architectures across "data requirements, compute cost, interpretability, and iteration controllability"; in the mature stage, start generative pilots in components such as <strong>candidate generation/retrieval</strong> or <strong>re-ranking diversity</strong>.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part1-introduction/book-overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part1-introduction/book-overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

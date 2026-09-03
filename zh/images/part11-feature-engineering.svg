@@ -1,0 +1,35 @@
+<svg width="800" height="280" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <marker id="aw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="ae" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="280" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="32" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">特征工程：类别编码 / 滑动窗口 / 左填充</text>
+  <rect x="40" y="70" width="220" height="70" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="150" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">类别特征编码</text>
+  <text x="150" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">LabelEncoder +1 起</text>
+  <line x1="260" y1="105" x2="290" y2="105" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="290" y="70" width="220" height="70" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">滑动窗口样本</text>
+  <text x="400" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">前 k 预测 k+1</text>
+  <line x1="510" y1="105" x2="540" y2="105" stroke="#4A6CF7" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="540" y="70" width="220" height="70" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#sh)"/>
+  <text x="650" y="101" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#f59e0b">左填充定长</text>
+  <text x="650" y="119" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">最近行为在右</text>
+  <rect x="40" y="180" width="720" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <text x="400" y="210" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#1e293b">排序样本：标签=相对个人均值-1 · 负样本 困难:随机=1:2 (总 1:3) · 时序划分</text>
+  <rect x="0" y="250" width="800" height="30" fill="#1e293b" opacity="0.06" rx="0 0 12 12"/>
+</svg>

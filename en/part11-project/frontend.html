@@ -1,0 +1,537 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Frontend - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~26 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="frontend-and-interaction"><a class="header" href="#frontend-and-interaction">Frontend and Interaction</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Read the recommendation API in <a href="./online-pipeline.html">11.4</a> first. This section shows how the frontend calls that API and feeds user behavior back into the system, closing the loop.</p>
+</blockquote>
+<p>The frontend is the user's entry point to the recommender system: browsing, viewing recommendations, searching, rating. These behaviors are collected and fed back to the backend, shaping future recommendations — so the frontend is not just a presentation layer but also a <strong>data collection layer</strong>.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>List the frontend stack (Vue 3 / Tailwind / Pinia / Vue Router / Axios) and the five core page types</li>
+<li>Implement logged-in/guest access control with route <code>meta</code> + <code>beforeEach</code> guards</li>
+<li>Describe the design essentials of the three core components: MovieCard / MovieRow / StarRating</li>
+<li>Explain how the home page conditionally renders "For You" based on login state and auto-loads recommendations after login</li>
+<li>Manage authentication state centrally with Pinia and control search request frequency with debounce</li>
+<li>Explain how the signup page's preferred genres drive the cold start strategy</li>
+<li>Work through 4 tiered practice problems</li>
+</ul>
+<hr />
+<h2 id="1150-frontend-overview"><a class="header" href="#1150-frontend-overview">11.5.0 Frontend Overview</a></h2>
+<p>This project's frontend stack:</p>
+<div class="table-wrapper"><table><thead><tr><th>Technology</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Vue.js 3</td><td>Progressive JS framework, uses the Composition API</td></tr>
+<tr><td>Tailwind CSS</td><td>CSS framework, utility classes for fast styling</td></tr>
+<tr><td>Pinia</td><td>State management library, manages auth state</td></tr>
+<tr><td>Vue Router</td><td>Routing, handles page navigation</td></tr>
+<tr><td>Axios</td><td>HTTP client, talks to the backend API</td></tr>
+</tbody></table>
+</div>
+<p>Core pages: Home (personalized recommendations / trending / categories), Movie Detail (info + rating), Auth (login/signup), Profile (history / preferences), and Search (global real-time search).</p>
+<p><img src="../images/part11-frontend-pages.svg" alt="The five frontend pages and their roles: presentation + behavior collection, forming a data loop" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> The frontend doesn't just "draw the recommendation results" — ratings, views, and searches are collected by the frontend and sent back to the backend, forming the "user behavior → feature update → recommendation improvement" loop. This is what allows the system to keep getting better.</p>
+</blockquote>
+<hr />
+<h2 id="1151-project-structure-and-routing"><a class="header" href="#1151-project-structure-and-routing">11.5.1 Project Structure and Routing</a></h2>
+<p>Directory layout: <code>components/</code> (reusable), <code>views/</code> (page-level), <code>services/</code> (API), <code>stores/</code> (state).</p>
+<pre><code class="language-javascript">const routes = [
+  { path: '/', name: 'Home', component: Home },
+  { path: '/movie/:id', name: 'MovieDetail', component: MovieDetail, props: true },
+  { path: '/auth', name: 'Auth', component: Auth, meta: { guest: true } },
+  { path: '/profile', name: 'Profile', component: Profile, meta: { requiresAuth: true } },
+]
+</code></pre>
+<p><code>meta</code> flags access requirements, and the navigation guard <code>beforeEach</code> checks them before each transition:</p>
+<pre><code class="language-javascript">router.beforeEach((to, from, next) =&gt; {
+  const token = localStorage.getItem('token')
+  if (to.meta.requiresAuth &amp;&amp; !token) {
+    next('/auth')                              // ← KEY LINE: not logged in → redirect to login
+  } else if (to.meta.guest &amp;&amp; token) {
+    next('/')                                  // ← KEY LINE: logged-in users can't visit the login page
+  } else {
+    next()
+  }
+})
+</code></pre>
+<p>Access logic is centralized in the routing layer; page components don't need to check login state individually.</p>
+<hr />
+<h2 id="1152-core-component-design"><a class="header" href="#1152-core-component-design">11.5.2 Core Component Design</a></h2>
+<p><strong>MovieCard</strong>: the most basic unit. It takes <code>movie</code> and <code>width</code> and displays the poster/title/year/rating. Design essentials: the whole card is a clickable <code>&lt;router-link&gt;</code>; images lazy-load with <code>loading="lazy"</code>; <code>@error</code> listens for load failures and shows a placeholder; <code>group-hover</code> reveals details on hover.</p>
+<p><strong>MovieRow</strong>: organizes cards into a horizontally scrollable row (Netflix-style). A <code>ref</code> points at the DOM scroll container, and arrows appear dynamically based on scroll position:</p>
+<pre><code class="language-javascript">import { ref } from 'vue'
+const scrollContainer = ref(null)
+const showLeftArrow = ref(false)
+const showRightArrow = ref(true)
+const updateArrows = () =&gt; {
+  const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.value
+  showLeftArrow.value = scrollLeft &gt; 0
+  showRightArrow.value = scrollLeft &lt; scrollWidth - clientWidth - 10   // ← KEY LINE: control arrows based on scroll position
+}
+</code></pre>
+<p><strong>StarRating</strong>: a 10-point star widget. It maintains <code>hoverRating</code> (hovered position) and <code>userRating</code> (saved score); star color follows whichever is active:</p>
+<pre><code class="language-javascript">const hoverRating = ref(0)
+const userRating = ref(0)
+const getStarClass = (star) =&gt; {
+  const currentRating = hoverRating.value || userRating.value          // ← KEY LINE: hover takes precedence over the saved score
+  return star &lt;= currentRating ? 'text-yellow-400' : 'text-gray-600'
+}
+</code></pre>
+<hr />
+<h2 id="1153-home-page"><a class="header" href="#1153-home-page">11.5.3 Home Page</a></h2>
+<p>The home page consists of a hero banner plus multiple movie rows. Whether to load personalized recommendations depends on login state, watched via <code>watch</code>:</p>
+<pre><code class="language-javascript">import { ref, watch, onMounted } from 'vue'
+import { useAuthStore } from '../stores/auth'
+import { movieApi } from '../services/api'
+
+const authStore = useAuthStore()
+const forYouMovies = ref([])
+const loadingForYou = ref(false)
+
+const fetchRecommendations = async () =&gt; {
+  if (!authStore.isAuthenticated) return
+  loadingForYou.value = true
+  try {
+    const response = await movieApi.getRecommendations(authStore.user.user_id)
+    forYouMovies.value = response.data
+  } finally {
+    loadingForYou.value = false
+  }
+}
+
+watch(() =&gt; authStore.isAuthenticated, (isAuthenticated) =&gt; {
+  if (isAuthenticated) {
+    fetchRecommendations()                  // ← KEY LINE: auto-load recommendations after login
+  } else {
+    forYouMovies.value = []                 // ← KEY LINE: clear the list on logout
+  }
+})
+</code></pre>
+<p>Key points: (1) the "For You" row shows only for logged-in users; (2) reactive — auto-load on login, clear on logout; (3) the hero banner prefers the head of personalized recommendations, falling back to trending.</p>
+<hr />
+<h2 id="1154-movie-detail-page"><a class="header" href="#1154-movie-detail-page">11.5.4 Movie Detail Page</a></h2>
+<p>Shows complete information for a single movie. <code>useRoute</code> reads the URL parameter (<code>/movie/123</code> → <code>route.params.id</code>). Data loading is fault-tolerant: basic info is required, cast is optional:</p>
+<pre><code class="language-javascript">import { useRoute } from 'vue-router'
+const route = useRoute()
+const fetchMovieDetails = async () =&gt; {
+  const movieId = route.params.id                                  // ← KEY LINE: get the movie ID from the route
+  const movieResponse = await movieApi.getMovie(movieId)
+  movie.value = movieResponse.data
+  try {
+    const castResponse = await movieApi.getMovieCast(movieId)
+    cast.value = castResponse.data.cast
+  } catch (error) {
+    // Silent handling: missing cast data doesn't affect display
+  }
+}
+const handleRated = (rating) =&gt; {
+  fetchMovieDetails()                          // ← KEY LINE: refresh after rating to update the average score
+}
+</code></pre>
+<p>User ratings are recorded by the backend and influence that user's future recommendations.</p>
+<p><img src="../images/part11-data-loop.svg" alt="The data loop: frontend rating/view/search → backend → feature update → recommendation improvement" /></p>
+<hr />
+<h2 id="1155-api-integration-and-state-management"><a class="header" href="#1155-api-integration-and-state-management">11.5.5 API Integration and State Management</a></h2>
+<p><strong>API service wrapper</strong> — all communication is centralized in <code>src/services/api.js</code> via an Axios instance:</p>
+<pre><code class="language-javascript">import axios from 'axios'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const api = axios.create({ baseURL: `${API_BASE_URL}/api`, timeout: 10000 })   // ← KEY LINE: unified timeout and baseURL
+
+export const movieApi = {
+  getRecommendations(userId, topK = 20) {
+    const token = localStorage.getItem('token')
+    return api.post('/recommendations/recommend',
+      { user_id: userId },
+      { headers: { 'Authorization': `Bearer ${token}` }, params: { top_k: topK } }
+    ).then(response =&gt; ({ ...response, data: response.data.items }))          // ← KEY LINE: take the items array
+  },
+}
+</code></pre>
+<p>APIs requiring authentication read the token from localStorage and attach it to request headers — auth logic is centralized in the API layer.</p>
+<p><strong>User state management</strong> — login state must be shared across components (the home page decides visibility, the detail page checks rating permission, the navbar shows user info). Use a Pinia <code>Store</code>:</p>
+<pre><code class="language-javascript">import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+export const useAuthStore = defineStore('auth', () =&gt; {
+  const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))   // ← KEY LINE: restore from localStorage
+  const token = ref(localStorage.getItem('token'))
+  const isAuthenticated = computed(() =&gt; !!token.value &amp;&amp; !!user.value)  // ← KEY LINE: computed property drives reactivity
+  async function login(email, password) {
+    const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password })
+    token.value = response.data.access_token
+    localStorage.setItem('token', token.value)
+    await fetchProfile()
+    return { success: true }
+  }
+  function logout() {
+    user.value = null; token.value = null
+    localStorage.removeItem('token'); localStorage.removeItem('user')
+  }
+  return { user, token, isAuthenticated, login, logout }
+})
+</code></pre>
+<p>Design essentials: (1) <strong>persistence</strong> — token/user live in localStorage, so login survives a refresh; (2) <strong>reactivity</strong> — changes to <code>isAuthenticated</code> automatically re-render dependent components; (3) <strong>centralization</strong> — login/logout logic is unified.</p>
+<hr />
+<h2 id="1156-search-implementation"><a class="header" href="#1156-search-implementation">11.5.6 Search Implementation</a></h2>
+<p>The search entry sits in the navbar, opened by click or <code>Ctrl+K</code>. If real-time search fired a request per keystroke, it would flood the API — so use <strong>debounce</strong>: wait 300ms after typing stops before sending.</p>
+<pre><code class="language-javascript">import { ref, watch } from 'vue'
+import { searchApi } from '../services/api'
+const searchQuery = ref('')
+const searchResults = ref([])
+let searchTimeout = null
+watch(searchQuery, (newQuery) =&gt; {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  if (!newQuery.trim()) { searchResults.value = []; return }
+  isSearching.value = true
+  searchTimeout = setTimeout(async () =&gt; {                 // ← KEY LINE: only fire the request 300ms after typing stops
+    const results = await searchApi.searchMovies(newQuery.trim())
+    searchResults.value = results
+    isSearching.value = false
+  }, 300)
+})
+</code></pre>
+<p>Each keystroke resets the timer, and the request fires only after 300ms of stillness — responsive yet frugal with requests. Search hits the backend's Elasticsearch and supports fuzzy matching on title, genre, and overview.</p>
+<hr />
+<h2 id="1157-authentication-and-cold-start"><a class="header" href="#1157-authentication-and-cold-start">11.5.7 Authentication and Cold Start</a></h2>
+<p>The auth page hosts both login and signup forms, toggled by <code>isSignup</code>. The signup form includes a "preferred genres" field — relevant to cold start: new users have no history, so the system recommends by preferred genres first. Use <code>reactive</code> for the multi-field form:</p>
+<pre><code class="language-javascript">import { reactive, ref } from 'vue'
+const isSignup = ref(false)
+const signupForm = reactive({
+  email: '', password: '', gender: '', age: '',
+  preferred_genres: [],                                // ← KEY LINE: preferred genre list, drives cold start
+})
+const toggleGenre = (genreName) =&gt; {
+  const index = signupForm.preferred_genres.indexOf(genreName)
+  if (index === -1) signupForm.preferred_genres.push(genreName)
+  else signupForm.preferred_genres.splice(index, 1)
+}
+</code></pre>
+<p>The preferred genres chosen at signup are stored in the database for the online cold start module's <code>PreferredGenreStrategy</code> (see <a href="./online-pipeline.html">11.4</a>).</p>
+<blockquote>
+<p><strong>Analysis:</strong> The frontend's value goes beyond "rendering UI". Through unified Pinia state, debounced request flow, route guards for access control, and rating collection that closes the loop, it plugs real users into the recommender's feedback circuit — the final step in turning offline models into a living online system.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-115"><a class="header" href="#-common-mistakes-in-115">⚠️ Common Mistakes in 11.5</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Passing login state via props</td><td>Each page receives user separately</td><td>Tedious, error-prone, out of sync</td><td>Centralize with Pinia</td></tr>
+<tr><td>2</td><td>Search without debounce</td><td>Request per keystroke</td><td>Floods the API, jank</td><td>300ms debounce</td></tr>
+<tr><td>3</td><td>No route guards</td><td>Unauthenticated users reach /profile</td><td>Unauthorized access, empty-data errors</td><td>Validate meta in beforeEach</td></tr>
+<tr><td>4</td><td>Preferred genres not persisted</td><td>Lost right after signup</td><td>No cold start personalization</td><td>Store for PreferredGenreStrategy</td></tr>
+<tr><td>5</td><td>No refresh after rating</td><td>Average score doesn't update</td><td>Users get confused</td><td>handleRated refetches details</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Stack</td><td>Vue3/Tailwind/Pinia/Router/Axios</td><td>Lightweight, industry-flavored frontend</td></tr>
+<tr><td>Route guards</td><td>meta + beforeEach</td><td>Centralized access, decoupled pages</td></tr>
+<tr><td>Core components</td><td>Card/Row/StarRating</td><td>Reusable, reactive</td></tr>
+<tr><td>Conditional rendering</td><td>For You only when logged in</td><td>Personalized vs guest</td></tr>
+<tr><td>Pinia</td><td>Persisted + reactive state</td><td>Login state shared across components</td></tr>
+<tr><td>Debounce</td><td>Request only 300ms after typing stops</td><td>Controls search request rate</td></tr>
+<tr><td>Data loop</td><td>Ratings/views/searches written back</td><td>System keeps improving</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Why Pinia instead of passing login state via props?</strong></p>
+<blockquote>
+<p>A: Login state spans many components (home, detail, navbar); threading props through the tree is tedious and easily desynchronized. Pinia's single store + computed properties let any component call <code>useAuthStore()</code> and get automatic reactivity.</p>
+</blockquote>
+<p><strong>Q2: Does a 300ms debounce feel slow to users?</strong></p>
+<blockquote>
+<p>A: No — 300ms is well below the human perception threshold, and the request only fires after typing stops, so users who keep typing are never interrupted. Compared to a request per keystroke, it saves a huge number of wasted calls.</p>
+</blockquote>
+<p><strong>Q3: How does the frontend influence recommendations?</strong></p>
+<blockquote>
+<p>A: Ratings are written back to the backend → Redis behavior sequences and UCB statistics update → the next request's retrieval/ranking/cold start reads the new features. The frontend is the collection end of the loop.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li>The <code>/recommend</code> endpoint in <strong>11.4</strong> is what this section's <code>movieApi.getRecommendations</code> calls.</li>
+<li><code>PreferredGenreStrategy</code> in <strong>11.4</strong> consumes the <code>preferred_genres</code> stored at signup in this section.</li>
+<li><strong>11.1</strong>'s technology choices land here as the frontend stack.</li>
+<li><strong>11.6</strong> deploys the frontend in containers (Nginx multi-stage build).</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.5.1 — Route Guard</strong> 🟢 Easy</p>
+<p>A logged-in user (with token) navigates directly to the <code>/auth</code> login page — what does the route guard do? What if an unauthenticated user visits <code>/profile</code>?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> Logged-in visit to <code>/auth</code> (a guest page) → <code>to.meta.guest &amp;&amp; token</code> matches → <code>next('/')</code> redirects to home. Unauthenticated visit to <code>/profile</code> (requiresAuth) → <code>to.meta.requiresAuth &amp;&amp; !token</code> matches → <code>next('/auth')</code> redirects to login.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>meta flags permissions; the guard adjudicates uniformly.</li>
+<li>Logged-in users skip the login page; unauthenticated users authenticate first.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.5.2 — Debounce Behavior</strong> 🟢 Easy</p>
+<p>A user types a three-character query with 50ms between characters, and the debounce is 300ms. How many search requests actually fire? What if the gap between characters is 400ms?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> At 50ms per character: every keystroke resets the timer, the 300ms stillness is never reached until the end, so exactly 1 request fires after the final pause. At 400ms per character: each pause exceeds 300ms, so 3 requests fire (one per character).</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Debounce fires only after typing stops.</li>
+<li>The more continuous the typing, the fewer the requests.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.5.3 — Pinia Reactivity</strong> 🟡 Medium</p>
+<p>In <code>useAuthStore</code>, <code>isAuthenticated</code> is <code>computed(() =&gt; !!token.value &amp;&amp; !!user.value)</code>. After login, <code>token.value</code> is assigned — what happens to components that depend on <code>isAuthenticated</code>?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> The assignment changes <code>token.value</code> → <code>isAuthenticated</code> recomputes to true → every component with a <code>watch</code>/<code>computed</code> depending on it (home For You, navbar) re-renders automatically, and the home page's <code>watch</code> triggers <code>fetchRecommendations</code> to load personalized recommendations.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Computed properties drive reactive updates.</li>
+<li>Change one place, everything syncs — no manual notification needed.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Complete the Data Loop</strong> 🔴 Hard</p>
+<p>Starting from "a user rates a movie 4 stars on the detail page", list the complete chain this behavior travels — frontend → backend → storage → next recommendation (including the specific components/keys involved) — and explain how the loop closes (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Frontend StarRating calls <code>movieApi</code> → backend writes the ratings table + updates Redis <code>user:{id}:history</code> (rpush) and <code>genre_ucb</code> statistics → the next home page request goes through <code>pipeline.recommend</code>: cold start detection (interaction count has grown), multi-route retrieval (I2I uses the new history), ranking (DeepFM uses new features), re-ranking → an updated list returns. The frontend's rating widget is the collection end of the loop.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/online-pipeline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/deployment.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/online-pipeline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/deployment.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

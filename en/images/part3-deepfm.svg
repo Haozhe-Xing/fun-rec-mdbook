@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="s7" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.15"/>
+    </filter>
+    <marker id="a7" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="420" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">DeepFM: End-to-End Structure Sharing Embeddings Between FM and DNN</text>
+
+  <!-- shared embedding -->
+  <rect x="310" y="56" width="180" height="50" rx="8" fill="#1e293b" filter="url(#s7)"/>
+  <text x="400" y="86" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">Shared Embedding Layer</text>
+
+  <line x1="350" y1="106" x2="280" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#a7)"/>
+  <line x1="450" y1="106" x2="520" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#a7)"/>
+
+  <!-- FM component -->
+  <rect x="150" y="156" width="260" height="120" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#s7)"/>
+  <rect x="150" y="156" width="260" height="34" rx="8" fill="#4A6CF7"/>
+  <text x="280" y="179" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">FM Component (Low-Order)</text>
+  <text x="280" y="222" text-anchor="middle" font-size="11.5" fill="#1e293b">1st-order wᵢxᵢ + 2nd-order &lt;Vᵢ,Vⱼ&gt;xᵢxⱼ</text>
+  <text x="280" y="246" text-anchor="middle" font-size="12.5" fill="#1e293b">y_FM = w₀ + ∑ + ∑ᵢ&lt;ⱼ</text>
+  <text x="280" y="268" text-anchor="middle" font-size="11" fill="#64748b">Explicit 1st- + 2nd-order modeling</text>
+
+  <!-- DNN component -->
+  <rect x="390" y="156" width="260" height="120" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#s7)"/>
+  <rect x="390" y="156" width="260" height="34" rx="8" fill="#10b981"/>
+  <text x="520" y="179" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Deep Component (High-Order)</text>
+  <text x="520" y="222" text-anchor="middle" font-size="12.5" fill="#1e293b">concat(e₁…eₘ) → DNN</text>
+  <text x="520" y="246" text-anchor="middle" font-size="12.5" fill="#1e293b">a⁽ˡ⁺¹⁾=σ(Wa⁽ˡ⁾+b)</text>
+  <text x="520" y="268" text-anchor="middle" font-size="11" fill="#64748b">Implicit high-order nonlinearity</text>
+
+  <line x1="280" y1="276" x2="370" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#a7)"/>
+  <line x1="520" y1="276" x2="430" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#a7)"/>
+
+  <rect x="350" y="334" width="100" height="42" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+  <text x="400" y="360" text-anchor="middle" font-size="13" fill="#1e293b" font-weight="700">y_FM + y_Deep</text>
+
+  <line x1="450" y1="355" x2="540" y2="355" stroke="#64748b" stroke-width="2" marker-end="url(#a7)"/>
+
+  <rect x="550" y="331" width="170" height="50" rx="8" fill="#1e293b"/>
+  <text x="635" y="353" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">σ → CTR</text>
+  <text x="635" y="371" text-anchor="middle" font-size="10.5" fill="#cbd5e1">End-to-end, no manual Wide</text>
+
+  <text x="400" y="410" text-anchor="middle" font-size="12" fill="#64748b">vs Wide&amp;Deep: automatic FM replaces hand-crafted cross features, shared embeddings boost efficiency</text>
+</svg>

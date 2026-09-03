@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">GFP / GSP / VCG：三种竞价机制对比</text>
+
+  <!-- left row labels -->
+  <g font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">
+    <text x="68" y="146">均衡</text><text x="68" y="162">稳定性</text>
+    <text x="68" y="214">激励</text><text x="68" y="230">兼容性</text>
+    <text x="68" y="288">收费</text><text x="68" y="304">水平</text>
+    <text x="68" y="360">工业</text><text x="68" y="376">采用</text>
+  </g>
+
+  <!-- GFP card -->
+  <rect x="100" y="60" width="212" height="330" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#sh)"/>
+  <rect x="100" y="60" width="212" height="48" rx="8" fill="#fef2f2"/>
+  <text x="206" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#dc2626">GFP 广义一价</text>
+  <text x="206" y="100" text-anchor="middle" font-size="12" fill="#dc2626">付自己的出价</text>
+  <g font-size="12.5" fill="#1e293b" text-anchor="middle">
+    <text x="206" y="142">无纯策略纳什均衡</text>
+    <text x="206" y="160" fill="#ef4444">出价锯齿震荡</text>
+    <line x1="120" y1="176" x2="292" y2="176" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="206" y="206">无 IC 约束</text>
+    <text x="206" y="224" fill="#ef4444">压价/抬价均有利可图</text>
+    <line x1="120" y1="240" x2="292" y2="240" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="206" y="270">支付 = 己方出价</text>
+    <text x="206" y="288" fill="#ef4444">剧烈波动、不可预测</text>
+    <line x1="120" y1="304" x2="292" y2="304" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="206" y="336">早期付费搜索</text>
+    <text x="206" y="354" fill="#ef4444">已被淘汰</text>
+  </g>
+
+  <!-- GSP card -->
+  <rect x="324" y="60" width="212" height="330" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#sh)"/>
+  <rect x="324" y="60" width="212" height="48" rx="8" fill="#e8ecff"/>
+  <text x="430" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#4A6CF7">GSP 广义第二高价</text>
+  <text x="430" y="100" text-anchor="middle" font-size="12" fill="#4A6CF7">付下一名 eCPM 折算价</text>
+  <g font-size="12.5" fill="#1e293b" text-anchor="middle">
+    <text x="430" y="142">对称纳什均衡（SNE）</text>
+    <text x="430" y="160" fill="#4A6CF7">无妒忌、市场稳定</text>
+    <line x1="344" y1="176" x2="516" y2="176" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="430" y="206">非严格 truth-telling</text>
+    <text x="430" y="224" fill="#4A6CF7">最优出价依赖对手</text>
+    <line x1="344" y1="240" x2="516" y2="240" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="430" y="270">多数均衡下</text>
+    <text x="430" y="288" fill="#4A6CF7">高于 VCG</text>
+    <line x1="344" y1="304" x2="516" y2="304" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="430" y="336">搜索/展示广告</text>
+    <text x="430" y="354" fill="#4A6CF7">长期主流</text>
+  </g>
+
+  <!-- VCG card -->
+  <rect x="548" y="60" width="212" height="330" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#sh)"/>
+  <rect x="548" y="60" width="212" height="48" rx="8" fill="#f0fdf4"/>
+  <text x="654" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#0c8f6a">VCG 机制</text>
+  <text x="654" y="100" text-anchor="middle" font-size="12" fill="#0c8f6a">付外部性（对他人损害）</text>
+  <g font-size="12.5" fill="#1e293b" text-anchor="middle">
+    <text x="654" y="142">占优策略均衡</text>
+    <text x="654" y="160" fill="#10b981">最强稳定</text>
+    <line x1="568" y1="176" x2="740" y2="176" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="654" y="206">整体 truth-telling</text>
+    <text x="654" y="224" fill="#10b981">如实出价是占优策略</text>
+    <line x1="568" y1="240" x2="740" y2="240" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="654" y="270">按外部性定价</text>
+    <text x="654" y="288" fill="#10b981">同等分配下更低</text>
+    <line x1="568" y1="304" x2="740" y2="304" stroke="#f1f5f9" stroke-width="1.5"/>
+    <text x="654" y="336">少数平台</text>
+    <text x="654" y="354" fill="#10b981">（Meta 等）</text>
+  </g>
+
+  <!-- bottom takeaway -->
+  <rect x="100" y="402" width="660" height="32" rx="8" fill="#f8f9fc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="430" y="423" text-anchor="middle" font-size="12.5" fill="#1e293b">机制选择 = 理论性质 × 工程复杂度 × 认知成本：GFP 死于激励，VCG 困于复杂，GSP 赢在平衡</text>
+</svg>

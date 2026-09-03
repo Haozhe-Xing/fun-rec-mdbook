@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>端到端生成式应用 - 深度推荐算法实践（小麦书）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从级联架构到生成式范式——一本系统讲解推荐系统的书">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">深度推荐算法实践（小麦书）</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="part-banner">
+<h2 style="color: white; margin: 0 0 8px 0;">📦 Part 8: 端到端生成式应用</h2>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">把推荐、搜索、广告三大业务，统一为「用户输入 → 直接生成结果」的端到端生成式系统。</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 3 节 · ⏱️ Estimated 2 weeks · 🎯 Target: 掌握工业级端到端生成式推荐/搜索/广告的架构与对齐方法</p>
+</div>
+<p>过去十余年，推荐、搜索、广告几乎都建立在 <strong>多阶段级联架构（Multi-stage Cascading Architecture, MCA）</strong> 之上：召回、预排序、排序、重排……数据像漏斗一样层层筛选。这种设计在历史上平衡了效率与复杂度，但随着数据规模爆炸与用户体验要求提高，其结构性缺陷日益凸显——目标冲突、信息损失、计算碎片化。</p>
+<p>本部分沿 <strong>生成式范式</strong> 主线，看工业界如何用统一神经网络 <strong>直接从用户输入生成最终结果</strong> ，颠覆「级联漏斗」：聚焦三个核心场景的真实落地——快手的 <strong>OneRec</strong> （推荐）、电商搜索的 <strong>OneSug + OneSearch</strong> （搜索）、在线广告的 <strong>EGA + GPR</strong> （广告）。各章要点见下表。</p>
+<p><img src="../images/part8-mca-pain.svg" alt="传统级联架构的三大结构性困境" /></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> 三个场景的端到端实践呈现出一条共同主线——<strong>语义 ID 是连接生成模型与业务数据的桥梁；Encoder-Decoder 是融合上下文的主力架构；强化学习是对齐生成过程与线上业务目标的关键工具</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="本章涵盖"><a class="header" href="#本章涵盖">本章涵盖</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>章节</th><th>Topic</th><th>The Big Idea</th></tr></thead><tbody>
+<tr><td><strong>8.1</strong></td><td>端到端生成式推荐</td><td>OneRec-V1/V2 用语义 ID + Encoder-Decoder + 强化学习，把推荐重定义为「用户上下文 → 语义 ID 序列」的生成任务</td></tr>
+<tr><td><strong>8.2</strong></td><td>端到端生成式搜索</td><td>OneSug 做查询补全、OneSearch 做商品检索，以统一生成式架构覆盖电商搜索全链路</td></tr>
+<tr><td><strong>8.3</strong></td><td>端到端生成式广告</td><td>EGA 把竞价机制嵌入生成、GPR 用预训练统一多场景超长序列，让机制约束与生成模型深度统一</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="what-youll-be-able-to-do-after-this-part"><a class="header" href="#what-youll-be-able-to-do-after-this-part">What You'll Be Able to Do After This Part</a></h2>
+<ul>
+<li>🟢 <strong>解释</strong> 传统 MCA 的三大结构性缺陷，及其如何催生端到端生成式范式</li>
+<li>🟢 <strong>描述</strong> 语义 ID（Semantic ID）如何把亿级物品压缩到有限词表，使生成式推荐在数学上可行</li>
+<li>🟡 <strong>对比</strong> OneRec-V1 的 Encoder-Decoder 与 V2 的 Lazy Decoder-Only 在算力分配上的根本差异</li>
+<li>🟡 <strong>辨析</strong> 搜索场景「先相关性、后个性化」与推荐场景优化目标的本质区别</li>
+<li>🔴 <strong>说明</strong> EGA 如何在生成过程中内嵌激励相容（IC）与个体理性（IR）约束</li>
+<li>🔴 <strong>概述</strong> GPR 的异构层次化解码器与价值引导 Beam Search 如何解决跨场景与超长序列难题</li>
+<li>🏆 完成各节分层练习题，亲手推演语义 ID 编码、奖励建模与约束解码过程</li>
+</ul>
+<hr />
+<h2 id="核心概念"><a class="header" href="#核心概念">核心概念</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>章节</th><th>Relevance</th></tr></thead><tbody>
+<tr><td>多阶段级联架构 MCA</td><td>8.1</td><td>被端到端范式颠覆的传统工业骨架</td></tr>
+<tr><td>语义 ID（Semantic ID）</td><td>8.1</td><td>连接生成模型与离散物品/商品/广告的核心桥梁</td></tr>
+<tr><td>Encoder-Decoder 生成架构</td><td>8.1 / 8.2 / 8.3</td><td>融合上下文、自回归生成序列的主力结构</td></tr>
+<tr><td>Lazy Decoder-Only</td><td>8.1</td><td>把算力集中到目标 Token，解码成本降 94%</td></tr>
+<tr><td>强化学习对齐（ECPO/GBPO/DPO）</td><td>8.1 / 8.2 / 8.3</td><td>让生成过程对齐线上多目标业务信号</td></tr>
+<tr><td>激励相容 IC 与个体理性 IR</td><td>8.3</td><td>广告场景下机制设计的经济学约束</td></tr>
+<tr><td>价值引导 Trie Beam Search</td><td>8.3</td><td>在解码中内嵌约束、提升推理效率</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="前置知识"><a class="header" href="#前置知识">前置知识</a></h2>
+<ul>
+<li>已读完 <strong>1.1</strong> （两种范式、端到端生成的动机）与 <strong>2.x</strong> （双塔、语义 ID 的初步概念）</li>
+<li>了解 Transformer 的基本结构（自注意力、交叉注意力、编码器/解码器）</li>
+<li>对强化学习基础概念（策略、奖励、优势）有初步认识（本部分会结合案例逐步展开）</li>
+</ul>
+<blockquote>
+<p>本部分是生成式主线的工业落地篇，难度偏 Advanced——公式较多，但请记住：<strong>宁可多配图，也不要死抠公式</strong>。重点在于理解架构选择的「为什么」。</p>
+</blockquote>
+<hr />
+<h2 id="tips-for-this-part"><a class="header" href="#tips-for-this-part">Tips for This Part</a></h2>
+<ol>
+<li><strong>抓住「语义 ID」这条暗线。</strong> 推荐、搜索、广告三节都在反复解决同一个问题——如何把离散业务对象变成生成模型能「说出」的 Token 序列。先理解语义 ID，后面水到渠成。</li>
+<li><strong>对比着读三节。</strong> 每节都是「MCA 的痛点 → 生成式解法 → 对齐线上目标」，但业务约束各不相同：推荐追求兴趣、搜索先保相关性、广告还要满足经济学机制。</li>
+<li><strong>关注算力与约束的工程权衡。</strong> OneRec-V2 的 Lazy 架构、GPR 的 Trie 约束解码，都是用架构换效率与合规的典型思路。</li>
+</ol>
+<hr />
+<p>Let's dive in! 🚀</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part7-scaling/onetrans.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part8-e2e/e2e-recommendation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part7-scaling/onetrans.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part8-e2e/e2e-recommendation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

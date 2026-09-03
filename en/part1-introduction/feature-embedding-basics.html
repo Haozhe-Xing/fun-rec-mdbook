@@ -1,0 +1,860 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Getting Started with Features &amp; Embeddings - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~65 min read</span>
+  <span style="background: #fef9ec; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Intermediate</span>
+</div>
+<h1 id="feature-and-embedding-basics"><a class="header" href="#feature-and-embedding-basics">Feature and Embedding Basics</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Please first read the user—item—context triple in <a href="./recommender-system-basics.html">1.1</a> and the technology map in <a href="./book-overview.html">1.2</a>. You need to be able to read basic C++ and know that a hash function can map a string to an integer deterministically; no machine learning background is required.</p>
+</blockquote>
+<p>What a recommender system ultimately processes is not an abstract "user interest," but a set of concrete fields: <code>gender=male</code>, <code>city=Beijing</code>, <code>ad_id=10001</code>, <code>estimated_ctr=0.073</code>. Business code understands these fields, but a neural network only accepts numeric tensors. A bridge is missing between the two.</p>
+<p>That bridge is <strong>feature processing</strong>. It turns raw business fields into <code>slotId + featureSign + value</code>, and the model service then looks up the meaningless IDs to obtain learnable <strong>Embedding vectors</strong>. This pipeline looks like nothing more than a data-format conversion, yet it determines what the model can see, how it generalizes, and whether training and online serving stay consistent.</p>
+<hr />
+<h2 id="130-from-business-fields-to-model-input"><a class="header" href="#130-from-business-fields-to-model-input">1.3.0 From Business Fields to Model Input</a></h2>
+<p>A ranking request typically carries four kinds of information at once:</p>
+<div class="table-wrapper"><table><thead><tr><th>Category</th><th>Typical Fields</th><th>Question Answered</th></tr></thead><tbody>
+<tr><td><strong>User information</strong></td><td>User ID, gender, age, city</td><td>Who is this person? What are their long-term preferences?</td></tr>
+<tr><td><strong>Item information</strong></td><td>Ad ID, video ID, category, author</td><td>What is the current candidate?</td></tr>
+<tr><td><strong>Context information</strong></td><td>Time, network, device, candidate position</td><td>In what situation does this request occur?</td></tr>
+<tr><td><strong>Continuous values</strong></td><td>Estimated CTR, eCPM, quality score, duration</td><td>Exactly how strong is a given signal?</td></tr>
+</tbody></table>
+</div>
+<p>All of this model-usable information is collectively called a <strong>feature</strong>. But raw values cannot be fed into the model as-is: strings cannot participate in matrix multiplication; the numeric magnitude of a business ID carries no semantics; and the scales of different continuous values can differ by a factor of billions.</p>
+<p><img src="../images/part1-feature-to-embedding-pipeline.svg" alt="The complete pipeline from business fields to Embeddings and prediction scores" /></p>
+<p>The figure above shows the full division of responsibilities: the business service generates features, while the model service looks up Embeddings, combines features, and performs the network computation. The two are connected by a stable feature protocol.</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> Feature processing is not just "turning things into numbers." It must simultaneously preserve <strong>categorical identity, numeric magnitude, and engineering stability</strong>, while ensuring that offline training and online prediction see the same representation.</p>
+</blockquote>
+<hr />
+<h2 id="131-the-triple-slotid--featuresign--value"><a class="header" href="#131-the-triple-slotid--featuresign--value">1.3.1 The Triple: <code>slotId / featureSign / value</code></a></h2>
+<p>Industrial systems typically organize a feature as the following record:</p>
+<pre><code class="language-cpp">struct FeatureInfo {
+  int slotId;              // which field or feature group this feature belongs to
+  int64_t featureSign;     // lookup key for the specific value
+  float value;             // numeric value or weight
+};
+</code></pre>
+<p>Each of the three fields manages one thing:</p>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>Meaning</th><th>Library Analogy</th></tr></thead><tbody>
+<tr><td><code>slotId</code></td><td>What type of feature this is</td><td>Which shelf</td></tr>
+<tr><td><code>featureSign</code></td><td>The ID of this specific value</td><td>The index number of a book on that shelf</td></tr>
+<tr><td><code>value</code></td><td>The numeric value or weight for this occurrence</td><td>How strongly the book is used this time</td></tr>
+</tbody></table>
+</div>
+<p>For example, when the user's gender is male, it can be expressed as:</p>
+<pre><code class="language-cpp">FeatureInfo sex_feature{
+  .slotId = SEX,
+  .featureSign = gen_feasign_string(SEX, "male"),
+  .value = 1.0F
+};
+</code></pre>
+<p>This reads as: "Go to the <code>SEX</code> shelf, find the entry for the value 'male', with weight <code>1.0</code> for this occurrence."</p>
+<p>Continuous features divide the labor differently. If the estimated click-through rate is <code>0.073</code>:</p>
+<pre><code class="language-cpp">FeatureInfo ctr_feature{
+  .slotId = AD_ETR_DENSE,
+  .featureSign = 1,
+  .value = 0.073F
+};
+</code></pre>
+<p>Here <code>featureSign=1</code> is just a fixed placeholder; the real information lives in <code>value</code>. Keep this contrast in mind:</p>
+<div class="table-wrapper"><table><thead><tr><th>Feature Representation</th><th>What Goes in <code>featureSign</code></th><th>What Goes in <code>value</code></th><th>Where the Information Lives</th></tr></thead><tbody>
+<tr><td>Sparse / bucketed</td><td>The ID of the category or bucket</td><td>Usually <code>1.0</code></td><td><code>featureSign</code></td></tr>
+<tr><td>Dense continuous</td><td>A fixed key, commonly <code>1</code></td><td>The true normalized value</td><td><code>value</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> <code>featureSign</code> should be treated as an opaque 64-bit key. If it is generated as <code>uint64_t</code> and then stored in an <code>int64_t</code>, values with the highest bit set will appear negative under common two's-complement implementations. As long as downstream lookups use the same bit pattern, this is usually harmless — but never perform magnitude comparisons, <code>abs()</code>, or signed modulo on it.</p>
+</blockquote>
+<hr />
+<h2 id="132-how-featuresign-is-generated"><a class="header" href="#132-how-featuresign-is-generated">1.3.2 How <code>featureSign</code> Is Generated</a></h2>
+<p>One common design places <code>slotId</code> in the high 32 bits and the ID of the specific value in the low 32 bits:</p>
+<p><img src="../images/part1-feature-sign-layout.svg" alt="The high/low 32-bit layout of featureSign" /></p>
+<p>This way, even if the low-bit IDs of two fields happen to coincide, as long as their <code>slotId</code>s differ, the final keys still differ.</p>
+<h3 id="string-values-hash-first-then-combine"><a class="header" href="#string-values-hash-first-then-combine">String Values: Hash First, Then Combine</a></h3>
+<pre><code class="language-cpp">static uint64_t gen_feasign_string(
+    uint64_t slot_id,
+    const std::string&amp; value) {
+  const uint32_t value_hash = gen_hash_new(value.data(), value.size());
+  const uint64_t slot_bits = (slot_id &lt;&lt; 32) &amp; 0xffffffff00000000ULL;
+  return slot_bits | value_hash;
+}
+</code></pre>
+<p>This code works in three steps:</p>
+<ol>
+<li><code>gen_hash_new</code> deterministically maps the string to a 32-bit integer.</li>
+<li><code>slot_id &lt;&lt; 32</code> moves the feature type into the high 32 bits.</li>
+<li>A bitwise OR <code>|</code> combines the high-bit type and the low-bit value into one key.</li>
+</ol>
+<p>For example, even if the low-bit hashes of <code>SEX=male</code> and <code>AGE_BUCKET=20</code> both equal <code>111</code>, the final keys remain <code>[SEX][111]</code> and <code>[AGE_BUCKET][111]</code> respectively. <strong>Slot segmentation isolates different fields from each other.</strong></p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> <code>featureSign</code> works like "class number + student number." The student number only distinguishes students within a class; the class number in the high bits keeps identical student numbers from different classes from colliding.</p>
+</blockquote>
+<h3 id="integer-values-encode-directly-when-possible-skip-the-hash"><a class="header" href="#integer-values-encode-directly-when-possible-skip-the-hash">Integer Values: Encode Directly When Possible, Skip the Hash</a></h3>
+<p>If the value is already a small integer — for example network type <code>4</code>, weekday <code>2</code>, or bucket ID <code>7</code> — it can go directly into the low 32 bits:</p>
+<pre><code class="language-cpp">static uint64_t gen_feasign_int32(
+    uint64_t slot_id,
+    uint32_t value) {
+  const uint64_t slot_bits = (slot_id &lt;&lt; 32) &amp; 0xffffffff00000000ULL;
+  return slot_bits | value;
+}
+</code></pre>
+<p>As long as the value can be fully represented by a 32-bit unsigned integer, this encoding introduces no extra hash collisions. Therefore, small enums and bucket IDs should prefer the integer version.</p>
+<h3 id="hash-collisions-are-a-trade-off-not-an-error"><a class="header" href="#hash-collisions-are-a-trade-off-not-an-error">Hash Collisions Are a Trade-off, Not an Error</a></h3>
+<p>Once strings are compressed into a 32-bit space, collisions are unavoidable. The low 32 bits offer only <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span></span></span></span> positions; by the birthday paradox, once a slot has about <strong>77,000 distinct values</strong>, the probability of at least one collision exceeds 50%.</p>
+<div class="table-wrapper"><table><thead><tr><th>Example Slot</th><th>Cardinality</th><th>Collision Impact</th></tr></thead><tbody>
+<tr><td><code>SEX</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></td><td>Negligible</td></tr>
+<tr><td><code>CITY</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></td><td>Usually negligible</td></tr>
+<tr><td><code>AD_ID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></td><td>A few collisions appear</td></tr>
+<tr><td><code>GUID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></td><td>Massive collisions are unavoidable</td></tr>
+</tbody></table>
+</div>
+<p>After two distinct values collide, they share one Embedding, and the model can no longer tell them apart. So why do industrial systems still commonly use this <strong>Feature Hashing</strong>? Because it buys stateless, scalable feature generation: no giant string vocabulary needs to be maintained, and new values get a key immediately.</p>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>Benefit:</strong> No central vocabulary needed; new values are handled naturally; online services scale horizontally.</li>
+<li><strong>Cost:</strong> Some semantic confusion; the original value cannot be recovered from the key; high-cardinality features are harder to debug.</li>
+<li><strong>Mitigation:</strong> Enlarge the hash space, use double hashing, filter low-frequency values, or maintain an independent vocabulary for critical high-cardinality slots.</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="133-why-embeddings-are-needed"><a class="header" href="#133-why-embeddings-are-needed">1.3.3 Why Embeddings Are Needed</a></h2>
+<p>This is the most easily confused — and most critical — point of the chapter:</p>
+<blockquote>
+<p>💡 <strong>Key Insight:</strong> <strong><code>featureSign</code> is the key for looking up an Embedding; it is not the Embedding itself.</strong> It is responsible for stably indicating "which category this is," but not for expressing how this category relates to other categories.</p>
+</blockquote>
+<p>The difference between the two:</p>
+<div class="table-wrapper"><table><thead><tr><th>Object</th><th>Example</th><th>Trained?</th><th>Essence</th></tr></thead><tbody>
+<tr><td><code>featureSign</code></td><td><code>500111</code></td><td>No</td><td>A stable, discrete index key</td></tr>
+<tr><td>Embedding</td><td><code>[0.12, -0.03, 0.88, 0.21]</code></td><td>Yes</td><td>Vector parameters learned by the model from data</td></tr>
+<tr><td>Embedding Table</td><td><code>key → vector</code></td><td>Yes</td><td>A parameter table that stores and updates vectors by key</td></tr>
+</tbody></table>
+</div>
+<h3 id="from-one-hot-to-embedding"><a class="header" href="#from-one-hot-to-embedding">From One-Hot to Embedding</a></h3>
+<p>Suppose <code>CITY</code> has only three values: Beijing, Shanghai, and Shenzhen. The most direct encoding is One-Hot:</p>
+<pre><code class="language-text">Beijing    -&gt; [1, 0, 0]
+Shanghai   -&gt; [0, 1, 0]
+Shenzhen   -&gt; [0, 0, 1]
+</code></pre>
+<p>One-Hot has two properties: first, it never falsely creates magnitude relations; second, all categories are equidistant from each other. But when an ad ID has 10 million values, a single sample must logically occupy a 10-million-dimensional space, with only one position in the vector set to 1. Feeding such ultra-high-dimensional sparse vectors directly into the network makes both parameter count and computation prohibitive.</p>
+<p>The Embedding layer can be viewed as a large matrix <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span></span></span></span></span>. Multiplying a One-Hot vector by the matrix is essentially selecting one row from <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.3341em;vertical-align:-1.5841em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.75em;"><span style="top:-1.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mord text mtight"><span class="mord mtight">-dim One-Hot</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.75em;"><span class="svg-align" style="top:-2.102em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMinYMin slice'><path d='M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13  35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688  0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7 -331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z'/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMidYMin slice'><path d='M199572 214 c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14  53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3  11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0 -5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z'/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='0.548em' viewBox='0 0 400000 548' preserveAspectRatio='xMaxYMin slice'><path d='M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3  28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237 -174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z'/></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.898em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5841em;"><span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8991em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>So in practice you never actually construct the One-Hot. Just pass in the <code>featureSign</code> of the category and directly look up <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>. This saves computation and lets the model, through training, pull categories with similar behavior into nearby regions of the vector space.</p>
+<h3 id="why-you-cant-use-featuresign-directly-as-an-embedding"><a class="header" href="#why-you-cant-use-featuresign-directly-as-an-embedding">Why You Can't Use <code>featureSign</code> Directly as an Embedding</a></h3>
+<p>Suppose there are three ads:</p>
+<pre><code class="language-text">Sneaker ad    -&gt; featureSign = 105
+Basketball ad -&gt; featureSign = 980001
+Baby formula  -&gt; featureSign = 106
+</code></pre>
+<p>If the sign were used directly as a scalar input, the model would be handed absurd geometric relationships: the distance between sneakers <code>105</code> and baby formula <code>106</code> is only 1, while the semantically closer basketball ad <code>980001</code> is nearly a million away. This distance is determined entirely by chance of numbering or hashing, and represents nothing about behavioral similarity.</p>
+<p>Using the sign directly has four further problems:</p>
+<ol>
+<li><strong>Spurious ordering.</strong> <code>500222 &gt; 500111</code> does not mean one category is "bigger" or "better."</li>
+<li><strong>Spurious distances.</strong> Two hash values being close does not mean the two categories are similar; being far apart does not mean dissimilar.</li>
+<li><strong>No way to learn category semantics.</strong> The sign is a fixed integer; it will never move toward "more like basketball" or "more like sneakers" during backpropagation.</li>
+<li><strong>Numeric precision risk.</strong> If a 64-bit sign is converted to <code>float32</code>, beyond <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">24</span></span></span></span></span></span></span></span></span></span></span></span> many adjacent integers can no longer be distinguished exactly, and different keys may be rounded to the same float.</li>
+</ol>
+<p>An Embedding instead provides a set of <strong>trainable parameters</strong> for each key. If users who watch basketball content often click sneaker ads, training will gradually pull the two categories' vectors together; the baby-formula vector may end up in a different region. Distances between categories are learned from data, not dictated by hash values.</p>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> "Converting the sign into 8 binary digits, splitting it by decimal digit, or normalizing it" is still not an Embedding. These operations merely expose an arbitrary ID in another way and cannot produce learnable category semantics. The correct approach is to treat the sign as an index and look up an independent, trainable vector.</p>
+</blockquote>
+<h3 id="a-complete-lookup"><a class="header" href="#a-complete-lookup">A Complete Lookup</a></h3>
+<p>Suppose <code>SEX=male</code> generates <code>featureSign=500111</code>, and the Embedding table currently stores:</p>
+<pre><code class="language-text">E[500111] = [ 0.12, -0.03, 0.45]
+E[500222] = [-0.21,  0.34, 0.08]
+</code></pre>
+<p>During the forward pass, the model uses <code>500111</code> to look up the first row <code>[0.12, -0.03, 0.45]</code>. If this prediction's error back-propagates to this feature, only <code>E[500111]</code> and the related network parameters are updated — the integer <code>500111</code> itself is never modified.</p>
+<p>This shows the strict separation of responsibilities:</p>
+<pre><code class="language-text">featureSign: stably locates parameters; unchanged before and after training
+Embedding:   carries learnable semantics; continuously updated during training
+</code></pre>
+<h3 id="why-the-same-value-shares-one-embedding"><a class="header" href="#why-the-same-value-shares-one-embedding">Why the Same Value Shares One Embedding</a></h3>
+<p>Two users who both have <code>SEX=male</code> generate the same <code>featureSign</code> and therefore look up the same Embedding. This does not make the two users indistinguishable, because the model sees a combination of many slots:</p>
+<div class="table-wrapper"><table><thead><tr><th>User</th><th>Gender</th><th>Age Bucket</th><th>City</th><th>GUID</th></tr></thead><tbody>
+<tr><td>A</td><td>Male</td><td>20–24</td><td>Beijing</td><td><code>abc</code></td></tr>
+<tr><td>B</td><td>Male</td><td>35–39</td><td>Shenzhen</td><td><code>xyz</code></td></tr>
+</tbody></table>
+</div>
+<p>Sharing actually brings generalization: the samples of all male users jointly update the "male" parameter, while other features — age, city, identity — continue to preserve individual differences.</p>
+<h3 id="what-determines-the-embedding-dimension"><a class="header" href="#what-determines-the-embedding-dimension">What Determines the Embedding Dimension</a></h3>
+<p>The dimension is not decided by the C++ feature-generation code, but by the model configuration, usually set per slot or per feature group:</p>
+<div class="table-wrapper"><table><thead><tr><th>Slot</th><th>Possible Cardinality</th><th>Typical Dimension Guidance</th></tr></thead><tbody>
+<tr><td><code>SEX</code></td><td>3</td><td>2–4 dimensions usually suffice</td></tr>
+<tr><td><code>CITY</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></td><td>Start experimenting from 8</td></tr>
+<tr><td><code>AD_ID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></td><td>Commonly a trade-off within 8–32</td></tr>
+<tr><td><code>GUID</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></td><td>Dimension times cardinality becomes a memory black hole — be careful</td></tr>
+</tbody></table>
+</div>
+<p>The larger the dimension, the stronger the representational capacity, but the higher the memory, communication, and compute costs; with insufficient data it is also more prone to overfitting. It is a hyperparameter balancing model capacity against system cost — not "cardinality grows, so keep adding dimensions."</p>
+<hr />
+<h2 id="134-how-sparse-and-dense-features-are-encoded"><a class="header" href="#134-how-sparse-and-dense-features-are-encoded">1.3.4 How Sparse and Dense Features Are Encoded</a></h2>
+<p>Both sparse and dense features fit into <code>slotId + featureSign + value</code>, but the field that "actually carries the information" is completely different on the two paths:</p>
+<p><img src="../images/part1-sparse-dense-encoding.svg" alt="The two encoding paths for sparse and dense features" /></p>
+<p>A sparse feature uses <code>featureSign</code> to select "which row of parameters"; a dense feature usually fixes the sign and uses <code>value</code> to determine "how much to scale the same set of parameters."</p>
+<div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Sparse Features (Categorical)</th><th>Dense Features (Continuous / Numerical)</th></tr></thead><tbody>
+<tr><td>Question answered</td><td>Which category is it?</td><td>Exactly how much?</td></tr>
+<tr><td>Typical values</td><td>Beijing, male, ad 10001, network type 4</td><td>CTR 0.073, duration 3600 seconds, amount 57 yuan</td></tr>
+<tr><td>Arithmetic relations</td><td>Magnitude and distance usually meaningless</td><td>Addition/subtraction, magnitude, and differences usually meaningful</td></tr>
+<tr><td>Location of information</td><td><code>featureSign</code></td><td><code>value</code></td></tr>
+<tr><td>Typical model handling</td><td>Look up Embedding by sign</td><td>Fed in directly or projected into a vector</td></tr>
+</tbody></table>
+</div>
+<h3 id="sparse-features-encoding-which-category"><a class="header" href="#sparse-features-encoding-which-category">Sparse Features: Encoding "Which Category"</a></h3>
+<p><strong>Sparse features</strong> take values from a finite or enumerable set. Their numeric form is mere identity and should not be interpreted as continuous magnitude. Network type <code>4</code> does not mean it is twice network type <code>2</code>; ad ID <code>10002</code> is not "better" than <code>10001</code>.</p>
+<p>A sparse feature typically goes through five steps:</p>
+<ol>
+<li><strong>Normalize the raw value.</strong> Unify encoding, casing, whitespace, and missing values — for example, map an empty city to <code>__UNKNOWN__</code>.</li>
+<li><strong>Choose the slot.</strong> <code>CITY</code>, <code>SEX</code>, and <code>AD_ID</code> each have their own <code>slotId</code>.</li>
+<li><strong>Generate the sign.</strong> Strings are hashed first; small integers can be encoded directly into the low 32 bits.</li>
+<li><strong>Set the weight.</strong> Single-valued categories usually use <code>value=1.0</code>.</li>
+<li><strong>Look up the Embedding.</strong> The model uses the sign to select one row in the parameter table.</li>
+</ol>
+<h4 id="example-1-string-category-sexmale"><a class="header" href="#example-1-string-category-sexmale">Example 1: String Category <code>SEX=male</code></a></h4>
+<p>Suppose <code>SEX</code> has <code>slotId=12</code>, and assume <code>hash("male")=0x3A91F20B</code>. Then:</p>
+<pre><code class="language-text">High 32 bits: slotId = 12       -&gt; 0x0000000C00000000
+Low 32 bits:  hash("male")      -&gt; 0x000000003A91F20B
+Final sign                      -&gt; 0x0000000C3A91F20B
+</code></pre>
+<p>The business service generates:</p>
+<pre><code class="language-cpp">const std::string normalized_sex = user.sex.empty()
+    ? "__UNKNOWN__"
+    : user.sex;
+
+features.emplace_back(
+    SEX,
+    gen_feasign_string(SEX, normalized_sex),
+    1.0F);
+</code></pre>
+<p>The model-side handling can be written as:</p>
+<pre><code class="language-text">embedding = E_SEX[0x0000000C3A91F20B]
+          = [0.12, -0.03, 0.45]
+output    = 1.0 × embedding
+          = [0.12, -0.03, 0.45]
+</code></pre>
+<p>Here <code>value=1.0</code> merely states "this category occurs in this instance." What actually distinguishes male, female, and unknown are the different signs, and the Embeddings each of them maps to.</p>
+<h4 id="example-2-integer-enum-apn_type4"><a class="header" href="#example-2-integer-enum-apn_type4">Example 2: Integer Enum <code>APN_TYPE=4</code></a></h4>
+<p>The network type is already a small integer; there is no need to convert it to a string and hash it first:</p>
+<pre><code class="language-cpp">features.emplace_back(
+    APN_TYPE,
+    gen_feasign_int32(APN_TYPE, 4),
+    1.0F);
+</code></pre>
+<p>This generates <code>[APN_TYPE][4]</code>. Compared with the string version, it is more intuitive and introduces no additional 32-bit hash collisions.</p>
+<h4 id="how-multi-value-sparse-features-are-handled"><a class="header" href="#how-multi-value-sparse-features-are-handled">How Multi-Value Sparse Features Are Handled</a></h4>
+<p>"User interest tags" may simultaneously include <code>basketball, running, photography</code>. In this case one slot yields multiple signs:</p>
+<pre><code class="language-text">[INTEREST][hash(basketball)]  value=1.0
+[INTEREST][hash(running)]     value=1.0
+[INTEREST][hash(photography)] value=1.0
+</code></pre>
+<p>After looking up the three Embeddings, the model usually applies <code>sum</code>, <code>mean</code>, weighted pooling, or attention-based aggregation. If the number of tags varies a lot, <code>mean</code> avoids the bias of "more tags, larger vector norm"; if different tags carry different importance, you can put business weights into <code>value</code>.</p>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>Strengths:</strong> No spurious ordering; parameters learned independently per category; behavioral patterns shared through the vector space.</li>
+<li><strong>Costs:</strong> High-cardinality slots produce large tables; low-frequency categories get under-trained vectors.</li>
+<li><strong>Key check:</strong> The same business value must produce exactly the same sign offline and online.</li>
+</ul>
+</blockquote>
+<h3 id="dense-features-encoding-exactly-how-much"><a class="header" href="#dense-features-encoding-exactly-how-much">Dense Features: Encoding "Exactly How Much"</a></h3>
+<p><strong>Dense features</strong> are numbers with continuous magnitude semantics. <code>CTR=0.08</code> is genuinely larger than <code>CTR=0.02</code>; watching 100 seconds is usually longer than watching 10. Encoding should preserve this numeric relationship rather than creating a separate Embedding for every decimal value.</p>
+<p>Dense features have two common implementations across frameworks:</p>
+<ol>
+<li><strong>Direct scalar input.</strong> Concatenate the normalized <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> with other vectors and feed it into the MLP.</li>
+<li><strong>Unified slot protocol.</strong> Use a fixed <code>featureSign=1</code> to look up a parameter vector <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>, and output <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>.</li>
+</ol>
+<p>This chapter's engineering uses the second. It is mathematically equivalent to projecting a one-dimensional scalar into <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> dimensions through a bias-free linear layer:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord text"><span class="mord">dense_vector</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span></span></span></span></span></p>
+<p>A dense feature typically goes through four steps:</p>
+<ol>
+<li><strong>Validate and fall back.</strong> Handle missing values, <code>NaN</code>, <code>inf</code>, and illegal negatives.</li>
+<li><strong>Transform and normalize.</strong> Depending on the distribution, use it directly, <code>log1p</code>, Min-Max, Z-Score, or quantile transformation.</li>
+<li><strong>Fix the sign.</strong> The slot uniformly uses <code>featureSign=1</code>, meaning only one set of projection parameters is needed.</li>
+<li><strong>Put the number into value.</strong> <code>value=x</code>; the model computes <code>x × E[1]</code>.</li>
+</ol>
+<h4 id="example-1-already-normalized-ctr0073"><a class="header" href="#example-1-already-normalized-ctr0073">Example 1: Already-Normalized <code>CTR=0.073</code></a></h4>
+<p>CTR itself lies in <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, so it can be used directly at first:</p>
+<pre><code class="language-cpp">double ctr = ad.estimated_ctr;
+if (!std::isfinite(ctr)) ctr = 0.0;
+ctr = std::clamp(ctr, 0.0, 1.0);
+
+features.emplace_back(
+    AD_ETR_DENSE,
+    1,
+    static_cast&lt;float&gt;(ctr));
+</code></pre>
+<p>Suppose this slot's fixed parameter vector is:</p>
+<pre><code class="language-text">W = E_AD_ETR_DENSE[1] = [0.40, -0.20, 0.10]
+</code></pre>
+<p>Then the vector this sample passes to the upper network is:</p>
+<pre><code class="language-text">0.073 × W = [0.0292, -0.0146, 0.0073]
+</code></pre>
+<p>Another sample with <code>CTR=0.20</code> still looks up the same <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>, but the output becomes <code>[0.08, -0.04, 0.02]</code>. The dense path thus preserves the continuous relationship "0.20 is larger than 0.073."</p>
+<h4 id="example-2-long-tailed-watch-duration-watch_seconds3600"><a class="header" href="#example-2-long-tailed-watch-duration-watch_seconds3600">Example 2: Long-Tailed Watch Duration <code>watch_seconds=3600</code></a></h4>
+<p>Duration usually follows a long-tailed distribution. Putting <code>3600</code> directly into <code>value</code> would make its magnitude dwarf features like CTR. You can apply <code>log1p</code> first:</p>
+<pre><code class="language-cpp">double seconds = watch_seconds;
+if (!std::isfinite(seconds) || seconds &lt; 0.0) seconds = 0.0;
+seconds = std::min(seconds, 86400.0);  // cap the top at 24 hours
+
+const float encoded = static_cast&lt;float&gt;(std::log1p(seconds));
+features.emplace_back(WATCH_TIME_DENSE, 1, encoded);
+</code></pre>
+<p><code>3600</code> seconds is compressed to about <code>8.19</code>, preserving the monotonic "longer" relation while reducing the dominance of extreme values over gradients and other features.</p>
+<blockquote>
+<p>📝 <strong>Note:</strong> The <code>E[1]</code> in a dense slot is sometimes colloquially called an "Embedding" too, but its role differs from a sparse categorical Embedding. A sparse Embedding is "one row per category"; a dense slot has only a single fixed row, essentially a set of learnable projection weights.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Warning:</strong> Dense features cannot be stuffed into <code>value</code> unchecked. Large-magnitude values like timestamps, amounts, and counts will drown out other features and amplify gradients. Scale compression and outlier handling must come first.</p>
+</blockquote>
+<p>Common processing methods:</p>
+<div class="table-wrapper"><table><thead><tr><th>Method</th><th>Form</th><th>Suitable Scenarios</th></tr></thead><tbody>
+<tr><td><code>log1p</code></td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></td><td>Long-tailed positive values: counts, durations, amounts, eCPM</td></tr>
+<tr><td>Min-Max</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mclose">)</span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mclose">)</span></span></span></span></td><td>Stable and known value range</td></tr>
+<tr><td>Z-Score</td><td><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">μ</span><span class="mclose">)</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span></td><td>Approximately normal distribution</td></tr>
+<tr><td>Quantile normalization</td><td>Map to the empirical CDF</td><td>Irregular distributions with many outliers</td></tr>
+<tr><td>Use directly</td><td>Unchanged</td><td>Already in <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span>, e.g., probability values</td></tr>
+</tbody></table>
+</div>
+<p>Whichever method you choose, you must specify fallback rules for <code>NaN</code>, <code>inf</code>, missing values, and abnormal negatives. The <code>min/max/\mu/\sigma</code> values, quantile points, and truncation thresholds must also be shared between offline training and online serving.</p>
+<h3 id="bucketing-which-interval-does-it-fall-in"><a class="header" href="#bucketing-which-interval-does-it-fall-in">Bucketing: Which Interval Does It Fall In</a></h3>
+<p><strong>Bucketed features</strong> first cut a continuous value into intervals, then treat the bucket ID as a category:</p>
+<pre><code class="language-cpp">static uint32_t cut_bucket(double value, uint32_t width) {
+  return static_cast&lt;uint32_t&gt;(value / width);
+}
+</code></pre>
+<p>If <code>eCPM=57</code> and the bucket width is <code>20</code>, the bucket ID is <code>2</code>. The final expression is <code>[AD_ECPM][2]</code> with <code>value=1.0</code>.</p>
+<p>This is not a dense feature. It expresses "which interval it falls in"; each bucket has its own Embedding, so non-monotonic interval effects can be learned.</p>
+<p>The raw <code>cut_bucket</code> still has three engineering traps:</p>
+<ol>
+<li><strong>Negative values:</strong> values in <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span> may silently truncate into bucket 0; more negative values may exceed the representable range when converted to an unsigned integer — do not rely on that result.</li>
+<li><strong><code>NaN</code> / <code>inf</code>:</strong> converting to an integer has no usable semantics and may trigger undefined behavior.</li>
+<li><strong>Zero bucket width:</strong> division by zero yields an invalid result.</li>
+</ol>
+<p>A safer implementation should validate parameters first, clamp abnormal values, and set a top bucket:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdint&gt;
+#include &lt;stdexcept&gt;
+
+uint32_t safe_cut_bucket(
+    double value,
+    double width,
+    uint32_t max_bucket) {
+  if (!std::isfinite(width) || width &lt;= 0.0) {
+    throw std::invalid_argument("bucket width must be positive");
+  }
+  if (!std::isfinite(value) || value &lt; 0.0) {
+    value = 0.0;  // ← KEY LINE: unified fallback for abnormal inputs
+  }
+
+  const double raw_bucket = std::floor(value / width);
+  const double capped = std::min(raw_bucket,
+                                 static_cast&lt;double&gt;(max_bucket));
+  return static_cast&lt;uint32_t&gt;(capped);
+}
+</code></pre>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>Equal-width bucketing:</strong> simple to implement, but long-tailed distributions often cram most samples into the first few buckets.</li>
+<li><strong>Equal-frequency bucketing:</strong> more balanced samples per bucket, but depends on stable quantile statistics.</li>
+<li><strong>Logarithmic bucketing:</strong> suits positive values spanning several orders of magnitude, balancing head and tail.</li>
+<li><strong>Top-bucket capping:</strong> prevents extreme values from creating hordes of sparse buckets that appear only once or twice.</li>
+</ul>
+</blockquote>
+<h3 id="why-bucketing-and-dense-are-often-used-together"><a class="header" href="#why-bucketing-and-dense-are-often-used-together">Why Bucketing and Dense Are Often Used Together</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Bucketed Sparse</th><th>Dense Continuous</th></tr></thead><tbody>
+<tr><td><code>featureSign</code></td><td>Bucket ID</td><td>Fixed key</td></tr>
+<tr><td><code>value</code></td><td><code>1.0</code></td><td>The true normalized value</td></tr>
+<tr><td>Number of parameter rows</td><td>One per bucket</td><td>One for the whole slot</td></tr>
+<tr><td>Good at</td><td>Non-linearity, interval effects</td><td>Exact magnitude, continuous variation</td></tr>
+<tr><td>Limitations</td><td>No resolution within a bucket; discontinuous boundaries</td><td>A single linear scaling struggles with complex non-monotonic relations</td></tr>
+</tbody></table>
+</div>
+<p>Using both is not pointless duplication. Bucketing tells the model "which interval it's in"; dense tells the model "exactly how much." They express the same business quantity from different angles.</p>
+<hr />
+<h2 id="135-the-embedding-table-and-engineering-boundaries"><a class="header" href="#135-the-embedding-table-and-engineering-boundaries">1.3.5 The Embedding Table and Engineering Boundaries</a></h2>
+<h3 id="table-size-is-determined-by-the-number-of-unique-values"><a class="header" href="#table-size-is-determined-by-the-number-of-unique-values">Table Size Is Determined by the Number of Unique Values</a></h3>
+<p>The main memory of an Embedding table can be roughly estimated as:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Memory</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3521em;vertical-align:-1.3021em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">4</span><span class="mord text"><span class="mord"> bytes</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> is the number of unique <code>featureSign</code>s in that slot, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the Embedding dimension. Real systems must also account for hash-table metadata, keys, pointers, and optimizer states; optimizers like Adam may additionally store one or two same-sized copies of state.</p>
+<p>Table size does not directly depend on request volume. If a billion users have only three genders, the <code>SEX</code> slot still needs only a handful of entries; but <code>GUID</code> is nearly "one value per user," so its scale grows with the user base.</p>
+<h3 id="admission-eviction-and-oov"><a class="header" href="#admission-eviction-and-oov">Admission, Eviction, and OOV</a></h3>
+<p>High-cardinality slots keep producing new keys, so production systems must constrain table growth:</p>
+<div class="table-wrapper"><table><thead><tr><th>Mechanism</th><th>Typical Strategy</th><th>Problem Solved</th></tr></thead><tbody>
+<tr><td><strong>Admission</strong></td><td>Create an entry only after the count reaches a threshold</td><td>Filters one-off noise and ultra-long-tail values</td></tr>
+<tr><td><strong>Eviction</strong></td><td>Delete after being absent for several consecutive days</td><td>Cleans up inactive users and offline ads</td></tr>
+<tr><td><strong>OOV</strong></td><td>Zero vector, default bucket, or deferred entry creation</td><td>Handles new keys not yet in the table</td></tr>
+</tbody></table>
+</div>
+<p>"What happens when a key is not found" must be confirmed before adding any new feature. If downstream defaults to "randomly initialize and write immediately," a high-cardinality feature can bloat the parameter table in a short time; if a zero vector is returned, that feature contributes nothing during cold start, and the model must rely on other generalizable features.</p>
+<h3 id="how-embeddings-are-trained"><a class="header" href="#how-embeddings-are-trained">How Embeddings Are Trained</a></h3>
+<p>Embeddings are part of the recommendation model, trained jointly with the upper network:</p>
+<ol>
+<li>The forward pass looks up vectors by <code>featureSign</code>.</li>
+<li>Multiple vectors are concatenated or pooled with dense features.</li>
+<li>The DNN outputs click-through rate, conversion rate, or a ranking score.</li>
+<li>Prediction error back-propagates, updating both the Embeddings and the network parameters.</li>
+</ol>
+<p>Only keys covered by training samples receive effective updates. Long-tail features that appear only once or twice have vectors close to their random initialization — occupying memory while injecting noise. This is exactly why frequency-based admission exists.</p>
+<h3 id="offlineonline-consistency"><a class="header" href="#offlineonline-consistency">Offline/Online Consistency</a></h3>
+<p>This is the most hidden and most common source of incidents in feature engineering. Training samples and online requests must be strictly aligned:</p>
+<ul>
+<li>Hash algorithm, seeds, and string encoding;</li>
+<li><code>slotId</code> enum values and candidate-position offsets;</li>
+<li>Bucket boundaries, bucket widths, and top buckets;</li>
+<li>Normalization statistics;</li>
+<li>Missing-value, outlier, and casing rules;</li>
+<li>String <code>trim</code>, concatenation order, and separators.</li>
+</ul>
+<p>These bugs often do not crash. The service still returns scores, monitoring may be all green — the model just looks up "wrong but legal" parameters, and online performance quietly degrades.</p>
+<blockquote>
+<p>⚡ <strong>Pro Tip:</strong> Treat changing the hash, changing slots, or changing bucket boundaries as "swapping the model," not a routine code hotfix. Prioritize sharing one feature library between offline and online; before launch, sample real requests and compare the triples generated on both sides field by field.</p>
+</blockquote>
+<hr />
+<h2 id="136-complete-case-study-adding-an-ecpm-feature-to-ads"><a class="header" href="#136-complete-case-study-adding-an-ecpm-feature-to-ads">1.3.6 Complete Case Study: Adding an eCPM Feature to Ads</a></h2>
+<p>Suppose the business already has <code>ad.ecpm</code>, and we want to preserve both its exact magnitude and its non-linear interval effects. The sound approach is to create two different slots:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdint&gt;
+#include &lt;vector&gt;
+
+struct FeatureInfo {
+  uint32_t slot_id;
+  uint64_t feature_sign;
+  float value;
+};
+
+enum Slot : uint32_t {
+  AD_ECPM_BUCKET = 101,
+  AD_ECPM_DENSE = 102
+};
+
+uint64_t make_int_sign(uint32_t slot_id, uint32_t value_id) {
+  return (static_cast&lt;uint64_t&gt;(slot_id) &lt;&lt; 32) | value_id;
+}
+
+uint32_t safe_bucket(double value,
+                     double width,
+                     uint32_t max_bucket) {
+  if (!std::isfinite(value) || value &lt; 0.0) value = 0.0;
+  if (!std::isfinite(width) || width &lt;= 0.0) return 0;
+  const double bucket = std::floor(value / width);
+  return static_cast&lt;uint32_t&gt;(
+      std::min(bucket, static_cast&lt;double&gt;(max_bucket)));
+}
+
+void append_ecpm_features(double raw_ecpm,
+                          std::vector&lt;FeatureInfo&gt;&amp; output) {
+  const double clean_ecpm =
+      (!std::isfinite(raw_ecpm) || raw_ecpm &lt; 0.0) ? 0.0 : raw_ecpm;
+
+  const uint32_t bucket = safe_bucket(clean_ecpm, 20.0, 100);
+  output.push_back({
+      AD_ECPM_BUCKET,
+      make_int_sign(AD_ECPM_BUCKET, bucket),
+      1.0F
+  });
+
+  const float dense_value =
+      static_cast&lt;float&gt;(std::log1p(clean_ecpm));
+  output.push_back({
+      AD_ECPM_DENSE,
+      1,
+      dense_value
+  });
+}
+</code></pre>
+<p>With input <code>raw_ecpm=57</code>, the two features express:</p>
+<div class="table-wrapper"><table><thead><tr><th>Slot</th><th><code>featureSign</code></th><th><code>value</code></th><th>Information the Model Gets</th></tr></thead><tbody>
+<tr><td><code>AD_ECPM_BUCKET</code></td><td><code>[slot][2]</code></td><td><code>1.0</code></td><td>eCPM falls in bucket 2</td></tr>
+<tr><td><code>AD_ECPM_DENSE</code></td><td><code>1</code></td><td><code>log1p(57)</code></td><td>The compressed exact magnitude</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p><strong>Analysis:</strong></p>
+<ul>
+<li><strong>Expressiveness:</strong> bucketing captures non-linearity; dense preserves continuous variation — the two complement each other.</li>
+<li><strong>Parameter cost:</strong> the bucket slot has at most 101 parameter rows; the dense slot has a single vector.</li>
+<li><strong>Consistency requirement:</strong> the offline side must use the same bucket width, top bucket, <code>log1p</code>, and abnormal-value fallback.</li>
+<li><strong>Launch check:</strong> snapshot-test the triple for normal values, negatives, <code>NaN</code>, and extreme values respectively.</li>
+</ul>
+</blockquote>
+<p>When adding a real feature, confirm each item on this checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Is it a category, a continuous value, or does it need the dual "bucketed + dense" representation?</li>
+<li><input disabled="" type="checkbox"/>
+Are the string encoding, casing, <code>trim</code>, and concatenation rules fixed?</li>
+<li><input disabled="" type="checkbox"/>
+Can small integers be encoded directly, avoiding unnecessary hashing?</li>
+<li><input disabled="" type="checkbox"/>
+Are the dense value's magnitude, normalization, and abnormal-value fallback clearly specified?</li>
+<li><input disabled="" type="checkbox"/>
+Should bucketing use equal-width, equal-frequency, or logarithmic boundaries? Is a top bucket set?</li>
+<li><input disabled="" type="checkbox"/>
+Is the scale of unique values and the Embedding memory acceptable?</li>
+<li><input disabled="" type="checkbox"/>
+Are high-cardinality slots governed by admission and eviction rules?</li>
+<li><input disabled="" type="checkbox"/>
+What does the model service return for OOV?</li>
+<li><input disabled="" type="checkbox"/>
+Do offline training and online serving reuse the same logic and configuration?</li>
+<li><input disabled="" type="checkbox"/>
+Has a field-by-field consistency comparison been completed before launch?</li>
+</ul>
+<hr />
+<h2 id="-common-mistakes-in-13"><a class="header" href="#-common-mistakes-in-13">⚠️ Common Mistakes in 1.3</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Treating <code>featureSign</code> as an Embedding</td><td>"Convert the hash value to a float and feed it to the DNN"</td><td>IDs create spurious ordering and distances; converting a 64-bit integer to <code>float32</code> also loses key precision</td><td>Use the sign to look up an independent, trainable vector</td></tr>
+<tr><td>2</td><td>Believing hashes never collide</td><td>Using a 32-bit hash for high-cardinality GUIDs without monitoring</td><td>Distinct values end up sharing parameters</td><td>Estimate cardinality and collisions; widen or filter if needed</td></tr>
+<tr><td>3</td><td>Feeding raw dense values into the model</td><td>Writing a timestamp into <code>value</code></td><td>The magnitude overwhelms other features and amplifies gradients</td><td>Normalize, clamp, and unify statistics</td></tr>
+<tr><td>4</td><td>Not validating before bucketing</td><td>Casting negatives, <code>NaN</code>, <code>inf</code> directly to <code>uint32_t</code></td><td>Produces wrong buckets or unreliable behavior</td><td>Check finiteness, non-negativity, and bucket width</td></tr>
+<tr><td>5</td><td>Not setting a top bucket</td><td>Extreme values keep creating new buckets</td><td>Sparse parameters and uncontrolled table growth</td><td><code>min(bucket, MAX_BUCKET)</code></td></tr>
+<tr><td>6</td><td>Writing separate logic online and offline</td><td>Python and C++ bucket boundaries differ</td><td>Looks up wrong-but-legal Embeddings, hard to alert on</td><td>Share a library/config and run feature diffs</td></tr>
+<tr><td>7</td><td>Ignoring OOV behavior</td><td>New keys auto-insert into the table without admission</td><td>High-cardinality features quickly bloat memory</td><td>Confirm OOV, admission, and eviction before launch</td></tr>
+<tr><td>8</td><td>Doing arithmetic on signed signs</td><td>Calling <code>abs()</code> on a negative <code>featureSign</code> for sharding</td><td>Changes the bit pattern or triggers boundary issues</td><td>Treat as unsigned keys/byte strings</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Feature triple</td><td><code>slotId</code> manages the type, <code>featureSign</code> manages the value, <code>value</code> manages the number/weight</td><td>The protocol between business services and model services</td></tr>
+<tr><td>Feature Hashing</td><td>Strings map deterministically into a finite key space; collisions are unavoidable</td><td>Buys vocabulary-free, scalable online processing</td></tr>
+<tr><td>Embedding</td><td>The sign only indexes; the Embedding is a vector trained on supervised signal</td><td>Lets category relations be learned from data, not dictated by hash IDs</td></tr>
+<tr><td>Sparse</td><td>Normalize category → generate sign → <code>value=1.0</code> → look up an independent vector</td><td>Expresses "which category" without spurious magnitude</td></tr>
+<tr><td>Dense</td><td>Validate/transform the number → fix the sign → write the number into <code>value</code> → project</td><td>Preserves "exactly how much" and continuous variation</td></tr>
+<tr><td>Bucketing</td><td>Cut a continuous value into intervals first, then look it up as a category</td><td>Captures non-linear interval effects</td></tr>
+<tr><td>Table scale</td><td>Determined by unique key count × dimension</td><td>High-cardinality features require memory governance</td></tr>
+<tr><td>Engineering consistency</td><td>Hash, slots, buckets, normalization, and missing-value rules must be aligned</td><td>Prevents "service healthy, performance degraded" silent incidents</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: Why can't we just use <code>featureSign</code> as the Embedding?</strong></p>
+<blockquote>
+<p>A: Because the sign is an arbitrary ID — its magnitude and distances carry no business semantics, and converting a 64-bit sign to <code>float32</code> may also lose precision. An Embedding is a set of independent trainable parameters looked up by sign; similarity between categories is learned from data such as clicks and conversions, not determined by hash values.</p>
+</blockquote>
+<p><strong>Q2: Why do dense features also need a <code>featureSign</code>?</strong></p>
+<blockquote>
+<p>A: Under the unified slot protocol, it still has to locate the slot's set of weights. The fixed key means all samples share that set of parameters, scaled by different <code>value</code>s.</p>
+</blockquote>
+<p><strong>Q3: Should a continuous value be bucketed or dense?</strong></p>
+<blockquote>
+<p>A: Use dense when you need exact magnitude and continuous variation; use bucketing when the relation is clearly non-linear or you need interval effects. Important features often use both representations at once.</p>
+</blockquote>
+<p><strong>Q4: Why doesn't the Embedding table grow linearly with request volume?</strong></p>
+<blockquote>
+<p>A: Repeated occurrences of the same sign reuse the same parameter. The table grows with "the number of unique values"; only high-cardinality slots like GUID and ad ID can approach user- or item-level scale.</p>
+</blockquote>
+<p><strong>Q5: Why does changing the bucket width usually require retraining the model?</strong></p>
+<blockquote>
+<p>A: After the width changes, the same business value maps to a different key, and the old Embeddings' semantics no longer line up. Rule changes must ship together with a new model.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>Section 2.3</strong> (two-tower models) aggregates multiple groups of user and item Embeddings into the two side vectors, then uses them for large-scale retrieval.</li>
+<li><strong>Section 3.1</strong> (Wide &amp; Deep) feeds sparse Embeddings and continuous features into the Deep part, establishing the ranking model's generalization capability.</li>
+<li><strong>Section 3.2</strong> (feature crossing) further studies how second- and higher-order interactions occur among different features' Embeddings.</li>
+<li><strong>Section 6.4</strong> (codebook quantization and semantic IDs) presents another discrete representation: making item IDs themselves carry hierarchical semantics.</li>
+<li><strong>Part 11</strong> (generative recommender systems in practice) chains offline feature generation, online feature serving, and model deployment into a complete engineering loop.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through them in order. Later problems progressively add scale, outliers, and consistency constraints.</p>
+<hr />
+<p><strong>Problem 1.3.1 — Dividing Labor in the Triple</strong> 🟢 Easy</p>
+<p>Given <code>CITY=Beijing</code> and <code>estimated_ctr=0.08</code>, explain for each whether the key information should go in <code>featureSign</code> or <code>value</code>.</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> City is a category; CTR is a continuous value — the two have different representation goals.</p>
+<p><strong>Answer:</strong> The categorical identity of <code>CITY=Beijing</code> goes in <code>featureSign</code>, with <code>value</code> usually <code>1.0</code>; CTR uses a fixed sign, with <code>0.08</code> placed in <code>value</code>.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Sparse answers "which category."</li>
+<li>Dense answers "exactly how much."</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.2 — Telling Keys from Vectors</strong> 🟢 Easy</p>
+<p>Suppose <code>hash("male") = hash("20") = 111</code>. Would <code>SEX=male</code> and <code>AGE_BUCKET=20</code> get the same <code>featureSign</code>? And can the final sign be used directly as a model vector?</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> The full key is jointly determined by the high-32-bit slot and the low-32-bit value ID; the key only locates parameters and does not express category semantics.</p>
+<p><strong>Answer:</strong> The two signs are not the same — they are <code>[SEX][111]</code> and <code>[AGE_BUCKET][111]</code> respectively, because the high-bit slots differ. Neither can serve directly as a model vector; each must look up a trainable Embedding in its own slot's parameter table.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Slots isolate different fields.</li>
+<li>Hash collisions only need to be discussed within the same slot.</li>
+<li>Numeric distances between signs have no business meaning and cannot replace Embeddings.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.3 — Choosing a Representation</strong> 🟡 Medium</p>
+<p>You need to add "purchase amount over the last 30 days," with an extremely long-tailed distribution. You want to preserve the magnitude, but also suspect non-monotonic effects across spending intervals. Design the feature representation.</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> A single representation cannot simultaneously achieve continuous precision and free interval effects.</p>
+<p><strong>Answer:</strong> Create two slots: one applies <code>log1p</code> to the amount and treats it as dense; the other uses logarithmic bucketing or offline equal-frequency boundaries as a sparse bucket feature. Both sides unify the outlier, boundary, and top-bucket configuration.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Dense preserves continuous magnitude.</li>
+<li>Bucketing captures non-linearity.</li>
+<li>Check: offline and online should output exactly identical triples for the same amount.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 1.3.4 — Tracking Down a Silent Failure</strong> 🔴 Hard</p>
+<p>A new model's offline AUC is normal, and the online service reports no errors, yet performance drops markedly. Investigation finds that offline Python hashes after <code>value.strip().lower()</code>, while the online C++ hashes the raw string directly. Explain the cause and design a fix plus a recurrence-prevention plan.</p>
+<details>
+<summary>💡 Suggested Answer (click to reveal)</summary>
+<p><strong>Reasoning:</strong> The two sides generated different keys for the same business value, so the online service looked up parameters that were never updated during training.</p>
+<p><strong>Answer:</strong> Unify string normalization and the hash implementation, rebuild the training samples, and retrain the model; before launch, run the offline and online feature logic on the same batch of real requests and diff <code>slotId/featureSign/value</code> field by field. Put normalization rules and hash seeds in a shared library or a single versioned configuration.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>This is feature misalignment, not a model-structure problem.</li>
+<li>The old model cannot be directly adapted to the new keys.</li>
+<li>Check: consistency tests should cover whitespace, casing, null values, and non-ASCII characters.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Estimating the Cost of a High-Cardinality Feature</strong></p>
+<p>An <code>AD_ID</code> slot has 50 million active keys, an Embedding dimension of 16, using FP32. How much memory do the vectors alone require? If training additionally keeps two same-sized optimizer states, what is the minimum total? Then explain why actual deployment is even larger.</p>
+<details>
+<summary>💡 Hint</summary>
+<p>First compute <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">50</span><span class="mord"><span class="mpunct">,</span></span><span class="mord">000</span><span class="mord"><span class="mpunct">,</span></span><span class="mord">000</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> bytes, then multiply by the copies for parameters and optimizer states. Don't forget hash-table keys, pointers, alignment, and load factor.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part1-introduction/book-overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part2-retrieval/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part1-introduction/book-overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part2-retrieval/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

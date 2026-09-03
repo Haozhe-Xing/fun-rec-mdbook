@@ -1,0 +1,750 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Online Pipeline - Deep Recommender Systems in Practice (Fun-Rec Book)</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="From cascading architectures to generative paradigms — a systematic guide to recommender systems">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../styles/website.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Deep Recommender Systems in Practice (Fun-Rec Book)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<div class="badge-row">
+  <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~34 min read</span>
+  <span style="background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(100,100,100,0.15);">🎯 Advanced</span>
+</div>
+<h1 id="the-online-pipeline"><a class="header" href="#the-online-pipeline">The Online Pipeline</a></h1>
+<blockquote>
+<p>📝 <strong>Before You Continue:</strong> Read <a href="./offline-pipeline.html">11.3</a> first and make sure you understand what the offline stage produces (item embeddings, encoders, user tower / ranking model). This section consumes those artifacts and turns requests into recommendation lists.</p>
+</blockquote>
+<p>The online pipeline must complete the full path from user request to recommendation results within a few hundred milliseconds. The entire flow is encapsulated in a unified recommendation pipeline that executes in the order "cold start detection → multi-route retrieval → precise ranking → diversity re-ranking"; candidate counts and on/off switches for each stage are controlled centrally through configuration.</p>
+<p>After reading this chapter, you will be able to:</p>
+<ul>
+<li>Describe how <code>RecommendationPipeline</code> and <code>PipelineConfig</code> wire the full pipeline together</li>
+<li>Explain the cold start detection threshold and the UCB exploration-exploitation formula, and write the score computation and state update code</li>
+<li>Describe the three retrieval routes (YoutubeDNN / I2I / preferred genres) and <strong>Snake Merge</strong> fusion</li>
+<li>Write DeepFM batch ranking, feature encoding reuse, async execution, and fallback strategies</li>
+<li>Explain how Consecutive Dispersion improves diversity while preserving ordering</li>
+<li>Work through 5 tiered practice problems</li>
+</ul>
+<hr />
+<h2 id="1140-code-structure"><a class="header" href="#1140-code-structure">11.4.0 Code Structure</a></h2>
+<p>The online code lives in <code>web_project/backend/online/</code>:</p>
+<pre><code>online/
+├── pipeline.py               # Main recommendation flow
+├── cold_start/               # Cold start handling
+│   ├── detector.py           # Cold start detection
+│   ├── service.py            # Cold start service
+│   ├── ucb_genre.py          # UCB genre exploration
+│   └── preferred_genre.py    # Preferred-genre strategy
+├── recall/                   # Multi-route retrieval
+│   ├── service.py            # Retrieval service and fusion
+│   ├── youtubednn.py         # YoutubeDNN retrieval
+│   ├── item_based.py         # Item similarity retrieval
+│   └── trending.py           # Trending retrieval
+├── ranking/                  # Ranking models
+│   ├── service.py            # Ranking service
+│   └── deepfm.py             # DeepFM ranking
+└── reranking/                # Re-ranking strategies
+    ├── service.py            # Re-ranking service
+    └── dispersion.py         # Dispersion strategy
+</code></pre>
+<p>The offline artifacts (models in the shared directory, Redis features, item embeddings) are the foundation of the online stage. The online path must finish within 200ms, which demands fast inference, efficient access, and coordinated stages.</p>
+<p>The main flow is encapsulated in <code>RecommendationPipeline</code>:</p>
+<p>The interactive walkthrough below traces one complete recommendation request: from the moment a user request arrives, through cold start detection, multi-route retrieval, Snake Merge fusion, DeepFM ranking, and diversity re-ranking, to result assembly and return. Click "Next" to watch the candidate pool shrink stage by stage.</p>
+<iframe src="../viz/part11-request-flow.html?embed&vizId=part11-request-flow" style="width:100%; height:520px; border:none; display:block;" loading="lazy"></iframe>
+<p>Note the candidate counts on the right side of the funnel: the full catalog shrinks to 100 after retrieval and to 20 after ranking, with a target end-to-end latency under 200ms — this is precisely the engineering point of the industrial funnel architecture.</p>
+<pre><code class="language-python">class RecommendationPipeline:
+    def __init__(self):
+        self.recall_service = get_recall_service()
+        self.ranking_service = get_ranking_service()
+        self.reranking_service = get_reranking_service()
+        self.cold_start_service = get_cold_start_service()
+
+    async def recommend(self, user_features, item_features_provider=None, config=None):
+        config = config or PipelineConfig()
+        if config.enable_cold_start and self._is_cold_start(user_features, config):
+            return await self._cold_start_recommend(user_features, item_features_provider, config)
+        candidates = await self._recall(user_features, config.recall_top_k)
+        ranked_items, ranking_strategy = await self._rank(
+            user_features, candidates, item_features_provider, config.ranking_top_k)
+        reranked_items, reranking_strategies = await self._rerank(
+            ranked_items, user_features, item_features_provider)
+        return RecommendationResult(items=reranked_items, ...)
+</code></pre>
+<p><code>PipelineConfig</code> centrally controls each stage's behavior:</p>
+<pre><code class="language-python">@dataclass
+class PipelineConfig:
+    recall_top_k: int = 100        # Number of candidates returned by retrieval
+    ranking_top_k: int = 20        # Number of results returned by ranking
+    enable_ranking: bool = True    # Whether to enable the ranking model
+    enable_reranking: bool = True  # Whether to enable re-ranking
+    enable_cold_start: bool = True
+    cold_start_threshold: int = 5  # Fewer interactions than this → cold start user
+    cold_start_top_k: int = 20
+</code></pre>
+<hr />
+<h2 id="1141-cold-start-detection-and-handling"><a class="header" href="#1141-cold-start-detection-and-handling">11.4.1 Cold Start Detection and Handling</a></h2>
+<p>Cold start is a classic problem: new users have no behavioral data, so both collaborative filtering and embedding-based retrieval fail. This project handles it with a dedicated cold start module.</p>
+<p><strong>Cold start detection</strong> is straightforward — a user whose interaction history is shorter than the threshold counts as a cold start user:</p>
+<pre><code class="language-python">class ColdStartDetector:
+    def __init__(self, threshold: int = 5):
+        self.threshold = threshold
+    def is_cold_start(self, user_features: Dict[str, Any]) -&gt; bool:
+        hist_movie_ids = user_features.get("hist_movie_ids", [])
+        if not hist_movie_ids:
+            return True
+        return len(hist_movie_ids) &lt; self.threshold             # ← KEY LINE: interaction count &lt; threshold → cold start
+</code></pre>
+<p>The threshold is a trade-off: too low, and users enter the normal flow before their preferences have stabilized; too high, and users wait too long for personalization. The default is <strong>5 interactions</strong>.</p>
+<p><strong>Three strategies</strong> are managed uniformly by <code>ColdStartService</code>:</p>
+<pre><code class="language-python">class ColdStartService:
+    def __init__(self):
+        self.detector = ColdStartDetector(threshold=5)
+        self.strategies = [
+            UCBGenreStrategy(),        # Priority 1: UCB exploration
+            PreferredGenreStrategy(),  # Priority 2: user preferences
+            PopularRecentStrategy(),   # Priority 3: trending fallback
+        ]
+    async def recommend(self, user_features, top_k=20):
+        applicable = [s for s in self.strategies if s.can_handle(user_features)]
+        if has_ucb_data:
+            allocations = self._get_ucb_weighted_allocation(applicable, top_k)
+        elif has_preferences:
+            allocations = self._get_preference_weighted_allocation(applicable, top_k)
+        else:
+            allocations = self._get_fallback_allocation(applicable, top_k)
+        results = await asyncio.gather(*[self._run_strategy(s, user_features, k)
+                                          for s, k in allocations if k &gt; 0])
+        return self._merge_results(results, top_k)
+</code></pre>
+<p>Quotas are allocated dynamically based on user state: with rating history, UCB gets 70%; with only preference settings, the preferred-genre strategy gets 80%; with neither, everything goes to trending.</p>
+<p><img src="../images/part11-coldstart.svg" alt="Three-tier cold start strategy: UCB exploration / preferred genres / trending fallback, with quotas allocated dynamically by available information" /></p>
+<p><strong>UCB genre exploration</strong> solves the exploration-vs-exploitation problem:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">UCB</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:3.04em;vertical-align:-1.2065em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8335em;"><span class="svg-align" style="top:-5em;"><span class="pstrut" style="height:5em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9721em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.7935em;"><span class="pstrut" style="height:5em;"></span><span class="hide-tail" style="min-width:1.02em;height:3.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='3.08em' viewBox='0 0 400000 3240' preserveAspectRatio='xMinYMin slice'><path d='M473,2793 c339.3,-1799.3,509.3,-2700,510,-2702 l0 -0 c3.3,-7.3,9.3,-11,18,-11 H400000v40H1017.7 s-90.5,478,-276.2,1466c-185.7,988,-279.5,1483,-281.5,1485c-2,6,-10,9,-24,9 c-8,0,-12,-0.7,-12,-2c0,-1.3,-5.3,-32,-16,-92c-50.7,-293.3,-119.7,-693.3,-207,-1200 c0,-1.3,-5.3,8.7,-16,30c-10.7,21.3,-21.3,42.7,-32,64s-16,33,-16,33s-26,-26,-26,-26 s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,104, 606zM1001 80h400000v40H1017.7z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2065em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8539em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> is the historical average rating of genre <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> is the total number of recommendations, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> is the number of times genre <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> has been recommended, and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> is the exploration coefficient. The first term is <strong>exploitation</strong> (higher average rating is better); the second is <strong>exploration</strong> (the less a genre has been recommended, the higher the uncertainty and the bonus).</p>
+<pre><code class="language-python">class UCBGenreStrategy(ColdStartStrategy):
+    def _calculate_ucb_scores(self, stats, total_n):
+        scores = {}
+        for genre in self.available_genres:
+            if genre in stats and stats[genre]["n"] &gt; 0:
+                n = stats[genre]["n"]
+                avg_reward = stats[genre]["reward"] / n
+                exploration_bonus = self.exploration_c * math.sqrt(
+                    math.log(total_n + 1) / (n + 1e-6))            # ← KEY LINE: exploration bonus decays as recommendation count grows
+                scores[genre] = avg_reward + exploration_bonus
+            else:
+                scores[genre] = 1.0 + self.exploration_c * 2       # ← KEY LINE: unexplored genres get the highest exploration score
+        return scores
+</code></pre>
+<p>UCB statistics are stored in Redis (key <code>user:{user_id}:genre_ucb</code>) and updated whenever the user rates a movie:</p>
+<pre><code class="language-python">def update_ucb_genre_stats(user_id, movie_genres, rating):
+    normalized_reward = rating / 10.0
+    key = f"user:{user_id}:genre_ucb"
+    for genre in movie_genres:
+        current_raw = redis_client.hget(key, genre)
+        if current_raw:
+            current = json.loads(current_raw)
+            current["n"] = current.get("n", 0) + 1
+            current["reward"] = current.get("reward", 0) + normalized_reward
+        else:
+            current = {"n": 1, "reward": normalized_reward}
+        redis_client.hset(key, genre, json.dumps(current))        # ← KEY LINE: incrementally update genre statistics
+</code></pre>
+<p>Benefit: as ratings accumulate, the "exploitation" component of UCB grows, while genres the user hasn't encountered still get chances — avoiding the filter bubble.</p>
+<p><strong>Preferred-genre strategy</strong>: if <code>preferred_genres</code> exists, query Elasticsearch for highly rated movies in those genres (<code>avg_rating&gt;=6.0</code>, <code>rating_count&gt;=20</code>).</p>
+<hr />
+<h2 id="1142-multi-route-retrieval"><a class="header" href="#1142-multi-route-retrieval">11.4.2 Multi-Route Retrieval</a></h2>
+<p>Users with enough behavioral history enter the normal flow. The first stage is retrieval: quickly narrow candidates down from the full catalog.</p>
+<p><strong>Why multiple routes</strong>: any single strategy has blind spots — embedding retrieval can miss relevance the model failed to capture (e.g., newly released niche films with few training samples and inaccurate representations); collaborative filtering undercovers niche items; trending offers no personalization. The idea is "don't put all your eggs in one basket": run several strategies in parallel, then merge.</p>
+<pre><code class="language-python">class RecallService:
+    def __init__(self):
+        self.strategies = [
+            UserPreferenceRecallStrategy(),  # User preferred-genre retrieval
+            ItemEmbeddingRecallStrategy(),   # Item similarity retrieval
+            YouTubeDNNRecallStrategy(),      # Embedding retrieval
+        ]
+</code></pre>
+<p><strong>YoutubeDNN embedding retrieval</strong>: compute the user embedding online, then retrieve the most similar movies in the item embedding space.</p>
+<pre><code class="language-python">class YouTubeDNNRecallStrategy(RecallStrategy):
+    def preprocess_user(self, user_features, max_hist_len=10):
+        inputs = {}
+        encoders = self.resource_manager.encoders
+        for feat in ["user_id", "gender", "age", "occupation", "zip_code"]:
+            raw_val = user_features.get(feat)
+            if raw_val is not None and feat in encoders:
+                try:
+                    val = encoders[feat].transform([str(raw_val)])[0] + 1   # ← KEY LINE: reuse the offline encoder, +1 alignment
+                except:
+                    val = 0
+            else:
+                val = 0
+            inputs[feat] = np.array([val])
+        # History sequence: encode movie IDs + expand genres, left-pad to fixed length
+        ...
+        return inputs
+
+    def _recall_sync(self, user_context, k):
+        model_inputs = self.preprocess_user(user_context)
+        user_emb = self.resource_manager.user_model.predict(model_inputs, verbose=0)
+        user_emb = user_emb / np.linalg.norm(user_emb, axis=1, keepdims=True)
+        scores = np.dot(user_emb, self.resource_manager.item_embedding_matrix.T)[0]  # ← KEY LINE: inner product ≡ cosine
+        top_indices = np.argsort(scores)[::-1][:k]
+        ...
+</code></pre>
+<p>Both user and item embeddings are normalized, so the inner product is equivalent to cosine similarity. With a catalog of only 3,000+ items, a direct inner product is fine; beyond a million items, use FAISS to accelerate.</p>
+<p><strong>Item similarity retrieval (I2I)</strong>: recommend items similar to what the user just watched — this captures immediate interests and reuses the YoutubeDNN item embeddings (which themselves encode collaborative filtering signal).</p>
+<pre><code class="language-python">class ItemEmbeddingRecallStrategy(RecallStrategy):
+    async def recall(self, user_context, k):
+        hist_movie_ids = user_context.get("hist_movie_ids", [])
+        if not hist_movie_ids:
+            return []
+        last_movie_id = hist_movie_ids[0]                            # ← KEY LINE: take the most recently watched movie as the seed
+        enc_idx = movie_le.transform([last_movie_id])[0] + 1
+        target_emb = self.resource_manager.item_embedding_matrix[enc_idx]
+        target_emb = target_emb / np.linalg.norm(target_emb)
+        scores = np.dot(self.resource_manager.item_embedding_matrix, target_emb)
+        top_indices = np.argsort(scores)[::-1][:k+2]
+        ...
+</code></pre>
+<p><strong>User preferred-genre retrieval</strong>: tally the user's preferred genres (computed offline, Top-3 stored in Redis) and retrieve popular movies from those genres. Its strength is stability — even if the user's recent behavior drifts occasionally, it keeps recommending the genres they have liked long-term.</p>
+<p><strong>Snake Merge fusion</strong>: naively merging by score lets one route dominate the list. Snake Merge takes candidates from the routes in rotation, guaranteeing every route sends representatives into ranking:</p>
+<pre><code class="language-python">def _merge_results_round_robin(self, results_list, top_k):
+    merged_candidates = []
+    seen_movie_ids = set()
+    sources = [r if r else [] for r in results_list]
+    source_pointers = [0] * len(sources)
+    direction = 1
+    current_idx = 0
+    while len(merged_candidates) &lt; top_k:
+        all_exhausted = all(source_pointers[i] &gt;= len(sources[i])
+                             for i in range(len(sources)))
+        if all_exhausted:
+            break
+        src_list = sources[current_idx]
+        ptr = source_pointers[current_idx]
+        if ptr &lt; len(src_list):
+            item = src_list[ptr]
+            source_pointers[current_idx] += 1
+            mid = item["movie_id"]
+            if mid not in seen_movie_ids:                          # ← KEY LINE: deduplicate to avoid cross-route repeats
+                merged_candidates.append(item)
+                seen_movie_ids.add(mid)
+        current_idx += direction
+        if direction == 1 and current_idx &gt;= len(sources):
+            direction = -1
+            current_idx = len(sources) - 1
+        elif direction == -1 and current_idx &lt; 0:
+            direction = 1
+            current_idx = 0
+    return merged_candidates
+</code></pre>
+<p>The name comes from the traversal order: with three routes A, B, and C, the merge order is A→B→C→C→B→A→A→B→C…, like a snake weaving back and forth.</p>
+<p><img src="../images/part11-multirecall.svg" alt="Multi-route retrieval: three strategies in parallel + Snake Merge serpentine fusion with deduplication" /></p>
+<hr />
+<h2 id="1143-precise-ranking-deepfm"><a class="header" href="#1143-precise-ranking-deepfm">11.4.3 Precise Ranking (DeepFM)</a></h2>
+<p>Retrieval narrows the field to roughly 100 candidates, but their order is determined by retrieval scores and isn't precise enough. Ranking uses DeepFM to estimate CTR for each candidate and reorder them.</p>
+<p><strong>The core of online inference is feature construction</strong> — each (user, candidate) pair must be encoded into model inputs:</p>
+<pre><code class="language-python">class DeepFMRankingStrategy(RankingStrategy):
+    def _prepare_batch_inputs(self, user_features, candidates):
+        rm = self.resource_manager
+        batch_size = len(candidates)
+        inputs = {}
+        for feat in rm.user_features:                               # ← KEY LINE: user features are shared across all candidates, replicated
+            raw_val = user_features.get(feat)
+            encoded_val = rm.encode_feature(feat, raw_val)
+            inputs[feat] = np.full(batch_size, encoded_val, dtype=np.int32)
+        for feat in rm.item_features:                               # ← KEY LINE: item features differ per candidate
+            encoded_values = [rm.encode_feature(feat, c.get(feat)) for c in candidates]
+            inputs[feat] = np.array(encoded_values, dtype=np.int32)
+        return inputs
+</code></pre>
+<p>Feature encoding reuses the LabelEncoders saved offline, with <strong>codes starting at 1 and 0 reserved for unknowns</strong>, consistent with training:</p>
+<pre><code class="language-python">def encode_feature(self, feat_name, raw_value):
+    if raw_value is None:
+        return 0
+    encoder = self.encoders.get(feat_name)
+    if encoder is None:
+        return 0
+    try:
+        if isinstance(encoder.classes_[0], str) and not isinstance(raw_value, str):
+            raw_value = str(raw_value)
+        if raw_value in encoder.classes_:
+            return int(encoder.transform([raw_value])[0]) + 1       # ← KEY LINE: strictly consistent with offline encoding
+        else:
+            return 0
+    except Exception:
+        return 0
+</code></pre>
+<p>Once the inputs are ready, predict in batch:</p>
+<pre><code class="language-python">def _rank_sync(self, user_features, candidates):
+    inputs = self._prepare_batch_inputs(user_features, candidates)
+    predictions = self.resource_manager.ranking_model.predict(
+        inputs, verbose=0, batch_size=min(len(candidates), 256))   # ← KEY LINE: batch prediction exploits vectorization
+    if predictions.ndim &gt; 1:
+        predictions = predictions.flatten()
+    ranked_results = []
+    for i, candidate in enumerate(candidates):
+        ranked_results.append({
+            "movie_id": candidate["movie_id"],
+            "score": float(predictions[i]),                        # CTR prediction score
+            "recall_score": candidate.get("score", 0.0),
+            "recall_type": candidate.get("recall_type"),
+        })
+    ranked_results.sort(key=lambda x: x["score"], reverse=True)    # ← KEY LINE: reorder by CTR score
+    return ranked_results
+</code></pre>
+<p>Batch prediction on 100 candidates typically takes 10–30ms. Model inference is CPU-intensive, so it runs in a thread pool to avoid blocking the event loop; if the model is unavailable, the system <strong>falls back</strong> to <code>FallbackRankingStrategy</code>, which ranks directly by retrieval score to keep availability high.</p>
+<hr />
+<h2 id="1144-diversity-re-ranking"><a class="header" href="#1144-diversity-re-ranking">11.4.4 Diversity Re-ranking</a></h2>
+<p>After retrieval and ranking, the list may lack diversity (e.g., if action movies dominate, ranking pushes them all to the top). Moderate diversity improves satisfaction and retention.</p>
+<p><strong>Consecutive Dispersion</strong>: no more than <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> consecutive items may share the same attribute. For example, with <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>, [action, action, action, comedy] → [action, action, comedy, action].</p>
+<pre><code class="language-python">class ConsecutiveDispersionStrategy(RerankingStrategy):
+    def _can_add(self, item, result):
+        if len(result) &lt; self._max_consecutive:
+            return True
+        item_key = self._feature_extractor(item)
+        if item_key is None:
+            return True
+        recent_keys = [self._feature_extractor(r)
+                       for r in result[-(self._max_consecutive - 1):]]
+        return not all(k == item_key for k in recent_keys)         # ← KEY LINE: reject if the last N-1 all match
+    async def rerank(self, items, user_features=None):
+        if len(items) &lt;= self._max_consecutive:
+            return items
+        result, deferred = [], []
+        for item in items:
+            if self._can_add(item, result):
+                result.append(item)
+                self._try_insert_deferred(result, deferred)         # ← KEY LINE: prefer inserting candidates that can be added
+            else:
+                deferred.append(item)
+        result.extend(deferred)                                     # append the remainder at the end
+        return result
+</code></pre>
+<p>Two variants are predefined: <strong>genre dispersion</strong> (uses the first genre) and <strong>decade dispersion</strong> (buckets by 10-year period, e.g., the 1990s).</p>
+<pre><code class="language-python">class GenreDispersionStrategy(ConsecutiveDispersionStrategy):
+    def __init__(self, max_consecutive=2):
+        super().__init__(_extract_genre, max_consecutive, "genre_dispersion")
+
+class DecadeDispersionStrategy(ConsecutiveDispersionStrategy):
+    def __init__(self, max_consecutive=2):
+        super().__init__(_extract_decade, max_consecutive, "decade_dispersion")
+</code></pre>
+<p><strong>Strategy chain composition</strong> — strategies run in order, each output feeding the next:</p>
+<pre><code class="language-python">class RerankingService:
+    def __init__(self):
+        self._strategies = [
+            GenreDispersionStrategy(max_consecutive=2),
+            DecadeDispersionStrategy(max_consecutive=2),
+        ]
+    async def rerank(self, items, user_features=None):
+        if not items or not self._enabled:
+            return items
+        result = items
+        for strategy in self._strategies:
+            if strategy.is_ready:
+                result = await strategy.rerank(result, user_features)
+        return result
+</code></pre>
+<p>The key property is <strong>order preservation</strong>: subject to the consecutive constraint, the original order is kept as much as possible — high-scoring items still come first, with only minor positional adjustments — retaining relevance while adding diversity.</p>
+<p><img src="../images/part11-ranking-rerank.svg" alt="Ranking + diversity re-ranking: consecutive dispersion after DeepFM precise ranking preserves order while improving diversity" /></p>
+<hr />
+<h2 id="1145-api-integration-and-service-startup"><a class="header" href="#1145-api-integration-and-service-startup">11.4.5 API Integration and Service Startup</a></h2>
+<p>Once the components are built, they are integrated into FastAPI to expose HTTP endpoints.</p>
+<p><strong>Recommendation API</strong> core logic:</p>
+<pre><code class="language-python">@router.post("/recommend")
+async def get_recommendations(request, db=Depends(get_db), current_user=Depends(get_current_user)):
+    pipeline = get_pipeline()
+    if not pipeline.is_ready:
+        raise HTTPException(status_code=503, detail="Recommendation service not ready")
+    user_features = await build_user_features(current_user, db)
+    async def item_features_provider(movie_ids):
+        movies = await get_movies_by_ids(db, movie_ids)
+        return {m.id: {"movie_id": m.id, "genres": m.genres.split("|") if m.genres else [],
+                       "year": m.year, "isAdult": m.is_adult} for m in movies}
+    config = PipelineConfig(recall_top_k=request.recall_top_k or 100,
+                             ranking_top_k=request.top_k or 20, enable_cold_start=True)
+    result = await pipeline.recommend(user_features=user_features,
+                                       item_features_provider=item_features_provider, config=config)
+    movie_ids = [item.movie_id for item in result.items]
+    movies = await get_movies_by_ids(db, movie_ids)
+    movie_map = {m.id: m for m in movies}
+    return {
+        "recommendations": [{
+            "movie_id": item.movie_id, "title": movie_map[item.movie_id].title,
+            "poster_url": movie_map[item.movie_id].poster_url,
+            "genres": movie_map[item.movie_id].genres, "year": movie_map[item.movie_id].year,
+            "score": item.score, "recall_type": item.recall_type,
+        } for item in result.items if item.movie_id in movie_map],
+        "is_cold_start": result.is_cold_start, "ranking_strategy": result.ranking_strategy,
+    }
+</code></pre>
+<p>Key points: (1) user features are assembled from the DB + Redis; (2) the <code>item_features_provider</code> callback <strong>lazily loads</strong> item features, avoiding loading data at the retrieval stage that may never be used; (3) the pipeline returns IDs + scores, so the database must be queried to fill in titles and posters.</p>
+<p><strong>Resource loading and the singleton pattern</strong> — models are large and should be shared at process level; <code>RecallResourceManager</code> uses a singleton with lazy loading:</p>
+<pre><code class="language-python">class RecallResourceManager:
+    _instance = None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    def __init__(self):
+        if self._initialized:
+            return
+        self.user_model = None
+        self.item_embedding_matrix = None
+        self.encoders = {}
+        self._initialized = True
+    def _ensure_resources_loaded(self):
+        if self.user_model is not None:
+            return
+        self._load_from_local()                                    # ← KEY LINE: load only on first use
+    def _load_from_local(self):
+        deploy_dir = Path(os.getenv("MODEL_DEPLOY_DIR"))
+        with open(deploy_dir / "model" / "user_recall" / "active.json") as f:
+            version_info = json.load(f)                            # ← KEY LINE: read the version pointer to decide which version to load
+        self.user_model = tf.keras.models.load_model(deploy_dir / version_info["path"])
+        self.item_embedding_matrix = np.load(deploy_dir / "item_embeddings.npy")
+        with open(deploy_dir / "vocab_dict.pkl", "rb") as f:
+            self.encoders = pickle.load(f)
+</code></pre>
+<p><strong>Health check</strong>: <code>/health</code> exposes the status of each component for monitoring:</p>
+<pre><code class="language-python">def get_health_status(self):
+    return {
+        "cold_start": {"available": ..., "ready": self.is_cold_start_ready, ...},
+        "recall": {"available": ..., "strategies": len(self.recall_service.strategies)},
+        "ranking": {"available": ..., "ready": self.is_ranking_ready, ...},
+        "reranking": {"available": ..., "ready": self.is_reranking_ready, ...},
+    }
+</code></pre>
+<blockquote>
+<p><strong>Analysis:</strong> The engineering value of the online path lies in "millisecond latency + high availability" — batch prediction, thread-pool async, model fallback, singleton caching, and hot-loading via version pointers all serve these two goals. These are the details papers never mention, yet they decide whether a system can actually ship.</p>
+</blockquote>
+<hr />
+<h2 id="-common-mistakes-in-114"><a class="header" href="#-common-mistakes-in-114">⚠️ Common Mistakes in 11.4</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>#</th><th>Mistake</th><th>Example</th><th>Why It's Wrong</th><th>Fix</th></tr></thead><tbody>
+<tr><td>1</td><td>Encoding inconsistent with offline</td><td>Using a default LabelEncoder online</td><td>Input space misaligned, predictions are garbage</td><td>Reuse the same encoder/vocabulary</td></tr>
+<tr><td>2</td><td>Arbitrary cold start threshold</td><td>Threshold = 50</td><td>Users wait too long for personalization</td><td>Default 5, tune per business</td></tr>
+<tr><td>3</td><td>Single retrieval route, no fusion</td><td>Only embedding retrieval</td><td>Insufficient coverage/diversity</td><td>Multi-route + Snake Merge</td></tr>
+<tr><td>4</td><td>Ranking without fallback</td><td>503 when the model dies</td><td>Availability collapses</td><td>FallbackRankingStrategy</td></tr>
+<tr><td>5</td><td>Dispersion breaks ordering</td><td>Global reshuffle</td><td>High scorers pushed back</td><td>Preserve order under the consecutive constraint</td></tr>
+<tr><td>6</td><td>Reloading the model per request</td><td>No singleton</td><td>Memory blow-up, high latency</td><td>Singleton + lazy loading</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="chapter-summary"><a class="header" href="#chapter-summary">Chapter Summary</a></h2>
+<h3 id="-key-takeaways"><a class="header" href="#-key-takeaways">📌 Key Takeaways</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Key Points</th><th>Why It Matters</th></tr></thead><tbody>
+<tr><td>Pipeline orchestration</td><td>Pipeline + Config wire the full flow</td><td>Every stage controllable and disableable</td></tr>
+<tr><td>Cold start UCB</td><td>Exploitation + exploration formula, incremental Redis stats</td><td>Solves zero-sample exploration-exploitation</td></tr>
+<tr><td>Multi-route retrieval</td><td>Embeddings/I2I/preferences + Snake Merge</td><td>Coverage and diversity together</td></tr>
+<tr><td>Ranking</td><td>DeepFM batch CTR estimation + fallback</td><td>Precise and highly available</td></tr>
+<tr><td>Diversity re-ranking</td><td>Consecutive dispersion + order preservation</td><td>Balances relevance and diversity</td></tr>
+<tr><td>Resource singleton</td><td>Version pointer + lazy loading</td><td>Millisecond latency + hot updates</td></tr>
+</tbody></table>
+</div>
+<h3 id="-faq"><a class="header" href="#-faq">❓ FAQ</a></h3>
+<p><strong>Q1: How was the cold start threshold of 5 chosen?</strong></p>
+<blockquote>
+<p>A: It's an empirical value. Too low, and users enter the normal flow before preferences stabilize (retrieval/ranking are still weak); too high, and users wait too long for personalization. Tune it to your interaction density — lower for high-frequency scenarios, higher for low-frequency ones.</p>
+</blockquote>
+<p><strong>Q2: How is Snake Merge different from naive concatenation with dedup?</strong></p>
+<blockquote>
+<p>A: Naive concatenation sorts by score and truncates to top K, so a strong route can dominate; Snake Merge takes candidates in rotation, structurally guaranteeing every route has representatives entering ranking — better diversity.</p>
+</blockquote>
+<p><strong>Q3: Why not just raise an error when the ranking model dies?</strong></p>
+<blockquote>
+<p>A: Availability comes first in a recommender system. Falling back to ranking by retrieval score still gives users (slightly lower quality) results — far better than a 503. This is the "graceful degradation" principle.</p>
+</blockquote>
+<h3 id="-connections-to-later-chapters"><a class="header" href="#-connections-to-later-chapters">🔗 Connections to Later Chapters</a></h3>
+<ul>
+<li><strong>11.3</strong> provides item embeddings, encoders, and models — the inputs for all online retrieval/ranking.</li>
+<li><strong>2.3 (two-tower)</strong> and <strong>3.x (DeepFM)</strong> are the algorithmic basis of the retrieval and ranking models.</li>
+<li><strong>4.2 (diversity re-ranking)</strong> explains the theoretical motivation for dispersion strategies; this project is an instance of it.</li>
+<li>The recommendation API used in <strong>11.5</strong> calls this section's <code>pipeline.recommend</code>.</li>
+<li><strong>11.6</strong> discusses how to run this entire online service stably in containers.</li>
+</ul>
+<hr />
+<h2 id="practice-problems"><a class="header" href="#practice-problems">Practice Problems</a></h2>
+<p>Work through all problems in order — they get progressively harder. Each has a complete solution you can reveal after trying it yourself.</p>
+<hr />
+<p><strong>Problem 11.4.1 — Cold Start Determination</strong> 🟢 Easy</p>
+<p>A user's watch history is <code>[101, 202, 303]</code> (3 movies) and <code>cold_start_threshold=5</code>. What does <code>is_cold_start</code> return? What if they rate 3 more movies (6 total)?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> 3 &lt; 5 → returns True (cold start). With 6 total, 6 &gt;= 5 → returns False (normal flow).</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The threshold comparison is "fewer than the threshold means cold start."</li>
+<li>Users transition naturally to the normal flow as behavior accumulates.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.2 — UCB Exploration Term</strong> 🟢 Easy</p>
+<p>In the UCB formula, genre A has been recommended 100 times and genre B 2 times, everything else equal (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> is large). Looking only at the exploration term <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.84em;vertical-align:-0.6861em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1539em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2819em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5423em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.1139em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.88em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.88em' viewBox='0 0 400000 1944' preserveAspectRatio='xMinYMin slice'><path d='M983 90 l0 -0 c4,-6.7,10,-10,18,-10 H400000v40 H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7 s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744 c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30 c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722 c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5 c53.7,-170.3,84.5,-266.8,92.5,-289.5z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6861em;"><span></span></span></span></span></span></span></span></span>, which genre scores higher?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> B's exploration term = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/2</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span>, A's = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord mathnormal">c</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop">ln</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/100</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119 c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120 c340,-704.7,510.7,-1060.3,512,-1067 l0 -0 c4.7,-7.3,11,-11,19,-11 H40000v40H1012.3 s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232 c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1 s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26 c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span>. The smaller denominator gives the larger value, so B gets the higher exploration bonus. This is exactly "genres recommended less get higher exploration opportunity," avoiding the filter bubble.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The exploration term decreases as <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> grows.</li>
+<li>Unexplored genres (n=0) get the highest exploration score.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.3 — Snake Merge Order</strong> 🟡 Medium</p>
+<p>Three retrieval routes A, B, C return candidates [a1,a2], [b1,b2], [c1,c2] respectively, with top_k=4 and no duplicate movie_ids across routes. What are the first 4 items (after dedup) of the Snake Merge result, in order?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> The order is A→B→C→C→B→A…. Take a1,b1,c1, then swing back through C for c2. The first 4 = [a1, b1, c1, c2].</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>The serpentine reverses at the ends, ensuring routes take turns.</li>
+<li>Dedup avoids cross-route duplicates entering ranking.</li>
+</ul>
+</details>
+<hr />
+<p><strong>Problem 11.4.4 — Encoding Consistency</strong> 🟡 Medium</p>
+<p>The offline LabelEncoder for gender has classes <code>["F","M"]</code> (transform yields 0/1, +1 gives 1/2). Online, the raw value <code>"M"</code> arrives — what does <code>encode_feature</code> return? What about a value <code>"X"</code> that never appeared in training?</p>
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+<p><strong>Answer:</strong> <code>"M"</code> → transform yields 1, +1 returns 2 (consistent with offline). <code>"X"</code> is not in classes_ → returns 0 (unknown), consistent with the offline padding semantics — the model won't crash.</p>
+<p><strong>Key points:</strong></p>
+<ul>
+<li>Online must reuse the same offline encoder, with +1 alignment.</li>
+<li>Unknown values uniformly encode to 0, ensuring robustness.</li>
+</ul>
+</details>
+<hr />
+<p><strong>🏆 Challenge: Design a Fallback Chain</strong> 🔴 Hard</p>
+<p>Suppose that during one request, retrieval works, but the ranking model fails to load, and the user is not a cold start. Describe the path the system should take, the quality of the returned results, and one fallback scheme that could beat "just rank by retrieval score" (within 150 words).</p>
+<details>
+<summary>💡 Hint</summary>
+<p>Path: cold start detection returns False → multi-route retrieval produces candidates → ranking failure triggers FallbackRankingStrategy (sort by retrieval score) → re-ranking → return. Quality: relevance drops (no precise CTR ranking) but stays available. A better scheme: use I2I/preference retrieval scores as coarse-ranking weights, or fall back to a small model that didn't fail (e.g., logistic regression) rather than pure retrieval scores — improving personalization.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../part11-project/offline-pipeline.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../part11-project/frontend.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../part11-project/offline-pipeline.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../part11-project/frontend.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../scripts/viz-expand.js"></script>
+        <script src="../scripts/in-page-toc.js"></script>
+        <script src="../scripts/callouts.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

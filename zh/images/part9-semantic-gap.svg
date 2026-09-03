@@ -1,0 +1,37 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+    <filter id="shadow9a" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <!-- Left: Collaborative space -->
+  <rect x="30" y="45" width="330" height="240" rx="12" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow9a)"/>
+  <text x="195" y="78" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#4A6CF7">协同语义空间</text>
+  <text x="195" y="100" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Collaborative Semantics</text>
+  <rect x="60" y="120" width="110" height="44" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5"/>
+  <text x="115" y="147" text-anchor="middle" font-family="Courier New" font-size="14" fill="#1e293b">item_12345</text>
+  <text x="195" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">离散 ID · 无语义</text>
+  <text x="195" y="205" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">含义来自用户行为</text>
+  <text x="195" y="230" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">共现模式（协同过滤）</text>
+
+  <!-- Right: Language space -->
+  <rect x="440" y="45" width="330" height="240" rx="12" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shadow9a)"/>
+  <text x="605" y="78" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#10b981">语言语义空间</text>
+  <text x="605" y="100" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Language Semantics</text>
+  <rect x="475" y="120" width="260" height="44" rx="8" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5"/>
+  <text x="605" y="147" text-anchor="middle" font-family="Arial" font-size="13" fill="#1e293b">「塞尔达传说：旷野之息」</text>
+  <text x="605" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">自然语言 · 携带语义</text>
+  <text x="605" y="205" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">含义来自预训练语料</text>
+  <text x="605" y="230" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">词汇/句法关联（LLM）</text>
+
+  <!-- Gap -->
+  <line x1="360" y1="165" x2="440" y2="165" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow9a)"/>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ef4444">语义鸿沟</text>
+  <text x="400" y="290" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">直接把 item_12345 喂给 LLM → 词表外(OOV)符号，无法关联预训练知识</text>
+  <text x="400" y="310" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">标题替换 ID 也无法承载协同信号 · 难以全库检索</text>
+</svg>

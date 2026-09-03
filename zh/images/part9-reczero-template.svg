@@ -1,0 +1,41 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow9j" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shadow9j" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="300" fill="#f8f9fc" rx="12"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">RecZero：结构化框架 + 自由探索</text>
+
+  <text x="400" y="60" text-anchor="middle" font-family="Arial" font-size="13" fill="#64748b">模板只定「步骤与顺序」，内容/关注点/权衡全留给模型在 RL 中探索</text>
+
+  <g font-family="Arial" font-size="13" text-anchor="middle">
+    <rect x="30" y="90" width="170" height="80" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow9j)"/>
+    <text x="115" y="120" font-weight="bold" fill="#1e293b">&lt;analyze user&gt;</text>
+    <text x="115" y="145" font-size="12" fill="#64748b">提取用户兴趣</text>
+
+    <rect x="215" y="90" width="170" height="80" rx="10" fill="#e8ecff" stroke="#4A6CF7" stroke-width="1.5" filter="url(#shadow9j)"/>
+    <text x="300" y="120" font-weight="bold" fill="#1e293b">&lt;analyze item&gt;</text>
+    <text x="300" y="145" font-size="12" fill="#64748b">总结物品特征</text>
+
+    <rect x="400" y="90" width="170" height="80" rx="10" fill="#fef3cd" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow9j)"/>
+    <text x="485" y="120" font-weight="bold" fill="#1e293b">&lt;match&gt;</text>
+    <text x="485" y="145" font-size="12" fill="#64748b">评估匹配度</text>
+
+    <rect x="585" y="90" width="170" height="80" rx="10" fill="#e8f5ee" stroke="#10b981" stroke-width="1.5" filter="url(#shadow9j)"/>
+    <text x="670" y="120" font-weight="bold" fill="#1e293b">&lt;rate&gt;</text>
+    <text x="670" y="145" font-size="12" fill="#64748b">给出评分预测</text>
+  </g>
+
+  <line x1="200" y1="130" x2="211" y2="130" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow9j)"/>
+  <line x1="385" y1="130" x2="396" y2="130" stroke="#4A6CF7" stroke-width="2.5" marker-end="url(#arrow9j)"/>
+  <line x1="570" y1="130" x2="581" y2="130" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrow9j)"/>
+
+  <!-- reward feedback -->
+  <rect x="180" y="210" width="440" height="60" rx="10" fill="#1e293b" filter="url(#shadow9j)"/>
+  <text x="400" y="236" text-anchor="middle" font-family="Courier New" font-size="13" fill="#e2e8f0">r(s,a) = −|y_true − y_pred|</text>
+  <text x="400" y="258" text-anchor="middle" font-family="Arial" font-size="11" fill="#94a3b8">奖励只评最终评分，梯度反向传播到整条推理 → 好推理被强化</text>
+</svg>

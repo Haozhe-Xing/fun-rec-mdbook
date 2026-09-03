@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bid Shading 模拟器：赢率 × 利润 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#60a5fa; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-danger:#ef4444; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .slider{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--c-light);}
+  .slider input{accent-color:var(--c-primary);width:110px;}
+  .slider .val{font-family:"Courier New",monospace;color:var(--c-warn);min-width:34px;text-align:right;}
+  .stage{display:grid;grid-template-columns:1.25fr 1.1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+
+  /* visual panel: chart */
+  #chart svg{width:100%;height:auto;display:block;}
+  .chart-note{font-size:12px;color:var(--c-light);line-height:1.6;margin-top:8px;padding:8px 10px;background:rgba(15,23,42,.6);border-radius:8px;border-left:3px solid var(--c-primary);}
+  .chart-note b{color:var(--c-warn);}
+
+  /* state panel */
+  #state p{margin:6px 0;font-size:13px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #state table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0;}
+  #state th,#state td{border:1px solid #3b4a61;padding:4px 5px;text-align:center;}
+  #state th{color:var(--c-light);font-weight:600;background:rgba(51,65,85,.45);}
+  #state td.mono{font-family:"Courier New",monospace;}
+  .good{color:var(--c-success);font-weight:700;}
+  .bad{color:var(--c-danger);font-weight:700;}
+  .warn{color:var(--c-warn);font-weight:700;}
+  .note{font-size:12px;color:var(--c-light);line-height:1.6;margin-top:8px;padding:8px 10px;background:rgba(15,23,42,.6);border-radius:8px;border-left:3px solid var(--c-primary);}
+  .note b{color:var(--c-success);}
+  .note.warn b{color:var(--c-warn);}
+
+  /* code panel */
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(96,165,250,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>📉 Bid Shading 模拟器：赢率 × 利润的期望 surplus 优化</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+    <span class="slider">估值 v <input id="slv" type="range" min="2" max="10" step="0.5" value="6"/> <span class="val" id="slvv">6.0</span></span>
+    <span class="slider">出价 b <input id="slb" type="range" min="0" max="12" step="0.1" value="6"/> <span class="val" id="slbv">6.0</span></span>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+      <span class="slider">v <input id="slv2" type="range" min="2" max="10" step="0.5" value="6"/> <span class="val" id="slvv2">6.0</span></span>
+      <span class="slider">b <input id="slb2" type="range" min="0" max="12" step="0.1" value="6"/> <span class="val" id="slbv2">6.0</span></span>
+    </div>
+
+  <div class="panel" id="chartPanel">
+    <h3>赢率与期望 surplus 曲线</h3>
+    <div id="chart"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前步骤状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>决策伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+// ── 市场模型：最低赢价 ~ log-normal(μ, σ)，P(win|b) = F(b) ──
+const MU = Math.log(3), SIG = 0.6;
+function normCdf(z){ return 1 / (1 + Math.exp(-1.702 * z)); }        // Φ 的 logistic 近似
+function Pwin(b){ if(b <= 0) return 0; return normCdf((Math.log(b) - MU) / SIG); }
+function ES(b, v){ return (v - b) * Pwin(b); }                       // 可为负（b > v）
+
+function optimum(v){                                                 // 黄金分割思想：粗网格 + 细化
+  let best = 0, bE = 0;
+  for(let b = 0; b <= v + 1e-9; b += 0.02){
+    const s = ES(b, v);
+    if(s > best){ best = s; bE = b; }
+  }
+  let lo = Math.max(0, bE - 0.03), hi = bE + 0.03;
+  for(let i = 0; i < 40; i++){
+    const m1 = lo + (hi - lo) / 3, m2 = hi - (hi - lo) / 3;
+    if(ES(m1, v) < ES(m2, v)) lo = m1; else hi = m2;
+  }
+  return { bstar: (lo + hi) / 2, max: ES((lo + hi) / 2, v) };
+}
+
+let v = 6.0, b = 6.0;
+let cur = 0, timer = null;
+
+const STEP_DESC = ["设定：曲线与坐标", "情形一：b = v，利润归零", "情形二：b 过低，赢率崩塌", "情形三：b = b*，surplus 峰值", "情形四：估值有噪声", "总结"];
+
+// ── 图表：SVG 实时绘制 ──
+function chartSVG(showNoise){
+  const xmax = Math.max(10, v * 1.4);
+  const X = bb => 52 + (bb / xmax) * (444 - 52);
+  const Y = val => 262 - Math.max(0, Math.min(1, val)) * (262 - 30);
+  const { bstar, max } = optimum(v);
+  const emax = Math.max(max, 1e-9);
+  const N = 120;
+  const pts = f => {
+    let s = [];
+    for(let i = 0; i <= N; i++){
+      const bb = (i / N) * xmax;
+      s.push(X(bb).toFixed(1) + "," + Y(f(bb)).toFixed(1));
+    }
+    return s.join(" ");
+  };
+  const pWin = pts(bb => Pwin(bb));
+  const pPro = pts(bb => (v - bb) / v);
+  const pES  = pts(bb => Math.max(0, ES(bb, v)) / emax);
+
+  // 噪声带：v ± 20% 的 E[S] 曲线（各自归一化）
+  let noiseCurves = "";
+  if(showNoise){
+    [0.8, 1.2].forEach(k => {
+      const v2 = v * k;
+      const o2 = optimum(v2);
+      noiseCurves += `<polyline fill="none" stroke="#10b981" stroke-width="1.4" opacity="0.35" stroke-dasharray="4 3"
+        points="${pts(bb => Math.max(0, ES(bb, v2)) / Math.max(o2.max, 1e-9))}"/>`;
+    });
+  }
+
+  // 当前出价标记
+  const curY = Y(Math.max(0, ES(b, v)) / emax);
+  const marker = `
+    <line x1="${X(b)}" y1="30" x2="${X(b)}" y2="262" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <circle cx="${X(b)}" cy="${curY}" r="5.5" fill="#f59e0b" stroke="#0f172a" stroke-width="2"/>`;
+
+  // 最优点标记
+  const optM = `
+    <line x1="${X(bstar)}" y1="30" x2="${X(bstar)}" y2="262" stroke="#10b981" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <circle cx="${X(bstar)}" cy="${Y(Math.max(0, ES(bstar, v)) / emax)}" r="5.5" fill="#10b981" stroke="#0f172a" stroke-width="2"/>`;
+
+  // v 位置标记（一价=估值）
+  const vM = `
+    <line x1="${X(v)}" y1="30" x2="${X(v)}" y2="262" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="3 4"/>
+    <text x="${X(v) + 4}" y="44" font-size="11" fill="#ef4444">b = v</text>`;
+
+  const tick = Math.round(xmax);
+  return `<svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+    <rect x="52" y="30" width="392" height="232" fill="#0b1222" stroke="#334155" stroke-width="1"/>
+    <line x1="52" y1="163" x2="444" y2="163" stroke="#1e293b"/>
+    <line x1="150" y1="30" x2="150" y2="262" stroke="#1e293b"/>
+    <line x1="248" y1="30" x2="248" y2="262" stroke="#1e293b"/>
+    <line x1="346" y1="30" x2="346" y2="262" stroke="#1e293b"/>
+    <line x1="52" y1="96.5" x2="444" y2="96.5" stroke="#1e293b"/>
+    <polyline fill="none" stroke="#60a5fa" stroke-width="2.2" points="${pWin}"/>
+    <polyline fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="7 4" points="${pPro}"/>
+    ${noiseCurves}
+    <polyline fill="none" stroke="#10b981" stroke-width="2.8" points="${pES}"/>
+    ${vM}${optM}${marker}
+    <line x1="52" y1="262" x2="444" y2="262" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="52" y1="30" x2="52" y2="262" stroke="#64748b" stroke-width="1.5"/>
+    <text x="248" y="282" text-anchor="middle" font-size="11" fill="#94a3b8">出价 b（元）</text>
+    <text x="46" y="150" text-anchor="middle" font-size="11" fill="#94a3b8" transform="rotate(-90 46 150)">归一化</text>
+    <text x="52" y="276" font-size="10" fill="#94a3b8">0</text>
+    <text x="444" y="276" text-anchor="end" font-size="10" fill="#94a3b8">${tick}</text>
+    <text x="440" y="46" text-anchor="end" font-size="11" fill="#60a5fa">P(win|b) 赢率</text>
+    <text x="440" y="60" text-anchor="end" font-size="11" fill="#f59e0b">单位利润 (v−b)/v</text>
+    <text x="440" y="74" text-anchor="end" font-size="11" fill="#10b981">E[S]=(v−b)·P(win|b)</text>
+  </svg>`;
+}
+
+// ── 状态面板 ──
+function fmt(x, n = 3){ return x.toFixed(n); }
+
+function stateTable(){
+  const { bstar, max } = optimum(v);
+  const p = Pwin(b), s = ES(b, v);
+  const ratio = max > 1e-9 ? Math.max(0, s) / max : 0;
+  const ratioCls = ratio > 0.95 ? "good" : (ratio < 0.5 ? "bad" : "warn");
+  return `<table>
+    <tr><th>量</th><th>当前值</th><th>说明</th></tr>
+    <tr><td>估值 v</td><td class="mono">${fmt(v,1)}</td><td>滑块可调</td></tr>
+    <tr><td>出价 b</td><td class="mono">${fmt(b,2)}</td><td>滑块可调</td></tr>
+    <tr><td>赢率 P(win|b)</td><td class="mono">${fmt(p * 100,1)}%</td><td>最低赢价 CDF</td></tr>
+    <tr><td>单位利润 v−b</td><td class="mono">${fmt(v - b,2)}</td><td>${v - b < 0 ? '<span class="bad">负利润</span>' : "元/次赢拍"}</td></tr>
+    <tr><td>期望 surplus E[S]</td><td class="mono">${fmt(s,3)}</td><td>(v−b)·P(win|b)</td></tr>
+    <tr><td>最优出价 b*</td><td class="mono">${fmt(bstar,2)}</td><td>argmax E[S]</td></tr>
+    <tr><td>峰值 E[S](b*)</td><td class="mono">${fmt(max,3)}</td><td>可达上限</td></tr>
+    <tr><td>当前 / 最优</td><td class="mono ${ratioCls}">${fmt(ratio * 100,1)}%</td><td>${ratio > 0.95 ? "已达最优 ▲" : (ratio < 0.5 ? "远低于最优 ▼" : "接近最优")}</td></tr>
+  </table>`;
+}
+
+function renderState(){
+  const { bstar, max } = optimum(v);
+  const p = Pwin(b), s = ES(b, v);
+  let head = `<h3>当前步骤状态</h3>`, note = "";
+  if(cur === 0){
+    note = `<div class="note">蓝线是<b>赢率</b> P(win|b)（log-normal 最低赢价 CDF）：出价越高越容易赢。黄虚线是<b>单位利润</b> (v−b)/v：出价越高利润越薄。绿线是二者乘积<b>期望 surplus</b> E[S]=(v−b)·P(win|b)。拖动顶部滑块改变 v 与 b，三条曲线实时刷新。</div>`;
+  } else if(cur === 1){
+    note = `<div class="note warn"><b>一价下按估值出价 = 白干</b>：b = v 时赢率确实最高（${fmt(p*100,1)}%），但每次赢拍都要付出全部价值，v − b = 0，期望 surplus 恰好为零。「诚实」在一价拍卖里没有奖励——出价必须向下遮蔽。</div>`;
+  } else if(cur === 2){
+    const ratio = Math.max(0,s)/max;
+    note = `<div class="note warn"><b>遮蔽过度</b>：b = ${fmt(b,2)} 时单位利润高达 ${fmt(v-b,2)} 元，但赢率崩塌到 ${fmt(p*100,1)}%，期望 surplus 只剩最优值的 ${fmt(ratio*100,1)}%。省下的利润补不回输掉的拍卖——「出得低」和「出得准」是两回事。</div>`;
+  } else if(cur === 3){
+    note = `<div class="note"><b>峰值点</b>：b* = ${fmt(bstar,2)} 处赢率与利润的乘积最大（E[S] = ${fmt(max,3)}）。Verizon DDN（Zhou et al., KDD 2021）证明该 surplus 函数存在<b>唯一全局最优</b>，用黄金分割搜索可在毫秒级求出 b*，满足 RTB 延迟约束。</div>`;
+  } else if(cur === 4){
+    note = `<div class="note"><b>估值噪声下的鲁棒性</b>：浅绿虚线是真实估值 v̂ = 0.8v 与 1.2v 时的 E[S] 曲线——峰值位置随估值漂移，但<b>峰值附近曲线平坦</b>：在平坦区选点，±20% 的估值误差只造成很小的 surplus 损失。分布鲁棒方法进一步用 KL 不确定性集做 max-min 优化，对估计噪声免疫。</div>`;
+  } else {
+    note = `<div class="note">两端皆输：b → 0 赢率崩塌，b = v 利润归零，最优出价藏在中间。关键洞察：估计<b>赢率的分布</b>（最低赢价 CDF）而非点估计。动手拖动滑块：固定 v = ${fmt(v,1)}，把 b 从 0 滑到 v，观察 E[S] 先升后降的倒 U 轨迹。</div>`;
+  }
+  document.getElementById("state").innerHTML = head + stateTable() + note;
+}
+
+// ── 代码面板 ──
+function renderCode(){
+  const { bstar, max } = optimum(v);
+  let code, hl = 1;
+  if(cur === 0){
+    code = ["# 市场模型：最低赢价 ~ log-normal",
+            "P_win(b) = Φ((ln b − μ)/σ)   # μ=ln3, σ=0.6",
+            "E[S](b) = (v − b) · P_win(b)",
+            `v = ${fmt(v,1)}   b = ${fmt(b,2)}   # 滑块可调`,
+            "# 蓝线 P_win，黄线单位利润，绿线 E[S]"]; hl = 2;
+  } else if(cur === 1){
+    code = ["# 情形一：按估值出一价 b = v",
+            `P_win(v) = ${fmt(Pwin(v)*100,1)}%   # 赢率最高`,
+            "v − b = 0                     # 利润归零",
+            `E[S](v) = 0 × ${fmt(Pwin(v),2)} = 0`,
+            "# 一价下「诚实出价」没有奖励"]; hl = 3;
+  } else if(cur === 2){
+    code = ["# 情形二：遮蔽过度 b 过低",
+            `P_win(b) = ${fmt(Pwin(b)*100,1)}%    # 赢率崩塌`,
+            `v − b = ${fmt(v-b,2)}                # 单位利润很高`,
+            `E[S] = ${fmt(v-b,2)} × ${fmt(Pwin(b),2)} ≈ ${fmt(ES(b,v),2)}`,
+            "# 利润救不回输掉的拍卖"]; hl = 3;
+  } else if(cur === 3){
+    code = ["# 情形三：最优出价（黄金分割搜索）",
+            "b* = argmax E[S](b)          # 唯一全局最优",
+            "lo, hi = 0, v                # 峰在 (0, v) 内部",
+            "while hi − lo > ε:           # 每次留 0.618 区间",
+            "    比较 E[S](m1), E[S](m2)  # 无需梯度",
+            `b* = ${fmt(bstar,2)}, E[S] = ${fmt(max,3)}`]; hl = 0;
+  } else if(cur === 4){
+    code = ["# 情形四：估值有噪声 v̂ = v·(1±ε)",
+            "for v_i in [0.8v, v, 1.2v]:  # 三条 E[S] 曲线",
+            "    plot (v_i − b)·P_win(b)  # 峰值位置漂移",
+            "# 峰值附近曲线平坦 → b* 邻域稳健",
+            "# 分布鲁棒：KL 不确定性集 max-min"]; hl = 3;
+  } else {
+    code = ["# 本章要点",
+            "E[S](b) = (v − b) · P_win(b)  # 期望 surplus",
+            "# 估计赢率分布（CDF），而非点估计",
+            "# log-normal 拟合赢价长尾（DDN）",
+            "# 删失数据 → 生存分析；b* 黄金分割搜索",
+            "# 上游 pCTR/pCVR 误差传导至此 → 12.5 校准"]; hl = 1;
+  }
+  document.getElementById("codepre").innerHTML =
+    code.map((l, i) => i === hl ? "<span class='hl'>" + escapeHtml(l) + "</span>" : escapeHtml(l)).join("\n");
+}
+
+// ── 渲染主流程 ──
+function render(){
+  document.getElementById("chart").innerHTML = chartSVG(cur === 4) +
+    `<div class="chart-note">当前 <b>b = ${fmt(b,2)}</b>（橙线）：赢率 ${fmt(Pwin(b)*100,1)}% · 单位利润 ${fmt(v-b,2)} · E[S] = ${fmt(ES(b,v),3)}；绿点为最优 <b>b* = ${fmt(optimum(v).bstar,2)}</b>${cur === 4 ? "（浅绿虚线 = 真实估值 ±20% 的 E[S]）" : ""}</div>`;
+  renderState();
+  renderCode();
+  document.getElementById("slv").value = v;  document.getElementById("slvv").textContent = fmt(v,1);
+  document.getElementById("slb").value = b;  document.getElementById("slbv").textContent = fmt(b,1);
+  document.getElementById("slv2").value = v; document.getElementById("slvv2").textContent = fmt(v,1);
+  document.getElementById("slb2").value = b; document.getElementById("slbv2").textContent = fmt(b,1);
+  document.getElementById("foot").textContent = "步骤 " + (cur+1) + " / " + STEP_DESC.length + " — " + STEP_DESC[cur];
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+function escapeHtml(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p = new URLSearchParams(location.search); return p.get(k);}
+
+function next(){ if(cur < STEP_DESC.length-1){ applyStep(cur+1); } else stopAuto(); }
+function prev(){ if(cur > 0){ applyStep(cur-1); } }
+function applyStep(i){
+  cur = i;
+  const { bstar } = optimum(v);
+  if(cur === 1) b = v;            // 按估值出一价
+  if(cur === 2) b = Math.max(0.5, v * 0.25);  // 遮蔽过度
+  if(cur === 3) b = bstar;        // 最优点
+  if(cur === 4) b = bstar;        // 噪声鲁棒性
+  render();
+}
+function reset(){ v = 6.0; b = 6.0; applyStep(0); }
+function startAuto(){ if(timer) return; timer = setInterval(() => { if(cur >= STEP_DESC.length-1){stopAuto(); return;} next(); }, 2200); }
+function stopAuto(){ if(timer){clearInterval(timer); timer = null;} }
+
+function bindSlider(id, valId, key){
+  document.getElementById(id).oninput = e => {
+    const x = parseFloat(e.target.value);
+    if(key === "v") v = x; else b = x;
+    render();
+  };
+}
+["slv","slv2"].forEach(id => bindSlider(id, null, "v"));
+["slb","slb2"].forEach(id => bindSlider(id, null, "b"));
+
+document.getElementById("next").onclick = next;
+document.getElementById("prev").onclick = prev;
+document.getElementById("reset").onclick = reset;
+document.getElementById("auto").onclick = () => { timer ? stopAuto() : startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click", next);
+document.getElementById("prev2")?.addEventListener("click", prev);
+document.getElementById("reset2")?.addEventListener("click", reset);
+document.getElementById("auto2")?.addEventListener("click", () => { timer ? stopAuto() : startAuto(); });
+
+document.addEventListener("keydown", e => { if(e.key === "ArrowRight") next(); if(e.key === "ArrowLeft") prev(); });
+
+applyStep(0);
+</script>
+</body>
+</html>

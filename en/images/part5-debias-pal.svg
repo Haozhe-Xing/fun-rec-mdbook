@@ -1,0 +1,46 @@
+<svg width="800" height="340" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrP" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4A6CF7"/>
+    </marker>
+    <filter id="shP" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="340" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#1e293b">PAL: Architecturally Decoupling "Seen" from "Liked"</text>
+
+  <!-- p(click) decomposition -->
+  <text x="400" y="64" text-anchor="middle" font-family="Courier New" font-size="13" fill="#1e293b">p(click | u,i,pos) = p(seen | pos)  ×  p(click | u,i,seen)</text>
+
+  <!-- ProbSeen module -->
+  <rect x="40" y="90" width="230" height="120" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shP)"/>
+  <text x="155" y="118" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#4A6CF7">ProbSeen Module</text>
+  <text x="155" y="144" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Input: position only</text>
+  <text x="155" y="166" text-anchor="middle" font-family="Arial" font-size="11" fill="#1e293b">Output: probability of being seen</text>
+  <text x="155" y="190" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">pos1→0.9, pos2→0.7</text>
+
+  <!-- pCTR module -->
+  <rect x="530" y="90" width="230" height="120" rx="8" fill="#e8ecff" stroke="#10b981" stroke-width="2" filter="url(#shP)"/>
+  <text x="645" y="118" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981">pCTR Module</text>
+  <text x="645" y="144" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Input: user / item / context</text>
+  <text x="645" y="166" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">No position feature!</text>
+  <text x="645" y="190" text-anchor="middle" font-family="Courier New" font-size="12" fill="#64748b">True preference model</text>
+
+  <!-- multiply -->
+  <circle cx="400" cy="150" r="22" fill="#f8f9fc" stroke="#1e293b" stroke-width="1.5" filter="url(#shP)"/>
+  <text x="400" y="156" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1e293b">×</text>
+  <line x1="270" y1="150" x2="378" y2="150" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrP)"/>
+  <line x1="530" y1="150" x2="422" y2="150" stroke="#10b981" stroke-width="2" marker-end="url(#arrP)"/>
+
+  <!-- bCTR output -->
+  <rect x="270" y="240" width="260" height="50" rx="8" fill="#10b981" stroke="#065f46" stroke-width="1.5" filter="url(#shP)"/>
+  <text x="400" y="262" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">bCTR = ProbSeen × pCTR</text>
+  <text x="400" y="282" text-anchor="middle" font-family="Arial" font-size="10" fill="#d1fae5">Trained jointly; only pCTR is used at inference</text>
+
+  <line x1="400" y1="172" x2="400" y2="238" stroke="#1e293b" stroke-width="2" marker-end="url(#arrP)"/>
+
+  <rect x="0" y="300" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="324" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">Position is unavailable at serving → pCTR yields a debiased CTR</text>
+</svg>

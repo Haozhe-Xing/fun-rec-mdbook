@@ -1,0 +1,102 @@
+<svg width="800" height="470" viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#4A6CF7"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#10b981"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#f59e0b"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="470" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1e293b">程序化广告生态全景</text>
+  <text x="400" y="54" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">需求方（ Demand ）经 DSP 在 ADX 实时竞价，供应方（ Supply ）经 SSP 接入交易</text>
+
+  <!-- 广告主 -->
+  <rect x="40" y="105" width="130" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="105" y="131" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">广告主</text>
+  <text x="105" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Advertiser</text>
+
+  <!-- Trading Desk -->
+  <rect x="40" y="225" width="130" height="60" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" stroke-dasharray="6 3" filter="url(#shadow)"/>
+  <text x="105" y="251" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">Trading Desk</text>
+  <text x="105" y="269" text-anchor="middle" font-family="Arial" font-size="11" fill="#64748b">跨渠道采买工具</text>
+
+  <!-- DSP -->
+  <rect x="235" y="105" width="150" height="60" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="310" y="130" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">DSP</text>
+  <text x="310" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">需求方平台 · 出价</text>
+
+  <!-- ADX -->
+  <rect x="335" y="255" width="140" height="70" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="405" y="283" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">ADX</text>
+  <text x="405" y="303" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">广告交易平台 · 竞价</text>
+
+  <!-- SSP -->
+  <rect x="530" y="255" width="150" height="70" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="605" y="283" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">SSP</text>
+  <text x="605" y="303" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">供应方平台 · 流量管理</text>
+
+  <!-- 媒体 -->
+  <rect x="640" y="105" width="130" height="60" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+  <text x="705" y="131" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">媒体</text>
+  <text x="705" y="150" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Publisher</text>
+
+  <!-- 用户 -->
+  <rect x="640" y="400" width="130" height="48" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="705" y="429" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1e293b">用户（ 受众 ）</text>
+
+  <!-- DMP -->
+  <rect x="40" y="340" width="180" height="62" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+  <text x="130" y="366" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1e293b">DMP</text>
+  <text x="130" y="386" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">数据管理平台 · 人群数据</text>
+
+  <!-- 广告主 -> DSP -->
+  <line x1="170" y1="135" x2="230" y2="135" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="200" y="122" text-anchor="middle" font-family="Arial" font-size="11" fill="#4A6CF7">预算</text>
+
+  <!-- Trading Desk <-> DSP -->
+  <line x1="105" y1="225" x2="105" y2="170" stroke="#64748b" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="118" y="200" font-family="Arial" font-size="11" fill="#64748b">代理采买</text>
+
+  <!-- DSP <-> ADX (RTB 双向) -->
+  <line x1="330" y1="168" x2="380" y2="250" stroke="#4A6CF7" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="322" y="218" text-anchor="end" font-family="Arial" font-size="12" font-weight="bold" fill="#4A6CF7">出价 bid</text>
+
+  <line x1="398" y1="250" x2="348" y2="168" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+  <text x="418" y="215" font-family="Arial" font-size="12" font-weight="bold" fill="#f59e0b">询价</text>
+
+  <!-- ADX <-> SSP -->
+  <line x1="480" y1="290" x2="525" y2="290" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+  <line x1="525" y1="308" x2="480" y2="308" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="502" y="283" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">广告请求</text>
+  <text x="502" y="324" text-anchor="middle" font-family="Arial" font-size="10" fill="#64748b">成交回传</text>
+
+  <!-- SSP -> 媒体 -->
+  <line x1="625" y1="250" x2="682" y2="170" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="665" y="222" font-family="Arial" font-size="11" fill="#10b981">接入流量</text>
+
+  <!-- 媒体 -> 用户 -->
+  <line x1="705" y1="168" x2="705" y2="395" stroke="#64748b" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrowBlue)"/>
+  <text x="720" y="290" font-family="Arial" font-size="11" fill="#64748b">展示广告</text>
+
+  <!-- DMP -> DSP -->
+  <path d="M 220 355 Q 310 320 310 170" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="252" y="322" font-family="Arial" font-size="11" fill="#ef4444">用户标签 / 人群包</text>
+
+  <!-- DMP -> ADX / SSP 数据供给 -->
+  <path d="M 220 378 Q 300 430 530 320" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="360" y="428" font-family="Arial" font-size="11" fill="#ef4444">数据加工与交易（ 也可供给 ADX/SSP ）</text>
+
+  <!-- ADX 竞价说明 -->
+  <rect x="440" y="120" width="150" height="56" rx="8" fill="#fef9ec" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="515" y="142" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">RTB：一次展示</text>
+  <text x="515" y="160" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">多家 DSP 同时竞价</text>
+  <line x1="455" y1="180" x2="420" y2="250" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 3"/>
+</svg>

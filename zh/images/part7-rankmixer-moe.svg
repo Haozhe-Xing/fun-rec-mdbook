@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <filter id="sh13"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">RankMixer 的硬件效率：MFU 4% → 45%</text>
+
+  <!-- Left DLRM -->
+  <rect x="40" y="60" width="350" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh13)"/>
+  <text x="215" y="86" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">传统 DLRM 计算图（碎片化）</text>
+  <rect x="70" y="105" width="290" height="34" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="215" y="127" font-size="11.5" fill="#1e293b" text-anchor="middle">Embedding Lookup（40% · memory-bound）</text>
+  <rect x="70" y="150" width="290" height="34" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="215" y="172" font-size="11.5" fill="#1e293b" text-anchor="middle">小 kernel 操作（35% · MFU&lt;10%）</text>
+  <rect x="70" y="195" width="290" height="34" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="215" y="217" font-size="11.5" fill="#1e293b" text-anchor="middle">Kernel Launch 开销（20%）</text>
+  <rect x="70" y="250" width="290" height="40" rx="8" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="215" y="275" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">有效 GEMM 仅 ~5%</text>
+  <text x="215" y="320" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">MFU ≈ 4–5%</text>
+
+  <!-- Right RankMixer -->
+  <rect x="430" y="60" width="330" height="300" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh13)"/>
+  <text x="595" y="86" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">RankMixer 计算图（统一 GEMM）</text>
+  <rect x="450" y="105" width="290" height="38" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="595" y="129" font-size="11.5" fill="#1e293b" text-anchor="middle">Token Mixing（GEMM，~85% 计算）</text>
+  <rect x="450" y="153" width="290" height="38" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="595" y="177" font-size="11.5" fill="#1e293b" text-anchor="middle">Per-Token FFN（GEMM）</text>
+  <rect x="450" y="201" width="290" height="38" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="595" y="225" font-size="11.5" fill="#1e293b" text-anchor="middle">Sparse MoE（ReLU + DTSI）</text>
+  <rect x="450" y="256" width="290" height="40" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="595" y="281" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">单 GEMM kernel MFU 60–80%</text>
+  <text x="595" y="322" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">MFU ≈ 45%</text>
+
+  <text x="400" y="388" font-size="12" fill="#64748b" text-anchor="middle">核心：所有操作都是 compute-bound 的大矩阵乘法，可直接用 Tensor Core 与 LLM 工具链</text>
+</svg>

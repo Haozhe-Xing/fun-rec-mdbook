@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <filter id="sh4"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8f9fc"/>
+  <text x="400" y="34" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">M-FALCON：推理三层优化</text>
+
+  <!-- Layer 1 Batched -->
+  <rect x="40" y="70" width="720" height="80" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh4)"/>
+  <rect x="60" y="90" width="180" height="42" rx="8" fill="#f0fdf4" stroke="#10b981"/>
+  <text x="150" y="116" font-size="13" font-weight="700" fill="#10b981" text-anchor="middle">① Batched Inference</text>
+  <text x="270" y="100" font-size="12" fill="#1e293b">把 bₘ 个候选拼一起，改 mask 使候选互不看</text>
+  <text x="270" y="120" font-size="12" fill="#64748b">复杂度 O((n+m)²d) 消除对 m 的线性依赖 → 数十倍加速</text>
+  <line x1="400" y1="150" x2="400" y2="170" stroke="#64748b" marker-end="url(#arr4)"/>
+
+  <!-- Layer 2 Microbatching -->
+  <rect x="40" y="175" width="720" height="80" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh4)"/>
+  <rect x="60" y="195" width="200" height="42" rx="8" fill="#fef9ec" stroke="#f59e0b"/>
+  <text x="160" y="221" font-size="13" font-weight="700" fill="#d97706" text-anchor="middle">② Microbatching</text>
+  <text x="280" y="205" font-size="12" fill="#1e293b">m 很大时分成 ⌈m/bₘ⌉ 个 microbatch（bₘ≈n）</text>
+  <text x="280" y="225" font-size="12" fill="#64748b">控制 (n+bₘ)² 在可控范围，全并行与全串行间找甜点</text>
+  <line x1="400" y1="255" x2="400" y2="275" stroke="#64748b" marker-end="url(#arr4)"/>
+
+  <!-- Layer 3 KV Cache -->
+  <rect x="40" y="280" width="720" height="80" rx="12" fill="#ffffff" stroke="#e8ecff" filter="url(#sh4)"/>
+  <rect x="60" y="300" width="180" height="42" rx="8" fill="#f0f4ff" stroke="#4A6CF7"/>
+  <text x="150" y="326" font-size="13" font-weight="700" fill="#4A6CF7" text-anchor="middle">③ KV Caching</text>
+  <text x="260" y="310" font-size="12" fill="#1e293b">用户历史 K/V 跨 microbatch 复用，只算新增候选 K/V</text>
+  <text x="260" y="330" font-size="12" fill="#64748b">再 +2~4× 加速；可跨请求复用（刷新场景）→ 综合数百倍</text>
+
+  <text x="400" y="388" font-size="12" fill="#64748b" text-anchor="middle">同等延迟预算下，可用复杂数百倍的模型 — 万亿参数可部署的工程基础</text>
+</svg>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>高阶特征交叉 · 交互演示</title>
+<style>
+  :root{
+    --c-bg:#0f172a; --c-panel:#1e293b; --c-primary:#4A6CF7; --c-success:#10b981;
+    --c-warn:#f59e0b; --c-text:#e2e8f0; --c-light:#94a3b8; --c-cell:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"PingFang SC",Arial,sans-serif;background:var(--c-bg);color:var(--c-text);}
+  header{padding:14px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ── embed 模式：隐藏独立页面的 header/footer，紧凑布局 ── */
+  body.embed header,
+  body.embed footer{ display:none !important; }
+  body.embed .stage{
+    height:auto;
+    min-height:480px;
+    padding:14px 16px;
+  }
+  body.embed .panel{ min-height:200px; }
+
+  /* 控制栏（embed 时浮在内容区顶部） */
+  .inline-controls{
+    display:none;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  body.embed .inline-controls{ display:flex; }
+
+  button{background:var(--c-primary);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;}
+  button.sec{background:#334155;}
+  button:hover{opacity:.88;}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px;padding:16px 20px;height:calc(100vh - 130px);}
+  @media(max-width:780px){.stage{grid-template-columns:1fr;height:auto;}}
+  .panel{background:var(--c-panel);border-radius:12px;padding:16px;overflow:auto;}
+  .panel h3{margin:0 0 10px;font-size:13px;color:var(--c-light);text-transform:uppercase;letter-spacing:.05em;}
+  .layer{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:12px;margin-bottom:12px;}
+  .layer.active{border-color:var(--c-primary);box-shadow:0 0 0 2px rgba(74,108,247,.3);}
+  .layer h4{margin:0 0 8px;font-size:13px;color:#fff;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{background:#334155;color:#cbd5e1;font-size:11.5px;padding:4px 8px;border-radius:6px;font-family:"Courier New",monospace;}
+  .chip.on{background:var(--c-primary);color:#fff;}
+  .chip.new{background:var(--c-warn);color:#1e293b;font-weight:700;}
+  #state p{margin:6px 0;font-size:14px;line-height:1.6;}
+  #state .k{color:var(--c-primary);font-weight:600;}
+  #code pre{background:#0f172a;border-radius:8px;padding:12px;font-family:"Courier New",monospace;font-size:12.5px;color:#e2e8f0;line-height:1.7;margin:0;white-space:pre-wrap;}
+  #code .hl{background:rgba(74,108,247,.25);display:block;border-left:3px solid var(--c-primary);padding-left:8px;}
+  footer{padding:8px 20px;font-size:12px;color:var(--c-light);border-top:1px solid #334155;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔗 高阶特征交叉：从二阶到高阶的逐层生成</h1>
+  <div class="controls">
+    <button id="prev" class="sec">◀ 上一步</button>
+    <button id="next">下一步 ▶</button>
+    <button id="auto" class="sec">⏯ 自动播放</button>
+    <button id="reset" class="sec">↺ 重置</button>
+  </div>
+</header>
+
+<div class="stage">
+   <div class="inline-controls" id="inlineCtrl">
+      <button id="prev2" class="sec">◀ 上一步</button>
+      <button id="next2">下一步 ▶</button>
+      <button id="auto2" class="sec">⏯ 自动播放</button>
+      <button id="reset2" class="sec">↺ 重置</button>
+    </div>
+  
+ <div class="panel">
+    <h3>特征组合可视化</h3>
+    <div id="viz"></div>
+  </div>
+  <div class="panel" id="state">
+    <h3>当前阶段状态</h3>
+  </div>
+  <div class="panel" id="code">
+    <h3>伪代码</h3>
+    <pre id="codepre"></pre>
+  </div>
+</div>
+<footer id="foot"></footer>
+
+<script>
+
+// ── embed 模式检测 ──
+if (new URLSearchParams(location.search).has("embed")) document.body.classList.add("embed");
+
+const BASE = ["性别","城市","品类","价格档"];
+const stages = [
+  { name:"① 基础特征（0 阶）", order:0,
+    desc:"模型输入是 4 个原始稀疏特征。此时还没有任何交叉——这正是 Wide&Deep 中需要人工设计交叉特征、而 FM 想要自动学习的起点。",
+    layer:["性别","城市","品类","价格档"], code:["# 基础特征（0 阶）","x = [性别, 城市, 品类, 价格档]","# 还没有任何交叉组合","# 目标：自动学出高阶交互"],
+    hl:0 },
+  { name:"② 第 1 层：二阶交叉", order:2,
+    desc:"把每对基础特征做交叉（如 性别×品类）。FM / DCN 第 1 层 / CIN 第 1 层都能显式产出这些二阶组合。参数共享让稀疏组合也能学。",
+    layer:["性别×城市","性别×品类","性别×价格档","城市×品类","城市×价格档","品类×价格档"], code:["# 二阶交叉：所有特征对","for i<j: cross₂ = <v_i, v_j> * x_i*x_j","# 例：性别×品类","# FM 用隐向量内积，参数仅 O(nk)"],
+    hl:1 },
+  { name:"③ 第 2 层：三阶交叉", order:3,
+    desc:"把二阶组合再与基础特征交叉，得到三阶。DCN 第 2 层（x₂含x₀交叉项）、CIN 第 2 层都明确产出三阶——这才是手工特征工程难以覆盖的。",
+    layer:["性别×城市×品类","性别×城市×价格档","性别×品类×价格档","城市×品类×价格档"], code:["# 三阶交叉：二阶 × 基础特征","for each pair₂, for k:","  cross₃ = cross₂ ⊙ v_k","# DCN: x₂ = x₀(x₁ᵀw₁)+b₁+x₁"],
+    hl:2 },
+  { name:"④ 第 3 层：四阶交叉", order:4,
+    desc:"继续与基础特征交叉，得到四阶组合。堆叠越深，交叉阶数越高——AutoInt / 深层 CIN 可自适应决定是否真的需要这么高阶。",
+    layer:["性别×城市×品类×价格档"], code:["# 四阶交叉：三阶 × 基础特征","cross₄ = cross₃ ⊙ v_price","# 高阶交叉可捕捉复杂联合信号","# 但过高阶易过拟合，需按验证集选层数"],
+    hl:1 },
+  { name:"✅ 合并输出", order:0,
+    desc:"所有层的组合（二阶~四阶）经 Sum Pooling / 加权求和合并，与线性、DNN 部分一起过 Sigmoid。xDeepFM / DCN 正是这样输出最终预测。",
+    layer:[], code:["# 合并各阶交叉","p⁺ = [p₁, p₂, p₃, p₄]","y = σ(w_lin·a + w_cin·p⁺ + b)","# 显式高阶交叉完成"],
+    hl:0 }
+];
+
+let cur = 0, timer = null;
+const viz = document.getElementById("viz");
+const stateEl = document.getElementById("state");
+const codePre = document.getElementById("codepre");
+const foot = document.getElementById("foot");
+
+function escapeHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function getParam(k){const p=new URLSearchParams(location.search);return p.get(k);}
+
+function render(){
+  viz.innerHTML = "";
+  stages.forEach((s, i)=>{
+    const d = document.createElement("div");
+    d.className = "layer" + (i===cur ? " active":"");
+    let html = "<h4>"+s.name+"</h4>";
+    if(s.layer.length){
+      html += "<div class='chips'>";
+      s.layer.forEach(c=>{
+        const isNew = (i===cur);
+        html += "<span class='chip "+(isNew?"new":"on")+"'>"+escapeHtml(c)+"</span>";
+      });
+      html += "</div>";
+    } else {
+      html += "<div class='chips'><span class='chip'>（合并各层输出）</span></div>";
+    }
+    d.innerHTML = html;
+    viz.appendChild(d);
+  });
+
+  const s = stages[cur];
+  stateEl.innerHTML = "<h3>当前阶段状态</h3><p><span class='k'>阶段：</span>"+s.name+"</p><p>"+s.desc+"</p>";
+  codePre.innerHTML = s.code.map((l,i)=> i===s.hl ? "<span class='hl'>"+escapeHtml(l)+"</span>" : escapeHtml(l)).join("\n");
+  foot.textContent = "步骤 "+(cur+1)+" / "+stages.length+" — "+s.name;
+  parent.postMessage({type:"viz-step", step:cur, id:getParam("vizId")}, "*");
+}
+
+function next(){ if(cur<stages.length-1){cur++;render();} else stopAuto(); }
+function prev(){ if(cur>0){cur--;render();} }
+function reset(){ cur=0; render(); }
+function startAuto(){ if(timer) return; timer=setInterval(()=>{ if(cur>=stages.length-1){stopAuto();return;} next(); },1900); }
+function stopAuto(){ if(timer){clearInterval(timer);timer=null;} }
+
+document.getElementById("next").onclick=next;
+document.getElementById("prev").onclick=prev;
+document.getElementById("reset").onclick=reset;
+document.getElementById("auto").onclick=()=>{ timer?stopAuto():startAuto(); };
+
+// embed 内联按钮复用同一组函数
+document.getElementById("next2")?.addEventListener("click",next);
+document.getElementById("prev2")?.addEventListener("click",prev);
+document.getElementById("reset2")?.addEventListener("click",reset);
+document.getElementById("auto2")?.addEventListener("click",()=>{ timer?stopAuto():startAuto(); });
+
+document.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")next(); if(e.key==="ArrowLeft")prev(); });
+render();
+</script>
+</body>
+</html>

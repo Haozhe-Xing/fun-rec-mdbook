@@ -1,0 +1,37 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10b981"/>
+    </marker>
+    <filter id="shM" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" fill="#f8f9fc" rx="12"/>
+
+  <text x="400" y="34" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1e293b">MetaEmbedding: Meta-Learning a Fast-Adapting Initial Embedding</text>
+
+  <!-- Stage A -->
+  <rect x="40" y="70" width="340" height="120" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2" filter="url(#shM)"/>
+  <text x="210" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#4A6CF7">Stage A: Initial Embedding Generation</text>
+  <text x="210" y="126" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">φ_init = h_w(u_i)</text>
+  <text x="210" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Loss l_a(φ_init) computed on D_a</text>
+  <text x="210" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Simulates the cold-start state</text>
+
+  <!-- Stage B -->
+  <rect x="420" y="70" width="340" height="120" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shM)"/>
+  <text x="590" y="98" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#10b981">Stage B: Gradient Adaptation and Eval</text>
+  <text x="590" y="126" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">φ' = φ_init − a·∇l_a(φ_init)</text>
+  <text x="590" y="152" text-anchor="middle" font-family="Arial" font-size="12" fill="#1e293b">Loss l_b(φ') computed on D_b</text>
+  <text x="590" y="174" text-anchor="middle" font-family="Arial" font-size="12" fill="#64748b">Simulates warm-up after a few clicks</text>
+
+  <line x1="380" y1="130" x2="418" y2="130" stroke="#10b981" stroke-width="2" marker-end="url(#arrM)"/>
+
+  <!-- meta loss -->
+  <rect x="200" y="220" width="400" height="56" rx="8" fill="#1e293b" filter="url(#shM)"/>
+  <text x="400" y="246" text-anchor="middle" font-family="Courier New" font-size="13" fill="#e2e8f0">l_meta = α·l_a(φ_init) + (1−α)·l_b(φ')</text>
+  <text x="400" y="266" text-anchor="middle" font-family="Arial" font-size="10" fill="#94a3b8">Balances initial quality and fast adaptation → updates generator w</text>
+
+  <rect x="0" y="280" width="800" height="40" fill="#1e293b" rx="0 0 12 12"/>
+  <text x="400" y="304" text-anchor="middle" font-family="Courier New" font-size="13" fill="#94a3b8">It optimizes learnability, not one fixed embedding</text>
+</svg>
