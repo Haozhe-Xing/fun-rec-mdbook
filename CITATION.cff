@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "RecSys Auto Research KB · 推荐系统自动研究知识库"
+message: "A bilingual (English/Chinese) knowledge base for recommender-system and computational-advertising auto research. If you use it in your research or agent workflows, please cite it."
+type: software
+authors:
+  - given-names: Haozhe
+    family-names: Xing
+repository-code: "https://github.com/Haozhe-Xing/fun-rec-mdbook"
+url: "https://haozhe-xing.github.io/fun-rec-mdbook/"
+abstract: >-
+  A bilingual (English/Chinese) knowledge base for recommender systems and
+  computational advertising auto research. Covers discriminative recommendation
+  (retrieval, ranking, re-ranking with MMR/DPP, debiasing, cold start),
+  generative recommendation (semantic IDs, HSTU, end-to-end OneRec/EGA,
+  reasoning with OneRec-Think/RecZero, diffusion models), and computational
+  advertising (GFP/GSP/VCG auctions, smart bidding, calibration, online
+  allocation, WAND/ANN ad retrieval, data trading, anti-fraud). Every chapter
+  is a citable unit with learning objectives, formula derivations, verified
+  worked examples, practice problems with solutions, Common Mistakes, and FAQs.
+keywords:
+  - recommender systems
+  - computational advertising
+  - generative recommendation
+  - semantic ID
+  - HSTU
+  - auto research
+  - knowledge base
+  - retrieval
+  - ranking
+  - auctions
