@@ -2,23 +2,11 @@
   <h1>RecSys Auto Research KB</h1>
   <p><strong>A knowledge base for recommender-system auto research · from cascading architectures to the generative paradigm</strong></p>
 
-  <p>
-    <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
-    <img alt="Language" src="https://img.shields.io/badge/Language-English-16a34a?style=flat-square">
-    <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square">
-    <img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square">
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a>
-  </p>
+  <p><img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square"><img alt="Language" src="https://img.shields.io/badge/Language-English-16a34a?style=flat-square"><img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square"><img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square"><a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a></p>
 
-  <p>
-    A knowledge base for recommender systems and computational advertising: discriminative recommendation, generative recommendation, and the advertising stack — structured, citable technical knowledge for auto research by humans and AI agents.
-  </p>
+  <p>A knowledge base for recommender systems and computational advertising: discriminative recommendation, generative recommendation, and the advertising stack — structured, citable technical knowledge for auto research by humans and AI agents.</p>
 
-  <p>
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><strong>📖 Read Online</strong></a>
-    ·
-    <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub Repository</a>
-  </p>
+  <p><a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><strong>📖 Read Online</strong></a> · <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub Repository</a></p>
 </div>
 
 ---

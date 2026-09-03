@@ -2,23 +2,9 @@
   <h1>RecSys Auto Research KB · 推荐系统自动研究知识库</h1>
   <p><strong>A Knowledge Base for Recommender-Systems &amp; Computational-Advertising Auto Research</strong></p>
 
-  <p>
-    <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
-    <img alt="Language" src="https://img.shields.io/badge/Language-English%20%7C%20中文-16a34a?style=flat-square">
-    <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems%20%7C%20Computational%20Advertising-f97316?style=flat-square">
-    <img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/Haozhe-Xing/fun-rec-mdbook/deploy.yml?style=flat-square&label=deploy">
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a>
-  </p>
+  <p><img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square"><img alt="Language" src="https://img.shields.io/badge/Language-English%20%7C%20中文-16a34a?style=flat-square"><img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems%20%7C%20Computational%20Advertising-f97316?style=flat-square"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/Haozhe-Xing/fun-rec-mdbook/deploy.yml?style=flat-square&label=deploy"><a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a></p>
 
-  <p>
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/en/">🇺🇸 English</a>
-    ·
-    <a href="#-中文版说明">🇨🇳 中文说明</a>
-    ·
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/zh/">📖 中文版在线阅读</a>
-    ·
-    <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub</a>
-  </p>
+  <p><a href="https://haozhe-xing.github.io/fun-rec-mdbook/en/">🇺🇸 English</a> · <a href="#-中文版说明">🇨🇳 中文说明</a> · <a href="https://haozhe-xing.github.io/fun-rec-mdbook/zh/">📖 中文版在线阅读</a> · <a href="https://github.com/Haozhe-Xing/fun-rec-mdbook">GitHub</a></p>
 </div>
 
 ---
