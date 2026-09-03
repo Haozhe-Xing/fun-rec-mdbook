@@ -8,13 +8,13 @@
 
 > 📝 **Before You Continue:** 建议先读 [8.1](./e2e-recommendation.md) 的语义 ID / Enc-Dec / 强化学习对齐，以及 [8.2](./e2e-search.md) 的强约束检索——广告场景同时叠加了二者的技术挑战，再额外背负**经济学约束**。
 
-[8.1](./e2e-recommendation.md) 与 [8.2](./e2e-search.md) 通过端到端生成架构解决了级联系统的性能瓶颈。但**在线广告**面临更复杂的约束：系统不仅要优化用户体验，还要平衡平台收益与广告主利益，满足竞价机制的经济学约束。传统广告系统「召回→排序→创意选择→竞价→位置分配」的多阶段架构，目标碎片化、难适应快速变化的市场。
+[8.1](./e2e-recommendation.md) 与 [8.2](./e2e-search.md) 通过端到端生成架构解决了级联系统的性能瓶颈。但 **在线广告** 面临更复杂的约束：系统不仅要优化用户体验，还要平衡平台收益与广告主利益，满足竞价机制的经济学约束。传统广告系统「召回→排序→创意选择→竞价→位置分配」的多阶段架构，目标碎片化、难适应快速变化的市场。
 
-端到端生成式广告要突破三个核心挑战：**如何把竞价机制深度融入生成过程**、**如何保证广告主的激励相容性（Incentive Compatibility, IC）**、**如何在超长异构序列中高效建模用户意图**。本节介绍两个工业方案：**EGA** 把竞价机制与生成模型统一，通过 Token 级竞价与 POI 级支付的双层设计内嵌 IC/IR 约束；**GPR** 通过异构层次化解码器与预训练，在微信生态超长异构序列中实现多场景统一建模。
+端到端生成式广告要突破三个核心挑战： **如何把竞价机制深度融入生成过程**、**如何保证广告主的激励相容性（Incentive Compatibility, IC）**、**如何在超长异构序列中高效建模用户意图**。本节介绍两个工业方案： **EGA** 把竞价机制与生成模型统一，通过 Token 级竞价与 POI 级支付的双层设计内嵌 IC/IR 约束； **GPR** 通过异构层次化解码器与预训练，在微信生态超长异构序列中实现多场景统一建模。
 
 读完本章，你将能够：
 
-- 解释广告场景相对推荐/搜索的**三重约束**（IC/IR、POI+创意联合、分配支付解耦）
+- 解释广告场景相对推荐/搜索的 **三重约束** （IC/IR、POI+创意联合、分配支付解耦）
 - 描述 **EGA** 的双模态语义 ID、概率分解生成与 Token 级竞价机制
 - 说明 **ex-post regret** 与 **Lagrangian 优化** 如何近似保证激励相容
 - 概述 **GPR** 的四类 Token、RQ-Kmeans+、异构层次化解码器与价值引导 Trie Beam Search
@@ -30,11 +30,11 @@
 
 $$u_i(v_i; v_i, \boldsymbol{b}_{-i}) \geq u_i(v_i; b_i, \boldsymbol{b}_{-i}), \quad \forall b_i \in \mathbb{R}^+$$
 
-效用 $u_i = (v_i - p_i) \cdot \text{pCTR}_i$（点击收益减支付）。IR 要求支付不超竞价 $p_i \leq b_i$。传统 GSP 拍卖按「下一位价格支付」保 IC，但假设广告相互独立、无法处理位置外部性。
+效用 $u_i = (v_i - p_i) \cdot \text{pCTR}_i$（点击收益减支付）。IR 要求支付不超竞价 $p_i \leq b_i$。注意传统 GSP 拍卖按「下一位价格支付」在多坑位场景下并 **不满足** IC（仅 VCG 满足，但工程上难以落地），且它假设广告相互独立、无法处理位置外部性。
 
 **约束二：POI 与创意的联合生成。** 一个 POI（餐厅）可关联多张创意图，不同用户偏好不同创意。系统须联合决定「展示哪个 POI」与「用哪张创意」——POI 定内容主体，创意优化呈现方式。
 
-**约束三：分配与支付的解耦设计。** 若直接把竞价当生成概率权重，会导致「赢家诅咒」：高竞价广告按自己竞价支付，广告主倾向压价。EGA 分离**分配**（竞价引导生成概率）与**支付**（独立网络学 IC 支付函数）两模块解决矛盾。
+**约束三：分配与支付的解耦设计。** 若直接把竞价当生成概率权重，会导致「赢家诅咒」：高竞价广告按自己竞价支付，广告主倾向压价。EGA 分离 **分配** （竞价引导生成概率）与 **支付** （独立网络学 IC 支付函数）两模块解决矛盾。
 
 > 💡 **Key Insight:** 广告的端到端难点，是生成模型要「顺便」满足一套经济学机制——这不只影响目标函数，更要求架构上把「分配」与「支付」解耦，才可能用数学保证 IC/IR。
 
@@ -58,7 +58,7 @@ $$P(\boldsymbol{a}_{t+1}^{\text{poi}}, \boldsymbol{a}_{t+1}^{\text{img}} \mid \m
 
 ### Encoder-Decoder 双解码器
 
-EGA 用经典 Enc-Dec，但用**两个解码器**分别生成 POI 与创意。编码器处理混合了广告与有机内容的历史序列 $\mathcal{S}^u$（每项标 type∈{ad, organic}），输出 $\mathcal{S}^e = \text{Encoder}(\mathcal{S}^u)$。**POI 解码器** 自回归生成 3 层语义 ID；**创意解码器** 以生成的 POI Token 为条件生成创意 ID——输入含 POI Token 序列，使模型据 POI 语义选匹配创意。
+EGA 用经典 Enc-Dec，但用 **两个解码器** 分别生成 POI 与创意。编码器处理混合了广告与有机内容的历史序列 $\mathcal{S}^u$（每项标 type∈{ad, organic}），输出 $\mathcal{S}^e = \text{Encoder}(\mathcal{S}^u)$。**POI 解码器** 自回归生成 3 层语义 ID； **创意解码器** 以生成的 POI Token 为条件生成创意 ID——输入含 POI Token 序列，使模型据 POI 语义选匹配创意。
 
 **MTP 模块。** 标准解码器每步只预测下一 Token；EGA 用 **MTP（Multi-Token Prediction）** 每步同时监督两解码器，让它们共享底层表示、加速收敛并提升一致性：
 
@@ -68,7 +68,7 @@ $$\mathcal{L}_{\text{pre-train}} = \mathcal{L}_{\text{NTP}}^{\text{POI}} + \math
 
 ### 排列感知奖励模型：处理位置外部性
 
-预训练模型不知「哪个广告更好」。竞价微调需要奖励模型，但广告场景必须处理**位置外部性**——广告非独立：位置效应（位置 1 的 CTR 远高于位置 5）、相邻效应（两个相邻餐饮广告相互抑制）、对比效应（高质量后跟低质量 CTR 下降）。数学上：
+预训练模型不知「哪个广告更好」。竞价微调需要奖励模型，但广告场景必须处理 **位置外部性**——广告非独立：位置效应（位置 1 的 CTR 远高于位置 5）、相邻效应（两个相邻餐饮广告相互抑制）、对比效应（高质量后跟低质量 CTR 下降）。数学上：
 
 $$\text{pCTR}_i = f(\text{user}, \text{item}_i, \mathcal{Y}_{-i}, \text{pos}_i)$$
 
@@ -76,7 +76,7 @@ $$\text{pCTR}_i = f(\text{user}, \text{item}_i, \mathcal{Y}_{-i}, \text{pos}_i)$
 
 $$\boldsymbol{h}_i = [\text{Embed}(\boldsymbol{a}_i^{\text{poi}}); \text{Embed}(\boldsymbol{a}_i^{\text{img}}); \boldsymbol{e}_i^{\text{poi}}], \quad \boldsymbol{h}_f = \text{SelfAttention}(\boldsymbol{h} W^Q, \boldsymbol{h} W^K, \boldsymbol{h} W^V)$$
 
-三个独立塔分别预测 **POI-CTR / Creative-CTR / CVR**，综合奖励：
+三个独立塔分别预测 **POI-CTR / Creative-CTR / CVR** ，综合奖励：
 
 $$\hat{r}_i = \lambda_1 \hat{r}_i^{\text{pctr-poi}} + \lambda_2 \hat{r}_i^{\text{pctr-img}} + \lambda_3 \hat{r}_i^{\text{pcvr}}$$
 
@@ -84,9 +84,9 @@ $$\hat{r}_i = \lambda_1 \hat{r}_i^{\text{pctr-poi}} + \lambda_2 \hat{r}_i^{\text
 
 ### Token 级竞价：最大值聚合
 
-生成式框架输出 Token 序列，而 Token 与广告是**多对多**关系（一个广告编成多个 Token；一个 Token 可能对应多个广告），传统 item-level bid 不可用。EGA 用两层设计：
+生成式框架输出 Token 序列，而 Token 与广告是 **多对多** 关系（一个广告编成多个 Token；一个 Token 可能对应多个广告），传统 item-level bid 不可用。EGA 用两层设计：
 
-**Token 级竞价聚合（最大值）。** 对第 $j$ 层 Token $a_i^j$ 对应的广告集 $\{x_1,\ldots,x_{N_i}\}$，用**最大值**聚合竞价：
+**Token 级竞价聚合（最大值）。** 对第 $j$ 层 Token $a_i^j$ 对应的广告集 $\{x_1,\ldots,x_{N_i}\}$，用 **最大值** 聚合竞价：
 
 $$b(a_i^j) = \max(b_1, b_2, \ldots, b_{N_i})$$
 
@@ -99,7 +99,7 @@ $$z(a_i^j) = \frac{w(a_i^j) \cdot e^{a_i^j}}{\sum_{k=1}^W [w(a^{j,k}) \cdot e^{a
 
 ### POI 级支付网络：学习满足 IC 的支付
 
-直接按生成概率 $z$ 支付有问题：生成概率不可微且难保 IC。EGA **解耦分配与支付**：分配用竞价引导，支付用独立神经网络学 IC 支付函数。支付网络输入含 POI 序列表示、自排除竞价矩阵（仅依赖他人竞价与自己分配，是 IC 关键）、期望价值（分配概率 × pCTR）。Sigmoid 输出支付率：
+直接按生成概率 $z$ 支付有问题：生成概率不可微且难保 IC。EGA **解耦分配与支付** ：分配用竞价引导，支付用独立神经网络学 IC 支付函数。支付网络输入含 POI 序列表示、自排除竞价矩阵（仅依赖他人竞价与自己分配，是 IC 关键）、期望价值（分配概率 × pCTR）。Sigmoid 输出支付率：
 
 $$\hat{p} = \sigma(\text{MLP}(\mathcal{S}^*; \mathcal{B}^-; \mathcal{Z} \cdot \Theta)), \quad p_i = \hat{p}_i \cdot b_i$$
 
@@ -117,9 +117,9 @@ $$\mathcal{L}_{\text{Pay}} = -\frac{1}{|\mathcal{D}|}\sum_{d} \left( \sum_i p_i 
 
 ### 两阶段联合训练
 
-**阶段一 Interest-based Pre-training**：忽略竞价，用曝光序列训 NTP+MTP 联合损失，得基础生成模型 $\mathcal{F}$。
+**阶段一 Interest-based Pre-training** ：忽略竞价，用曝光序列训 NTP+MTP 联合损失，得基础生成模型 $\mathcal{F}$。
 
-**阶段二 Auction-based Post-training**：引入竞价、奖励模型、支付网络，三子任务交替：(1) 奖励模型用真实反馈训多任务 BCE，冻结构成评估器；(2) **Policy Gradient** —— 非自回归策略梯度，边际贡献奖励 $r_{y_i} = \sum b_j \hat{r}_j^{\text{pctr}} - \sum_{y_j \in \mathcal{S}^*_{-i}} b_j \hat{r}_j^{\text{pctr}}$，损失 $-\sum r_{y_i} \log z_{y_i}$；(3) 支付网络用 Lagrangian 最小化 ex-post regret。
+**阶段二 Auction-based Post-training** ：引入竞价、奖励模型、支付网络，三子任务交替：(1) 奖励模型用真实反馈训多任务 BCE，冻结构成评估器；(2) **Policy Gradient** —— 非自回归策略梯度，边际贡献奖励 $r_{y_i} = \sum b_j \hat{r}_j^{\text{pctr}} - \sum_{y_j \in \mathcal{S}^*_{-i}} b_j \hat{r}_j^{\text{pctr}}$，损失 $-\sum r_{y_i} \log z_{y_i}$；(3) 支付网络用 Lagrangian 最小化 ex-post regret。
 
 > **Analysis:** EGA 的核心价值是把「竞价机制」从外部规则变成生成模型内部可微的一部分——Token 级竞价引导分配、POI 级支付网络保证 IC。相对 OneRec 的差异在于引入竞价信号、IC 约束与排列感知。局限：RQ-VAE 与 Enc-Dec 针对单一场景，难统一跨场景；标准 Transformer 输入受限 $O(L^2)$ 难处理数万长序列；Beam Search 生成大量无效候选增延迟。这催生了 GPR。
 
@@ -127,7 +127,7 @@ $$\mathcal{L}_{\text{Pay}} = -\frac{1}{|\mathcal{D}|}\sum_{d} \left( \sum_i p_i 
 
 ## 8.3.2 GPR：预训练驱动的广告生成
 
-EGA 强调「竞价驱动」；**GPR（Generative Pre-trained Recommender）** 采用「预训练 + 微调」范式，先在海量无监督数据上学通用兴趣表示，再经价值感知微调与 RL 对齐业务目标。它在微信生态（视频号/朋友圈/公众号/小程序）应对跨场景、超长序列、100ms 实时性挑战。
+EGA 强调「竞价驱动」； **GPR（Generative Pre-trained Recommender）** 采用「预训练 + 微调」范式，先在海量无监督数据上学通用兴趣表示，再经价值感知微调与 RL 对齐业务目标。它在微信生态（视频号/朋友圈/公众号/小程序）应对跨场景、超长序列、100ms 实时性挑战。
 
 ### 统一输入表示：四类 Token
 
@@ -142,14 +142,14 @@ GPR 把用户完整行为旅程编码为四类 Token 的混合序列：
 
 ### RQ-Kmeans+：解决 Codebook Collapse
 
-O/I-Token 量化时传统 RQ-VAE 面临 **codebook collapse**：随机初始化码本中某些码字从未激活，利用率仅 60–70%。**RQ-Kmeans+** 结合 RQ-Kmeans 高质量初始化与 RQ-VAE 端到端优化：
+O/I-Token 量化时传统 RQ-VAE 面临 **codebook collapse** ：随机初始化码本中某些码字从未激活，利用率仅 60–70%。**RQ-Kmeans+** 结合 RQ-Kmeans 高质量初始化与 RQ-VAE 端到端优化：
 
 **步骤 1** RQ-Kmeans 在残差上 K-means 构建初始码本（保证每码字至少分配到样本，避免死码字）。
 **步骤 2** 用其作 RQ-VAE 初始权重，编码器侧加残差连接 $\boldsymbol{z} = \text{Encoder}(\boldsymbol{e}) + \alpha \cdot \boldsymbol{e}$（$\alpha\in[0,1]$ 可学），再用标准 RQ-VAE 损失端到端训练。效果：码本利用率从 65% 升至 92%，重构误差降 15%。
 
 ### 异构层次化解码器（HHD）
 
-EGA 的 Enc-Dec 把编码器解码器紧耦合，数万长序列会显存/算力瓶颈。GPR 提出 **HHD（Heterogeneous Hierarchical Decoder）**，三层解耦实现「先理解、再推理、后生成」：
+EGA 的 Enc-Dec 把编码器解码器紧耦合，数万长序列会显存/算力瓶颈。GPR 提出 **HHD（Heterogeneous Hierarchical Decoder）** ，三层解耦实现「先理解、再推理、后生成」：
 
 ![GPR 异构层次化解码器（HSD 意图理解 / PTD 推理生成 / HTE 价值评估）](../images/part8-gpr-hd.svg)
 
@@ -158,18 +158,18 @@ EGA 的 Enc-Dec 把编码器解码器紧耦合，数万长序列会显存/算力
 - **Token-Aware Normalization**——U/O/E/I 四类 Token 分布差异巨大，各分配独立 LayerNorm 与 FFN，投影到各自语义子空间。
 - **MoR（Mixture-of-Recursions）**——同层递归调用自身 $R$ 次（可学权重 $w_r$），不增参却增加推理深度，类似「多轮思考」。
 
-HSD 输出**意图嵌入** $\mathcal{S}^e$。
+HSD 输出 **意图嵌入** $\mathcal{S}^e$。
 
 **第二层 PTD（Token-wise Decoder）——推理与生成。** 设计「Thinking-Refining-Generation」三段式：
-- **Thinking**：生成 $K=4$ 个 Thinking Tokens（可学查询向量经 Cross-Attention 从意图嵌入提取关键信号，过滤无关）。
-- **Refining**：借鉴 Self-Reflection，对 Thinking Tokens 加高斯噪声后条件去噪 Transformer 迭代优化（类似 Stable Diffusion），提升复杂用户生成质量 2–3%。
-- **Generation**：基于 refined 表示自回归生成目标广告语义 ID（3 层 RQ）。
+- **Thinking** ：生成 $K=4$ 个 Thinking Tokens（可学查询向量经 Cross-Attention 从意图嵌入提取关键信号，过滤无关）。
+- **Refining** ：借鉴 Self-Reflection，对 Thinking Tokens 加高斯噪声后条件去噪 Transformer 迭代优化（类似 Stable Diffusion），提升复杂用户生成质量 2–3%。
+- **Generation** ：基于 refined 表示自回归生成目标广告语义 ID（3 层 RQ）。
 
-**第三层 HTE（Token-wise Evaluator）——价值评估。** 在**每一层 Token 生成时就输出价值估计** $v^l = \text{MLP}_{\text{value}}([\boldsymbol{h}^{(l)}; \text{Embed}(a^l)])$，最终广告价值 $final\_value = w_1\cdot\text{pCTR}+w_2\cdot\text{pCVR}+w_3\cdot\text{eCPM}$。HTE 用于 Beam Search 剪枝与 Policy Optimization 的 Critic。
+**第三层 HTE（Token-wise Evaluator）——价值评估。** 在 **每一层 Token 生成时就输出价值估计** $v^l = \text{MLP}_{\text{value}}([\boldsymbol{h}^{(l)}; \text{Embed}(a^l)])$，最终广告价值 $final\_value = w_1\cdot\text{pCTR}+w_2\cdot\text{pCVR}+w_3\cdot\text{eCPM}$。HTE 用于 Beam Search 剪枝与 Policy Optimization 的 Critic。
 
 ### 价值引导的 Trie Beam Search
 
-EGA 标准 Beam Search 生成大量无效候选（预算耗尽、定向不匹配、地域限制）。GPR 提出 **Value-Guided Trie-based Beam Search**，把价值估计与约束过滤集成进解码：
+EGA 标准 Beam Search 生成大量无效候选（预算耗尽、定向不匹配、地域限制）。GPR 提出 **Value-Guided Trie-based Beam Search** ，把价值估计与约束过滤集成进解码：
 
 **Trie 树约束。** 依用户画像与广告投放约束（年龄/定向/预算/地域）过滤出有效广告子集 $\mathcal{X}_{\text{valid}}$，提取各自 3 层语义 ID 构建 Trie 前缀树。解码第 $l$ 层时只从 Trie 当前节点子集合采样，而非全码本（$W=1024$），搜索空间从 $W^3$ 缩到 $|\mathcal{X}_{\text{valid}}|$。
 
@@ -191,11 +191,11 @@ $$B_{\text{next}}(a^l) = \max\left(B_{\text{min}}, B_{\text{base}} \times \exp\l
 
 ### 多阶段训练策略
 
-**阶段一 MTP 预训练**：海量微信全场景行为日志（视频号/朋友圈/公众号/广告），目标 $\mathcal{L}_{\text{pre-train}} = \mathcal{L}_{\text{NTP}}^{\text{POI}} + \mathcal{L}_{\text{MTP}}^{\text{Creative}}$，数十亿用户、数千亿交互，最大 8B 参数。
+**阶段一 MTP 预训练** ：海量微信全场景行为日志（视频号/朋友圈/公众号/广告），目标 $\mathcal{L}_{\text{pre-train}} = \mathcal{L}_{\text{NTP}}^{\text{POI}} + \mathcal{L}_{\text{MTP}}^{\text{Creative}}$，数十亿用户、数千亿交互，最大 8B 参数。
 
-**阶段二 Value-Aware Fine-tuning**：冻结 HSD/PTD，只用真实反馈训 HTE 多任务塔（BCE 损失），引入点击/转化业务监督。
+**阶段二 Value-Aware Fine-tuning** ：冻结 HSD/PTD，只用真实反馈训 HTE 多任务塔（BCE 损失），引入点击/转化业务监督。
 
-**阶段三 HEPO（Hierarchy Enhanced Policy Optimization）**：同时在 token 级与 item 级做策略梯度。Token 级优势 $A_{\text{token}}^l = v^l - \bar{v}^l$（方差远小于 item 级）；Item 级奖励 $R_{\text{item}} = b_i \cdot \hat{r}_i^{\text{pctr}} + \lambda \cdot \hat{r}_i^{\text{pcvr}}$；层次化聚合 $A_{\text{item}} = \sum_{l=1}^{C} \gamma^l A_{\text{token}}^l$。损失：
+**阶段三 HEPO（Hierarchy Enhanced Policy Optimization）** ：同时在 token 级与 item 级做策略梯度。Token 级优势 $A_{\text{token}}^l = v^l - \bar{v}^l$（方差远小于 item 级）；Item 级奖励 $R_{\text{item}} = b_i \cdot \hat{r}_i^{\text{pctr}} + \lambda \cdot \hat{r}_i^{\text{pcvr}}$；层次化聚合 $A_{\text{item}} = \sum_{l=1}^{C} \gamma^l A_{\text{token}}^l$。损失：
 
 $$\mathcal{L}_{\text{HEPO}} = -\mathbb{E} \left[ \sum_{l=1}^C A_{\text{token}}^l \log \pi_\theta(a^l) + \beta \cdot A_{\text{item}} \log \pi_\theta(\text{item}) \right]$$
 
@@ -204,9 +204,9 @@ $$\mathcal{L}_{\text{HEPO}} = -\mathbb{E} \left[ \sum_{l=1}^C A_{\text{token}}^l
 ### 设计权衡
 
 GPR 全量上线微信视频号广告，相对级联系统：GMV 与 CTCVR 提升、推理延迟从 200ms+ 降至 80ms、模型从 5 个独立模型简化为 1 个。权衡在于：
-- **架构复杂度 vs 场景通用性**：HHD 三层 + Thinking-Refining-Generation 代码量为 EGA 2 倍以上，但换来跨场景统一（视频号/朋友圈/公众号共用一模型）。
-- **预训练成本 vs 零样本迁移**：预训练耗数千 GPU 卡数周，但新场景上线只需少量微调。
-- **端到端优化 vs 可解释性**：黑盒难定位异常，靠 Thinking Tokens 可视化、HTE 分层价值输出部分缓解。
+- **架构复杂度 vs 场景通用性** ：HHD 三层 + Thinking-Refining-Generation 代码量为 EGA 2 倍以上，但换来跨场景统一（视频号/朋友圈/公众号共用一模型）。
+- **预训练成本 vs 零样本迁移** ：预训练耗数千 GPU 卡数周，但新场景上线只需少量微调。
+- **端到端优化 vs 可解释性** ：黑盒难定位异常，靠 Thinking Tokens 可视化、HTE 分层价值输出部分缓解。
 
 ---
 
@@ -249,10 +249,10 @@ GPR 全量上线微信视频号广告，相对级联系统：GMV 与 CTCVR 提�
 
 ### 🔗 前后关联
 
-- **8.1**（端到端生成式推荐）的语义 ID / Enc-Dec / RL 对齐是 EGA、GPR 的方法基础。
-- **8.2**（端到端生成式搜索）的强约束检索（KHQE、约束 Beam Search）与 GPR 的 Trie 约束解码一脉相承。
-- **6.x**（生成式基础）的 RQ-VAE 量化，在本节以 EGA 的 RQ-VAE 与 GPR 的 RQ-Kmeans+ 两种形态出现。
-- **9.1–9.3**（生成式思考/推理）将进一步讨论 Thinking Tokens 类「推理步骤」如何提升生成质量，与 GPR 的 PTD Thinking-Refining 阶段互补。
+- **8.1** （端到端生成式推荐）的语义 ID / Enc-Dec / RL 对齐是 EGA、GPR 的方法基础。
+- **8.2** （端到端生成式搜索）的强约束检索（KHQE、约束 Beam Search）与 GPR 的 Trie 约束解码一脉相承。
+- **6.x** （生成式基础）的 RQ-VAE 量化，在本节以 EGA 的 RQ-VAE 与 GPR 的 RQ-Kmeans+ 两种形态出现。
+- **9.1–9.3** （生成式思考/推理）将进一步讨论 Thinking Tokens 类「推理步骤」如何提升生成质量，与 GPR 的 PTD Thinking-Refining 阶段互补。
 
 ---
 
@@ -313,7 +313,7 @@ $p_i = 0.6 \times 5.0 = 3.0$。因 Sigmoid 保证 $\hat{p}_i \in [0,1]$，有 $p
 
 $\text{rgt}_i = \max_{b'_i}\{u_i(v_i; b'_i, \boldsymbol{b}_{-i}) - u_i(v_i; v_i, \boldsymbol{b}_{-i})\} = 4 - 3 = 1 > 0$。
 
-该机制**不满足** IC：广告主通过谎报（压低出价）获得了更高效用（4 > 3），存在正 regret。EGA 的目标正是通过 Lagrangian 优化把 $\widehat{\text{rgt}}_i$ 压到接近 0——本例中支付网络需调整，使如实出价成为最优策略。
+该机制 **不满足** IC：广告主通过谎报（压低出价）获得了更高效用（4 > 3），存在正 regret。EGA 的目标正是通过 Lagrangian 优化把 $\widehat{\text{rgt}}_i$ 压到接近 0——本例中支付网络需调整，使如实出价成为最优策略。
 
 **Key points:**
 - $\text{rgt}_i=0$ 是 IC 成立的判据。

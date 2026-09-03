@@ -30,7 +30,7 @@ Consider a scenario to understand how advertising fundamentally differs from rec
 
 $$u_i(v_i; v_i, \boldsymbol{b}_{-i}) \geq u_i(v_i; b_i, \boldsymbol{b}_{-i}), \quad \forall b_i \in \mathbb{R}^+$$
 
-Utility is $u_i = (v_i - p_i) \cdot \text{pCTR}_i$ (click value minus payment). IR requires payment not to exceed the bid, $p_i \leq b_i$. The traditional GSP auction preserves IC by charging "the next position's price," but it assumes ads are independent and cannot handle position externalities.
+Utility is $u_i = (v_i - p_i) \cdot \text{pCTR}_i$ (click value minus payment). IR requires payment not to exceed the bid, $p_i \leq b_i$. Note that the traditional GSP auction, which charges "the next position's price," does **not** satisfy IC in the multi-slot setting (only VCG does, but it is hard to deploy in engineering practice), and it assumes ads are independent and cannot handle position externalities.
 
 **Constraint two: joint generation of POI and creative.** One POI (restaurant) can have multiple creative images, and different users prefer different creatives. The system must jointly decide "which POI to show" and "which creative to use" — the POI determines the content subject, and the creative optimizes the presentation.
 

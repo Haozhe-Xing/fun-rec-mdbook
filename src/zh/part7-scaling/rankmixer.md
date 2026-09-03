@@ -10,9 +10,9 @@
 
 传统 DLRM 在 GPU 上的 **MFU（Model FLOPs Utilization，模型浮点利用率）** 通常只有 4–5%，而大语言模型可达 40–60%。这十倍效率差距，直接导致推荐模型无法享受 Scaling Law 红利——即使加参数量，大部分新增计算也浪费在低效内存访问上。
 
-根源在于传统 DLRM 继承自 CPU 时代的架构，在 GPU 上暴露三个根本问题：(1) 核心操作以 **memory-bound（访存受限）** 为主，embedding lookup、特征交叉、序列建模访存量远大于计算量；(2) 计算图**高度碎片化**，多个独立手工模块串联，kernel launch 开销与 global memory 传输累积成瓶颈；(3) **无法充分利用 Tensor Core**，大部分是小向量运算或不规则访存，发挥不了矩阵乘法加速单元。
+根源在于传统 DLRM 继承自 CPU 时代的架构，在 GPU 上暴露三个根本问题：(1) 核心操作以 **memory-bound（访存受限）** 为主，embedding lookup、特征交叉、序列建模访存量远大于计算量；(2) 计算图 **高度碎片化** ，多个独立手工模块串联，kernel launch 开销与 global memory 传输累积成瓶颈；(3) **无法充分利用 Tensor Core** ，大部分是小向量运算或不规则访存，发挥不了矩阵乘法加速单元。
 
-**RankMixer** 通过 hardware-aware 架构设计从根本上解决。核心原则：**从硬件特性反推架构设计**，把推荐模型重构为统一的、GPU 友好的计算图——用 **Token Mixing** 替代 Self-Attention 降复杂度，用 **Per-Token FFN** 捕捉特征异质性，用 **Sparse MoE** 实现参数高效扩展。
+**RankMixer** 通过 hardware-aware 架构设计从根本上解决。核心原则： **从硬件特性反推架构设计** ，把推荐模型重构为统一的、GPU 友好的计算图——用 **Token Mixing** 替代 Self-Attention 降复杂度，用 **Per-Token FFN** 捕捉特征异质性，用 **Sparse MoE** 实现参数高效扩展。
 
 ---
 
@@ -37,15 +37,15 @@ $$\begin{aligned}
 
 ## 7.4.1 Token Mixing 机制
 
-Self-Attention 复杂度 $O(T^2D)$（来自计算所有 token pair 相似度矩阵 $QK^T$）。推荐场景特征数可达数百上千，这个 $T^2$ 项成显著瓶颈。RankMixer 的核心洞察：**推荐任务需要的是 token 间信息混合（mixing），而非基于相似度的动态加权（attention）**。例如学「年轻用户在一线城市更爱科技类物品」这类高阶交互，本质是让多个 token 信息融合成新表示，不一定需显式算 token pair 相似度。
+Self-Attention 复杂度 $O(T^2D)$（来自计算所有 token pair 相似度矩阵 $QK^T$）。推荐场景特征数可达数百上千，这个 $T^2$ 项成显著瓶颈。RankMixer 的核心洞察： **推荐任务需要的是 token 间信息混合（mixing），而非基于相似度的动态加权（attention）**。例如学「年轻用户在一线城市更爱科技类物品」这类高阶交互，本质是让多个 token 信息融合成新表示，不一定需显式算 token pair 相似度。
 
-Token Mixing 核心思想：**在特征维度而非 token 维度混合**。给定输入 $\boldsymbol{X} \in \mathbb{R}^{T\times D}$，含两步：
+Token Mixing 核心思想： **在特征维度而非 token 维度混合**。给定输入 $\boldsymbol{X} \in \mathbb{R}^{T\times D}$，含两步：
 
 **第一步 Multi-head decomposition**——每个 token 分解为 $H$ 个 head：$[\boldsymbol{x}_t^{(1)} \| \cdots \| \boldsymbol{x}_t^{(H)}] = \text{SplitHead}(\boldsymbol{x}_t)$，$\boldsymbol{x}_t^{(h)} \in \mathbb{R}^{D/H}$ 是第 $t$ 个 token 第 $h$ 个 head。
 
 **第二步 Token-wise mixing**——每个 head 内把所有 token 的该 head 部分拼接：$\boldsymbol{s}^{(h)} = \text{Concat}(\boldsymbol{x}_1^{(h)}, \ldots, \boldsymbol{x}_T^{(h)}) \in \mathbb{R}^{TD/H}$。
 
-关键：**改变数据组织，从「按 token」变「按 head」**。原 $\boldsymbol{X}$ 是 $T$ 个长度 $D$ 向量，经 SplitHead+Concat 后变 $H$ 个长度 $TD/H$ 向量，每 head 内不同 token 特征紧密排列，为混合创造条件。实际设 $H=T$，每「head」含所有 token 一部分特征。混合后 token 数不变，便于残差连接。
+关键： **改变数据组织，从「按 token」变「按 head」**。原 $\boldsymbol{X}$ 是 $T$ 个长度 $D$ 向量，经 SplitHead+Concat 后变 $H$ 个长度 $TD/H$ 向量，每 head 内不同 token 特征紧密排列，为混合创造条件。实际设 $H=T$，每「head」含所有 token 一部分特征。混合后 token 数不变，便于残差连接。
 
 ![Token Mixing：按 head 重组后在特征维度混合，避免 $T^2$ 项](../images/part7-rankmixer-token-mixing.svg)
 
@@ -53,7 +53,7 @@ Token Mixing 核心思想：**在特征维度而非 token 维度混合**。给�
 
 复杂度看，Token Mixing 计算量 $O(TD)$（主要是内存重排）。相比 self-attention 的 $O(T^2D+TD^2)$，当 $T$ 较大（推荐中 $T$ 几百上千）时避免 $T^2$ 项，显著降低。且 Token Mixing 无 softmax normalize（需额外 reduction kernel），进一步减 kernel 开销。
 
-关键问题：**不显式算 token pair 相似度，如何保证捕捉交互？** 答案在**多层堆叠**。单层 Token Mixing 是「feature-level mixing」——不同 token 同维特征相互影响（因 concat 到同一向量）。堆叠多层时，第 1 层每 token 输出融合所有 token 一阶信息，第 2 层输入已是 mixed 结果，每 token 已含他 token 信息，第 2 层再 mixing 实现二阶交互：
+关键问题： **不显式算 token pair 相似度，如何保证捕捉交互？** 答案在 **多层堆叠**。单层 Token Mixing 是「feature-level mixing」——不同 token 同维特征相互影响（因 concat 到同一向量）。堆叠多层时，第 1 层每 token 输出融合所有 token 一阶信息，第 2 层输入已是 mixed 结果，每 token 已含他 token 信息，第 2 层再 mixing 实现二阶交互：
 
 $$\boldsymbol{X}_1 = f(\boldsymbol{X}_0),\quad \boldsymbol{X}_2 = f(f(\boldsymbol{X}_0)),\quad \ldots,\quad \boldsymbol{X}_L = \underbrace{f\circ\cdots\circ f}_{L\text{ 次}}(\boldsymbol{X}_0)$$
 
@@ -69,7 +69,7 @@ $$\boldsymbol{X}_1 = f(\boldsymbol{X}_0),\quad \boldsymbol{X}_2 = f(f(\boldsymbo
 
 标准 Transformer 的 FFN 对所有 token 用相同权重：$\text{FFN}(\boldsymbol{x}) = \boldsymbol{W}_2\cdot\text{GELU}(\boldsymbol{W}_1\boldsymbol{x}+\boldsymbol{b}_1)+\boldsymbol{b}_2$。这在 LLM 合理（所有 token 同语义空间）。但推荐特征语义空间完全不同：用户 ID 表隐式偏好、物品类目是粗粒度分类、点击率服从长尾、时间戳有周期性。强行同 FFN 处理导致参数效率损失。
 
-RankMixer 核心设计：**每个 token 有独立 FFN 参数**。第 $t$ 个 token：
+RankMixer 核心设计： **每个 token 有独立 FFN 参数**。第 $t$ 个 token：
 
 $$\boldsymbol{v}_t = \boldsymbol{W}_{\text{pffn}}^{t,2}\cdot\text{GELU}(\boldsymbol{W}_{\text{pffn}}^{t,1}\boldsymbol{s}_t + \boldsymbol{b}_{\text{pffn}}^{t,1}) + \boldsymbol{b}_{\text{pffn}}^{t,2}$$
 
@@ -77,7 +77,7 @@ $$\boldsymbol{v}_t = \boldsymbol{W}_{\text{pffn}}^{t,2}\cdot\text{GELU}(\boldsym
 
 Per-Token FFN 与 MMoE 本质不同。MMoE 多 expert 共享同输入，gating 动态加权输出 expert 组合：$\boldsymbol{y}=\sum_i g_i(\boldsymbol{x})\cdot\text{Expert}_i(\boldsymbol{x})$（所有 expert 看相同 $\boldsymbol{x}$）。Per-Token FFN 每 token 有独立输入与独立 FFN：$\boldsymbol{v}_t=\text{FFN}_t(\boldsymbol{s}_t)$（每 FFN 看不同 $\boldsymbol{s}_t$）。参数隔离确保不同特征空间学习相互独立，避免高频特征 dominate 低频特征。
 
-参数效率看，设 $T$ 个 token，Per-Token FFN 总参数 $\text{Param}=2TkD^2$，相比 shared FFN（$2kD^2$）增 $T$ 倍。但**计算复杂度不变**：$\text{FLOPs}=2TkD^2$，与 shared FFN 相同（shared 也需对 $T$ 个 token 分别计算）。增加的参数是「专门化」的，每块只服务特定 token，学习效率更高。
+参数效率看，设 $T$ 个 token，Per-Token FFN 总参数 $\text{Param}=2TkD^2$，相比 shared FFN（$2kD^2$）增 $T$ 倍。但 **计算复杂度不变** ：$\text{FLOPs}=2TkD^2$，与 shared FFN 相同（shared 也需对 $T$ 个 token 分别计算）。增加的参数是「专门化」的，每块只服务特定 token，学习效率更高。
 
 跨特征空间交互通过 Token Mixing 层实现。Per-Token FFN 专注各自空间深度建模，Token Mixing 确保不同 token 信息混合。这种「mixing + per-token processing」组合，在保持参数隔离的同时，通过多层堆叠实现充分跨空间交互。
 
@@ -107,7 +107,7 @@ $$G_{i,j}^{\text{train}} = \text{ReLU}(h_{\text{train}}(\boldsymbol{s}_i)),\quad
 
 左：传统 DLRM 计算图碎片化（embedding lookup 访存受限、小 kernel、launch 开销），有效 GEMM 仅 5%；右：RankMixer 核心操作全为 GEMM，Token Mixing + PFFN 占 ~85% 计算，MFU 达 45%。
 
-RankMixer 实现高 MFU 的关键：**所有核心操作都是 compute-bound 的大矩阵乘法**。Token Mixing 和 PFFN 占约 85% 计算时间，全是 GEMM，可高效用 Tensor Core（单 GEMM kernel MFU 达 60–80%）。相比之下传统 DLRM 中 embedding lookup（40% 时间，memory-bound）、小 kernel（35% 时间，MFU<10%）、launch 开销（20% 时间）主导，有效 GEMM 仅 5%——这正是 DLRM 的 MFU 只有 4–5%、RankMixer 达 45% 的原因。
+RankMixer 实现高 MFU 的关键： **所有核心操作都是 compute-bound 的大矩阵乘法**。Token Mixing 和 PFFN 占约 85% 计算时间，全是 GEMM，可高效用 Tensor Core（单 GEMM kernel MFU 达 60–80%）。相比之下传统 DLRM 中 embedding lookup（40% 时间，memory-bound）、小 kernel（35% 时间，MFU<10%）、launch 开销（20% 时间）主导，有效 GEMM 仅 5%——这正是 DLRM 的 MFU 只有 4–5%、RankMixer 达 45% 的原因。
 
 > 💡 **Key Insight:** RankMixer 把推荐模型从碎片化设计转为统一架构范式。算法上 Token Mixing 把复杂度从 $O(T^2D)$ 降到 $O(TD^2)$，Per-Token FFN 捕捉特征异质性，Sparse MoE 通过 ReLU Routing 和 DTSI-MoE 实现参数高效扩展。系统上把所有核心操作统一为矩阵乘法，MFU 从 4–5% 升到 45%，让推荐模型成为 GPU 的「第一类公民」，可直接用 Tensor Core 和 LLM 成熟工具链，打开可持续 Scaling 路径。但 RankMixer 聚焦模型内部计算效率，pipeline 仍有其他碎片化——序列建模与特征交互分离、召回排序分离、多任务碎片化。下一节 OneTrans 进一步突破这些壁垒。
 

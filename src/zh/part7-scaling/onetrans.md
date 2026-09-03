@@ -12,13 +12,13 @@ RankMixer 通过 hardware-aware 设计解决了 GPU 利用率问题，但推荐�
 
 这种分离式设计有两个根本问题：(1) **信息流受限**——序列必须压缩为固定维向量，静态特征无法在序列编码阶段发挥作用，只能后期「补救式」融合；(2) **执行碎片化**——两模块独立执行，无法享受 LLM 系统优化（KV Caching、FlashAttention），且需分别调优，难形成统一 Scaling Law。
 
-**OneTrans** 提出根本性架构革新：**用单一 Transformer backbone 同时完成序列建模和特征交互**。通过统一 tokenizer 把序列特征（S-tokens）和非序列特征（NS-tokens）转为统一 token 序列，在堆叠 Transformer 层联合建模，打破序列与特征的信息壁垒，为应用 LLM 系统优化奠基。
+**OneTrans** 提出根本性架构革新： **用单一 Transformer backbone 同时完成序列建模和特征交互**。通过统一 tokenizer 把序列特征（S-tokens）和非序列特征（NS-tokens）转为统一 token 序列，在堆叠 Transformer 层联合建模，打破序列与特征的信息壁垒，为应用 LLM 系统优化奠基。
 
 ---
 
 ## 7.5.0 统一 Tokenization
 
-推荐输入含两类截然不同特征：**序列特征** $\mathcal{S}$（用户多行为序列，如点击、加购、下单序列）与**非序列特征** $\mathcal{NS}$（静态属性与上下文，如年龄、类目、查询词、时段）。传统方法把 $\mathcal{S}$ 压成固定向量后与 $\mathcal{NS}$ 拼接；OneTrans 核心创新是**把两类特征统一转为 token 序列，在同一 Transformer 处理**。
+推荐输入含两类截然不同特征： **序列特征** $\mathcal{S}$（用户多行为序列，如点击、加购、下单序列）与 **非序列特征** $\mathcal{NS}$（静态属性与上下文，如年龄、类目、查询词、时段）。传统方法把 $\mathcal{S}$ 压成固定向量后与 $\mathcal{NS}$ 拼接；OneTrans 核心创新是 **把两类特征统一转为 token 序列，在同一 Transformer 处理**。
 
 对序列特征 $\mathcal{S} = \{\boldsymbol{S}_1, \ldots, \boldsymbol{S}_n\}$（$n$ 种行为类型），每序列 $\boldsymbol{S}_i = [\boldsymbol{e}_{i1}, \ldots, \boldsymbol{e}_{iL_i}]$ 含 $L_i$ 个事件 embedding（事件 = 物品 ID + 物品侧信息）。因不同行为序列原始维度可能不同，先用行为特定 MLP 对齐到统一维度 $d$：
 
@@ -28,7 +28,7 @@ $$\tilde{\boldsymbol{S}}_i = [\text{MLP}_i(\boldsymbol{e}_{i1}), \ldots, \text{M
 
 $$\text{S-tokens} = \text{Merge}(\tilde{\boldsymbol{S}}_1, \ldots, \tilde{\boldsymbol{S}}_n) \in \mathbb{R}^{L_S \times d},\quad L_S = \sum_i L_i + L_{\text{SEP}}$$
 
-对非序列特征 $\mathcal{NS}$（数值与类别特征，经 bucketization 或 one-hot 后 embedding），OneTrans 把所有特征 concat 后通过单个 MLP 投影，再切分为 $L_{NS}$ 个 token（称为 **Auto-Split Tokenizer**）：
+对非序列特征 $\mathcal{NS}$（数值与类别特征，经 bucketization 或 one-hot 后 embedding），OneTrans 把所有特征 concat 后通过单个 MLP 投影，再切分为 $L_{NS}$ 个 token（称为 **Auto-Split Tokenizer** ）：
 
 $$\text{NS-tokens} = \text{Split}(\text{MLP}(\text{Concat}(\mathcal{NS})), L_{NS}) \in \mathbb{R}^{L_{NS} \times d}$$
 
@@ -40,15 +40,15 @@ $$\boldsymbol{X}^{(0)} = [\text{S-tokens}; \text{NS-tokens}] \in \mathbb{R}^{(L_
 
 左：传统分离式（序列编码为定长向量后与静态特征拼接，信息流受限）；右：OneTrans 统一 token 序列，S-tokens 与 NS-tokens 在同一 Transformer 联合建模。
 
-与传统方法有本质区别：**传统压缩序列为单个向量，OneTrans 保留完整序列 token**。后续 Transformer 层中，每个行为事件作为独立 token 参与 attention，非序列特征也以 token 形式存在，两类特征可在同一 attention 矩阵中交互。
+与传统方法有本质区别： **传统压缩序列为单个向量，OneTrans 保留完整序列 token**。后续 Transformer 层中，每个行为事件作为独立 token 参与 attention，非序列特征也以 token 形式存在，两类特征可在同一 attention 矩阵中交互。
 
 ---
 
 ## 7.5.1 Mixed Parameterization 的核心机制
 
-若直接用标准 Transformer 处理统一 token 序列，会遇到推荐特有难题：**token 异质性**。LLM 中所有 token 都是词/sub-word，语义空间统一，共享 Q/K/V 和 FFN 合理。但 OneTrans 中 S-tokens 来自行为序列（同质性强，都是用户—物品交互事件），NS-tokens 来自完全不同空间（年龄是人口统计、价格是数值、查询词是文本）。强制所有 token 共享参数会导致冲突——例如捕捉「序列中相邻物品相似性」的参数，对「用户年龄→物品类目」交互可能完全不适用。
+若直接用标准 Transformer 处理统一 token 序列，会遇到推荐特有难题： **token 异质性**。LLM 中所有 token 都是词/sub-word，语义空间统一，共享 Q/K/V 和 FFN 合理。但 OneTrans 中 S-tokens 来自行为序列（同质性强，都是用户—物品交互事件），NS-tokens 来自完全不同空间（年龄是人口统计、价格是数值、查询词是文本）。强制所有 token 共享参数会导致冲突——例如捕捉「序列中相邻物品相似性」的参数，对「用户年龄→物品类目」交互可能完全不适用。
 
-OneTrans 核心创新是 **Mixed Parameterization（混合参数化）**：**S-tokens 共享一套参数，每个 NS-token 拥有独立的 token-specific 参数**。基于两个观察：(1) 行为序列所有事件在同一语义空间（物品空间），可高效共享参数学序列模式；(2) 非序列特征来自异构空间，需独立参数捕捉各自特性。
+OneTrans 核心创新是 **Mixed Parameterization（混合参数化）** ： **S-tokens 共享一套参数，每个 NS-token 拥有独立的 token-specific 参数**。基于两个观察：(1) 行为序列所有事件在同一语义空间（物品空间），可高效共享参数学序列模式；(2) 非序列特征来自异构空间，需独立参数捕捉各自特性。
 
 ### Mixed Causal Attention
 
@@ -65,7 +65,7 @@ $$\boldsymbol{W}^{\Psi}_i = \begin{cases}
 
 所有 S-tokens 用同一组 $\boldsymbol{W}^Q_{\text{S}}, \boldsymbol{W}^K_{\text{S}}, \boldsymbol{W}^V_{\text{S}}$；第 $j$ 个 NS-token 有自己的 $\boldsymbol{W}^Q_{\text{NS},j}$ 等。
 
-OneTrans 采用 **Causal Attention Mask**，但 NS-tokens 置于 S-tokens 之后，导致三个关键信息流模式：
+OneTrans 采用 **Causal Attention Mask** ，但 NS-tokens 置于 S-tokens 之后，导致三个关键信息流模式：
 
 1. **S-side 因果依赖**——每 S-token 只能 attend 之前的 S-tokens。timestamp-aware 自然建模时间因果；timestamp-agnostic（按意图排序）下 causal mask 让高意图行为（下单选）信息传到低意图（点击），实现「强信号过滤弱信号」。
 2. **NS-side 全局 attention**——每 NS-token 可 attend **所有** S-tokens（完整行为历史）及之前的 NS-tokens。使非序列特征充分利用序列证据，如「物品类目」token 可 attend 所有历史点击类目，自动学「用户对该类目历史偏好」。
@@ -79,7 +79,7 @@ $$\text{MixedFFN}(\boldsymbol{x}_i) = \boldsymbol{W}^{2}_i \cdot \phi(\boldsymbo
 
 $\boldsymbol{W}^{1}_i, \boldsymbol{W}^{2}_i$ 与 attention 同条件参数化：S-tokens 共享 $\boldsymbol{W}^{1}_{\text{S}}, \boldsymbol{W}^{2}_{\text{S}}$，每 NS-token 独立。
 
-需与 RankMixer 的 Per-Token FFN 对比：RankMixer 为**每个** token 配独立 FFN（含序列 token），参数 $O(T\cdot d^2)$；OneTrans 的 Mixed FFN 只为 $L_{NS}$ 个 NS-tokens 配独立参数，S-tokens 共享，参数 $O(L_{NS}\cdot d^2 + d^2)$。推荐中 $L_{NS} \ll L_S$，OneTrans 在保表达同时显著降低参数开销。**参数共享不是妥协，而是设计**——行为序列同质性使共享参数更高效学序列模式，避免冗余。
+需与 RankMixer 的 Per-Token FFN 对比：RankMixer 为 **每个** token 配独立 FFN（含序列 token），参数 $O(T\cdot d^2)$；OneTrans 的 Mixed FFN 只为 $L_{NS}$ 个 NS-tokens 配独立参数，S-tokens 共享，参数 $O(L_{NS}\cdot d^2 + d^2)$。推荐中 $L_{NS} \ll L_S$，OneTrans 在保表达同时显著降低参数开销。**参数共享不是妥协，而是设计**——行为序列同质性使共享参数更高效学序列模式，避免冗余。
 
 OneTrans 用 **Pre-norm + RMSNorm**。S-tokens 与 NS-tokens 数值范围/统计差异显著，Post-norm 易致 attention 分数尺度失衡引发训练不稳；Pre-norm 在子层前先归一化，确保输入 attention/FFN 的 token 表示尺度相近，RMSNorm 进一步通过 root mean square 归一化提供更稳梯度传播。
 
@@ -91,12 +91,12 @@ S-tokens 共享 Q/K/V/FFN 参数并因果依赖；NS-tokens 独立参数、可�
 
 ## 7.5.2 Pyramid Stack 渐进式蒸馏
 
-OneTrans 的 Causal Attention 有一重要特性：**信息自然向序列后方聚集**。第 $n$ 层位置 $i$ 融合 $1..i$ 信息；第 $n+1$ 层位置 $i+1$ 又融合更新后的 $1..i+1$。随层数加深，**靠后 token 渐成前面所有 token 信息的「汇聚点」**。特别地，NS-tokens 位于序列末尾，深层会积累整个序列与前面 NS-tokens 信息。
+OneTrans 的 Causal Attention 有一重要特性： **信息自然向序列后方聚集**。第 $n$ 层位置 $i$ 融合 $1..i$ 信息；第 $n+1$ 层位置 $i+1$ 又融合更新后的 $1..i+1$。随层数加深， **靠后 token 渐成前面所有 token 信息的「汇聚点」**。特别地，NS-tokens 位于序列末尾，深层会积累整个序列与前面 NS-tokens 信息。
 
-Pyramid Stack 利用此特性：**逐层减少参与 attention 的 query token 数量，只保留序列尾部 token**。设第 $n$ 层输入长度 $L$，定义尾部索引集 $\mathcal{Q} = \{L-L'+1, \ldots, L\}$（$L'<L$）。attention 计算：
+Pyramid Stack 利用此特性： **逐层减少参与 attention 的 query token 数量，只保留序列尾部 token**。设第 $n$ 层输入长度 $L$，定义尾部索引集 $\mathcal{Q} = \{L-L'+1, \ldots, L\}$（$L'<L$）。attention 计算：
 
-- **Keys 和 Values**：仍从所有 $L$ 个 token 算，保持完整上下文
-- **Queries**：只从 $\mathcal{Q}$ 中 $L'$ 个 token 算
+- **Keys 和 Values** ：仍从所有 $L$ 个 token 算，保持完整上下文
+- **Queries** ：只从 $\mathcal{Q}$ 中 $L'$ 个 token 算
 
 attention 输出只保留 $\mathcal{Q}$ 对应位置，序列长度从 $L$ 缩到 $L'$。多层间设递减的 $L'$（如 1190 → 595 → 297 → … → 12），形成金字塔式层级。
 
@@ -115,11 +115,11 @@ attention 输出只保留 $\mathcal{Q}$ 对应位置，序列长度从 $L$ 缩�
 
 ## 7.5.3 Cross-Request KV Caching
 
-统一架构的关键优势是可无缝应用 LLM 系统优化，最重要的是 **KV Caching**。一次请求通常返回数百候选，每候选对应一个样本，这些样本**用户侧特征完全相同**（同用户、同行为序列），只有物品侧不同。传统 encode-then-interaction 中序列编码模块虽可复用，但特征交互模块须为每个候选重算，无法充分利用共享结构。
+统一架构的关键优势是可无缝应用 LLM 系统优化，最重要的是 **KV Caching**。一次请求通常返回数百候选，每候选对应一个样本，这些样本 **用户侧特征完全相同** （同用户、同行为序列），只有物品侧不同。传统 encode-then-interaction 中序列编码模块虽可复用，但特征交互模块须为每个候选重算，无法充分利用共享结构。
 
 OneTrans 统一 Transformer 自然支持两阶段计算：
 
-**Stage I（S-side，每请求一次）**——处理所有 S-tokens，算每层 K/V 及 attention 输出并缓存。此阶段**每请求只执行一次**，与候选数无关。
+**Stage I（S-side，每请求一次）**——处理所有 S-tokens，算每层 K/V 及 attention 输出并缓存。此阶段 **每请求只执行一次** ，与候选数无关。
 
 **Stage II（NS-side，每候选）**——对每个候选算其 NS-tokens，每层执行：用缓存的 S-side K/V、算 NS-tokens 的 queries、执行 Cross-Attention（NS attend 缓存的 S-side K）、执行 NS-tokens 间 Self-Attention、经 token-specific FFN 处理 NS-tokens。
 
@@ -136,17 +136,17 @@ OneTrans 统一 Transformer 自然支持两阶段计算：
 
 Stage I 每请求算一次 S-side KV 并缓存；Stage II 每候选只算 NS-side；跨请求仅追加 $\Delta L$ 个新事件 KV，复用旧 cache。
 
-需注意，KV Caching 有效性依赖**统一 Transformer 计算图**。若序列建模与特征交互是两独立模块，它们中间表示无法跨候选复用（输入/参数完全不同）。OneTrans 通过统一 tokenization 与 Mixed Parameterization，把两类特征置于同一 attention 矩阵，使 S-tokens 的 KV 可被所有候选 NS-tokens 共享——这是 encode-then-interaction 无法实现的。
+需注意，KV Caching 有效性依赖 **统一 Transformer 计算图**。若序列建模与特征交互是两独立模块，它们中间表示无法跨候选复用（输入/参数完全不同）。OneTrans 通过统一 tokenization 与 Mixed Parameterization，把两类特征置于同一 attention 矩阵，使 S-tokens 的 KV 可被所有候选 NS-tokens 共享——这是 encode-then-interaction 无法实现的。
 
-除 KV Caching，OneTrans 还继承 LLM 其他优化：**FlashAttention-2**（kernel fusion + memory tiling 减 attention I/O、降激活内存）、**Mixed-Precision Training**（BF16/FP16）与 **Activation Recomputation** 结合（保数值稳定同时压内存）。这些对训练部署数亿参数 OneTrans 至关重要。
+除 KV Caching，OneTrans 还继承 LLM 其他优化： **FlashAttention-2** （kernel fusion + memory tiling 减 attention I/O、降激活内存）、**Mixed-Precision Training** （BF16/FP16）与 **Activation Recomputation** 结合（保数值稳定同时压内存）。这些对训练部署数亿参数 OneTrans 至关重要。
 
 ---
 
 ## 7.5.4 统一建模的本质
 
-OneTrans 核心贡献是推荐架构根本性转变：**从模块组合到统一建模**。传统 encode-then-interaction 把序列编码与特征交互分离为独立模块，不同类型交互（序列内、跨序列、多源特征、序列—特征）被人为隔断。OneTrans 通过统一 Transformer 让这些交互在每层同时发生，多层堆叠形成复杂组合模式。
+OneTrans 核心贡献是推荐架构根本性转变： **从模块组合到统一建模**。传统 encode-then-interaction 把序列编码与特征交互分离为独立模块，不同类型交互（序列内、跨序列、多源特征、序列—特征）被人为隔断。OneTrans 通过统一 Transformer 让这些交互在每层同时发生，多层堆叠形成复杂组合模式。
 
-统一架构另一关键优势是**整体可扩展性**。分离架构需分别调优序列与交互模块，难形成统一 Scaling Law。OneTrans 把整个模型统一为单一 Transformer backbone，扩展策略简单明确：加层数（depth）、加隐藏维度（width）、加序列长度（length）——推荐模型可像 LLM 一样获可预测性能提升。
+统一架构另一关键优势是 **整体可扩展性**。分离架构需分别调优序列与交互模块，难形成统一 Scaling Law。OneTrans 把整个模型统一为单一 Transformer backbone，扩展策略简单明确：加层数（depth）、加隐藏维度（width）、加序列长度（length）——推荐模型可像 LLM 一样获可预测性能提升。
 
 从 RankMixer 到 OneTrans，推荐架构演进两方向清晰可见：hardware-aware 计算设计解决 GPU 利用率，统一建模框架打破模块碎片化壁垒。两者结合为推荐系统走向大规模、可扩展智能化奠基。
 
@@ -214,8 +214,8 @@ Work through all problems in order — they get progressively harder. Each has a
 
 **Approach:** 抓「是否保留完整序列 token、是否同层交互」。
 
-- (a) **分离式**（encode-then-interaction）：序列被压成定长向量，后期拼接。
-- (b) **OneTrans 统一**：两类特征同为 token，同 attention 矩阵交互。
+- (a) **分离式** （encode-then-interaction）：序列被压成定长向量，后期拼接。
+- (b) **OneTrans 统一** ：两类特征同为 token，同 attention 矩阵交互。
 
 **Key points:**
 - 统一建模的核心是「不压缩序列、同层交互」。
@@ -234,8 +234,8 @@ OneTrans 中 S-tokens 与 NS-tokens 的参数组织有何不同？为什么这�
 
 **Approach:** 直接对应 Mixed Parameterization。
 
-- S-tokens（行为序列）**共享**一套 Q/K/V/FFN 参数（同物品空间、同质）。
-- NS-tokens（非序列特征）**每个独立**参数（异构空间）。
+- S-tokens（行为序列） **共享** 一套 Q/K/V/FFN 参数（同物品空间、同质）。
+- NS-tokens（非序列特征） **每个独立** 参数（异构空间）。
 - 若全部共享，异质 token 参数冲突（如「相邻物品相似」参数不适于「年龄→类目」）。
 
 **Key points:**
@@ -255,13 +255,13 @@ OneTrans 中 S-tokens 与 NS-tokens 的参数组织有何不同？为什么这�
 
 **Approach:** 每层 Pyramid attention 为 $O(LL'd)$，标准每层 $O(L^2 d)$。
 
-Pyramid 各层 $L'\approx L/2$、$L/4$、$L/8$、$L/16$，总 $\propto L(L/2+L/4+L/8+L/16) = L^2(15/16) \approx 0.94 L^2$。等等——注意每层 $L$ 本身也在减（序列收缩），且 KV 仍用该层当前 $L$。简化估算：每层 query 数减半、KV 数为当前 $L$，各层 $\propto L_{\text{cur}} \cdot L'_{\text{cur}}$。粗略量级从 $L^2$ 降到约 $L^2/4$ 量级（因 query 数逐层减半）。相对标准（每层 $L^2$、4 层共 $4L^2$），Pyramid 显著小于 $L^2$ 量级，约降一个数量级。
+**估算（KV 固定全长 $L$ 的情形）：** Pyramid 各层 query 长度依次约 $L/2, L/4, L/8, L/16$，4 层总量 $\propto L\cdot(L/2+L/4+L/8+L/16) = \frac{15}{16}L^2 \approx 0.94L^2$。对比标准 4 层的 $4L^2$，约降为 **1/4**。
 
-更保守答法：标准 4 层总 $\propto 4L^2$；Pyramid 每层 query 数依次约 $L/2,L/4,L/8,L/16$，总 $\propto L^2 \times (1/2+1/4+1/8+1/16)=0.94L^2$（若 KV 固定全长）。但实际 KV 也随层收缩，故实际更低。关键结论：**Pyramid 把 attention 从 $O(L^2)$ 降到约 $O(L\cdot L')$，当 $L'\ll L$ 时大幅降**。
+**实际更低：** 每层的 KV 序列 $L$ 也随层收缩，各层计算 $\propto L_{\text{cur}}\cdot L'_{\text{cur}}$ 比上式更小，故真实比例略低于 0.94/4 ≈ 0.23。
 
 **Key points:**
-- 核心不是精确倍数，而是「逐层收缩 query」带来的平方→线性量级下降。
-- 推理时可给数量级结论：显著低于标准 Transformer。
+- 核心不是精确倍数，而是「逐层收缩 query」带来的平方→线性量级下降：$O(L^2) \to O(L\cdot L')$，当 $L'\ll L$ 时大幅降。
+- 推理时可给数量级结论：约为标准 Transformer 的 1/4 或更低。
 
 </details>
 

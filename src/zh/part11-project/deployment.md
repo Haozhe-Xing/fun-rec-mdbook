@@ -25,12 +25,12 @@
 
 本项目依赖五个服务：PostgreSQL（业务数据）、Redis（特征缓存）、Elasticsearch（搜索）、后端 API、前端应用。模型文件经共享目录在离/在线间传递。
 
-手动部署需每台机装 PG/Redis/ES、配网络、处理版本兼容——繁琐易错、环境差异致各种问题。Docker Compose 用**声明式 YAML** 描述所有服务及依赖，一条命令启动全系统。优势：
+手动部署需每台机装 PG/Redis/ES、配网络、处理版本兼容——繁琐易错、环境差异致各种问题。Docker Compose 用 **声明式 YAML** 描述所有服务及依赖，一条命令启动全系统。优势：
 
-1. **环境一致性**：容器含全部依赖，开发/测试/生产环境一致。
-2. **快速启动**：`docker compose up` 按依赖顺序自动起，免手动装配。
-3. **隔离与安全**：各服务独立容器，互不干扰。
-4. **易于扩展**：加服务只需改配置，不动现有。
+1. **环境一致性** ：容器含全部依赖，开发/测试/生产环境一致。
+2. **快速启动** ：`docker compose up` 按依赖顺序自动起，免手动装配。
+3. **隔离与安全** ：各服务独立容器，互不干扰。
+4. **易于扩展** ：加服务只需改配置，不动现有。
 
 ---
 
@@ -38,7 +38,7 @@
 
 `docker-compose.yaml` 定义六个服务（含后端构建）。逐一介绍。
 
-**数据库 PostgreSQL**：
+**数据库 PostgreSQL** ：
 
 ```yaml
 services:
@@ -59,7 +59,7 @@ services:
 
 `volumes` 命名卷 `postgres_data` 持久化数据，容器删数据仍在；`networks` 使其能与其他服务通信。
 
-**缓存 Redis**：
+**缓存 Redis** ：
 
 ```yaml
   redis:
@@ -80,7 +80,7 @@ services:
 
 `healthcheck` 定期 `redis-cli ping`，连续 5 次超时（每次 3s）判不健康，依赖它的服务可等其健康再起。
 
-**搜索 Elasticsearch**：
+**搜索 Elasticsearch** ：
 
 ```yaml
   elasticsearch:
@@ -104,7 +104,7 @@ services:
       retries: 5
 ```
 
-**后端 FastAPI**：
+**后端 FastAPI** ：
 
 ```yaml
   backend:
@@ -132,7 +132,7 @@ services:
       - funrec-network
 ```
 
-注意数据库/Redis 地址用**服务名**（如 `postgres`、`redis`）而非 `localhost`——容器间靠 Docker DNS 解析。后端 Dockerfile 分层构建（先装依赖再拷代码），改码不重装依赖：
+注意数据库/Redis 地址用 **服务名** （如 `postgres`、`redis`）而非 `localhost`——容器间靠 Docker DNS 解析。后端 Dockerfile 分层构建（先装依赖再拷代码），改码不重装依赖：
 
 ```dockerfile
 FROM python:3.11-slim
@@ -147,7 +147,7 @@ EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-**前端（多阶段构建）**：先 Node 构建静态文件，再 Nginx 服务：
+**前端（多阶段构建）** ：先 Node 构建静态文件，再 Nginx 服务：
 
 ```yaml
   frontend:
@@ -181,7 +181,7 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-**网络与数据**：末尾定义共享网络与命名卷：
+**网络与数据** ：末尾定义共享网络与命名卷：
 
 ```yaml
 volumes:
@@ -199,7 +199,7 @@ networks:
 
 ## 11.6.2 环境准备与启动流程
 
-**前置条件**：安装 Docker、Docker Compose（Desktop 内置）、uv（`pip install uv`）。验证：
+**前置条件** ：安装 Docker、Docker Compose（Desktop 内置）、uv（`pip install uv`）。验证：
 
 ```bash
 docker --version
@@ -207,9 +207,16 @@ docker compose version
 uv --version
 ```
 
-**数据准备**：下载 `funrec-movielens-1m.zip` 解压，记录绝对路径（含 `movies.pkl`/`ratings.pkl`/`users.pkl`/`image/`）。
+**数据准备** ：下载 `funrec-movielens-1m.zip` 解压，记录绝对路径（含 `movies.pkl`/`ratings.pkl`/`users.pkl`/`image/`）。
 
-**环境变量**：复制 `.env.example` 为 `.env` 并设数据路径：
+**获取代码** ：本项目全部代码位于 [datawhalechina/fun-rec](https://github.com/datawhalechina/fun-rec) 仓库的 `web_project/` 目录：
+
+```bash
+git clone https://github.com/datawhalechina/fun-rec.git
+cd fun-rec/web_project
+```
+
+**环境变量** ：复制 `.env.example` 为 `.env` 并设数据路径：
 
 ```bash
 cd web_project
@@ -221,7 +228,7 @@ cp .env.example .env
 
 `FUNREC_PROCESSED_DATA_PATH` 存特征工程与训练中间产物，需可写。
 
-**启动基础设施**：
+**启动基础设施** ：
 
 ```bash
 docker compose up --build                    # 首次构建镜像
@@ -229,7 +236,7 @@ docker compose up -d --build                 # 后台运行
 docker compose logs -f backend               # 看后端日志
 ```
 
-**运行离线流程**（训练模型、初始化数据）：
+**运行离线流程** （训练模型、初始化数据）：
 
 ```bash
 cd backend
@@ -239,19 +246,19 @@ make run-offline-pipeline
 
 依次执行：特征工程 → 训练 YoutubeDNN/DeepFM → 特征上线 Redis → 模型部署共享目录（约 10–20 分钟）。
 
-**加载数据到数据库**：
+**加载数据到数据库** ：
 
 ```bash
 make ingest-data-to-database                 # 建表 + 导入用户/电影/评分 + 建测试用户
 ```
 
-**索引电影到 Elasticsearch**：
+**索引电影到 Elasticsearch** ：
 
 ```bash
 make index-movies-to-elasticsearch           # 标题/类型/演员可搜索
 ```
 
-**访问应用**：
+**访问应用** ：
 
 | 服务 | 地址 | 说明 |
 |------|------|------|
@@ -266,7 +273,7 @@ make index-movies-to-elasticsearch           # 标题/类型/演员可搜索
 
 ## 11.6.3 服务健康检查与调试
 
-**检查状态**：
+**检查状态** ：
 
 ```bash
 docker compose ps
@@ -275,7 +282,7 @@ docker compose ps
 
 某服务 `Exited`/`Restarting` 即启动失败，查日志。
 
-**验证各服务**：
+**验证各服务** ：
 
 ```bash
 curl http://localhost:8000/health           # 后端 → {"status": "healthy"}
@@ -284,14 +291,14 @@ docker exec -it funrec-redis redis-cli ping            # Redis → PONG
 curl http://localhost:9200                          # ES → 版本信息
 ```
 
-**查 Redis 数据**（验证特征上线）：
+**查 Redis 数据** （验证特征上线）：
 
 ```bash
 docker exec -it funrec-redis redis-cli hget user:6041:profile frequent_genres
 docker exec -it funrec-redis redis-cli llen user:6041:history
 ```
 
-**常见问题排查**：
+**常见问题排查** ：
 
 - **容器启动失败** → `docker compose logs backend`；查 .env 路径、端口占用、依赖未就绪。
 - **数据库连接失败** → `docker compose logs postgres`，看 `ready to accept connections`。

@@ -6,7 +6,7 @@
 
 # Greedy-Based Re-ranking
 
-> 📝 **Before You Continue:** Please finish the scoring function $f$ in [Part 3 Ranking](../) first, and understand how the ranking stage outputs a relevance score (e.g., a predicted CTR) for every candidate. This chapter stands right after that stage, optimizing the "score-sorted" list on its last mile.
+> 📝 **Before You Continue:** Please finish the scoring function $f$ in [Part 3 Ranking](../part3-ranking/README.md) first, and understand how the ranking stage outputs a relevance score (e.g., a predicted CTR) for every candidate. This chapter stands right after that stage, optimizing the "score-sorted" list on its last mile.
 
 Picture this: the ranking model confidently hands over a list whose top ten entries are ten nearly identical "sci-fi action movies." Judged position by position, every score is high and every item is relevant; but stitched into a single list, users immediately feel aesthetic fatigue. This is the real pain point re-ranking addresses — **homogenized ranking output**.
 
@@ -94,16 +94,16 @@ Take $\lambda=0.7$ and walk through the greedy process:
 
 1. **Initial selection**: the highest ranking score A (Rel=0.95); set $S=\{A\}$.
 2. **Round 2** ($S=\{A\}$):
-   - B: $0.90 - 0.7\times\max(\text{Sim}(A,B)=0.2) = 0.90 - 0.14 = 0.76$
-   - C: $0.85 - 0.7\times 0.8 = 0.85 - 0.56 = 0.29$
-   - D: $0.80 - 0.7\times 0.1 = 0.80 - 0.07 = 0.73$
-   - E: $0.75 - 0.7\times 0.3 = 0.75 - 0.21 = 0.54$
-   - Pick **B** (score=0.76); set $S=\{A,B\}$.
+   - B: $0.7\times 0.90 - 0.3\times\max(\text{Sim}(A,B)=0.2) = 0.63 - 0.06 = 0.57$
+   - C: $0.7\times 0.85 - 0.3\times 0.8 = 0.595 - 0.24 = 0.355$
+   - D: $0.7\times 0.80 - 0.3\times 0.1 = 0.56 - 0.03 = 0.53$
+   - E: $0.7\times 0.75 - 0.3\times 0.3 = 0.525 - 0.09 = 0.435$
+   - Pick **B** (score=0.57); set $S=\{A,B\}$.
 3. **Round 3** ($S=\{A,B\}$):
-   - C: $0.85 - 0.7\times\max(\text{Sim}(A,C)=0.8,\ \text{Sim}(B,C)=0.1) = 0.85 - 0.56 = 0.29$
-   - D: $0.80 - 0.7\times\max(0.1,\ 0.7) = 0.80 - 0.49 = 0.31$
-   - E: $0.75 - 0.7\times\max(0.3,\ 0.4) = 0.75 - 0.28 = 0.47$
-   - Pick **E** (score=0.47); set $S=\{A,B,E\}$.
+   - C: $0.7\times 0.85 - 0.3\times\max(\text{Sim}(A,C)=0.8,\ \text{Sim}(B,C)=0.1) = 0.595 - 0.24 = 0.355$
+   - D: $0.7\times 0.80 - 0.3\times\max(0.1,\ 0.7) = 0.56 - 0.21 = 0.35$
+   - E: $0.7\times 0.75 - 0.3\times\max(0.3,\ 0.4) = 0.525 - 0.12 = 0.405$
+   - Pick **E** (score=0.405); set $S=\{A,B,E\}$.
 
 The final sequence is **[A, B, E]**. Compared with the pure ranking order [A, B, C], the three items sit in a more varied web of similarity relations, and diversity improves markedly (the source reports a gain of about 37%).
 

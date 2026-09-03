@@ -255,9 +255,9 @@ For a sequence of length $L$, a standard Transformer's attention complexity is $
 
 **Approach:** Each Pyramid layer's attention is $O(LL'd)$; each standard layer is $O(L^2 d)$.
 
-With $L'\approx L/2, L/4, L/8, L/16$ per layer, the total is $\propto L(L/2+L/4+L/8+L/16) = L^2(15/16) \approx 0.94 L^2$. Wait — note that $L$ itself also shrinks per layer (the sequence contracts), and KV still uses that layer's current $L$. Simplified estimate: per layer the query count halves while the KV count is the current $L$, each layer $\propto L_{\text{cur}} \cdot L'_{\text{cur}}$. Roughly, the order drops from $L^2$ to about $L^2/4$ (because query counts halve layer by layer). Relative to the standard version ($L^2$ per layer, $4L^2$ over 4 layers), the Pyramid is significantly below the $L^2$ order — roughly an order of magnitude lower.
+**Estimate (KV fixed at full length $L$):** the Pyramid layers' query lengths are about $L/2, L/4, L/8, L/16$, so the 4-layer total is $\propto L\cdot(L/2+L/4+L/8+L/16) = \frac{15}{16}L^2 \approx 0.94L^2$. Compared with the standard 4 layers' $4L^2$, this is roughly **1/4**.
 
-A more conservative answer: the standard 4 layers total $\propto 4L^2$; the Pyramid's per-layer query counts are about $L/2,L/4,L/8,L/16$, totaling $\propto L^2 \times (1/2+1/4+1/8+1/16)=0.94L^2$ (if KV stays at full length). But KV actually shrinks with the layers too, so the real cost is lower. The key conclusion: **the Pyramid drops attention from $O(L^2)$ to about $O(L\cdot L')$, a big reduction when $L'\ll L$**.
+**In practice even lower:** each layer's KV sequence $L$ also shrinks with depth, so each layer costs $\propto L_{\text{cur}}\cdot L'_{\text{cur}}$, which is smaller than the formula above; the true ratio is slightly below $0.94/4 \approx 0.23$.
 
 **Key points:**
 - The point is not the exact multiple but the square-to-linear order drop from "shrinking queries layer by layer".

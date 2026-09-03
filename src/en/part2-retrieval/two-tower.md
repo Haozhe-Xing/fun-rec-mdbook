@@ -236,7 +236,7 @@ Given unnormalized vectors $A=(10,0)$, $B=(0,10)$, $C=(11,0)$. First use the raw
 
 **Approach:** Compute both ways.
 
-Raw dot products: $A\cdot B=0$, $A\cdot C=110$. By "bigger = closer", C is closer — but geometrically, B and C are both at distance 10 from A ($|B-A|=\sqrt{200}\approx14.1$, $|C-A|=1$). The dot product is distorted by unequal magnitudes: A and C both have magnitude ≈10 so the dot product is large — pure coincidence.
+Raw dot products: $A\cdot B=0$, $A\cdot C=110$. By "bigger = closer", C is closer. In this particular example that happens to agree with the geometry ($|B-A|=\sqrt{200}\approx14.1$, $|C-A|=1$), but the dot-product ranking is not reliable: it is distorted by vector magnitude — if C were replaced by a long vector like $(11,1)$, which is not that close to A in angle, the dot product would still be large and the ranking would break. The unnormalized dot product is not a true distance metric.
 
 After normalization: $A'=(1,0), B'=(0,1), C'=(1,0)$. Euclidean distances: $\|A'-B'\|=\sqrt{2}\approx1.41$, $\|A'-C'\|=0$. Now C is closer (identical directions) and B farthest — matching intuition ($A,C$ parallel, $B$ orthogonal).
 

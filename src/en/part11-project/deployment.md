@@ -209,6 +209,13 @@ uv --version
 
 **Data preparation**: download and extract `funrec-movielens-1m.zip`, and note its absolute path (containing `movies.pkl`/`ratings.pkl`/`users.pkl`/`image/`).
 
+**Get the code**: all code for this project lives in the `web_project/` directory of the [datawhalechina/fun-rec](https://github.com/datawhalechina/fun-rec) repository:
+
+```bash
+git clone https://github.com/datawhalechina/fun-rec.git
+cd fun-rec/web_project
+```
+
 **Environment variables**: copy `.env.example` to `.env` and set the data paths:
 
 ```bash

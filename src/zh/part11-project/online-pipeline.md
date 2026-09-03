@@ -96,7 +96,7 @@ class PipelineConfig:
 
 冷启动是经典难题：新用户无行为数据，协同过滤与向量召回都失效。本项目用独立冷启动模块处理。
 
-**冷启动检测**很简单——历史交互少于阈值即冷启动用户：
+**冷启动检测** 很简单——历史交互少于阈值即冷启动用户：
 
 ```python
 class ColdStartDetector:
@@ -111,7 +111,7 @@ class ColdStartDetector:
 
 阈值需权衡：太低用户偏好未稳就进正常流；太高用户久等不到个性化。默认 **5 次**。
 
-**三种策略**由 `ColdStartService` 统一管理：
+**三种策略** 由 `ColdStartService` 统一管理：
 
 ```python
 class ColdStartService:
@@ -139,11 +139,11 @@ class ColdStartService:
 
 ![冷启动三级策略：UCB 探索 / 偏好类型 / 热门兜底，按信息量动态分配配额](../images/part11-coldstart.svg)
 
-**UCB 类型探索**解决探索-利用（Exploration vs Exploitation）问题：
+**UCB 类型探索** 解决探索-利用（Exploration vs Exploitation）问题：
 
 $$\text{UCB}(g) = \bar{r}_g + c \cdot \sqrt{\frac{\ln N}{n_g}}$$
 
-其中 $\bar{r}_g$ 是类型 $g$ 的历史平均评分，$N$ 是总推荐次数，$n_g$ 是类型 $g$ 被推荐次数，$c$ 是探索系数。第一项**利用**（平均分越高越好），第二项**探索**（推荐越少的不确定越大、奖励越高）。
+其中 $\bar{r}_g$ 是类型 $g$ 的历史平均评分，$N$ 是总推荐次数，$n_g$ 是类型 $g$ 被推荐次数，$c$ 是探索系数。第一项 **利用** （平均分越高越好），第二项 **探索** （推荐越少的不确定越大、奖励越高）。
 
 ```python
 class UCBGenreStrategy(ColdStartStrategy):
@@ -180,7 +180,7 @@ def update_ucb_genre_stats(user_id, movie_genres, rating):
 
 优点：随评分增多，UCB「利用」成分增加；对未接触类型仍给机会，避免信息茧房。
 
-**偏好类型策略**若有 `preferred_genres`，用 Elasticsearch 查这些类型的高评分电影（`avg_rating>=6.0`、`rating_count>=20`）。
+**偏好类型策略** 若有 `preferred_genres`，用 Elasticsearch 查这些类型的高评分电影（`avg_rating>=6.0`、`rating_count>=20`）。
 
 ---
 
@@ -188,7 +188,7 @@ def update_ucb_genre_stats(user_id, movie_genres, rating):
 
 有足够历史行为的用户进入正常流程。第一阶段召回，从全库快速筛候选。
 
-**为何多路召回**：单一策略有局限——向量召回可能漏掉模型未捕捉的相关性（如新上映小众片样本少、表征不准）；协同过滤对小众覆盖不足；热门缺乏个性化。思路是「别把鸡蛋放一个篮子」，多策略并行再合并。
+**为何多路召回** ：单一策略有局限——向量召回可能漏掉模型未捕捉的相关性（如新上映小众片样本少、表征不准）；协同过滤对小众覆盖不足；热门缺乏个性化。思路是「别把鸡蛋放一个篮子」，多策略并行再合并。
 
 ```python
 class RecallService:
@@ -200,7 +200,7 @@ class RecallService:
         ]
 ```
 
-**YoutubeDNN 向量召回**：在线算用户向量，再在物品向量空间检索最相似电影。
+**YoutubeDNN 向量召回** ：在线算用户向量，再在物品向量空间检索最相似电影。
 
 ```python
 class YouTubeDNNRecallStrategy(RecallStrategy):
@@ -232,7 +232,7 @@ class YouTubeDNNRecallStrategy(RecallStrategy):
 
 用户与物品向量都归一化，内积等价于余弦。库仅 3000+ 时直接内积即可；超百万时用 FAISS 加速。
 
-**物品相似度召回（I2I）**：用户刚看什么就推相似的——捕捉即时兴趣，复用 YoutubeDNN 物品向量（向量本身蕴含协同过滤信息）。
+**物品相似度召回（I2I）** ：用户刚看什么就推相似的——捕捉即时兴趣，复用 YoutubeDNN 物品向量（向量本身蕴含协同过滤信息）。
 
 ```python
 class ItemEmbeddingRecallStrategy(RecallStrategy):
@@ -249,9 +249,9 @@ class ItemEmbeddingRecallStrategy(RecallStrategy):
         ...
 ```
 
-**用户偏好类目召回**：统计用户偏好类型（离线算 Top3 存 Redis），从这些类型召回热门。优点稳定——即使用户最近偶尔偏差，仍推长期喜欢类型。
+**用户偏好类目召回** ：统计用户偏好类型（离线算 Top3 存 Redis），从这些类型召回热门。优点稳定——即使用户最近偶尔偏差，仍推长期喜欢类型。
 
-**Snake Merge 多路融合**：简单按分合并会让某路霸榜。Snake Merge 从各路轮流取候选，确保每路有代表进排序：
+**Snake Merge 多路融合** ：简单按分合并会让某路霸榜。Snake Merge 从各路轮流取候选，确保每路有代表进排序：
 
 ```python
 def _merge_results_round_robin(self, results_list, top_k):
@@ -313,7 +313,7 @@ class DeepFMRankingStrategy(RankingStrategy):
         return inputs
 ```
 
-特征编码复用离线保存的 LabelEncoder，**编码从 1 起、0 留未知**，与训练一致：
+特征编码复用离线保存的 LabelEncoder， **编码从 1 起、0 留未知** ，与训练一致：
 
 ```python
 def encode_feature(self, feat_name, raw_value):
@@ -354,7 +354,7 @@ def _rank_sync(self, user_features, candidates):
     return ranked_results
 ```
 
-批量预测对 100 候选通常 10–30ms。模型推理是 CPU 密集，放线程池避免阻塞事件循环；模型不可用时**降级**到 `FallbackRankingStrategy`，直接用召回分排序，保证高可用。
+批量预测对 100 候选通常 10–30ms。模型推理是 CPU 密集，放线程池避免阻塞事件循环；模型不可用时 **降级** 到 `FallbackRankingStrategy`，直接用召回分排序，保证高可用。
 
 ---
 
@@ -362,7 +362,7 @@ def _rank_sync(self, user_features, candidates):
 
 召回排序后列表可能多样性不足（如动作片占比高，排序把动作片全排前）。适度多样性提升满意度与留存。
 
-**连续打散（Consecutive Dispersion）**：不允许超过 $N$ 个相同属性连续出现。如 $N=2$，[动作,动作,动作,喜剧] → [动作,动作,喜剧,动作]。
+**连续打散（Consecutive Dispersion）** ：不允许超过 $N$ 个相同属性连续出现。如 $N=2$，[动作,动作,动作,喜剧] → [动作,动作,喜剧,动作]。
 
 ```python
 class ConsecutiveDispersionStrategy(RerankingStrategy):
@@ -389,7 +389,7 @@ class ConsecutiveDispersionStrategy(RerankingStrategy):
         return result
 ```
 
-预定义两类：**类型打散**（取首类型）与**年代打散**（按 10 年分桶，如 1990s）。
+预定义两类： **类型打散** （取首类型）与 **年代打散** （按 10 年分桶，如 1990s）。
 
 ```python
 class GenreDispersionStrategy(ConsecutiveDispersionStrategy):
@@ -420,7 +420,7 @@ class RerankingService:
         return result
 ```
 
-重要特性是**保序性**：满足连续约束前提下尽量保原序，高分仍靠前、仅微调位置——既保相关性又增多样性。
+重要特性是 **保序性** ：满足连续约束前提下尽量保原序，高分仍靠前、仅微调位置——既保相关性又增多样性。
 
 ![排序 + 多样性重排：DeepFM 精排后连续打散保序提多样性](../images/part11-ranking-rerank.svg)
 
@@ -430,7 +430,7 @@ class RerankingService:
 
 组件开发完后整合进 FastAPI，对外提供 HTTP 接口。
 
-**推荐 API**核心逻辑：
+**推荐 API** 核心逻辑：
 
 ```python
 @router.post("/recommend")
@@ -461,7 +461,7 @@ async def get_recommendations(request, db=Depends(get_db), current_user=Depends(
     }
 ```
 
-要点：①用户特征从 DB+Redis 组装；②`item_features_provider` 回调**惰性加载**物品特征，避免召回阶段加载用不到的数据；③流程返回 ID+分，需查库补标题/海报。
+要点：①用户特征从 DB+Redis 组装；②`item_features_provider` 回调 **惰性加载** 物品特征，避免召回阶段加载用不到的数据；③流程返回 ID+分，需查库补标题/海报。
 
 **资源加载与单例模式**——模型大，应在进程级共享，`RecallResourceManager` 用单例 + 惰性加载：
 
