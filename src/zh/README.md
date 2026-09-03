@@ -2,13 +2,7 @@
   <h1>推荐系统自动研究知识库</h1>
   <p><strong>RecSys Auto Research KB · 从级联架构到生成式范式的推荐与广告知识库</strong></p>
 
-  <p>
-    <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
-    <img alt="Language" src="https://img.shields.io/badge/Language-中文-16a34a?style=flat-square">
-    <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square">
-    <img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square">
-    <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a>
-  </p>
+  <p><img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square"> <img alt="Language" src="https://img.shields.io/badge/Language-中文-16a34a?style=flat-square"> <img alt="Topic" src="https://img.shields.io/badge/Topic-Recommender%20Systems-f97316?style=flat-square"> <img alt="Status" src="https://img.shields.io/badge/Status-In%20Progress-8b5cf6?style=flat-square"> <a href="https://haozhe-xing.github.io/fun-rec-mdbook/"><img alt="Read Online" src="https://img.shields.io/badge/Read-Online-4A6CF7?style=flat-square"></a></p>
 
   <p>
     一个面向推荐系统与计算广告的知识库:判别式推荐、生成式推荐、计算广告专题,为人类读者与 AI agent 的 auto research 提供结构化、可精确引用的技术知识。
