@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>深度推荐算法实践</h1>
-  <p><strong>小麦书 · 从级联架构到生成式范式</strong></p>
+  <h1>推荐系统自动研究知识库</h1>
+  <p><strong>RecSys Auto Research KB · 从级联架构到生成式范式的推荐与广告知识库</strong></p>
 
   <p>
     <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
@@ -11,7 +11,7 @@
   </p>
 
   <p>
-    一本系统讲解推荐系统技术演进的开源书：从传统级联架构，到生成式推荐、推理式推荐与端到端推荐系统实战。
+    一个面向推荐系统与计算广告的知识库:判别式推荐、生成式推荐、计算广告专题,为人类读者与 AI agent 的 auto research 提供结构化、可精确引用的技术知识。
   </p>
 
   <p>
@@ -25,7 +25,7 @@
 
 ## 这是什么?
 
-**《深度推荐算法实践》** 是一本面向推荐系统学习者与工程实践者的开源电子书，内容重写自 Datawhale 开源项目 [fun-rec](https://github.com/datawhalechina/fun-rec)。
+**《推荐系统自动研究知识库》** 是一个面向推荐系统 auto research 的知识库,内容重写并扩展自 Datawhale 开源项目 [fun-rec](https://github.com/datawhalechina/fun-rec)。
 
 > 📖 **在线阅读**：访问 [https://haozhe-xing.github.io/fun-rec-mdbook/](https://haozhe-xing.github.io/fun-rec-mdbook/) 阅读最新版本。
 

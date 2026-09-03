@@ -1,5 +1,5 @@
 [book]
-title = "深度推荐算法实践（小麦书）"
+title = "推荐系统自动研究知识库"
 description = "从级联架构到生成式范式——一本系统讲解推荐系统的书"
 authors = ["Datawhale", "WorkBuddy 重写版"]
 language = "zh"

@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>Practical Deep Recommender Systems</h1>
-  <p><strong>The Wheat Book · From Cascading Architectures to the Generative Paradigm</strong></p>
+  <h1>RecSys Auto Research KB</h1>
+  <p><strong>A knowledge base for recommender-system auto research · from cascading architectures to the generative paradigm</strong></p>
 
   <p>
     <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
@@ -11,7 +11,7 @@
   </p>
 
   <p>
-    An open-source book that systematically traces the technical evolution of recommender systems: from the classic cascading architecture to generative recommendation, reasoning in recommendation, and hands-on practice with an end-to-end system.
+    A knowledge base for recommender systems and computational advertising: discriminative recommendation, generative recommendation, and the advertising stack — structured, citable technical knowledge for auto research by humans and AI agents.
   </p>
 
   <p>
@@ -25,7 +25,7 @@
 
 ## What Is This?
 
-**Practical Deep Recommender Systems** is an open-source book for recommender-system learners and engineering practitioners, rewritten from the Datawhale open-source project [fun-rec](https://github.com/datawhalechina/fun-rec).
+**RecSys Auto Research KB** is a knowledge base for recommender-system auto research, rewritten and expanded from the Datawhale open-source project [fun-rec](https://github.com/datawhalechina/fun-rec).
 
 > 📖 **Read online**: visit [https://haozhe-xing.github.io/fun-rec-mdbook/](https://haozhe-xing.github.io/fun-rec-mdbook/) for the latest version.
 

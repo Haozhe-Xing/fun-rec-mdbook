@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>Deep Recommender Systems in Practice · 深度推荐算法实践</h1>
-  <p><strong>A Knowledge Base for Recommender-Systems Auto Research</strong></p>
+  <h1>RecSys Auto Research KB · 推荐系统自动研究知识库</h1>
+  <p><strong>A Knowledge Base for Recommender-Systems &amp; Computational-Advertising Auto Research</strong></p>
 
   <p>
     <img alt="mdBook" src="https://img.shields.io/badge/Built%20with-mdBook-2f74c0?style=flat-square">
