@@ -135,7 +135,7 @@ The core idea of the **Think-Ahead architecture**: **reasoning can be computed a
 > 🧠 Mental Model: Everyday Decision-Making Analogy
 > You don't think from scratch every time you make a decision; you accumulate conclusions like "what kinds of movies I like" over time and quickly apply them when deciding. Think-Ahead separates "thinking ahead" from "choosing on the spot," preserving depth of thought while meeting latency.
 
-Think-Ahead has been fully deployed at Kuaishou, with P99 latency < 150ms and app dwell time improved by **0.159%**. Compared with the synchronous scheme: **P50 latency down 73%** (320→86ms), **P99 down 68%** (480→153ms), reasoning quality retention 98.5%, cache hit rate 92.3%.
+Think-Ahead has been fully deployed at Kuaishou, with P99 latency around 153ms and app dwell time improved by **0.159%**. Compared with the synchronous scheme: **P50 latency down 73%** (320→86ms), **P99 down 68%** (480→153ms), reasoning quality retention 98.5%, cache hit rate 92.3%.
 
 > 💡 **Key Insight:** In conversational scenarios, OneRec-Think is also context-aware — when the user expresses negative emotion, the model detects the affective signal and shifts recommendations from general interests toward relaxing, positive content. This marks recommendation evolving from "passive response" to "active understanding."
 

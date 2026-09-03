@@ -56,7 +56,7 @@ After alignment, BGE's semantic relevance on the query retrieval task rose from 
 
 $$\bar{\boldsymbol{e}_q^c} = \frac{1}{k} \sum_{i=1}^{k} \boldsymbol{e}_{q_i}^c, \quad \boldsymbol{e}_p^* = (1 - w) \cdot \boldsymbol{e}_p + w \cdot \bar{\boldsymbol{e}_q^c}, \quad w = 0.5$$
 
-Ablation shows that at $w=0.5$, MRR improves 2.3% over no augmentation, but $w>0.7$ introduces noise and degrades performance. For efficient retrieval, OneSug uses **RQ-VAE** to encode queries as hierarchical discrete codes (4 layers, codebook size 512 each); at inference it matches hierarchically from coarse to fine, reducing complexity from vector retrieval's $O(N\cdot d)$ to codebook lookup's $O(W^C)$.
+Ablation shows that at $w=0.5$, MRR improves 2.3% over no augmentation, but $w>0.7$ introduces noise and degrades performance. For efficient retrieval, OneSug uses **RQ-VAE** to encode queries as hierarchical discrete codes (4 layers, codebook size 512 each); at inference it matches hierarchically from coarse to fine, reducing complexity from vector retrieval's $O(N\cdot d)$ ($N$ being the full candidate count) to per-layer codebook lookup's $O(C\cdot W)$ — independent of the candidate scale $N$, growing only linearly with the number of layers $C$ and the codebook size $W$.
 
 **User features.** OneSug integrates short-term historical queries $\mathcal{H}_u$ (the most recent $n=10$; more introduces noise and drops MRR by 1.2%) and static profile $\mathcal{U}$. Note that OneSug **does not include product interaction features** — query completion happens at the input stage, before any product exposure. The encoder input is constructed as:
 

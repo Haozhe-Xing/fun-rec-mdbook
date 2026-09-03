@@ -120,6 +120,8 @@ Unlike image generation, diffusion in recommendation involves two special design
 
 $$1 - \bar{\alpha}_t = s \cdot \left[\alpha_{\min} + \frac{t-1}{T-1}(\alpha_{\max} - \alpha_{\min})\right]$$
 
+Here $s\in(0,1)$ controls the upper bound of the overall noise strength, and $\alpha_{\min},\alpha_{\max}$ delimit the interval over which the noise ratio grows linearly with $t$ (this design comes from DiffRec and has been widely adopted by subsequent diffusion recommender works).
+
 **Inference starting-point selection** — inference can start reverse denoising from a partially noised state $\boldsymbol{x}_{T'}$ ($T'<T$), which both leverages denoising to fix noise in the raw interactions and preserves enough personalization information.
 
 ### Conditional Generation and Controllability

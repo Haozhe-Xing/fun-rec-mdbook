@@ -8,7 +8,7 @@
 
 > 📝 **Before You Continue:** 请先读完 [3.1 Wide & Deep](./wide-and-deep.md)。本章正是为了解决 3.1 中"Wide 部分需人工设计交叉特征"这一短板而生——理解 Wide 的局限，才能体会 FM 的动机。
 
-[3.1](./wide-and-deep.md) 的 Wide 部分用**人工交叉特征**记住强规则，但手工设计特征既麻烦又无法穷尽。一个自然的追问随之而来：**能不能让机器自己学会特征之间的交互关系？** 这正是特征交叉（Feature Crossing）要解决的问题。
+[3.1](./wide-and-deep.md) 的 Wide 部分用 **人工交叉特征** 记住强规则，但手工设计特征既麻烦又无法穷尽。一个自然的追问随之而来： **能不能让机器自己学会特征之间的交互关系？** 这正是特征交叉（Feature Crossing）要解决的问题。
 
 最直接的想法是自动捕捉所有特征对之间的交互——但推荐系统动辄成千上万特征，若每对都学一个参数，参数量会爆炸；而且数据高度稀疏，大多数组合根本没有样本可学。本章我们从 FM 的精妙因子分解出发，一路走到 xDeepFM、AutoInt 等自动高阶交叉，并配一个交互演示，让你"看见"高阶组合如何逐步生成。
 
@@ -24,7 +24,7 @@
 
 ## 3.2.0 动机：从手工交叉到自动交叉
 
-Wide & Deep 的 Wide 部分依赖专家手工设计交叉特征，这有两个痛点：(1) 组合空间太大，人工难以穷尽；(2) 新出现的组合没有现成特征。我们想要的，是一个能**自动学习任意特征对交互、又不让参数爆炸**的机制。
+Wide & Deep 的 Wide 部分依赖专家手工设计交叉特征，这有两个痛点：(1) 组合空间太大，人工难以穷尽；(2) 新出现的组合没有现成特征。我们想要的，是一个能 **自动学习任意特征对交互、又不让参数爆炸** 的机制。
 
 回想 Part 2 召回里的 FM：它把用户和物品分解为向量、用内积做高效召回。到了精排阶段，FM 换了一副面孔——它的核心思想"给每个特征学一个向量，再用向量内积捕捉交互"正好能解决上面的痛点。这是同一个技术在不同阶段的两次亮相。
 
@@ -42,11 +42,11 @@ $$y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1}\sum_{j=i+1}^n w_{ij} x_i x_j
 
 它有两个致命缺陷：(1) 参数量 $O(n^2)$，特征多时承受不起；(2) 在稀疏数据里，绝大多数交叉项 $x_i x_j$ 从未共现，对应权重 $w_{ij}$ 学不到。
 
-FM 的精髓是**参数共享**：把交互权重分解为两个低维隐向量的内积 $w_{ij} = \langle \boldsymbol{v}_i, \boldsymbol{v}_j \rangle$。于是：
+FM 的精髓是 **参数共享** ：把交互权重分解为两个低维隐向量的内积 $w_{ij} = \langle \boldsymbol{v}_i, \boldsymbol{v}_j \rangle$。于是：
 
 $$y = w_0 + \sum_{i=1}^n w_i x_i + \sum_{i=1}^{n-1}\sum_{j=i+1}^n \langle \boldsymbol{v}_i, \boldsymbol{v}_j \rangle x_i x_j$$
 
-其中 $\boldsymbol{v}_i, \boldsymbol{v}_j$ 是特征 $i,j$ 的 $k$ 维 Embedding（$k \ll n$）。原本要学 $O(n^2)$ 个独立 $w_{ij}$，现在只需每个特征一个 $k$ 维向量，总参数量降到 **$O(nk)$**。更关键的是：即使 $i,j$ 从未共现，只要它们各自与其他特征（如 $k$）的共现学好，$\boldsymbol{v}_i, \boldsymbol{v}_j$ 就有效，从而泛化预测 $x_i \times x_j$ 的效果。此外，借助代数变换，FM 二阶项计算可从 $O(kn^2)$ 降到线性的 **$O(kn)$**：
+其中 $\boldsymbol{v}_i, \boldsymbol{v}_j$ 是特征 $i,j$ 的 $k$ 维 Embedding（$k \ll n$）。原本要学 $O(n^2)$ 个独立 $w_{ij}$，现在只需每个特征一个 $k$ 维向量，总参数量降到 **$O(nk)$**。更关键的是：即使 $i,j$ 从未共现，只要它们各自与其他特征（如 $k$）的共现学好，$\boldsymbol{v}_i, \boldsymbol{v}_j$ 就有效，从而泛化预测 $x_i \times x_j$ 的效果。此外，借助代数变换，FM 二阶项计算可从 $O(kn^2)$ 降到线性的 **$O(kn)$** ：
 
 $$\sum_{i=1}^{n-1}\sum_{j=i+1}^n \langle\boldsymbol{v}_i,\boldsymbol{v}_j\rangle x_i x_j = \frac{1}{2}\left[\left(\sum_{i=1}^n x_i\boldsymbol{v}_i\right)^2 - \sum_{i=1}^n x_i^2\boldsymbol{v}_i^2\right]$$
 
@@ -63,9 +63,9 @@ $$\sum_{i=1}^{n-1}\sum_{j=i+1}^n \langle\boldsymbol{v}_i,\boldsymbol{v}_j\rangle
 FM 对所有交叉"一视同仁"，但实际中不同交叉的重要性不同。研究者们在此基础上做了多种增强：
 
 - **AFM（Attention FM）** 引入注意力机制，为每对交叉分配权重 $a_{ij}$（Softmax 归一化），让模型聚焦重要交互，且注意力权重可可视化、提升可解释性。其交互层先算元素积 $(v_i \odot v_j)x_i x_j$，再注意力池化：$\hat{y}_{afm} = w_0 + \sum_i w_i x_i + \boldsymbol{p}^T\sum_{i<j} a_{ij}(v_i\odot v_j)x_i x_j$。
-- **NFM（Neural FM）** 把 FM 的二阶交叉结果（向量形式）当作"原料"喂给 DNN，学习更高阶非线性。关键是 **Bi-Interaction 池化层**：$f_{BI} = \sum_{i<j} x_i v_i \odot x_j v_j$，同样可优化到 $O(kn)$，再送入 MLP。FM 可看作 NFM 无隐藏层的特例。
-- **PNN（Product-based NN）** 认为内积/元素积各有局限，于是在"乘积层"同时用**内积（IPNN）与外积（OPNN）**捕捉更丰富交互，并用矩阵分解/叠加近似把复杂度从 $O(N^2M)$ 降到 $O(NM)$。
-- **FiBiNET** 先学**特征重要性**（借鉴视觉的 SENET：Squeeze→Excitation→Re-weight），再用**双线性交互** $p_{ij}=v_i\cdot W \odot v_j$ 打破对称交互限制，兼顾"重要特征"与"灵活交互"。
+- **NFM（Neural FM）** 把 FM 的二阶交叉结果（向量形式）当作"原料"喂给 DNN，学习更高阶非线性。关键是 **Bi-Interaction 池化层** ：$f_{BI} = \sum_{i<j} x_i v_i \odot x_j v_j$，同样可优化到 $O(kn)$，再送入 MLP。FM 可看作 NFM 无隐藏层的特例。
+- **PNN（Product-based NN）** 认为内积/元素积各有局限，于是在"乘积层"同时用 **内积（IPNN）与外积（OPNN）** 捕捉更丰富交互，并用矩阵分解/叠加近似把复杂度从 $O(N^2M)$ 降到 $O(NM)$。
+- **FiBiNET** 先学 **特征重要性** （借鉴视觉的 SENET：Squeeze→Excitation→Re-weight），再用 **双线性交互** $p_{ij}=v_i\cdot W \odot v_j$ 打破对称交互限制，兼顾"重要特征"与"灵活交互"。
 
 ![特征交叉家族：在 FM 基础上的演进路线](../images/part3-fm-family.svg)
 
@@ -77,12 +77,12 @@ FM 对所有交叉"一视同仁"，但实际中不同交叉的重要性不同。
 
 ## 3.2.3 DeepFM：低阶高阶统一建模
 
-[3.1](./wide-and-deep.md) 的 Wide 部分需要大量人工特征工程。DeepFM 直接把 Wide 换成**无需人工的 FM**，并让 FM 与 Deep **共享同一份 Embedding**。这带来两大好处：(1) 同时学低阶与高阶交互；(2) 共享 Embedding 让训练更高效。
+[3.1](./wide-and-deep.md) 的 Wide 部分需要大量人工特征工程。DeepFM 直接把 Wide 换成 **无需人工的 FM** ，并让 FM 与 Deep **共享同一份 Embedding**。这带来两大好处：(1) 同时学低阶与高阶交互；(2) 共享 Embedding 让训练更高效。
 
-DeepFM 由 FM 与 DNN 两个**并行**组件构成，输入共享：
+DeepFM 由 FM 与 DNN 两个 **并行** 组件构成，输入共享：
 
-- **FM 组件**捕捉一阶 + 二阶交叉：$y_{FM} = \langle w,x\rangle + \sum_{i<j}\langle V_i,V_j\rangle x_i x_j$。
-- **Deep 组件**把所有 Embedding 拼接后送入 DNN，学高阶非线性：$a^{(0)}=[e_1,\ldots,e_m]$，$a^{(l+1)}=\sigma(W^{(l)}a^{(l)}+b^{(l)})$。
+- **FM 组件** 捕捉一阶 + 二阶交叉：$y_{FM} = \langle w,x\rangle + \sum_{i<j}\langle V_i,V_j\rangle x_i x_j$。
+- **Deep 组件** 把所有 Embedding 拼接后送入 DNN，学高阶非线性：$a^{(0)}=[e_1,\ldots,e_m]$，$a^{(l+1)}=\sigma(W^{(l)}a^{(l)}+b^{(l)})$。
 
 最终把两者 logit 相加再过 Sigmoid：$\hat{y}=\sigma(y_{FM}+y_{Deep})$。
 
@@ -96,11 +96,11 @@ FM 与 DNN 共享同一组 Embedding：FM 学低阶（一阶+二阶），DNN 学
 
 ## 3.2.4 高阶交叉：DCN（残差高阶）
 
-FM 家族明确建模二阶，更高阶主要靠 DNN 隐式学，而我们不清楚 DNN 到底学到了什么阶。DCN（Deep & Cross Network）用 **Cross Network** 替代 Wide 部分，每一层都与原始输入 $\boldsymbol{x}_0$ 交叉，从而**明确**学到高阶交互：
+FM 家族明确建模二阶，更高阶主要靠 DNN 隐式学，而我们不清楚 DNN 到底学到了什么阶。DCN（Deep & Cross Network）用 **Cross Network** 替代 Wide 部分，每一层都与原始输入 $\boldsymbol{x}_0$ 交叉，从而 **明确** 学到高阶交互：
 
 $$\boldsymbol{x}_{l+1} = \boldsymbol{x}_0 \boldsymbol{x}_l^T \boldsymbol{w}_l + \boldsymbol{b}_l + \boldsymbol{x}_l$$
 
-这就是一个**残差结构**：第 $l$ 层在上一层输出上加一个"与原始输入交叉"的项。层数越深，交叉阶数越高——第 1 层含二阶、第 2 层含三阶……且参数量只与输入维度**成正比**。Cross Network 与 Deep Network 并行，最后拼接过逻辑回归：
+这就是一个 **残差结构** ：第 $l$ 层在上一层输出上加一个"与原始输入交叉"的项。层数越深，交叉阶数越高——第 1 层含二阶、第 2 层含三阶……且参数量只与输入维度 **成正比**。Cross Network 与 Deep Network 并行，最后拼接过逻辑回归：
 
 $$\boldsymbol{p} = \sigma([\boldsymbol{x}_{L_1}^T, \boldsymbol{h}_{L_2}^T]\boldsymbol{w}_{\text{logits}})$$
 
@@ -114,13 +114,13 @@ $$\boldsymbol{p} = \sigma([\boldsymbol{x}_{L_1}^T, \boldsymbol{h}_{L_2}^T]\bolds
 
 ## 3.2.5 xDeepFM：向量级 CIN 交互
 
-DCN 在元素级做交叉，xDeepFM 提出**压缩交互网络（CIN）**，改为**向量级（vector-wise）**交互，更符合直觉。xDeepFM 含三部分：线性 + DNN（隐式高阶）+ CIN（显式高阶向量级），最后合并。
+DCN 在元素级做交叉，xDeepFM 提出 **压缩交互网络（CIN）** ，改为 **向量级（vector-wise）** 交互，更符合直觉。xDeepFM 含三部分：线性 + DNN（隐式高阶）+ CIN（显式高阶向量级），最后合并。
 
-CIN 的核心：第 $k$ 层输出 $\boldsymbol{X}_k$ 由上一层 $\boldsymbol{X}_{k-1}$ 与原始输入 $\boldsymbol{X}_0$ 的所有成对**哈达玛积**加权求和得到：
+CIN 的核心：第 $k$ 层输出 $\boldsymbol{X}_k$ 由上一层 $\boldsymbol{X}_{k-1}$ 与原始输入 $\boldsymbol{X}_0$ 的所有成对 **哈达玛积** 加权求和得到：
 
 $$\boldsymbol{X}_{h,*}^k = \sum_{i=1}^{H_{k-1}}\sum_{j=1}^m \boldsymbol{W}_{i,j}^{k,h}(\boldsymbol{X}_{i,*}^{k-1}\circ\boldsymbol{X}_{j,*}^0)$$
 
-其中 $\circ$ 是向量级哈达玛积，保留 $D$ 维向量结构。第 $k$ 层输出包含**所有 $k+1$ 阶**向量级交互。各层特征图经 Sum Pooling 拼接后，与线性、DNN 输出合并过 Sigmoid：
+其中 $\circ$ 是向量级哈达玛积，保留 $D$ 维向量结构。第 $k$ 层输出包含 **所有 $k+1$ 阶** 向量级交互。各层特征图经 Sum Pooling 拼接后，与线性、DNN 输出合并过 Sigmoid：
 
 $$\hat{y}=\sigma(\boldsymbol{w}_{\text{linear}}^T\boldsymbol{a}+\boldsymbol{w}_{\text{dnn}}^T\boldsymbol{x}_{\text{dnn}}^k+\boldsymbol{w}_{\text{cin}}^T\boldsymbol{p}^+ + b)$$
 
@@ -134,13 +134,13 @@ CIN 每层把"上一层特征图 × 原始输入"做向量哈达玛积，再加�
 
 ## 3.2.6 AutoInt：自注意力自适应交互
 
-DCN 每层固定与 $x_0$ 交叉，xDeepFM 的 CIN 也按固定方式交互。AutoInt 换思路：**让模型自己决定哪些特征交互、强度多大**——用 Transformer 的自注意力机制自适应学任意阶交互。
+DCN 每层固定与 $x_0$ 交叉，xDeepFM 的 CIN 也按固定方式交互。AutoInt 换思路： **让模型自己决定哪些特征交互、强度多大**——用 Transformer 的自注意力机制自适应学任意阶交互。
 
 对于特征 $m,k$，第 $h$ 个注意力头的相关性得分：
 
 $$\alpha_{m,k}^{(h)} = \frac{\exp(\psi^{(h)}(\boldsymbol{e}_m,\boldsymbol{e}_k))}{\sum_{l=1}^M \exp(\psi^{(h)}(\boldsymbol{e}_m,\boldsymbol{e}_l))},\quad \psi^{(h)} = \langle W_Q^{(h)}\boldsymbol{e}_m, W_K^{(h)}\boldsymbol{e}_k\rangle$$
 
-用得分对 Value 加权求和得新表示 $\tilde{e}_m^{(h)}$，多头拼接后加残差连接。堆叠多层，第一层含二阶、第二层含三阶……交互模式**完全由注意力权重动态决定**。最终拼接所有层表示过逻辑回归。
+用得分对 Value 加权求和得新表示 $\tilde{e}_m^{(h)}$，多头拼接后加残差连接。堆叠多层，第一层含二阶、第二层含三阶……交互模式 **完全由注意力权重动态决定**。最终拼接所有层表示过逻辑回归。
 
 > 💡 **Key Insight:** 三种高阶交叉的动机差异一目了然——**DCN** 用残差固定交叉（元素级）、**xDeepFM** 用 CIN 固定交叉（向量级）、**AutoInt** 用注意力**自适应**交叉。前两者交互模式写死，AutoInt 把"选谁交互、多强"交给数据学，更灵活、也可解释（看注意力矩阵）。
 
@@ -160,10 +160,10 @@ $$\alpha_{m,k}^{(h)} = \frac{\exp(\psi^{(h)}(\boldsymbol{e}_m,\boldsymbol{e}_k))
 
 | # | Mistake | Example | Why It's Wrong | Fix |
 |---|---------|---------|---------------|-----|
-| 1 | 以为 FM 给每对特征学独立权重 | "FM 有 $O(n^2)$ 个交叉权重" | FM 用隐向量内积**共享**参数，仅 $O(nk)$ | 记住：$w_{ij}=\langle v_i,v_j\rangle$，参数量随 $n$ 线性 |
+| 1 | 以为 FM 给每对特征学独立权重 | "FM 有 $O(n^2)$ 个交叉权重" | FM 用隐向量内积 **共享** 参数，仅 $O(nk)$ | 记住：$w_{ij}=\langle v_i,v_j\rangle$，参数量随 $n$ 线性 |
 | 2 | 忽略 FM 缓解稀疏的意义 | "特征没共现就学不到" | 隐向量通过与其他特征共现间接学得，可泛化 | 参数共享是 FM 解决稀疏的核心 |
-| 3 | 把 DeepFM 当 Wide&Deep 同款 | "DeepFM 也要人工交叉特征" | DeepFM 用 FM **替代**手工 Wide，端到端 | 区分：Wide&Deep=人工交叉，DeepFM=自动 FM |
-| 4 | 混淆 DCN 与 xDeepFM 的交叉粒度 | "两者都是高阶交叉，没区别" | DCN 是**元素级**、xDeepFM 是**向量级** | 看交叉发生在标量还是完整 Embedding 向量 |
+| 3 | 把 DeepFM 当 Wide&Deep 同款 | "DeepFM 也要人工交叉特征" | DeepFM 用 FM **替代** 手工 Wide，端到端 | 区分：Wide&Deep=人工交叉，DeepFM=自动 FM |
+| 4 | 混淆 DCN 与 xDeepFM 的交叉粒度 | "两者都是高阶交叉，没区别" | DCN 是 **元素级**、xDeepFM 是 **向量级** | 看交叉发生在标量还是完整 Embedding 向量 |
 | 5 | 认为高阶交叉越多越好 | "堆 10 层 Cross 肯定更强" | 过高阶易过拟合、计算贵，且业务未必需要 | 按数据复杂度与验证集选层数 |
 
 ---
@@ -222,7 +222,7 @@ Work through all problems in order — they get progressively harder. Each has a
 2. FM 只需每个特征一个 $k$ 维向量，共 $n \times k = 1000 \times 8 = 8000$ 个参数。
 
 **Key points:**
-- 从 $5\times 10^5$ 降到 $8\times 10^3$，约降低 **2 个数量级**（百倍）。
+- 从 $5\times 10^5$ 降到 $8\times 10^3$，约降低 **2 个数量级** （百倍）。
 - 随 $n$ 增大差距更夸张，这正是 FM 在工业界可用的关键。
 
 </details>
@@ -243,10 +243,10 @@ Work through all problems in order — they get progressively harder. Each has a
 
 **Approach:** 抓每类交叉的"粒度"与"是否自适应"。
 
-- (a) **DCN**（元素级 / bit-wise 残差交叉）
-- (b) **DeepFM**（共享 Embedding 的并行 FM+DNN）
-- (c) **AutoInt**（自注意力自适应交互）
-- (d) **xDeepFM**（CIN 向量级交互）
+- (a) **DCN** （元素级 / bit-wise 残差交叉）
+- (b) **DeepFM** （共享 Embedding 的并行 FM+DNN）
+- (c) **AutoInt** （自注意力自适应交互）
+- (d) **xDeepFM** （CIN 向量级交互）
 
 **Key points:**
 - 元素级 vs 向量级：DCN vs xDeepFM。

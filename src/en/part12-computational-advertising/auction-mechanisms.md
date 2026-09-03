@@ -188,7 +188,7 @@ Beyond the static comparison, it is worth running the experiment yourself. The i
 
 It is recommended to follow the simulator's default script: B lowers its bid (profitable under GFP, harmful under the second-price family), B raises its bid (utility unchanged under GSP — the manifestation of envy-freeness; harmful under VCG), C raises its bid (a losing move under all three mechanisms, and under GSP it even drags down the innocent A and B). After finishing, you will have muscle memory for "pricing rules shape behavior."
 
-> 📌 **Note on Industry Practice** (the following is public industry information as of the time of writing; the timeline follows industry reports):
+> 📌 **Industry Update** (public industry information as of the time of writing; the timeline follows industry reports): around 2019, leading ADXs including Google moved wholesale from second-price to **first-price auctions**. The following is the full story of that transition.
 
 The story should have ended here, but programmatic trading rewrote the ending. With the spread of **header bidding** and programmatic open auctions, a single impression is resold through multi-level chains of SSP → ADX → DSP, with each level possibly taking a cut — the second-price auction's "second-highest price" became opaque after multi-level resale: a DSP wins the auction yet cannot figure out whose "second price" it ultimately paid. So around 2019, leading ADXs including Google moved wholesale to **first-price auctions**: you pay what you bid, and the bill is crystal clear.
 

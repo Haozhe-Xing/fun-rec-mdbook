@@ -8,7 +8,7 @@
 
 > 📝 **Before You Continue:** 请先读完 [11.4](./online-pipeline.md) 的推荐 API。本节展示前端如何调用该 API，并把用户行为反馈回系统形成闭环。
 
-前端是用户与推荐系统的入口：浏览、查看推荐、搜索、评分。这些行为被采集反馈到后端，影响未来推荐——所以前端不仅是展示层，也是**数据采集层**。
+前端是用户与推荐系统的入口：浏览、查看推荐、搜索、评分。这些行为被采集反馈到后端，影响未来推荐——所以前端不仅是展示层，也是 **数据采集层**。
 
 读完本章，你将能够：
 
@@ -76,9 +76,9 @@ router.beforeEach((to, from, next) => {
 
 ## 11.5.2 核心组件设计
 
-**电影卡片 MovieCard**：最基础单元，接收 `movie` 与 `width`，显示海报/标题/年份/评分。设计要点：整卡用 `<router-link>` 可点击；`loading="lazy"` 懒加载图；`@error` 监听失败显示占位；`group-hover` 悬停显详情。
+**电影卡片 MovieCard** ：最基础单元，接收 `movie` 与 `width`，显示海报/标题/年份/评分。设计要点：整卡用 `<router-link>` 可点击；`loading="lazy"` 懒加载图；`@error` 监听失败显示占位；`group-hover` 悬停显详情。
 
-**电影横向列表 MovieRow**：把多个卡片组织成可横滚列表（类 Netflix）。用 `ref` 引用 DOM 滚动容器，据滚动位置动态显箭头：
+**电影横向列表 MovieRow** ：把多个卡片组织成可横滚列表（类 Netflix）。用 `ref` 引用 DOM 滚动容器，据滚动位置动态显箭头：
 
 ```javascript
 import { ref } from 'vue'
@@ -92,7 +92,7 @@ const updateArrows = () => {
 }
 ```
 
-**评分组件 StarRating**：10 分制星级。维护 `hoverRating`（悬停位）与 `userRating`（已存分），星色按二者决定：
+**评分组件 StarRating** ：10 分制星级。维护 `hoverRating`（悬停位）与 `userRating`（已存分），星色按二者决定：
 
 ```javascript
 const hoverRating = ref(0)
@@ -223,7 +223,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 ## 11.5.6 搜索功能实现
 
-搜索入口在导航栏，支持点击或 `Ctrl+K` 打开。实时搜索若每字符都请求会刷爆 API——用**防抖（debounce）**：停输 300ms 再发请求。
+搜索入口在导航栏，支持点击或 `Ctrl+K` 打开。实时搜索若每字符都请求会刷爆 API——用 **防抖（debounce）** ：停输 300ms 再发请求。
 
 ```javascript
 import { ref, watch } from 'vue'

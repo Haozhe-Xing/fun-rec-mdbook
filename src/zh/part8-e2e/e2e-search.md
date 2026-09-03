@@ -8,7 +8,7 @@
 
 > 📝 **Before You Continue:** 建议先读 [8.1](./e2e-recommendation.md) 的语义 ID 与 Encoder-Decoder 思路——本节把同一套生成式哲学迁移到「文本查询 → 商品结果」的跨模态匹配，但业务约束更尖锐。
 
-[8.1](./e2e-recommendation.md) 的 OneRec 输入与输出都是**封闭词表**的物品 ID。电商搜索则截然不同：用户用**明确的文本查询**表达意图，系统需在强相关性约束下从海量商品库返回精准匹配。这种「文本查询 → 商品结果」涉及**开放词表**（任意查询）与**封闭词表**（有限商品库）的混合，以及查询理解、语义匹配、个性化排序等多层次任务。
+[8.1](./e2e-recommendation.md) 的 OneRec 输入与输出都是 **封闭词表** 的物品 ID。电商搜索则截然不同：用户用 **明确的文本查询** 表达意图，系统需在强相关性约束下从海量商品库返回精准匹配。这种「文本查询 → 商品结果」涉及 **开放词表** （任意查询）与 **封闭词表** （有限商品库）的混合，以及查询理解、语义匹配、个性化排序等多层次任务。
 
 传统电商搜索同样是 MCA：查询理解（纠错/改写/意图）→ 召回（倒排+向量）→ 预排序 → 精排，存在查询与商品检索解耦、冷启动长尾、标题关键词堆砌噪声三大问题。**OneSug** 与 **OneSearch** 分别针对搜索链路的前半段（查询补全）与后半段（商品检索）提出端到端生成式方案，共享统一架构哲学，但在输入输出空间、ID 设计上有不同权衡。
 
@@ -26,7 +26,7 @@
 
 与视频推荐相比，电商商品检索约束更复杂：
 
-1. **强相关性是第一优先级。** 推荐可基于历史推风格相似但类目不同的商品；搜索则不可妥协——用户搜「红色连衣裙」，即便他常买蓝色商品，返回「蓝色连衣裙」也是严重相关性违反。系统必须**先满足相关性，再优化个性化**。
+1. **强相关性是第一优先级。** 推荐可基于历史推风格相似但类目不同的商品；搜索则不可妥协——用户搜「红色连衣裙」，即便他常买蓝色商品，返回「蓝色连衣裙」也是严重相关性违反。系统必须 **先满足相关性，再优化个性化**。
 2. **商品信息充斥噪声与冗余。** 商家在标题堆砌大量关键词（「2024新款韩版修身显瘦长袖连衣裙女学生小个子甜美气质裙子百搭」），传统文本编码器被冗余淹没，难识别核心属性。
 3. **语义层次与商品独特性的平衡。** 既要理解类目层次（服装→女装→连衣裙→韩版连衣裙）做粗粒度匹配，又要保留每件商品的独特属性（款式/品牌/价格），否则所有「韩版连衣裙」会被映射到相同表示。
 
@@ -38,7 +38,7 @@
 
 查询补全是搜索第一道关口：用户输入前缀「红色连」，系统需实时生成完整查询候选（「红色连衣裙」「红色连帽衫」）。传统 MCA 用前缀树（Trie）从 $10^8$ 候选粗召回到 $10^4$，再预排序到 $10^2$、精排展示 16 个，存在前序性能瓶颈限制后续上界、各阶段目标冲突两大问题。
 
-OneSug 把查询补全重定义为**端到端的条件文本生成任务**：
+OneSug 把查询补全重定义为 **端到端的条件文本生成任务** ：
 
 $$P(\text{Query} | \text{Prefix}, \text{UserContext})$$
 
@@ -56,7 +56,7 @@ $$\mathcal{L}_{\text{align}} = -\log \frac{\exp(\text{sim}(\boldsymbol{e}_{q_i},
 
 $$\bar{\boldsymbol{e}_q^c} = \frac{1}{k} \sum_{i=1}^{k} \boldsymbol{e}_{q_i}^c, \quad \boldsymbol{e}_p^* = (1 - w) \cdot \boldsymbol{e}_p + w \cdot \bar{\boldsymbol{e}_q^c}, \quad w = 0.5$$
 
-消融显示 $w=0.5$ 时 MRR 比无增强提升 2.3%，但 $w>0.7$ 引入噪声致性能下降。为高效检索，OneSug 用 **RQ-VAE** 把查询编码为分层离散码（4 层，每层码本 512），推理时从粗到细层级匹配，复杂度从向量检索 $O(N\cdot d)$ 降到码本查找 $O(W^C)$。
+消融显示 $w=0.5$ 时 MRR 比无增强提升 2.3%，但 $w>0.7$ 引入噪声致性能下降。为高效检索，OneSug 用 **RQ-VAE** 把查询编码为分层离散码（4 层，每层码本 512），推理时从粗到细层级匹配，复杂度从向量检索的 $O(N\cdot d)$（$N$ 为全部候选物品数）降为逐层码本查找的 $O(C\cdot W)$——与候选规模 $N$ 无关，只随层数 $C$ 和码本大小 $W$ 线性增长。
 
 **用户特征。** 整合短期历史查询 $\mathcal{H}_u$（最近 $n=10$ 条，超过会引噪声使 MRR 降 1.2%）与静态画像 $\mathcal{U}$。注意 OneSug **不引入商品交互特征**——查询补全发生在用户输入阶段，尚无商品曝光。编码器输入构造为：
 
@@ -66,7 +66,7 @@ $$x_u = \{t_{\text{[CLS]}}, \boldsymbol{e}_p^*, t_{\text{[SEP]}}, \mathcal{H}_p,
 
 ### 解码器与 RWR 排序策略
 
-解码器用标准 Causal Transformer 自回归生成子词，训练最小化 NTP 损失。推理用 **Beam Search**（束宽 $K=32$），并引入长度归一化避免偏好短查询：
+解码器用标准 Causal Transformer 自回归生成子词，训练最小化 NTP 损失。推理用 **Beam Search** （束宽 $K=32$），并引入长度归一化避免偏好短查询：
 
 $$\text{Score}(q) = \frac{1}{|q|^\alpha} \sum_{t=1}^{|q|} \log P(q_t | q_{<t}, \boldsymbol{Z}_{enc}), \quad \alpha \in [0.6, 0.8]$$
 
@@ -95,23 +95,23 @@ $$\mathcal{L}_{\text{pair-wise}} = -\mathbb{E} \left[ \log \sigma \left( rw_{\De
 
 $$P(\text{商品序列} | \text{查询}, \text{用户上下文})$$
 
-即直接输入查询文本与用户行为特征，输出有序商品列表。它设计四个核心模块：**KHQE**（关键词增强分层量化编码）、**Mu-Seq**（多视角行为序列注入）、**统一 Encoder-Decoder 生成架构**、**PARS**（偏好感知奖励系统）。
+即直接输入查询文本与用户行为特征，输出有序商品列表。它设计四个核心模块： **KHQE** （关键词增强分层量化编码）、**Mu-Seq** （多视角行为序列注入）、**统一 Encoder-Decoder 生成架构**、**PARS** （偏好感知奖励系统）。
 
 ### KHQE：关键词增强的分层量化编码
 
 **核心问题：在生成式框架中，如何表示数亿个商品？** 原子 ID 有两大致命问题：词表 $O(|\mathcal{V}|)$ 使 Softmax 不可行；原子 ID 是随机数字，不含语义。
 
-OneSearch 用**分层语义 ID**：商品映射为多层离散码序列 $[L1, L2, L3, OPQ1, OPQ2]$。例如某韩版连衣裙编码为 $[3856, 724, 385, 142, 201]$，词表约 6000 个唯一 Token，远小于数亿。前 3 层保语义层次，后 2 层保商品独特性。
+OneSearch 用 **分层语义 ID** ：商品映射为多层离散码序列 $[L1, L2, L3, OPQ1, OPQ2]$。例如某韩版连衣裙编码为 $[3856, 724, 385, 142, 201]$，词表约 6000 个唯一 Token，远小于数亿。前 3 层保语义层次，后 2 层保商品独特性。
 
 **商品表示学习。** 文本、结构化属性、统计特征经蒸馏 BGE 得初始嵌入 $\boldsymbol{e}_i$，再用多类对齐任务同时捕获语义与协同：query-query / item-item 对比、query-item 对比、分层反馈对齐（曝光/点击/下单赋不同 Margin）、难样本相关性校正（用 LLM 评边界样本）。
 
-**核心关键词增强。** 标题的营销词（「爆款」「包邮」）稀释核心属性。OneSearch 用 NER 构建 18 类属性词表，以 **Aho-Corasick 自动机**（$O(n)$ 多模式匹配）在标题快速匹配核心词，50%-50% 加权增强：
+**核心关键词增强。** 标题的营销词（「爆款」「包邮」）稀释核心属性。OneSearch 用 NER 构建 18 类属性词表，以 **Aho-Corasick 自动机** （$O(n)$ 多模式匹配）在标题快速匹配核心词，50%-50% 加权增强：
 
 $$\boldsymbol{e}^o_i = \frac{1}{2} \left( \boldsymbol{e}_i + \frac{1}{n} \sum_{j=1}^{n} \boldsymbol{e}_{k_j} \right)$$
 
 ![KHQE：商品分层语义 ID 编码（3 层 RQ-Kmeans + 2 层 OPQ）](../images/part8-onesearch-khqe.svg)
 
-**RQ-Kmeans 语义层次编码。** 逐层提取语义、残差传下层：L1（码本 4096）捕最粗类目（服装/数码/食品），L2（1024）细分层（女装/男装），L3（512）捕细粒度（连衣裙/ T 恤）。关键优化：**仅在 L3 应用平衡 K-means**——早期层强制平衡会导致层次聚类崩溃、丧失语义区分度。
+**RQ-Kmeans 语义层次编码。** 逐层提取语义、残差传下层：L1（码本 4096）捕最粗类目（服装/数码/食品），L2（1024）细分层（女装/男装），L3（512）捕细粒度（连衣裙/ T 恤）。关键优化： **仅在 L3 应用平衡 K-means**——早期层强制平衡会导致层次聚类崩溃、丧失语义区分度。
 
 **OPQ 商品独特性编码。** 3 层 RQ 后残差仍含独特属性（款式/品牌/价格）。若只用前 3 层，两件「韩版连衣裙」（一件 Zara 299 元、一件无牌 99 元）会被视为完全相同。于是引入 **OPQ（Optimized Product Quantization）** 把残差切分 $M=2$ 子向量分别 K-means（码本 256）：
 
@@ -131,7 +131,7 @@ $$\text{SID}_i = [\text{L1}, \text{L2}, \text{L3}, \text{OPQ1}, \text{OPQ2}]$$
 
 ### 统一 Encoder-Decoder 生成架构
 
-OneSearch 选 **BART**（Encoder-Decoder，编码器双向建模、解码器自回归，且有良好预训练权重与工业加速优化）。编码器输入异构序列（离散 Token + 连续向量），输出 $\boldsymbol{Z}_{enc} \in \mathbb{R}^{L\times d}$。
+OneSearch 选 **BART** （Encoder-Decoder，编码器双向建模、解码器自回归，且有良好预训练权重与工业加速优化）。编码器输入异构序列（离散 Token + 连续向量），输出 $\boldsymbol{Z}_{enc} \in \mathbb{R}^{L\times d}$。
 
 解码器逐 Token 生成目标商品 5 层语义 ID，以 $[3856,724,385,142,201]$ 为例：
 
@@ -147,13 +147,13 @@ OneSearch 选 **BART**（Encoder-Decoder，编码器双向建模、解码器自�
 
 $$P(\text{Token}_t | \text{Token}_{<t}, \boldsymbol{Z}_{enc}) = \text{Softmax}(\boldsymbol{W}_{\text{vocab}} \boldsymbol{h}_t^{\text{dec}})$$
 
-训练目标为最大化真实 SID 对数似然 $\mathcal{L}_{\text{NTP}} = -\sum_{t=1}^5 \log P(\text{Token}_t^{\text{true}} | \cdot)$。推理用 **Beam Search**，可选约束搜索（强制每层 Token 来自有效 SID 池，确保对应真实商品）或非约束搜索。
+训练目标为最大化真实 SID 对数似然 $\mathcal{L}_{\text{NTP}} = -\sum_{t=1}^5 \log P(\text{Token}_t^{\text{true}} | \cdot)$。推理用 **Beam Search** ，可选约束搜索（强制每层 Token 来自有效 SID 池，确保对应真实商品）或非约束搜索。
 
 ![OneSearch 端到端生成架构：编码查询与用户上下文 → 自回归生成商品语义 ID](../images/part8-onesearch-arch.svg)
 
 ### PARS：偏好感知奖励系统
 
-仅靠 NTP 的模型只学到「哪些商品与查询共现」，没学到「用户更偏好哪些」。PARS 含**多阶段监督微调**与**自适应奖励系统**。
+仅靠 NTP 的模型只学到「哪些商品与查询共现」，没学到「用户更偏好哪些」。PARS 含 **多阶段监督微调** 与 **自适应奖励系统**。
 
 **多阶段 SFT。** 阶段一语义内容对齐（文本↔SID、文本→类目），阶段二共现关系同步（query↔item 文本与 SID 层面的协同），阶段三用户个性化建模（引入完整用户上下文）。
 
@@ -161,9 +161,9 @@ $$P(\text{Token}_t | \text{Token}_{<t}, \boldsymbol{Z}_{enc}) = \text{Softmax}(\
 
 $$r(q, i) = 2\lambda \cdot \frac{Ctr \cdot Cvr}{Ctr + Cvr}, \quad rw_\Delta = \frac{1.0}{r(q, i_{\text{pos}}) - r(q, i_{\text{neg}})}$$
 
-**奖励模型（三塔 SIM）。** CTR 塔 / CVR 塔 / CTCVR 塔分别预测，综合分数 $RScore = \lambda_1\cdot CTR + \lambda_2\cdot CVR + \lambda_3\cdot CTCVR + 10\cdot\lambda_4\cdot S_{Rel}$——**离线相关性分数 $S_{Rel}$ 权重放大 10 倍**，确保先满足相关性再优化个性化。
+**奖励模型（三塔 SIM）。** CTR 塔 / CVR 塔 / CTCVR 塔分别预测，综合分数 $RScore = \lambda_1\cdot CTR + \lambda_2\cdot CVR + \lambda_3\cdot CTCVR + 10\cdot\lambda_4\cdot S_{Rel}$——**离线相关性分数 $S_{Rel}$ 权重放大 10 倍** ，确保先满足相关性再优化个性化。
 
-**混合排序框架。** 基于奖励模型做 **List-wise DPO**：采样 512 候选，对排序发生变化的样本训练，损失结合 DPO 与 SFT 目标，既学偏好排序又保持生成能力。上线后持续用真实交互（Level 1-3 正、Level 4-6 负）做近实时在线学习。
+**混合排序框架。** 基于奖励模型做 **List-wise DPO** ：采样 512 候选，对排序发生变化的样本训练，损失结合 DPO 与 SFT 目标，既学偏好排序又保持生成能力。上线后持续用真实交互（Level 1-3 正、Level 4-6 负）做近实时在线学习。
 
 > **Analysis:** OneSearch 用 KHQE 的「3+2」语义 ID 优雅平衡了语义层次与商品独特性；Mu-Seq 三视角建模兼顾相关性与个性化；PARS 把相关性作为硬约束（×10）嵌入奖励。整条链路从 MCA 的多阶段变为单一生成模型，但代价是训练数据工程（对齐、滑动窗口、多阶段 SFT）与推理时 Beam Search 的延迟控制。
 
@@ -206,10 +206,10 @@ $$r(q, i) = 2\lambda \cdot \frac{Ctr \cdot Cvr}{Ctr + Cvr}, \quad rw_\Delta = \f
 
 ### 🔗 前后关联
 
-- **8.1**（端到端生成式推荐）的语义 ID 与 Enc-Dec 是本节的方法基础，OneSug/OneSearch 是其跨模态延伸。
-- **8.3**（端到端生成式广告）在生成式中再叠加竞价机制与经济学约束。
-- **2.3**（双塔）的向量检索思路，被 OneSearch 用语义 ID + Beam Search 的「生成式检索」替代。
-- **6.x**（生成式基础）的 RQ-VAE 量化，在本节以 RQ-Kmeans（OneSearch）/ RQ-VAE（OneSug）两种形态出现。
+- **8.1** （端到端生成式推荐）的语义 ID 与 Enc-Dec 是本节的方法基础，OneSug/OneSearch 是其跨模态延伸。
+- **8.3** （端到端生成式广告）在生成式中再叠加竞价机制与经济学约束。
+- **2.3** （双塔）的向量检索思路，被 OneSearch 用语义 ID + Beam Search 的「生成式检索」替代。
+- **6.x** （生成式基础）的 RQ-VAE 量化，在本节以 RQ-Kmeans（OneSearch）/ RQ-VAE（OneSug）两种形态出现。
 
 ---
 

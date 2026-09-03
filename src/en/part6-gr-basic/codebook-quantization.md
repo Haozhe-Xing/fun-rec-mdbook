@@ -263,7 +263,7 @@ Let the semantic ID codebook size be $K=8000$ and the sequence length $L=4$. How
 
 $K^L=8000^4=4.096\times10^{15}$ items.
 
-Sparse IDs would need $4.096\times10^{15}\times256\times4$ bytes $\approx 4.2\times10^{18}$ bytes $\approx 4.2$ exabytes (EB) — utterly infeasible; semantic IDs need only $K\times L=8000\times4=32000$ codebook vectors (each 256-dim codebook on the order of 32KB).
+Sparse IDs would need $4.096\times10^{15}\times256\times4$ bytes $\approx 4.2\times10^{18}$ bytes $\approx 4.2$ exabytes (EB) — utterly infeasible; semantic IDs need only $K\times L=8000\times4=32000$ codebook vectors (each 256-dim float32 codeword is about 1KB, so all 32000 codewords total roughly 32MB).
 
 **Key points:**
 - Semantic IDs express massive catalogs with "combinations of short sequences" under a controlled vocabulary.

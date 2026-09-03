@@ -8,14 +8,14 @@
 
 > 📝 **Before You Continue:** 请先读完 [11.2](./project-architecture.md) 的离线数据流与组件边界。本节把这五个环节落成代码：特征工程 → 模型训练 → 向量生成 → 特征上线 → 模型部署。
 
-离线流水线承担推荐系统的「生产」职责，把原始数据变成在线服务所需的模型与特征。整个流程由**特征工程、模型训练、存储部署**三个环节组成，通过统一命令行入口管理，支持按需运行单步或完整流程。
+离线流水线承担推荐系统的「生产」职责，把原始数据变成在线服务所需的模型与特征。整个流程由 **特征工程、模型训练、存储部署** 三个环节组成，通过统一命令行入口管理，支持按需运行单步或完整流程。
 
 读完本章，你将能够：
 
 - 描述离线目录结构与 `pipeline.py` 的模块化编排方式
-- 用**滑动窗口**构建 YoutubeDNN 时序样本，并理解左填充与编码从 1 起始的细节
+- 用 **滑动窗口** 构建 YoutubeDNN 时序样本，并理解左填充与编码从 1 起始的细节
 - 说明排序模型如何用「相对个人均值」定义点击标签、如何混合困难/随机负样本
-- 写出 YoutubeDNN 训练后**物品向量预计算 + 归一化**的代码，并解释其意义
+- 写出 YoutubeDNN 训练后 **物品向量预计算 + 归一化** 的代码，并解释其意义
 - 描述 Redis 特征写入（Hash/List + Pipeline）与模型部署（版本指针）的实现
 - 完成 5 道分层练习题，巩固工程要点
 
@@ -114,7 +114,7 @@ def load_raw_data():
 
 ### 召回模型的特征处理
 
-**类别特征编码**：推荐特征多为类别型（user_id、movie_id、gender、genres），需编码为整数输入 Embedding。
+**类别特征编码** ：推荐特征多为类别型（user_id、movie_id、gender、genres），需编码为整数输入 Embedding。
 
 ```python
 def process_features(df_movies, df_ratings, df_users):
@@ -132,7 +132,7 @@ def process_features(df_movies, df_ratings, df_users):
 
 > 💡 **Key Insight:** 所有编码值从 **1** 开始，0 预留给未知值与填充。Embedding 第 0 行专门表示「不存在/未知」，避免把未知特征误当有效 ID。
 
-**行为序列构建**：YoutubeDNN 核心是「预测用户下一个会看的电影」，故用滑动窗口构建样本——给定前 $k$ 次观影，预测第 $k+1$ 次。
+**行为序列构建** ：YoutubeDNN 核心是「预测用户下一个会看的电影」，故用滑动窗口构建样本——给定前 $k$ 次观影，预测第 $k+1$ 次。
 
 ```python
 def generate_train_eval_samples(data_df, user_columns, item_columns,
@@ -157,7 +157,7 @@ def generate_train_eval_samples(data_df, user_columns, item_columns,
 
 时序划分模拟真实场景：模型只能用过去信息预测未来。随机划分会造成未来信息泄露，离线指标虚高、线上失效。
 
-**序列填充**：不同用户历史长度不同，模型需定长输入。采用**左填充**，短序列左侧补零：
+**序列填充** ：不同用户历史长度不同，模型需定长输入。采用 **左填充** ，短序列左侧补零：
 
 ```python
 def add_padding(val, padding_value, max_seq_len):
@@ -179,7 +179,7 @@ def add_padding(val, padding_value, max_seq_len):
 
 排序模型（DeepFM）是 CTR 预估：输入用户-物品对，输出点击概率，需构造正负样本。
 
-**标签定义**：MovieLens 只有评分无点击信号，按评分相对个人均值定义：
+**标签定义** ：MovieLens 只有评分无点击信号，按评分相对个人均值定义：
 
 ```python
 user_avg_ratings = df_ratings.groupby("user_id")["rating"].mean().reset_index()
@@ -191,14 +191,14 @@ df_ratings['is_click'] = (
 
 这种方式考虑用户评分偏好差异（有人普遍高分、有人严格），用相对偏移减少个体差异。
 
-**负样本采样**：正样本来自评分，负样本需构造。混合两种策略：
+**负样本采样** ：正样本来自评分，负样本需构造。混合两种策略：
 
-1. **困难负样本（Hard Negatives）**：用户曝光但未正向交互的物品——「难」分。
-2. **随机负样本（Random Negatives）**：从未交互物品随机采样——扩充数量。
+1. **困难负样本（Hard Negatives）** ：用户曝光但未正向交互的物品——「难」分。
+2. **随机负样本（Random Negatives）** ：从未交互物品随机采样——扩充数量。
 
 本项目用 **1:3** 正负比例（1 困难 + 2 随机）。`generate_negative_samples` 先建每用户困难负样本池，再从未交互集中随机采样。比例需权衡：过多导致不平衡、过少模型难分辨。
 
-**训练/测试集划分**：同样用**时序划分**：
+**训练/测试集划分** ：同样用 **时序划分** ：
 
 ```python
 def split_train_test(df_final, test_ratio=0.2, by_time=True):
@@ -219,7 +219,7 @@ def split_train_test(df_final, test_ratio=0.2, by_time=True):
 
 召回从全库快速筛候选。本项目用 YoutubeDNN 双塔（见 [2.3](./project-architecture.md)）：用户塔编码用户、物品塔编码物品，内积表匹配。
 
-**模型配置**要点：
+**模型配置** 要点：
 
 ```python
 model_config_dict = {
@@ -242,7 +242,7 @@ model_config_dict = {
 
 三点要点：① **Embedding 共享**——历史电影 ID 与目标电影同表，减参数且同空间；② **序列聚合**——`mean` 把变长序列压成定维（注意力更优但更贵）；③ **Sampled Softmax**——物品 3000+，完整 Softmax 太贵，只对正负样本算损失。
 
-**训练流程**封装在 `run_retrieval_training`：
+**训练流程** 封装在 `run_retrieval_training`：
 
 ```python
 def run_retrieval_training():
@@ -281,9 +281,9 @@ np.save(config.MOVIE_IDS_PATH, np.array(all_movie_ids))
 
 ## 11.3.3 排序模型训练（DeepFM）
 
-排序对召回候选精确打分。本项目用 **DeepFM**（见 [3.x](./project-architecture.md)），结合 FM 二阶交叉与 DNN 高阶非线性。
+排序对召回候选精确打分。本项目用 **DeepFM** （见 [3.x](./project-architecture.md)），结合 FM 二阶交叉与 DNN 高阶非线性。
 
-**模型配置**不需要区分塔，所有特征同输入：
+**模型配置** 不需要区分塔，所有特征同输入：
 
 ```python
 model_config_dict = {
@@ -307,7 +307,7 @@ model_config_dict = {
 
 `group` 字段指定特征归属：`deepfm` 参与 FM 二阶交叉，`linear` 参与一阶线性。两者都放，模型同时学一阶效应与二阶交互。
 
-**训练流程**与召回类似，但保存主模型与配置（供在线推理复用编码器）：
+**训练流程** 与召回类似，但保存主模型与配置（供在线推理复用编码器）：
 
 ```python
 def run_ranking_training():
@@ -324,7 +324,7 @@ def run_ranking_training():
     }, open(config.TEMP_DIR / "ranking_model_config.pkl", "wb"))     # ← KEY LINE: 存配置供在线复用编码器
 ```
 
-排序评估常用 **AUC**（ROC 曲线下面积），衡量区分正负样本能力，不受正负比例影响——反映把用户喜欢的排在前的能力。
+排序评估常用 **AUC** （ROC 曲线下面积），衡量区分正负样本能力，不受正负比例影响——反映把用户喜欢的排在前的能力。
 
 ![DeepFM 训练：FM + DNN 双路输出相加经 Sigmoid，AUC 评估](../images/part11-training-ranking.svg)
 
@@ -370,7 +370,7 @@ def ingest_to_redis(flush: bool = False):
     pipeline.execute()
 ```
 
-用户画像用 Hash（键 `user:{id}:profile`），行为历史用 List（保时间序），偏好类目统计 Top3 存回 profile。**Pipeline 批量执行**是关键优化：Redis 命令快，但每次网络往返有开销，打包发送显著提升写入速度。
+用户画像用 Hash（键 `user:{id}:profile`），行为历史用 List（保时间序），偏好类目统计 Top3 存回 profile。**Pipeline 批量执行** 是关键优化：Redis 命令快，但每次网络往返有开销，打包发送显著提升写入速度。
 
 ### 本地模型部署
 
@@ -393,7 +393,7 @@ def deploy_recall_models(deploy_dir: Path):
 
 ![模型部署：模型与词表入共享目录，active.json 版本指针支持无感知热更新](../images/part11-deploy.svg)
 
-版本管理是生产重要功能：通过 `active.json` 指针，在线服务知道该加载哪个版本；更新时先部署新版本文件、再更新指针，实现**无感知热更新**。排序部署同理（写入 `ranking/active.json`）。
+版本管理是生产重要功能：通过 `active.json` 指针，在线服务知道该加载哪个版本；更新时先部署新版本文件、再更新指针，实现 **无感知热更新**。排序部署同理（写入 `ranking/active.json`）。
 
 > **Analysis:** 离线的「部署」本质是**产出物治理**——不仅要算对模型，还要以在线可加载、可热更、可回滚的方式落地。版本指针 + 共享目录是轻量却工业标准的做法。
 
