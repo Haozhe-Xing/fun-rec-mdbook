@@ -84,6 +84,8 @@
   * [Ad Retrieval and Semantic Recall](part12-computational-advertising/ad-retrieval-semantic-recall.md)
   * [Data Processing and Trading](part12-computational-advertising/data-processing-and-trading.md)
   * [Experiment Framework and Anti-Fraud](part12-computational-advertising/experiment-and-antifraud.md)
+  * [Contract Advertising: Product Forms and Selling Models](part12-computational-advertising/contract-advertising-products.md)
+  * [Feed and Native Advertising](part12-computational-advertising/feed-native-ads.md)
 
 # Appendix
 

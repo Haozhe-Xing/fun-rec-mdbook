@@ -1375,12 +1375,12 @@
       "value estimation",
       "budget constraint",
       "market mechanism adaptation",
+      "Deep conversion bidding",
+      "delayed feedback",
+      "LTV bidding",
       "budget pacing",
       "reference trajectory",
-      "Probabilistic throttling",
-      "Bid scaling",
-      "P (Proportional)",
-      "I (Integral)"
+      "Probabilistic throttling"
      ]
     },
     {
@@ -1586,6 +1586,64 @@
       "Geo-based creative",
       "Search-retargeting creative"
      ]
+    },
+    {
+     "number": "12.12",
+     "title": "Contract Advertising: Product Forms and Selling Models",
+     "source": "src/en/part12-computational-advertising/contract-advertising-products.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/contract-advertising-products.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "Distinguish the three selling forms of contract advertising (CPT exclusive, CPD/rotation, CPM impression-volume contracts) and the business scenarios each fits",
+      "Explain the product logic of the evolution \"from selling positions to selling audiences\": how data began to participate directly in selling",
+      "Explain why traffic forecasting must precede guaranteed-volume selling, and the \"bucket-then-aggregate, then query\" estimation idea",
+      "Compare contract and auction markets along two dimension pairs: guaranteed-volume vs. guaranteed-price, scheduled vs. real-time",
+      "Work through 4 layered practice problems"
+     ],
+     "key_terms": [
+      "ad scheduling system",
+      "contract advertising",
+      "position",
+      "time",
+      "slot contract",
+      "CPT",
+      "Competitor-exclusion premium.",
+      "rotation selling per slot",
+      "rotation sequence numbers",
+      "virtual ad slot",
+      "blank-slot-prevention",
+      "audiences"
+     ]
+    },
+    {
+     "number": "12.13",
+     "title": "Feed and Native Advertising",
+     "source": "src/en/part12-computational-advertising/feed-native-ads.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/feed-native-ads.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "State the mobile-era motivations for native advertising, plus the two new opportunities and core challenges of mobile versus PC advertising",
+      "Define feed ads precisely with two key conditions and use them to classify whether a product form is \"feed\"",
+      "Describe the mixing mechanism of feed ads: the multi-slot auction queue and the / parameters' experience-revenue trade-off",
+      "Distinguish expressive native from scene native, and explain why rewarded video is the highest-eCPM native form",
+      "Describe the oCPX conversion-tracking chain and the three bid-expression modes from the product side, and work through 5 layered practice problems"
+     ],
+     "key_terms": [
+      "feed ad",
+      "yes",
+      "no",
+      "Native advertising",
+      "data fragmentation",
+      "auction queue",
+      "where ads appear",
+      "average ad count",
+      "mixing (re-ranking / mixing)",
+      "Interstitial ads",
+      "contract-based",
+      "Lock-screen ads"
+     ]
     }
    ]
   },
@@ -1605,6 +1663,8 @@
      "key_terms": [
       "Scaling Law",
       "Individual Rationality (IR)",
+      "Guaranteed Delivery (GD)",
+      "Traffic Forecasting",
       "Discriminative Recommendation",
       "Generative Recommendation",
       "Re-ranking",
@@ -1612,9 +1672,7 @@
       "Two-Tower Model",
       "Cold Start",
       "Semantic ID",
-      "Pointwise Aggregation",
-      "Diffusion Model",
-      "Incentive Compatibility (IC)"
+      "Pointwise Aggregation"
      ]
     }
    ]

@@ -1,7 +1,7 @@
 <div class="part-banner">
 <h2 style="color: white; margin: 0 0 8px 0;">💰 Part 12: Computational Advertising</h2>
-<p style="color: rgba(255,255,255,0.85); margin: 0;">The twin sibling of recommender systems — from the ad ecosystem, billing models, and auction mechanisms to online allocation, targeting, retrieval, data trading, and anti-fraud — a complete practitioner's knowledge base of traffic monetization.</p>
-<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 11 sections · ⏱️ Estimated 9 hours · 🎯 Target: Build a panoramic understanding of computational advertising and master the full chain of auctions, smart bidding, calibration, targeting & retrieval, data compliance, and anti-fraud</p>
+<p style="color: rgba(255,255,255,0.85); margin: 0;">The twin sibling of recommender systems — from the ad ecosystem, billing models, and auction mechanisms to online allocation, targeting, retrieval, data trading, anti-fraud, contract selling, and native feeds — a complete practitioner's knowledge base of traffic monetization.</p>
+<p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin: 8px 0 0 0;">📚 13 sections · ⏱️ Estimated 10.5 hours · 🎯 Target: Build a panoramic understanding of computational advertising and master the full chain of auctions, smart bidding, calibration, targeting & retrieval, data compliance, anti-fraud, and contract/native product forms</p>
 </div>
 
 Recommendation and advertising share the same technical foundation — retrieval, ranking, feature engineering, CTR estimation — but advertising layers something on top that recommendation lacks: an **economic mechanism**. Ad slots are scarce resources; every impression must be allocated among multiple advertisers, and the winner pays a fee. The design of the allocation and pricing rules directly determines "how bidding pays off" for each advertiser, and in turn the stability of the whole market and the platform's long-term revenue.
@@ -29,6 +29,8 @@ This part follows the framework of Liu Peng's *Computational Advertising* course
 | **12.9** | Ad Retrieval and Semantic Recall | From billions of candidates to millisecond auctions: boolean two-layer indexing + WAND pruning for Top-K, DSSM/two-tower semantic recall evolved into HNSW/IVF-PQ multi-source recall |
 | **12.10** | Data Processing and Trading | The processing pipeline and trading loop of first/second/third-party data; cookie mapping is dead — CDP + UID2 + clean rooms are the compliance-era answer |
 | **12.11** | Experiment Framework and Anti-Fraud | Layered experiments keep measurement trustworthy; anomaly detection + device fingerprinting + graph analysis keep traffic real — the two bottom lines of ad systems |
+| **12.12** | Contract Advertising: Product Forms and Selling Models | "Slots before ads": CPT/CPD scheduling and rotation, the evolution from selling positions to selling audiences — the commercial precondition of 12.7's online allocation |
+| **12.13** | Feed and Native Advertising | The fusion of ad and content forms: feed mixing is the problem "isomorphic to recommender engineering," plus rewarded video, the oCPX product chain, and the convergence of native and RTB |
 
 ---
 
@@ -73,6 +75,10 @@ This part follows the framework of Liu Peng's *Computational Advertising* course
 | CDP & clean room | 12.10 | Post-cookie first-party data infrastructure and "usable but invisible" compliant trading |
 | Layered experiments | 12.11 | Orthogonal layered traffic splitting lets many experiments run in parallel without contamination |
 | Click flooding / click injection | 12.11 | Two canonical attribution-fraud tactics and their detection signals |
+| CPT / CPD / Rotation | 12.12 | The slot-selling trio: exclusivity, scheduling, and rotation with a random starting number |
+| From selling positions to selling audiences | 12.12 | Targeting labels make slot traffic sliceable, spawning guaranteed-volume contracts and online allocation |
+| Feed mixing | 12.13 | Ads and organic content compete for positions under a unified score — a problem isomorphic to recommender engineering |
+| Rewarded video | 12.13 | The opt-in watch-to-earn format with the highest eCPM |
 | Attribution | 12.6 | A rule for crediting a conversion to a channel — a convention, not an objective measurement |
 | SKAdNetwork (SKAN) | 12.6 | Apple's privacy-preserving attribution: aggregated, delayed, crowd-anonymized — the collapse of deterministic attribution |
 

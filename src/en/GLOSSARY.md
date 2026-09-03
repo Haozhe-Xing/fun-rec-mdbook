@@ -335,6 +335,7 @@
 ### 12.1
 
 - **Computational Advertising (计算广告)** — The technical and business system that matches and optimizes over the user, context, and ad triple with the goal of maximizing ROI.
+- **OpenRTB** — the IAB real-time bidding communication specification: standardizes the Bid Request (inquiry carrying slot/context/user identifiers/floor price) and Bid Response (bid/creative reference/tracking URL); decoupling bids from creatives is the key engineering constraint.
 - **Sponsor (出资人)** — One of the three elements of the advertising definition: the advertiser who pays for ad delivery and has explicit commercial objectives.
 - **Publisher (媒介)** — One of the three elements of the advertising definition: the medium or product that carries ads and holds the user's attention.
 - **Audience (受众)** — One of the three elements of the advertising definition: the group of target users the advertising message reaches.
@@ -444,6 +445,8 @@
 - **Target CPA** — the target cost the advertiser is willing to pay for one conversion; the only value anchor in the bidding stack input directly by the advertiser.
 - **Value Bid** — the expected value of a single impression converted from the conversion goal via pCTR × pCVR × targetCPA; the input to downstream shading and pacing.
 - **Two-Phase Rollout** — the cold-start convention for oCPC/oCPM: the first phase stays with CPC bidding to accumulate conversion data, switching to conversion bidding once the model is confident.
+- **Deep Conversion Bidding** — the bid form pushing the optimization target from activation to key post-install behaviors (next-day retention / 7-day payment / repurchase / card binding); the difficulty is the delayed-feedback problem from slowly maturing labels.
+- **LTV Bidding** — the bid form anchoring on user lifetime value instead of single-conversion value: $\widehat{\text{LTV}}(u)$ is typically decomposed into "retention probability × per-period value," modeled separately and recombined, to handle the heavy-tailed sparse distribution.
 - **Budget Pacing** — the control problem of spending the daily budget evenly in step with time progress, avoiding front-loaded spending that misses premium evening-peak traffic.
 - **Reference Trajectory** — the control target of pacing, $r(t) = G \cdot t / T$: the straight line of "spending progress in sync with time progress."
 - **Probabilistic Throttling** — one pacing implementation: decide whether to participate in each auction with probability $\alpha$; a 0/1 hard gate (LinkedIn, KDD 2014).
@@ -659,4 +662,45 @@
 - **Device Farm** — a human-operated fraud form in which real people with real devices mass-produce browse-click-convert sequences; every dimension of the data looks genuine, requiring device clustering and association networks for detection.
 - **Device Fingerprint** — a unique device identifier assembled from hardware and environment characteristics, used to track fraud sources across IPs/cookies and build device reputation scores.
 - **Graph-based Fraud Detection** — connecting devices, IPs, accounts, and payment paths into an association network and exploiting the highly clustered structure of fraud rings to expose group characteristics that no single record can disguise.
+
+### 12.12
+
+- **Agreement Advertising (Contract Advertising)** — an ad transaction form with contractually guaranteed impression delivery: audience, volume, and unit price written into the contract, fulfillment responsibility on the supply side; opposed to auction advertising cleared by market competition.
+- **Position Contract** — the earliest form of online ad selling: certain slots deliver a specified advertiser's ads exclusively over a period; no audience targeting, but retains brand-impact and competitor-exclusion premium on high-exposure slots.
+- **CPT (Cost per Time)** — billing by time period for slot contracts, typically bought wholesale per slot; low technology on both sides, executed via agency media buying.
+- **CPD (Cost per Day)** — per-day billing for slot selling; today's splash-screen and brand-resource scheduling contracts still use this convention.
+- **Rotation Selling** — labeling successive visits to one slot with cyclic rotation numbers (e.g., {1, 2, 3, 4}) and selling same-number impressions as virtual slots; used when exclusive inventory is short but advertisers need deterministic display rules.
+- **Random Rotation Start** — the key detail of rotation selling: a user's first impression draws its number uniformly at random from all numbers before cycling, so each rotation receives equal traffic.
+- **Scheduling System** — a non-personalized tool that executes delivery automatically per contract schedule (e.g., DFP, Allyes, Baidu Ad Manager); with dynamic allocation and RTB added, it approaches the SSP.
+- **Blank-Slot-Prevention Ad (fallback creative)** — the default creative rendered via CDN when a dynamic ad times out or errors, ensuring the slot is never blank; engineering details in 12.7.0.
+- **Inventory Contract (GD contract)** — a contract selling a total impression volume under agreed audience conditions at an agreed unit price, i.e., guaranteed delivery; shortfalls may trigger media compensation.
+- **Guaranteed Delivery (GD)** — the umbrella term for the delivery system and selling market of impression contracts; the "guarantee" is the volume; its algorithmic core is online allocation (see 12.7).
+- **Audience-based Selling** — selling slot traffic sliced by audience labels as the object of sale: data participates directly in selling for the first time, spawning structured hierarchical taxonomies as sales catalogs.
+- **Audience Package** — a sellable traffic unit defined by a label combination; audience packages overlap pervasively, the source of guaranteed-allocation complexity.
+- **Selling Geo** — the geo-targeting clause of a contract; geo is the most basic selling dimension that every ad system must support.
+- **Minimum Commit** — the minimum daily audience volume for a label to enter the contract catalog; labels below it cannot be sold with guarantees and should be bundled or pushed to auctions.
+- **Traffic Forecasting** — estimation of the function $t(u, b)$ (label combination × bid), supporting pre-sales guidance, online allocation, and bid guidance; the engineering scheme is in 12.7.2.
+- **Traffic Shaping** — proactively influencing audience traffic distribution by tuning user-product funnels (e.g., homepage links) to help contracts close.
+- **Showcase Effect** — the continuous shaping of brand value and conversion by long-term exclusive occupation of premium slots; a core selling point of exclusive selling.
+- **Category Exclusivity** — a contract's added service promising no competing ads on the same page; the source of slot-selling premium.
+
+### 12.13
+
+- **Native Ads** — the product direction of uniformly producing or jointly ranking commercial and non-commercial content, also "content as ad"; advertorials, search ads, and feed ads each reflect one facet.
+- **Feed Ads** — an ad form satisfying two conditions: the ad interacts coupled with the content; the content segments separated by the ad have no direct relation. In product essence, a multi-slot, freely placed auction product.
+- **Content as Ad** — the product philosophy of native advertising: ads are no longer independent of content but part of content production and ranking.
+- **Splash Ad** — a full-screen ad shown during app load; the user has no active task while waiting, so annoyance is low and brand value high; mostly sold by contract.
+- **Interstitial Ad** — a form appearing on app pause, similar to video pause ads; like mobile banners, inflated CTR with relatively poor conversion.
+- **Offerwall** — a direct-push ad form for app-download promotion, analogous to off-platform recommendation.
+- **Points Wall** — an incentive ad granting points redeemable for virtual goods after download and activation; clicks and activations look good but downstream retention is poor; once used for chart-climbing and game launches.
+- **Rewarded Video** — a native ad granting a virtual reward after the user watches an unskippable 15–30 second video; rewards viewing only, not downloads — hence the native form with intact user quality and the highest eCPM.
+- **Expressive Native** — the aspiration to make the ad's display style consistent with content, requiring the media to control ad display form (including font and color adaptation).
+- **Scene Native** — the aspiration to keep ad targeting decisions consistent with content production, triggered by user scenario and intent; search ads are native in both senses.
+- **Embedded Native Advertising** — the native platform mechanism where the media requests structured paid content via structured queries (e.g., "type=hotel; location=Lhasa") and assembles it in its own templates.
+- **Structured Paid Content** — the form of native platform inventory: not finished creatives but per-industry structured field material for the media to assemble into seamlessly fused creatives.
+- **oCPX** — the smart-delivery mode separating billing from bidding: billing stays CPM/CPC while the advertiser expresses a conversion bid and the platform takes over estimation and auction conversion, lowering the barrier for small clients.
+- **Conversion Tracking** — the recording and reporting chain from impression, click, to conversion events; on mobile, conversions across industries converge to app-store downloads, enabling cross-industry CVR modeling.
+- **Mixing** — the decision problem of organic content and ads competing for display positions as one candidate pool under comparable scores; feed ads evolving to unified-criterion ranking is the origin of the mixing problem.
+- **Feed Density (S/K)** — the two parameters controlling ad placement: S is the first ad's position, K the gap between ads; tune S/K under an average-ad-count constraint to optimize overall CTR.
+
 _The glossary covers the full book: Volume I (Ch0–Ch4, Parts 1–5), Volume II (Ch5–Ch10, Parts 6–11), and the Special Topic (Part 12, Computational Advertising)._

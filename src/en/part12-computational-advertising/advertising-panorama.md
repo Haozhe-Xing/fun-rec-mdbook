@@ -133,6 +133,10 @@ As shown in the figure, from the user visiting the page to the ad rendering, the
 
 > **Analysis:** RTB trades "auctioning every single impression" for ultimate transaction granularity, at the cost of paying a full-chain communication cost for every impression. This explains why the programmatic ecosystem later evolved non-fully-competitive trading methods such as Preferred Deals — not all traffic is worth paying RTB's communication cost.
 
+### OpenRTB: The Industry Protocol of Bidding Communication
+
+In the seven-step chain above, the ADX and every DSP cooperate without knowing each other — thanks to **OpenRTB**, the real-time bidding communication specification by the IAB. It standardizes the two message types of the chain: the **Bid Request** (ADX → DSP inquiry, carrying the impression opportunity's description: slot size and position, page/app context, user identifiers, floor price, device info, etc.) and the **Bid Response** (DSP → ADX bid, carrying the price, creative references, and tracking-pixel URLs). Two engineering constraints shape the protocol. First, serialization is JSON — within the ~100ms latency budget, serialization and transmission are both overhead. Second, **bids are decoupled from creatives** — the response carries only creative IDs or URLs, and the creative is rendered dynamically at the ADX/SSP side per the slot's dimensions; this shrinks the response body and also enables media-side native rendering. The Chinese market, for historical reasons, mostly runs proprietary protocols of similar structure whose field semantics map closely onto OpenRTB — learn OpenRTB's field design (which information is exposed to bidders and which is withheld), and you understand the bidding protocol's trade-off between "information sufficiency" and "privacy and cost."
+
 ### The Trading Method Spectrum
 
 Traffic trading in the programmatic era is not limited to RTB; it is a spectrum from "coarsest" to "finest":

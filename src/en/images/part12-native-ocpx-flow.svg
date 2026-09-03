@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="540" rx="8" fill="#f8f9fc"/>
+  <text x="400" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">oCPX 智能投放的产品链路：计费与出价分离</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#64748b">计费仍按 CPM / CPC 结算 · 优化目标换成转化成本 · 算法细节见 12.4，归因与隐私链路见 12.6</text>
+
+  <!-- 顶部核心模式横幅 -->
+  <rect x="40" y="72" width="720" height="38" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="96" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">核心模式：广告主只需给出「转化出价」，预估与竞价换算全部交给平台 —— 降低小客户的投放门槛</text>
+
+  <!-- 四个环节 -->
+  <g filter="url(#shadow)">
+    <rect x="36" y="132" width="170" height="128" rx="8" fill="#e8ecff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="121" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6CF7">① 广告主（需求方）</text>
+    <text x="121" y="180" text-anchor="middle" font-size="12" fill="#1e293b">设置转化出价（每个转化</text>
+    <text x="121" y="198" text-anchor="middle" font-size="12" fill="#1e293b">值多少钱）与预算</text>
+    <text x="121" y="224" text-anchor="middle" font-size="11" fill="#64748b">也可只设每日预算，</text>
+    <text x="121" y="241" text-anchor="middle" font-size="11" fill="#64748b">由平台倒算出价</text>
+  </g>
+  <line x1="208" y1="196" x2="222" y2="196" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="224" y="132" width="170" height="128" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="309" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#4A6CF7">② 广告平台（投放机）</text>
+    <text x="309" y="180" text-anchor="middle" font-size="12" fill="#1e293b">预估 pCTR 与 pCVR</text>
+    <text x="309" y="201" text-anchor="middle" font-size="12" fill="#4A6CF7" font-weight="bold">eCPM = µ × c × bid(CPA)</text>
+    <text x="309" y="222" text-anchor="middle" font-size="12" fill="#1e293b">按此分数参与排序竞价</text>
+    <text x="309" y="243" text-anchor="middle" font-size="11" fill="#64748b">结算仍走 CPM / CPC</text>
+  </g>
+  <line x1="396" y1="196" x2="410" y2="196" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="412" y="132" width="170" height="128" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="497" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#10b981">③ 媒体与用户</text>
+    <text x="497" y="180" text-anchor="middle" font-size="12" fill="#1e293b">信息流 / 开屏 / 激励视频</text>
+    <text x="497" y="201" text-anchor="middle" font-size="12" fill="#1e293b">点击 → 应用市场 / 落地页</text>
+    <text x="497" y="222" text-anchor="middle" font-size="12" fill="#1e293b">下载、激活、付费等</text>
+    <text x="497" y="243" text-anchor="middle" font-size="12" fill="#1e293b">转化行为发生</text>
+  </g>
+  <line x1="584" y1="196" x2="598" y2="196" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="600" y="132" width="170" height="128" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <text x="685" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#10b981">④ 转化追踪与回传</text>
+    <text x="685" y="180" text-anchor="middle" font-size="12" fill="#1e293b">应用市场统一转化流程</text>
+    <text x="685" y="201" text-anchor="middle" font-size="12" fill="#1e293b">转化事件按归因规则</text>
+    <text x="685" y="222" text-anchor="middle" font-size="12" fill="#1e293b">回传给平台</text>
+    <text x="685" y="243" text-anchor="middle" font-size="11" fill="#64748b">归因口径见 12.6</text>
+  </g>
+
+  <!-- 闭环反馈 -->
+  <path d="M 685 260 L 685 316 L 309 316 L 309 266" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-red)"/>
+  <text x="497" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#ef4444">闭环反馈：跟踪实际转化成本 vs 出价期望 → 动态调整真实出价</text>
+  <text x="497" y="336" text-anchor="middle" font-size="12" fill="#64748b">一价补偿模式（cost cap / target cost）：用调价把实际转化成本收敛到客户期望，抵消预估偏差</text>
+
+  <!-- 出价表达三档 -->
+  <text x="400" y="380" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">出价表达的三档（由细到粗，对应不同理解门槛）</text>
+  <g filter="url(#shadow)">
+    <rect x="40" y="394" width="222" height="86" rx="8" fill="#ffffff" stroke="#4A6CF7" stroke-width="2"/>
+    <text x="151" y="417" text-anchor="middle" font-size="12" font-weight="bold" fill="#4A6CF7">出价上限（bid cap）</text>
+    <text x="151" y="438" text-anchor="middle" font-size="11" fill="#1e293b">转化出价理解为 bid</text>
+    <text x="151" y="456" text-anchor="middle" font-size="11" fill="#64748b">二价市场逻辑 · 实话实说性质保留</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="289" y="394" width="222" height="86" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="417" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">花费上限（cost cap）</text>
+    <text x="400" y="438" text-anchor="middle" font-size="11" fill="#1e293b">转化出价理解为 price（期望成本）</text>
+    <text x="400" y="456" text-anchor="middle" font-size="11" fill="#64748b">一价市场 · 平台调价补偿收敛</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="538" y="394" width="222" height="86" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+    <text x="649" y="417" text-anchor="middle" font-size="12" font-weight="bold" fill="#ef4444">只给预算（预算表达）</text>
+    <text x="649" y="438" text-anchor="middle" font-size="11" fill="#1e293b">预算均匀消耗，平台倒算出价</text>
+    <text x="649" y="456" text-anchor="middle" font-size="11" fill="#64748b">门槛最低 · 偏离实话实说，可能亏投</text>
+  </g>
+
+  <!-- 底部注释 -->
+  <text x="400" y="514" text-anchor="middle" font-size="12" fill="#64748b">为什么移动端可行：各行业转化统一收敛为「应用市场下载」→ 全行业可共同建模，转化数据稀疏被极大缓解</text>
+</svg>

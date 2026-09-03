@@ -1375,12 +1375,12 @@
       "预算约束",
       "市场机制适配",
       "每一次展示的具体出价由平台代管",
+      "深度转化率预估",
+      "延迟反馈（delayed feedback）",
+      "LTV 出价",
       "预算平滑消耗（Budget Pacing）",
       "参照轨迹（Reference Trajectory）",
-      "概率节流（Probabilistic Throttling）",
-      "出价缩放（Bid Scaling）",
-      "P（比例）",
-      "I（积分）"
+      "概率节流（Probabilistic Throttling）"
      ]
     },
     {
