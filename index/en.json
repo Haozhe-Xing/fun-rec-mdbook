@@ -1,0 +1,1653 @@
+{
+ "site": "https://haozhe-xing.github.io/fun-rec-mdbook",
+ "language": "en",
+ "parts": [
+  {
+   "part": 1,
+   "title": "Recommender Systems Panorama",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "1.1",
+     "title": "What Is a Recommender System",
+     "source": "src/en/part1-introduction/recommender-system-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part1-introduction/recommender-system-basics.html",
+     "difficulty": "Beginner",
+     "read_minutes": 25,
+     "objectives": [
+      "Explain in one sentence the microscopic problem recommender systems solve, and distinguish its two fundamental paradigms",
+      "Write down the core formulas of discriminative and generative recommendation, and explain how the questions they ask differ",
+      "Explain why industrial recommendation adopts the three-stage funnel of \"retrieval—ranking—re-ranking,\" and what each stage is responsible for",
+      "Describe how end-to-end generative architectures dissolve the three major pain points of cascading architectures",
+      "Understand the long-term value of recommender systems from the ecosystem triangle (users/creators, content, platform)",
+      "Complete 4 leveled practice problems to consolidate the three perspectives"
+     ],
+     "key_terms": [
+      "discriminative",
+      "generative",
+      "selects",
+      "creates",
+      "develop in parallel",
+      "coverage",
+      "recommender system",
+      "single prediction",
+      "process at scale",
+      "ecosystem balance",
+      "one sentence",
+      "three-stage funnel"
+     ]
+    },
+    {
+     "number": "1.2",
+     "title": "Book Overview & Technology Map",
+     "source": "src/en/part1-introduction/book-overview.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part1-introduction/book-overview.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 20,
+     "objectives": [
+      "State the logic behind the book's two halves and where each lands",
+      "Map every chapter of the fundamentals half (Ch0–Ch4) onto the three-stage pipeline or frontier trends",
+      "Explain why \"retrieval → ranking → re-ranking\" is the organizing thread of the discriminative storyline",
+      "Anticipate how the generative storyline will unfold in later versions (Ch5–Ch10)",
+      "Complete 4 leveled practice problems to verify your grasp of the technology map"
+     ],
+     "key_terms": [
+      "technology map",
+      "discriminative",
+      "generative",
+      "two halves",
+      "generative storyline",
+      "time/capability evolution",
+      "the two paradigm storylines",
+      "are not isolated",
+      "Part 1",
+      "Part 2",
+      "Part 3",
+      "Part 4"
+     ]
+    },
+    {
+     "number": "1.3",
+     "title": "Getting Started with Features & Embeddings",
+     "source": "src/en/part1-introduction/feature-embedding-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part1-introduction/feature-embedding-basics.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 65,
+     "objectives": [],
+     "key_terms": [
+      "feature processing",
+      "Embedding vectors",
+      "User information",
+      "Item information",
+      "Context information",
+      "Continuous values",
+      "feature",
+      "Feature Hashing",
+      "Spurious ordering.",
+      "Spurious distances.",
+      "Numeric precision risk.",
+      "trainable parameters"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 2,
+   "title": "Fast Candidate Retrieval",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "2.1",
+     "title": "Collaborative Filtering",
+     "source": "src/en/part2-retrieval/collaborative-filtering.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part2-retrieval/collaborative-filtering.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 35,
+     "objectives": [
+      "Compute item and user similarity with cosine similarity / Pearson correlation, and articulate the difference between the two",
+      "Explain how Swing filters random noise through bipartite-graph substructures, and how Surprise mines complementary items",
+      "Describe the trade-offs between UserCF and ItemCF regarding user cold start and explainability",
+      "Describe how matrix factorization (FunkSVD / BiasSVD) alleviates data sparsity with low-rank latent vectors",
+      "Complete 5 graded practice problems, consolidating the full path from co-occurrence to vectorization"
+     ],
+     "key_terms": [
+      "Collaborative Filtering (CF)",
+      "statistical co-occurrence",
+      "vector representation",
+      "Swing",
+      "Surprise",
+      "UserCF and ItemCF",
+      "item-based (ItemCF)",
+      "user-based (UserCF)",
+      "co-occurrence",
+      "cosine similarity",
+      "item cold start",
+      "Category level"
+     ]
+    },
+    {
+     "number": "2.2",
+     "title": "Vector Retrieval (I2I)",
+     "source": "src/en/part2-retrieval/vector-recall-i2i.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part2-retrieval/vector-recall-i2i.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "Explain the core formula of Word2Vec Skip-Gram, and why negative sampling is indispensable",
+      "Describe how Item2Vec applies the \"user behavior sequence = sentence\" mapping to I2I vector retrieval",
+      "Explain how EGES's item-specific attention solves cold start and sparsity",
+      "Analyze how Airbnb's global context and same-market negative sampling bake \"booking conversion\" into training",
+      "Complete 5 graded practice problems, consolidating sequence-modeling retrieval"
+     ],
+     "key_terms": [
+      "sequence modeling",
+      "Word2Vec Skip-Gram",
+      "negative sampling",
+      "Item2Vec",
+      "EGES",
+      "Airbnb",
+      "Skip-Gram",
+      "CBOW",
+      "raise",
+      "lower",
+      "set",
+      "ignoring temporal weighting"
+     ]
+    },
+    {
+     "number": "2.3",
+     "title": "Two-Tower Models (U2I)",
+     "source": "src/en/part2-retrieval/two-tower.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part2-retrieval/two-tower.html",
+     "difficulty": "Advanced",
+     "read_minutes": 35,
+     "objectives": [
+      "Derive the simplification of the FM second-order interaction term from  to , and show how it reorganizes into a two-tower inner product",
+      "Explain the role of DSSM's extreme multi-class training, vector normalization, and the temperature coefficient",
+      "Describe YouTubeDNN's \"asymmetric two-tower\" and \"temporal split\" engineering tricks",
+      "Understand the two-tower retrieval flow of \"offline index building / online user query\" through the interactive demo",
+      "Complete 5 graded practice problems, consolidating two-tower representation and retrieval"
+     ],
+     "key_terms": [
+      "in real time",
+      "I2I",
+      "user representation",
+      "item representation",
+      "two-tower model",
+      "precomputed offline",
+      "DSSM",
+      "YouTubeDNN",
+      "take any action",
+      "linear",
+      "deep neural networks",
+      "Vector normalization"
+     ]
+    },
+    {
+     "number": "2.4",
+     "title": "Sequential Retrieval",
+     "source": "src/en/part2-retrieval/sequence-recall.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part2-retrieval/sequence-recall.html",
+     "difficulty": "Advanced",
+     "read_minutes": 35,
+     "objectives": [
+      "Describe how MIND's dynamic routing (B2I) soft-clusters behaviors into multiple interest capsules",
+      "Explain the roles of the squash function and label-aware attention in MIND",
+      "Explain how SDM models the short term with LSTM + multi-head attention and the long term with feature-dimension attention, fusing them with gating",
+      "Understand the \"multiple interest vectors retrieve separately, then merge\" flow through the interactive demo",
+      "Complete 5 graded practice problems, consolidating sequential retrieval"
+     ],
+     "key_terms": [
+      "diverse",
+      "evolve dynamically",
+      "multiple interest vectors",
+      "long- and short-term interests",
+      "MIND",
+      "squash function",
+      "label-aware attention",
+      "SDM",
+      "breadth",
+      "temporality",
+      "capsule networks",
+      "label-aware attention layer"
+     ]
+    },
+    {
+     "number": "2.5",
+     "title": "Streaming Index Retrieval",
+     "source": "src/en/part2-retrieval/streaming-index.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part2-retrieval/streaming-index.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "Explain Trinity's interest amnesia problem and its hierarchical clustering (VQ) solution",
+      "Describe how the three histogram-based retrievers (diverse / long-tail / long-term) complement each other",
+      "Explain how Streaming VQ replaces  with  to achieve a repairable, adaptive index",
+      "Analyze the engineering value of index balance and the merge-sort serving strategy",
+      "Complete 5 graded practice problems, consolidating streaming indexes"
+     ],
+     "key_terms": [
+      "index structure",
+      "index level",
+      "interest amnesia",
+      "Streaming VQ",
+      "compress",
+      "Interest Amnesia",
+      "long-tail topics",
+      "vector quantization (VQ)",
+      "temporally unbiased",
+      "exclusively",
+      "never forgets",
+      "index step"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 3,
+   "title": "Accurate Preference Prediction",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "3.1",
+     "title": "Wide & Deep",
+     "source": "src/en/part3-ranking/wide-and-deep.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part3-ranking/wide-and-deep.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "Distinguish memorization from generalization in one sentence each, with a recommendation scenario example for both",
+      "Write out the linear formula of the Wide part and explain how cross-product features embody memorization",
+      "Explain how the Deep part achieves generalization via Embedding + DNN, and how it fundamentally differs from Wide",
+      "Recite the prediction formula of jointly trained Wide & Deep, and explain why Wide / Deep often use different optimizers",
+      "Work through 4 leveled practice problems to consolidate the \"memorization + generalization\" design idea"
+     ],
+     "key_terms": [
+      "Wide part",
+      "Deep part",
+      "memorization",
+      "generalization",
+      "Deep (generalization)",
+      "automatically",
+      "FTRL",
+      "AdaGrad / Adam",
+      "Part 2",
+      "jointly",
+      "one sentence",
+      "cross-product features"
+     ]
+    },
+    {
+     "number": "3.2",
+     "title": "Feature Crossing",
+     "source": "src/en/part3-ranking/feature-crossing.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part3-ranking/feature-crossing.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "Explain how FM uses inner products of latent vectors to cut  parameters down to  and ease sparsity",
+      "Distinguish the enhancements that AFM / NFM / PNN / FiBiNET each add on top of FM",
+      "Explain how DeepFM replaces the manual Wide part with \"shared Embedding\" for an end-to-end model",
+      "Compare the differing motivations of the three high-order crossings: DCN (element-wise) / xDeepFM (vector-wise) / AutoInt (adaptive)",
+      "Work through 4 leveled practice problems, and use the interactive demo to understand how high-order combinations form"
+     ],
+     "key_terms": [
+      "DeepFM",
+      "vector-wise",
+      "DCN",
+      "xDeepFM",
+      "AutoInt",
+      "manual cross features",
+      "FM",
+      "AFM / NFM / PNN / FiBiNET",
+      "DCN (element-wise)",
+      "xDeepFM (vector-wise)",
+      "AutoInt (adaptive)",
+      "parameter sharing"
+     ]
+    },
+    {
+     "number": "3.3",
+     "title": "Sequence Modeling",
+     "source": "src/en/part3-ranking/sequence-modeling.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part3-ranking/sequence-modeling.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "Explain how DIN's local activation breaks through the \"fixed-length user vector\" bottleneck, and why its attention weights are not Softmax-normalized",
+      "Explain how DIEN uses an auxiliary loss + AUGRU to explicitly model the temporal evolution of interests",
+      "Describe how DSIN uses the \"session\" as its basic unit for hierarchical modeling (intra-session self-attention, inter-session Bi-LSTM)",
+      "Use the interactive demo to observe how DIN dynamically activates different historical behaviors depending on the candidate ad",
+      "Work through 4 leveled practice problems to consolidate the three pillars of sequence modeling: \"dynamic / sequential / focused\""
+     ],
+     "key_terms": [
+      "DSIN",
+      "not",
+      "DIEN",
+      "temporal dependencies",
+      "auxiliary loss",
+      "AUGRU",
+      "time dimension",
+      "static feature set",
+      "temporal structure",
+      "dynamic evolution",
+      "DIN / DIEN / DSIN",
+      "diverse"
+     ]
+    },
+    {
+     "number": "3.4",
+     "title": "Multi-Objective Optimization",
+     "source": "src/en/part3-ranking/multi-objective.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part3-ranking/multi-objective.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "Explain the \"negative transfer / seesaw\" problem of Shared-Bottom and its mathematical origin (gradient conflict)",
+      "Explain how MMoE achieves gradient isolation with \"per-task dedicated gates\" to ease conflicts",
+      "Describe how PLE (CGC) explicitly separates shared experts from task experts, further rooting out negative transfer",
+      "Use ESMM's \"entire-space modeling\" to explain how it resolves CVR's sample selection bias and data sparsity",
+      "Work through 4 leveled practice problems comparing multi-objective structures and loss-fusion strategies"
+     ],
+     "key_terms": [
+      "Shared-Bottom",
+      "MMoE",
+      "dependencies",
+      "negative transfer",
+      "False",
+      "single objective",
+      "PLE",
+      "ESMM / ESM2",
+      "fuse and optimize",
+      "PLE (CGC)",
+      "ESMM",
+      "fight"
+     ]
+    },
+    {
+     "number": "3.5",
+     "title": "Multi-Scenario Modeling",
+     "source": "src/en/part3-ranking/multi-scenario.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part3-ranking/multi-scenario.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "Distinguish the essential difference between multi-task (multiple objectives in one scenario) and multi-scenario (one objective across different scenarios)",
+      "Explain how HMoE uses multi-experts + multi-scenario towers + cross-scenario fusion (with stop-gradient) to model commonality",
+      "Explain how STAR uses \"star-topology FCN + partitioned normalization + an auxiliary network\" to model shared and private parameters together",
+      "Describe how PEPNet's EPNet/PPNet use dynamic gating (Gate NU) to modulate shared parameters",
+      "Work through 4 leveled practice problems comparing the two routes of multi-scenario structures: \"physical isolation\" vs \"dynamic modulation\""
+     ],
+     "key_terms": [
+      "the same objective",
+      "PEPNet",
+      "multiple different objectives",
+      "dynamic weights",
+      "Partitioned Normalization (PN)",
+      "multiple scenarios",
+      "multi-scenario modeling",
+      "scenario commonality",
+      "scenario specificity",
+      "Distinguish",
+      "HMoE",
+      "STAR"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 4,
+   "title": "Re-ranking for Diversity",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "4.1",
+     "title": "Greedy Re-ranking",
+     "source": "src/en/part4-rerank/greedy-rerank.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part4-rerank/greedy-rerank.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 32,
+     "objectives": [
+      "Explain the \"homogenization\" phenomenon in ranking output, and the two kinds of cost it inflicts on user experience and ecosystem efficiency",
+      "Write out MMR's marginal gain formula, and hand-compute a top-k list on a given similarity matrix with the greedy procedure",
+      "Describe how DPP measures set-level diversity with the geometric intuition that \"determinant = volume\"",
+      "Derive the DPP kernel matrix , and articulate how the relevance term and the diversity term are fused",
+      "Distinguish the essential difference and applicable scenarios of MMR (heuristic linear combination) versus DPP (precise control in a determinant framework)",
+      "Complete 4 leveled practice problems to consolidate hand-computation and code implementation of the two algorithms"
+     ],
+     "key_terms": [
+      "homogenized ranking output",
+      "Degraded user experience",
+      "Lost system efficiency",
+      "greedy local optimum",
+      "pairwise approximation",
+      "Explain",
+      "Write out",
+      "Describe",
+      "Derive",
+      "Distinguish",
+      "homogenization",
+      "how relevant it is on its own"
+     ]
+    },
+    {
+     "number": "4.2",
+     "title": "Personalized Re-ranking",
+     "source": "src/en/part4-rerank/personalized-rerank.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part4-rerank/personalized-rerank.html",
+     "difficulty": "Advanced",
+     "read_minutes": 36,
+     "objectives": [
+      "Explain why PRM marks the shift of re-ranking from rules/heuristics toward data-driven, end-to-end learning",
+      "Describe PRM's input layer, encoding layer (Transformer), output layer, and how the personalized vector PV is generated",
+      "Write out the self-attention formula, and explain how Softmax implicitly models relative relationships among items in PRM's output layer",
+      "Understand permutation-variant influence, and why PRS optimizes the permutation directly",
+      "Describe PRS's two-stage solution: PMatch (FPSA candidate generation) and PRank (DPWN permutation evaluation)",
+      "Complete 4 leveled practice problems to consolidate the core mechanisms of PRM/PRS"
+     ],
+     "key_terms": [
+      "Describe",
+      "deep personalization",
+      "hand-designed",
+      "Explain",
+      "personalized vector PV",
+      "Write out",
+      "Understand",
+      "on average",
+      "for this user",
+      "your",
+      "concatenates",
+      "position embedding (PE)"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 5,
+   "title": "Frontier Trends",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "5.1",
+     "title": "Debiasing",
+     "source": "src/en/part5-trends/debiasing.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part5-trends/debiasing.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 28,
+     "objectives": [
+      "Distinguish the two families of bias sources: data bias (selection/exposure/conformity/position) and result bias (popularity/unfairness)",
+      "Explain how the feedback loop amplifies small biases into a Matthew effect of homogeneous recommendations",
+      "Write down the IPS estimator, justify why it is an unbiased estimate of the true risk, and know how to clip weights when they explode",
+      "Use PAL's two-module architecture to structurally decouple \"seeing\" from \"liking\"",
+      "Work through 4 tiered practice problems to consolidate the math and engineering intuition of debiasing"
+     ],
+     "key_terms": [
+      "PAL",
+      "feedback loop",
+      "IPS",
+      "Selection bias",
+      "Exposure bias",
+      "Conformity bias",
+      "Position bias",
+      "pCTR module",
+      "Training",
+      "Inference",
+      "Distinguish",
+      "Explain"
+     ]
+    },
+    {
+     "number": "5.2",
+     "title": "Cold Start",
+     "source": "src/en/part5-trends/cold-start.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part5-trends/cold-start.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "Distinguish the fundamental difference between content cold start and user cold start",
+      "Explain how CB2CF maps content features to collaborative-filtering representations so new items get CF quality directly",
+      "Write down MetaEmbedding's two-stage meta-loss and understand that it optimizes \"learnability\" rather than a fixed vector",
+      "Explain MeLU's parameter separation and POSO's \"personalization submergence\" insight, and compare the two",
+      "Work through 4 tiered practice problems to consolidate the engineering and math intuition for cold start"
+     ],
+     "key_terms": [
+      "Explain",
+      "meta-learning",
+      "personalized gating",
+      "Content cold start",
+      "zero",
+      "cold-start problem",
+      "content cold start",
+      "user cold start",
+      "borrowing strength",
+      "Distinguish",
+      "Write down",
+      "Borrow content"
+     ]
+    },
+    {
+     "number": "5.3",
+     "title": "Evolution of the Generative Paradigm",
+     "source": "src/en/part5-trends/generative-trend.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part5-trends/generative-trend.html",
+     "difficulty": "Advanced",
+     "read_minutes": 32,
+     "objectives": [
+      "Connect the capability leap of \"memorization · generalization → understanding · reasoning\" against Part 1's two paradigms",
+      "Explain how HSTU unifies heterogeneous information into event streams and how TIGER reshapes the output with semantic IDs",
+      "Distinguish generative ranking (GenRank / MTGR) from discriminative ranking in essence",
+      "Describe OneRec's four key innovations in end-to-end generation, especially iterative preference alignment (IPA)",
+      "Work through 4 tiered practice problems to consolidate the mapping from paradigm to model"
+     ],
+     "key_terms": [
+      "HSTU",
+      "TIGER",
+      "generative retrieval",
+      "generative ranking",
+      "end-to-end generation",
+      "reward model",
+      "how the input is organized",
+      "what the output generates",
+      "Connect",
+      "Explain",
+      "Distinguish",
+      "Describe"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 6,
+   "title": "Foundations of Generative Recommendation",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "6.1",
+     "title": "The Generative Recommendation Paradigm",
+     "source": "src/en/part6-gr-basic/gr-paradigm.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part6-gr-basic/gr-paradigm.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "Write down the core conditional probability formulas of discriminative and generative models, and explain how the \"questions they ask\" differ",
+      "List the inherent limitations of the discriminative paradigm in parameter efficiency, semantic modeling, and multi-stage cascades",
+      "Explain how generative autoregressive modeling naturally captures sequential dependencies and opens the door to end-to-end optimization",
+      "Compare the essential differences between the two paradigms along three dimensions: objective function, information flow, and model architecture",
+      "Complete 4 tiered practice problems to consolidate the \"discriminative vs. generative\" modeling philosophy"
+     ],
+     "key_terms": [
+      "discriminative",
+      "generative",
+      "creates",
+      "Generative Recommendation",
+      "sequence generation task",
+      "autoregressive modeling",
+      "Embedding & MLP",
+      "question it asks",
+      "atomic unit",
+      "cold-start",
+      "never even get seen",
+      "sequence generation process"
+     ]
+    },
+    {
+     "number": "6.2",
+     "title": "Architectural Foundations of Generative Recommendation",
+     "source": "src/en/part6-gr-basic/gr-architecture.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part6-gr-basic/gr-architecture.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "Explain the Q/K/V computation and multi-head mechanism of self-attention as \"query—match—aggregate\"",
+      "Explain why positional encoding (absolute/relative, time-aware) is indispensable for recommendation sequences",
+      "Compare the strengths, weaknesses, and applicable scenarios of Encoder-Decoder vs. Decoder-Only architectures",
+      "Explain how the causal mask enables autoregressive generation while keeping training parallel",
+      "Outline Diffusion's forward diffusion / reverse denoising and its applications in recommendation",
+      "Complete 5 tiered practice problems to consolidate the key mechanisms of generative architectures"
+     ],
+     "key_terms": [
+      "Encoder-Decoder",
+      "Diffusion models",
+      "Decoder-Only",
+      "pure noise",
+      "iterative denoising",
+      "weaknesses",
+      "one forward pass",
+      "intuitive understanding",
+      "Generative Architecture",
+      "Transformer",
+      "not mutually exclusive",
+      "self-attention"
+     ]
+    },
+    {
+     "number": "6.3",
+     "title": "LLM Foundations & the Recommendation Mapping",
+     "source": "src/en/part6-gr-basic/llm-foundation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part6-gr-basic/llm-foundation.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 40,
+     "objectives": [
+      "Explain the goals and losses of each LLM stage (pretraining / instruction tuning / preference alignment)",
+      "Distinguish the pipeline differences between RLHF (with reward model and PPO) and DPO",
+      "Explain what Scaling Laws and emergent abilities imply for generative recommendation",
+      "Map the three-stage paradigm to recommendation scenarios and identify challenges specific to it, such as item tokenization",
+      "Complete 4 tiered practice problems to consolidate the LLM→recommendation knowledge chain"
+     ],
+     "key_terms": [
+      "Scaling Laws",
+      "RLHF",
+      "DPO",
+      "Map",
+      "Step 1 (SFT)",
+      "Step 2 (RM)",
+      "Step 3 (PPO)",
+      "onboarding training",
+      "values calibration",
+      "Pre-training",
+      "large-scale unlabeled text",
+      "self-supervised learning"
+     ]
+    },
+    {
+     "number": "6.4",
+     "title": "Codebook Quantization & Semantic IDs",
+     "source": "src/en/part6-gr-basic/codebook-quantization.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part6-gr-basic/codebook-quantization.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Compare the strengths and weaknesses of the three paradigms: sparse ID / text ID / semantic ID",
+      "Explain the three values of semantic IDs: \"controlled vocabulary, hierarchical structure, from memorization to reasoning\"",
+      "Derive VQ-VAE's quantization and three losses, and understand the Straight-Through Estimator (STE)",
+      "Explain how RQ-VAE's residual quantization produces hierarchical semantic IDs",
+      "Know industrial-grade decoupled and hybrid schemes such as RQ-Kmeans / RQ-OPQ",
+      "Complete 5 tiered practice problems and experience quantization hands-on with the interactive demo"
+     ],
+     "key_terms": [
+      "Advantages",
+      "Controlled fixed vocabulary",
+      "Item Tokenization",
+      "VQ-VAE",
+      "RQ-VAE",
+      "RQ-Kmeans / RQ-OPQ",
+      "three fundamental dilemmas",
+      "Vocabulary explosion",
+      "atomic IDs are orthogonal",
+      "Two fatal flaws",
+      "Low representation efficiency",
+      "Grounding difficulty"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 7,
+   "title": "Scaling Generative Ranking",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "7.1",
+     "title": "HSTU: The Cornerstone of Scaling Laws",
+     "source": "src/en/part7-scaling/hstu.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part7-scaling/hstu.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "Name the three fundamental limitations that keep traditional DLRMs (Deep Learning Recommendation Models) from scaling",
+      "Explain how Generative Recommenders (GR) model behavior history as a \"language\" and achieve `user-level` sequence training",
+      "Describe HSTU's three architectural innovations for recommendation (Pointwise Aggregation, relative time bias, gated feed-forward)",
+      "Explain how Stochastic Length and M-FALCON solve the engineering challenges of ultra-long-sequence training and multi-candidate inference respectively",
+      "Recount the experimental conclusion of the recommendation Scaling Law, , and understand its implications for recommendation foundation models",
+      "Work through 4 tiered practice problems that consolidate the full chain from paradigm to engineering"
+     ],
+     "key_terms": [
+      "Stochastic Length",
+      "feature bottleneck",
+      "target-aware",
+      "absolute intensity",
+      ". This is the famous",
+      "Generative Recommenders (GR)",
+      "M-FALCON",
+      "architectural fragmentation",
+      "training paradigm limitation",
+      "item-level modeling",
+      "linearly",
+      "paradigm shift"
+     ]
+    },
+    {
+     "number": "7.2",
+     "title": "The Generative Ranking Paradigm",
+     "source": "src/en/part7-scaling/generative-ranking.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part7-scaling/generative-ranking.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "First group",
+      "drops significantly",
+      "Second group",
+      "causal glasses",
+      "interleaving",
+      "The answer is what",
+      "Action-Oriented Organization",
+      "sequence length halves",
+      "Position Embeddings",
+      "Request Index Embeddings",
+      "Pre-Request Time Embeddings",
+      "7.1 (HSTU)"
+     ]
+    },
+    {
+     "number": "7.3",
+     "title": "MTGR: A Hybrid Paradigm",
+     "source": "src/en/part7-scaling/mtgr.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part7-scaling/mtgr.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "information leakage",
+      "hybrid paradigm",
+      "discriminative task",
+      "history part",
+      "candidate part",
+      "separating means from ends",
+      "semantic confusion",
+      "distribution alignment",
+      "semantic independence",
+      "Dynamic Masking",
+      "generated dynamically",
+      "compatibility"
+     ]
+    },
+    {
+     "number": "7.4",
+     "title": "RankMixer: A Hardware-Efficient Architecture",
+     "source": "src/en/part7-scaling/rankmixer.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part7-scaling/rankmixer.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "MFU (Model FLOPs Utilization)",
+      "memory-bound",
+      "highly fragmented",
+      "RankMixer",
+      "Token Mixing",
+      "Per-Token FFN",
+      "Sparse MoE",
+      "The answer is",
+      "ReLU Routing",
+      "7.3 (MTGR)",
+      "7.5 (OneTrans)",
+      "3.2 (Feature Crossing)"
+     ]
+    },
+    {
+     "number": "7.5",
+     "title": "OneTrans: A Unified Transformer",
+     "source": "src/en/part7-scaling/onetrans.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part7-scaling/onetrans.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "encode-then-interaction",
+      "restricted information flow",
+      "fragmented execution",
+      "OneTrans",
+      "sequential features",
+      "non-sequential features",
+      "Timestamp-aware",
+      "Timestamp-agnostic",
+      "Auto-Split Tokenizer",
+      "token heterogeneity",
+      "Mixed Parameterization",
+      "Causal Attention Mask"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 8,
+   "title": "End-to-End Generative Applications",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "8.1",
+     "title": "End-to-End Generative Recommendation",
+     "source": "src/en/part8-e2e/e2e-recommendation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part8-e2e/e2e-recommendation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 40,
+     "objectives": [
+      "Explain how semantic IDs solve the \"Softmax explosion from directly generating atomic IDs\" problem",
+      "Describe OneRec-V1's four-pathway encoder and reward system design, along with the two bottlenecks it faces",
+      "Explain why the Lazy Decoder-Only cuts decoding computation by 94%",
+      "Recount the validation of Scaling Laws on OneRec-V2 and GBPO's improvements over ECPO",
+      "Complete 5 tiered practice problems consolidating semantic IDs, architecture, and alignment algorithms"
+     ],
+     "key_terms": [
+      "semantic IDs",
+      "Scaling Laws",
+      "OneRec-V1",
+      "Lazy Decoder-Only",
+      "communication and storage",
+      "OneRec",
+      "end-to-end generative task",
+      "GBPO",
+      "Computation fragmentation",
+      "cuts a garment",
+      "QFormer",
+      "item-pair contrastive learning"
+     ]
+    },
+    {
+     "number": "8.2",
+     "title": "End-to-End Generative Search",
+     "source": "src/en/part8-e2e/e2e-search.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part8-e2e/e2e-search.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "Explain how OneSug reformulates query completion as conditional text generation and uses the PRE module to augment short prefixes",
+      "Describe how the RWR strategy injects business value into ranking via six-level interaction feedback",
+      "Explain how OneSearch's KHQE balances semantic hierarchy against product uniqueness with \"3 RQ layers + 2 OPQ layers\"",
+      "Recount Mu-Seq's three-perspective user modeling and PARS's preference-aware rewards",
+      "Complete 5 tiered practice problems consolidating prefix augmentation, semantic ID encoding, and constrained decoding"
+     ],
+     "key_terms": [
+      "closed vocabulary",
+      "OneSug",
+      "OneSearch",
+      "Mu-Seq",
+      "Beam Search",
+      "explicit text queries",
+      "open vocabulary",
+      "RWR strategy",
+      "PARS",
+      "RQ-VAE",
+      "User features.",
+      "RWR (Reward-Weighted Ranking)"
+     ]
+    },
+    {
+     "number": "8.3",
+     "title": "End-to-End Generative Advertising",
+     "source": "src/en/part8-e2e/e2e-advertising.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part8-e2e/e2e-advertising.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Explain the triple constraints of the advertising scenario relative to recommendation/search (IC/IR, POI + creative joint generation, decoupling of allocation and payment)",
+      "Describe EGA's dual-modality semantic IDs, probability-decomposed generation, and token-level auction mechanism",
+      "Explain how ex-post regret and Lagrangian optimization approximately guarantee incentive compatibility",
+      "Outline GPR's four token types, RQ-Kmeans+, heterogeneous hierarchical decoder, and value-guided Trie Beam Search",
+      "Complete 5 tiered practice problems consolidating bid aggregation, the payment network, and hierarchical policy optimization"
+     ],
+     "key_terms": [
+      "EGA",
+      "GPR",
+      "economic constraints",
+      "online advertising",
+      "triple constraints",
+      "ex-post regret",
+      "Lagrangian optimization",
+      "not",
+      "allocation",
+      "payment",
+      "RQ-VAE",
+      "two decoders"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 9,
+   "title": "Thinking & Reasoning in Recommendation",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "9.1",
+     "title": "Aligning Collaborative & Linguistic Semantics",
+     "source": "src/en/part9-thinking/semantic-alignment.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part9-thinking/semantic-alignment.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [
+      "State the gap between collaborative semantics and language semantics in one sentence, and identify the two fundamental flaws of \"replacing IDs with titles\"",
+      "Describe how LC-Rec builds a semantic index with hierarchical RQ-VAE, and explain how \"uniform semantic mapping\" resolves index collisions",
+      "Recount how LC-Rec's three-level alignment training (sequential prediction / index-language alignment / recommendation-oriented) injects collaborative semantics into the LLM",
+      "Explain how PLUM pushes this approach to industrial scale (multimodal fusion + continued pre-training + task fine-tuning)",
+      "Work through 4 tiered practice problems that consolidate the semantic-alignment thread from academic prototype to industrial deployment"
+     ],
+     "key_terms": [
+      "collaborative semantics",
+      "language semantics",
+      "understand",
+      "in one sentence",
+      "Describe",
+      "Recount",
+      "Explain",
+      "ID",
+      "collaborative patterns",
+      "Out-of-Vocabulary (OOV)",
+      "replace IDs with item titles",
+      "LC-Rec"
+     ]
+    },
+    {
+     "number": "9.2",
+     "title": "Reasoning Frameworks",
+     "source": "src/en/part9-thinking/reasoning-framework.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part9-thinking/reasoning-framework.html",
+     "difficulty": "Advanced",
+     "read_minutes": 36,
+     "objectives": [
+      "Describe OneRec-Think's three-stage training framework (item alignment → reasoning activation → reasoning enhancement)",
+      "Explain how reasoning scaffolding uses progressive tasks to \"activate\" the model's inductive, deductive, and counterfactual reasoning",
+      "Recount how recommendation-specific rewards address the \"multi-validity\" challenge, and the relative-advantage mechanism of GRPO",
+      "Explain how the Think-Ahead architecture strips dense reasoning off the online critical path to meet real-time latency requirements",
+      "Work through 4 tiered practice problems consolidating the reasoning paradigm from alignment to enhancement"
+     ],
+     "key_terms": [
+      "Explain",
+      "implicit black box",
+      "Chain-of-Thought",
+      "OneRec-Think",
+      "think before recommending",
+      "Describe",
+      "Recount",
+      "three-stage training framework",
+      "attention weighting",
+      "Item-Textual Alignment",
+      "Reasoning Scaffolding",
+      "inductive reasoning"
+     ]
+    },
+    {
+     "number": "9.3",
+     "title": "Autonomous Reasoning Exploration",
+     "source": "src/en/part9-thinking/autonomous-reasoning.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part9-thinking/autonomous-reasoning.html",
+     "difficulty": "Advanced",
+     "read_minutes": 38,
+     "objectives": [
+      "Explain why OneRec-Think counts as imitation learning, and the three major limitations of relying on hand-crafted templates",
+      "Describe RecZero's pure reinforcement learning scheme: Think-before-Recommendation template + rule-based reward + GRPO",
+      "Recount RecZero's emergent capabilities: hierarchical reasoning, negative-signal utilization, cross-domain transfer, and more",
+      "Compare the RecOne hybrid paradigm: cold-start SFT (including aligned/misaligned samples) + RL, and how it balances efficiency with performance ceilings",
+      "Work through 4 tiered practice problems and try the \"reasoning capability evolution\" interactive demo at the end of the chapter"
+     ],
+     "key_terms": [
+      "depends on human design",
+      "limited reasoning paths",
+      "scalability challenges",
+      "Imitation Learning",
+      "Exploratory Learning",
+      "Reinforcement Learning (RL)",
+      "Explain",
+      "Describe",
+      "Recount",
+      "Compare",
+      "RecZero",
+      "existence and order"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 10,
+   "title": "Diffusion Models for Recommendation",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "10.1",
+     "title": "Diffusion Model Basics",
+     "source": "src/en/part10-diffusion/diffusion-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part10-diffusion/diffusion-basics.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [],
+     "key_terms": [
+      "DDPM",
+      "core technical principles",
+      "DiffRec",
+      "forward diffusion",
+      "reverse denoising",
+      "Write",
+      "Distinguish",
+      "Describe",
+      "Explain",
+      "Latent diffusion models (LDM)",
+      "latent representation space",
+      "Stable Diffusion"
+     ]
+    },
+    {
+     "number": "10.2",
+     "title": "Diffusion for Data Augmentation",
+     "source": "src/en/part10-diffusion/diffusion-augmentation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part10-diffusion/diffusion-augmentation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 32,
+     "objectives": [],
+     "key_terms": [
+      "data sparsity",
+      "Pretraining",
+      "Diffusion",
+      "Classification",
+      "Fine-tuning",
+      "DiffuASR",
+      "Diff-MSR",
+      "Describe",
+      "Explain",
+      "Recount",
+      "Compare",
+      "long-tail user problem"
+     ]
+    },
+    {
+     "number": "10.3",
+     "title": "Diffusion Applications in Recommendation",
+     "source": "src/en/part10-diffusion/diffusion-application.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part10-diffusion/diffusion-application.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [],
+     "key_terms": [
+      "DMSG",
+      "feature augmentation",
+      "diversity optimization",
+      "missing features",
+      "insufficient diversity",
+      "AsymDiffRec",
+      "Describe",
+      "Explain",
+      "Recount",
+      "Critically assess",
+      "discrete",
+      "a puzzle missing a few pieces"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 11,
+   "title": "Building a Generative Recommender in Practice",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "11.1",
+     "title": "Project Introduction & Goals",
+     "source": "src/en/part11-project/project-intro.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/project-intro.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 18,
+     "objectives": [
+      "Describe the six fundamental differences between offline evaluation and online deployment",
+      "State this project's four goals: functionally complete, technically realistic, algorithms applied, architecture clear",
+      "List the backend and frontend technology stacks, and explain why FastAPI + Vue + PostgreSQL + Redis + Elasticsearch",
+      "Outline the five-stage learning path from system architecture to deployment",
+      "Work through 4 tiered practice problems to consolidate your picture of the whole project"
+     ],
+     "key_terms": [
+      "100 milliseconds",
+      "immediately affect",
+      "cooperate",
+      "recommend",
+      "system level",
+      "system that runs in concert",
+      "offline evaluation",
+      "end-to-end deployment",
+      "Must be handled",
+      "storage layer",
+      "Dataset",
+      "MovieLens-1M"
+     ]
+    },
+    {
+     "number": "11.2",
+     "title": "System Architecture Design",
+     "source": "src/en/part11-project/project-architecture.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/project-architecture.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 22,
+     "objectives": [
+      "Describe the responsibility boundary and decoupling between the offline system (production) and the online system (serving)",
+      "Point out the four component groups in the overall architecture diagram: the data storage layer, the offline pipeline, the online pipeline, and the frontend",
+      "Explain the offline data flow (CSV → features/models → shared directory + Redis) and the online data flow (request → retrieval → ranking → re-ranking → assembly)",
+      "Articulate the four key design decisions: the funnel architecture, multi-route retrieval fusion, cold-start handling, and separating feature storage from computation",
+      "Work through 4 tiered practice problems"
+     ],
+     "key_terms": [
+      "offline system",
+      "online system",
+      "PostgreSQL (business database)",
+      "Redis (feature cache)",
+      "Shared file directory",
+      "Elasticsearch (search engine)",
+      "Feature engineering",
+      "Retrieval model training",
+      "Ranking model training",
+      "Model deployment",
+      "Feature ingestion",
+      "Cold-start detection"
+     ]
+    },
+    {
+     "number": "11.3",
+     "title": "Offline Pipeline",
+     "source": "src/en/part11-project/offline-pipeline.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/offline-pipeline.html",
+     "difficulty": "Advanced",
+     "read_minutes": 30,
+     "objectives": [
+      "Describe the offline directory layout and how `pipeline.py` orchestrates the modules",
+      "Build YoutubeDNN sequential samples with a sliding window, and understand the details of left-padding and 1-based encoding",
+      "Explain how the ranking model defines click labels via \"relative to the personal mean,\" and how it mixes hard/random negatives",
+      "Write the code for item embedding precomputation + normalization after YoutubeDNN training, and explain why it matters",
+      "Describe the Redis feature writes (Hash/List + Pipeline) and the model deployment (version pointer) implementations",
+      "Work through 5 tiered practice problems to consolidate the engineering essentials"
+     ],
+     "key_terms": [
+      "Model configuration",
+      "The training flow",
+      "sliding window",
+      "Categorical feature encoding",
+      "Behavior sequence construction",
+      "Sequence padding",
+      "left padding",
+      "Label definition",
+      "Negative sampling",
+      "Hard negatives",
+      "Random negatives",
+      "Train/test split"
+     ]
+    },
+    {
+     "number": "11.4",
+     "title": "Online Pipeline",
+     "source": "src/en/part11-project/online-pipeline.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/online-pipeline.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [
+      "Describe how `RecommendationPipeline` and `PipelineConfig` wire the full pipeline together",
+      "Explain the cold start detection threshold and the UCB exploration-exploitation formula, and write the score computation and state update code",
+      "Describe the three retrieval routes (YoutubeDNN / I2I / preferred genres) and Snake Merge fusion",
+      "Write DeepFM batch ranking, feature encoding reuse, async execution, and fallback strategies",
+      "Explain how Consecutive Dispersion improves diversity while preserving ordering",
+      "Work through 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "Snake Merge",
+      "Cold start detection",
+      "5 interactions",
+      "Three strategies",
+      "UCB genre exploration",
+      "exploitation",
+      "exploration",
+      "Preferred-genre strategy",
+      "Why multiple routes",
+      "YoutubeDNN embedding retrieval",
+      "User preferred-genre retrieval",
+      "Snake Merge fusion"
+     ]
+    },
+    {
+     "number": "11.5",
+     "title": "Frontend",
+     "source": "src/en/part11-project/frontend.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/frontend.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 26,
+     "objectives": [
+      "List the frontend stack (Vue 3 / Tailwind / Pinia / Vue Router / Axios) and the five core page types",
+      "Implement logged-in/guest access control with route `meta` + `beforeEach` guards",
+      "Describe the design essentials of the three core components: MovieCard / MovieRow / StarRating",
+      "Explain how the home page conditionally renders \"For You\" based on login state and auto-loads recommendations after login",
+      "Manage authentication state centrally with Pinia and control search request frequency with debounce",
+      "Explain how the signup page's preferred genres drive the cold start strategy",
+      "Work through 4 tiered practice problems"
+     ],
+     "key_terms": [
+      "11.4",
+      "data collection layer",
+      "MovieCard",
+      "MovieRow",
+      "StarRating",
+      "API service wrapper",
+      "User state management",
+      "persistence",
+      "reactivity",
+      "centralization",
+      "debounce",
+      "11.1"
+     ]
+    },
+    {
+     "number": "11.6",
+     "title": "Deployment",
+     "source": "src/en/part11-project/deployment.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part11-project/deployment.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 24,
+     "objectives": [
+      "Explain why Docker Compose (environment consistency / fast startup / isolation / easy scaling)",
+      "Read the configuration of the five services in `docker-compose.yaml` and understand container-to-container communication via service-name DNS",
+      "Describe how the frontend multi-stage build (Node build + Nginx serve) shrinks the image",
+      "Execute the full startup flow: start infrastructure → run the offline pipeline → ingest data → build indexes → browse",
+      "Troubleshoot common issues with `docker compose ps`, health checks, and `redis-cli`",
+      "Work through 4 tiered practice problems"
+     ],
+     "key_terms": [
+      "Docker Compose",
+      "declarative YAML",
+      "Environment consistency",
+      "Fast startup",
+      "Isolation and safety",
+      "Easy to extend",
+      "service names",
+      "Frontend (multi-stage build)",
+      "Networks and data",
+      "Prerequisites",
+      "Data preparation",
+      "Get the code"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "Computational Advertising",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "The Advertising Panorama and Ecosystem",
+     "source": "src/en/part12-computational-advertising/advertising-panorama.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/advertising-panorama.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "State the three elements of the advertising definition and the six stages of the ad effectiveness model, and distinguish brand advertising from direct-response advertising",
+      "State the fundamental problem of computational advertising (maximizing ROI over the  triple match), and explain the three essential differences between advertising and recommender systems",
+      "Name the four factors of the advertising system value formula, and what problem each generation of the 1.0 → 3.0 delivery model evolution solved",
+      "Describe the respective responsibilities of ADX / DSP / SSP / DMP / Trading Desk in the programmatic ecosystem, and the two-phase RTB flow",
+      "Give examples of the three stages of targeting technology and the main thread of ad format evolution, and explain why feed ads are a positive example of balancing effectiveness and user experience",
+      "Complete 5 graded practice problems, testing your understanding of the advertising ecosystem panorama"
+     ],
+     "key_terms": [
+      "False",
+      "DSP (Demand-Side Platform)",
+      "ADX (Ad Exchange)",
+      "SSP (Supply-Side Platform)",
+      "Look-alike",
+      "auctions",
+      "Computational Advertising",
+      "non-personal",
+      "identified Sponsor",
+      "media (Publishers)",
+      "Audience",
+      "sponsor"
+     ]
+    },
+    {
+     "number": "12.2",
+     "title": "Billing Models and Core Metrics",
+     "source": "src/en/part12-computational-advertising/billing-and-metrics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/billing-and-metrics.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 40,
+     "objectives": [
+      "List the billing formulas, key decision-makers, and risk allocation of each billing model: CPT/CPD, CPM, CPC, and CPA/CPS",
+      "Characterize ad performance with the three metrics CTR, CVR, and ROI, and carry out cross-billing-model ranking computations with",
+      "Explain the divide between brand advertising and direct response advertising in billing and transaction modes",
+      "Describe the bipartite-graph structure of Guaranteed Delivery (GD) and Online Allocation, and the ideas behind solving them",
+      "Explain why CTR estimation is a regression problem rather than a ranking problem, along with cold-start back-off and E&E as coping strategies",
+      "Complete 5 graded practice problems, working through the computational chain from metric conversion to GSP payments"
+     ],
+     "key_terms": [
+      "Guaranteed Delivery (GD)",
+      "Online Allocation",
+      "Cost Per Action (CPA)",
+      "Cost Per Sales (CPS)",
+      "Cost Per Time (CPT)",
+      "Cost Per Mille (CPM)",
+      "Billing Model",
+      "Metrics",
+      "constitution",
+      "Advertiser",
+      "media / Supply Side",
+      "correlated game"
+     ]
+    },
+    {
+     "number": "12.3",
+     "title": "Auction Mechanisms: From First-Price to Second-Price",
+     "source": "src/en/part12-computational-advertising/auction-mechanisms.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/auction-mechanisms.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Describe the allocation and pricing of multi-slot advertising with the position auction model, writing down the expected value  and the eCPM ranking rule",
+      "Explain why the generalized first-price (GFP) has no stable pure-strategy Nash equilibrium, and work through the oscillating cycle of two bidders step by step",
+      "Prove that truthful bidding is a dominant strategy in the single-slot second-price auction (Vickrey auction), and give the formal definitions of incentive compatibility (IC) and individual rationality (IR)",
+      "Compute by hand the payments and utilities of the generalized second price (GSP) and VCG with multiple slots, and articulate their differences in truth-telling and revenue levels",
+      "Verify \"what happens when you misreport\" with an interactive simulator, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "position auction",
+      "generalized first-price (GFP)",
+      "generalized second price (GSP)",
+      "allocation rule",
+      "pricing rule",
+      "A (slot 1)",
+      "B (slot 2)",
+      "first-price auctions",
+      "IC/IR",
+      "auction mechanism",
+      "incentive compatibility (IC)",
+      "individual rationality (IR)"
+     ]
+    },
+    {
+     "number": "12.4",
+     "title": "Smart Bidding and Budget Control",
+     "source": "src/en/part12-computational-advertising/smart-bidding.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/smart-bidding.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Write down the core conversion-bidding formula , and explain how oCPM transfers conversion risk from the advertiser to the platform",
+      "Explain the motivation of budget pacing and the reference trajectory , and contrast probabilistic throttling with bid scaling as two implementations",
+      "Use the feedback-control / PID-controller perspective to explain the tuning logic of the pacing multiplier , and why engineering practice universally drops the D term",
+      "Derive the logic of expected surplus maximization  under first-price auctions, and describe how Verizon's DDN uses a log-normal distribution and Golden Section Search to find the optimal bid in milliseconds",
+      "Draw the complete decision chain of a bid request from targeting to bid submission, trace how error propagates through the chain, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "pacing multiplier",
+      "bid shading",
+      "advertiser goal",
+      "value estimation",
+      "budget constraint",
+      "market mechanism adaptation",
+      "budget pacing",
+      "reference trajectory",
+      "Probabilistic throttling",
+      "Bid scaling",
+      "P (Proportional)",
+      "I (Integral)"
+     ]
+    },
+    {
+     "number": "12.5",
+     "title": "Bias and Calibration in Ad Systems",
+     "source": "src/en/part12-computational-advertising/bias-and-calibration.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/bias-and-calibration.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Distinguish calibration from discrimination, and explain why a high-AUC model can produce completely unusable eCPMs",
+      "Decompose position bias with the examination hypothesis, and compare the applicability and costs of the three debiasing approaches: \"position as a feature / IPW / PAL\"",
+      "Define sample selection bias (SSB) and data sparsity, write down ESMM's entire-space modeling objective and loss, and explain why the CVR tower is \"implicitly learned\"",
+      "Describe how winner's bias and delayed feedback contaminate training and calibration labels, and why exploration traffic is the source of unbiased signals",
+      "Calibrate on an independent validation set with Platt scaling and isotonic regression (PAVA), and assess calibration quality with reliability diagrams, ECE, and PCOC",
+      "Complete 5 tiered practice problems, working through the full chain from computing ECE by hand to fitting PAVA"
+     ],
+     "key_terms": [
+      "position bias",
+      "sample selection bias (SSB)",
+      "delayed feedback",
+      "Calibration",
+      "Bias and Calibration",
+      "calibration",
+      "discrimination",
+      "absolute values",
+      "Discrimination",
+      "overconfident",
+      "wrong bids",
+      "wrong ranking"
+     ]
+    },
+    {
+     "number": "12.6",
+     "title": "Open-Loop and Closed-Loop Advertising",
+     "source": "src/en/part12-computational-advertising/open-closed-loop.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/open-closed-loop.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "Use the criterion \"whether the conversion is inside the platform's observable domain\" to classify any advertising scenario as closed-loop or open-loop, and explain that what it affects is not the ad format but the data link",
+      "Explain why closed-loop lets the platform train deep pCVR models, do deep conversion bidding (payment/ROI/next-day retention/7-day ROI), and how the \"the more you bid, the more accurate\" positive loop pushes eCPM higher",
+      "Describe the complete open-loop attribution flow (clickid issuance → postback → ip+ua fallback) and the allocation rules of six attribution models, and explain why MMPs can counter double counting",
+      "Explain how ATT, SKAdNetwork, and Android Privacy Sandbox collapse deterministic attribution, and the hybrid attribution strategies in open-loop scenarios",
+      "Use one comparison table to tie together the full differences between closed-loop and open-loop across bidding goals, data availability, delayed feedback, model training, and attribution certainty, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "Open-loop",
+      "data observability",
+      ". Inside the domain is",
+      "transaction structure",
+      "complete conversion labels",
+      "deep conversion bidding",
+      "shallow-funnel goals",
+      "deep-funnel goals",
+      "positive loop",
+      "This is",
+      "postback",
+      "ad-touchpoint tracking"
+     ]
+    },
+    {
+     "number": "12.7",
+     "title": "Online Allocation and Traffic Management",
+     "source": "src/en/part12-computational-advertising/online-allocation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/online-allocation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "Formulate \"guaranteed volume + optimized revenue\" as a constrained optimization problem on a supply/demand bipartite graph, writing out the demand constraints, supply constraints, and objective function",
+      "Describe the inverted-index scheme for traffic forecasting, and explain why it is \"the dual problem of ad retrieval\"",
+      "Explain how frequency capping breaks the per-impression decomposability assumption, and the trade-offs between client-side and server-side implementations",
+      "Explain why the direct linear program is unsolvable in large-scale contract systems, and how the compact allocation plan recovers -level allocation rates from -level dual variables",
+      "Implement the full HWM pipeline — offline planning and online serving — and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "Online Allocation",
+      "Auction advertising",
+      "Contract advertising",
+      "scheduling systems",
+      "house ads",
+      "impression contracts",
+      "online allocation module",
+      "bipartite graph",
+      "supply nodes",
+      "demand nodes",
+      "allocation ratios",
+      "demand constraint"
+     ]
+    },
+    {
+     "number": "12.8",
+     "title": "Audience Targeting",
+     "source": "src/en/part12-computational-advertising/audience-targeting.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/audience-targeting.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "Classify targeting techniques by computational framework into , , and , and explain why the dual metrics of \"effectiveness × scale\" are the prerequisite for a fully competitive market",
+      "Design the semi-online crawling system for contextual targeting, and explain why it is far lighter than a search-engine crawler",
+      "State in one sentence the evolutionary logic across the three generations of topic models — LSA, PLSI, LDA — and the engineering design of word2vec",
+      "Fully implement the feature generation (time-decay accumulation), scoring decision ( threshold), and reach/CTR evaluation of behavioral targeting",
+      "Judge under what data conditions demographic prediction is worth doing, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "Audience Targeting",
+      "labels",
+      "effectiveness",
+      "scale",
+      "Rule-based categorization",
+      "Keyword extraction",
+      "Topic model mapping",
+      "demand-side driven",
+      "semi-online crawling system",
+      "weak-consistency",
+      "text topic models",
+      "Behavioral Targeting (BT)"
+     ]
+    },
+    {
+     "number": "12.9",
+     "title": "Ad Retrieval and Semantic Recall",
+     "source": "src/en/part12-computational-advertising/ad-retrieval-semantic-recall.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/ad-retrieval-semantic-recall.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Explain the two essential differences between ad retrieval and search-engine retrieval: boolean-expression documents and extremely long queries",
+      "Decompose ad targeting conditions into the three-level structure DNF → Conjunction → Assignment, and describe how the two-layer inverted index and size-based tiered pruning work",
+      "Describe how the WAND algorithm achieves Top-K pruning during retrieval using \"upper bounds + a heap threshold\"",
+      "Explain how DSSM/two-tower models turn retrieval into nearest neighbor search in a vector space, and the intuitions behind the three families of ANN schemes: LSH, vector quantization, and graph indexes",
+      "See the full retrieval funnel: recall → pre-ranking → fine-ranking → auction, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "multi-channel recall",
+      "semantic",
+      "hundreds of millions",
+      "ad retrieval",
+      "boolean expression",
+      "Query expansion",
+      "Recommendation-based methods.",
+      "Topic-model-based methods.",
+      "user-intent",
+      "Ad placement",
+      "Modern note",
+      "Disjunctive Normal Form (DNF)"
+     ]
+    },
+    {
+     "number": "12.10",
+     "title": "Data Processing and Trading",
+     "source": "src/en/part12-computational-advertising/data-processing-and-trading.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/data-processing-and-trading.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "Distinguish first-party, second-party, and third-party data, and judge the ownership and use of any given data item in advertising trading",
+      "Rank various types of user behavioral data on the value ladder, and explain the logic behind two value rules",
+      "Compare the responsibilities, business models, and product cases of first-party DMPs and third-party DMPs",
+      "Describe the data trading mechanism relayed through the ADX: CPM pricing, delivery based on actual won impressions, and the economic problem of \"data prices shifting into traffic prices\"",
+      "Master the basic principles of privacy protection, the ideas of quasi-identifiers and K-anonymity, identify data security risks on both the supply and demand sides of programmatic trading, and complete 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "user labels",
+      "First-party data",
+      "Second-party data",
+      "Third-party data",
+      "soul",
+      "User identifiers.",
+      "User behavior.",
+      "Decision behaviors",
+      "Active behaviors",
+      "Semi-active behaviors",
+      "Passive behaviors",
+      "potential"
+     ]
+    },
+    {
+     "number": "12.11",
+     "title": "Experiment Framework and Anti-Fraud",
+     "source": "src/en/part12-computational-advertising/experiment-and-antifraud.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/experiment-and-antifraud.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "Explain the essential difference between creative optimization and audience targeting, and describe how programmatic creative and click heatmaps work",
+      "Design a layered experimentation framework: explain mutual exclusion within a layer, orthogonality across layers, user-based traffic splitting, and gray release via the publishing layer, and calibrate the framework itself with AA tests",
+      "Describe how third-party ad monitoring works and the key technologies of ad safety (brand safety, viewability, anti-hijacking)",
+      "Classify ad fraud along the three dimensions of actor, principle, and method, and match each fraud tactic with its statistical tell and countermeasure",
+      "Complete product-selection decisions from the three perspectives of media, advertiser, and data provider, and work through 5 tiered practice problems"
+     ],
+     "key_terms": [
+      "ad monitoring",
+      "ad safety",
+      "click heatmap",
+      "attribution fraud",
+      "trustworthy measurement",
+      "authentic traffic",
+      "and",
+      "experimentation framework",
+      "anti-fraud",
+      "programmatic creative",
+      "Geo-based creative",
+      "Search-retargeting creative"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "📖 Glossary",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "📖 Glossary",
+     "source": "src/en/GLOSSARY.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/GLOSSARY.html",
+     "difficulty": null,
+     "read_minutes": null,
+     "objectives": [],
+     "key_terms": [
+      "Scaling Law",
+      "Individual Rationality (IR)",
+      "Discriminative Recommendation",
+      "Generative Recommendation",
+      "Re-ranking",
+      "Bipartite Graph",
+      "Two-Tower Model",
+      "Cold Start",
+      "Semantic ID",
+      "Pointwise Aggregation",
+      "Diffusion Model",
+      "Incentive Compatibility (IC)"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "Word2Vec Deep Dive",
+   "path": "src/en/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "Word2Vec Deep Dive",
+     "source": "src/en/appendix/word2vec.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/appendix/word2vec.html",
+     "difficulty": null,
+     "read_minutes": 25,
+     "objectives": [],
+     "key_terms": [
+      "distributional hypothesis",
+      "Skip-gram",
+      "Common Mistakes in Word2Vec",
+      "unordered set",
+      "low-dimensional dense vector",
+      "vector arithmetic",
+      "one-hot encoding",
+      "averages",
+      "two",
+      "negative sampling",
+      "methodological cornerstone",
+      "CBOW"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+# 深度推荐算法实践 (Fun-Rec MDBook)
+
+> 推荐系统与计算广告双语知识库:判别式推荐(召回/排序/重排/去偏/冷启动)、生成式推荐(语义 ID/HSTU/端到端/推理/扩散)、计算广告专题(竞价机制/智能出价/校准/定向/检索/数据交易/反作弊)与端到端实战项目。中文为权威版本(zh),英文(en)结构 1:1 镜像。
+
+## 快速入口
+
+- [术语表 GLOSSARY (zh)](src/zh/GLOSSARY.md): 600+ 条术语的一句话定义,按 Part 组织,查术语从这里开始
+- [结构化章节索引 (zh)](index/zh.json): 机器可读的章节元数据(编号/难度/时长/学习目标/核心术语),agent 定位章节从这里开始
+- [结构化章节索引 (en)](index/en.json): English chapter index
+- [目录 SUMMARY (zh)](src/zh/SUMMARY.md): 完整目录
+- [English Summary](src/en/SUMMARY.md): Full table of contents
+
+## 上篇 · 判别式推荐主线
+
+- [推荐系统全景](src/zh/part1-introduction/README.md): 推荐系统基本问题、技术地图、特征与 Embedding 基础
+- [快速候选召回](src/zh/part2-retrieval/README.md): 协同过滤(ItemCF/Swing)、向量召回(Item2Vec/EGES)、双塔(FM/DSSM/YouTubeDNN)、序列召回(MIND/SDM)、流式索引
+- [精准偏好预测](src/zh/part3-ranking/README.md): Wide&Deep、特征交叉(FM/DeepFM/xDeepFM)、序列建模(DIN/DIEN)、多目标(MMoE/ESMM)、多场景
+- [重排多样性建模](src/zh/part4-rerank/README.md): 贪心重排(MMR/DPP)、个性化重排(PRM)
+- [前沿趋势](src/zh/part5-trends/README.md): 去偏、冷启动、生成式范式演进
+
+## 下篇 · 生成式推荐主线
+
+- [生成式推荐范式基础](src/zh/part6-gr-basic/README.md): 生成式范式、架构基础、LLM 基础与推荐映射、Codebook 量化与语义 ID
+- [Scaling 生成式排序](src/zh/part7-scaling/README.md): HSTU 与 Scaling Law、生成式排序、MTGR、RankMixer、OneTrans
+- [端到端生成式应用](src/zh/part8-e2e/README.md): OneRec(推荐)、OneSug/OneSearch(搜索)、EGA/GPR(广告)
+- [推荐中的思考与推理](src/zh/part9-thinking/README.md): 语义对齐(LC-Rec/PLUM)、推理框架(OneRec-Think)、自主推理(RecZero/RecOne)
+- [扩散模型推荐](src/zh/part10-diffusion/README.md): 扩散基础、数据增强(DiffuASR/Diff-MSR)、特征补全与多样性(AsymDiffRec/DMSG)
+- [生成式推荐系统实战](src/zh/part11-project/README.md): 系统架构、离线/在线管线、前端、Docker 部署(代码在 datawhalechina/fun-rec)
+
+## 专题 · 计算广告
+
+- [计算广告](src/zh/part12-computational-advertising/README.md): 全景生态与程序化交易、计费模式与指标、竞价机制(GFP/GSP/VCG)、智能出价与预算控制、偏差与校准、开环/闭环广告、在线分配(HWM)、受众定向、广告检索与语义召回(WAND/ANN)、数据交易与隐私合规、实验框架与反作弊、合约广告、信息流与原生广告
+
+## 附录
+
+- [Word2Vec 专题附录](src/zh/appendix/word2vec.md): Skip-Gram/CBOW 完整推导
+
+## Optional
+
+- [English edition](src/en/README.md): Full English mirror of all content
+- [在线阅读](https://haozhe-xing.github.io/fun-rec-mdbook/): 渲染后的双语站点(含交互式可视化与 KaTeX 公式)
+- 每章含:学习目标、分层练习题(带解答)、Common Mistakes、FAQ——适合作为 agent 检索知识时的精确引用来源

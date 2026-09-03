@@ -1,0 +1,1711 @@
+{
+ "site": "https://haozhe-xing.github.io/fun-rec-mdbook",
+ "language": "zh",
+ "parts": [
+  {
+   "part": 1,
+   "title": "推荐系统全景",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "1.1",
+     "title": "推荐系统是什么",
+     "source": "src/zh/part1-introduction/recommender-system-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part1-introduction/recommender-system-basics.html",
+     "difficulty": "Beginner",
+     "read_minutes": 25,
+     "objectives": [
+      "用 一句话 说清推荐系统要解决的微观问题，并区分其两种根本范式",
+      "写出 判别式 与 生成式 的核心公式，并解释二者「问的问题」有何不同",
+      "解释工业级推荐为何采用「召回—排序—重排」三阶段漏斗 ，以及各阶段职责",
+      "说明 端到端生成式架构 如何消解级联架构的三大痛点",
+      "从 生态三角 （用户/创作者·内容·平台）理解推荐系统的长期价值",
+      "完成 4 道分层练习题，巩固三种视角"
+     ],
+     "key_terms": [
+      "判别式",
+      "生成式",
+      "择优",
+      "创造",
+      "并行发展",
+      "推荐系统",
+      "单个预测",
+      "规模流程",
+      "生态平衡",
+      "一句话",
+      "三阶段漏斗",
+      "端到端生成式架构"
+     ]
+    },
+    {
+     "number": "1.2",
+     "title": "本书概览与技术地图",
+     "source": "src/zh/part1-introduction/book-overview.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part1-introduction/book-overview.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 20,
+     "objectives": [
+      "说出本书 上下两篇 的划分逻辑与各自的落脚点",
+      "把 基础篇（Part 1–5） 每一章对应到三阶段流水线或前沿趋势",
+      "解释为何「召回→排序→重排」是判别式的组织线索",
+      "预判 生成式主线 在后续版本（Part 6–11）将如何展开",
+      "完成 4 道分层练习题，检验对技术地图的掌握"
+     ],
+     "key_terms": [
+      "技术地图",
+      "判别式",
+      "生成式",
+      "上下两篇",
+      "生成式主线",
+      "时间/能力演进",
+      "两条范式主线",
+      "不是割裂的",
+      "Part 1",
+      "Part 2",
+      "Part 3",
+      "Part 4"
+     ]
+    },
+    {
+     "number": "1.3",
+     "title": "特征与 Embedding 入门",
+     "source": "src/zh/part1-introduction/feature-embedding-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part1-introduction/feature-embedding-basics.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 65,
+     "objectives": [],
+     "key_terms": [
+      "特征处理",
+      "Embedding 向量",
+      "用户信息",
+      "物品信息",
+      "上下文信息",
+      "连续数值",
+      "特征（Feature）",
+      "7.7 万个不同取值",
+      "Feature Hashing",
+      "可训练参数",
+      "离散特征",
+      "Dense 特征"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 2,
+   "title": "快速候选召回",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "2.1",
+     "title": "协同过滤",
+     "source": "src/zh/part2-retrieval/collaborative-filtering.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part2-retrieval/collaborative-filtering.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 35,
+     "objectives": [
+      "用 余弦相似度 / 皮尔逊相关系数 计算物品与用户之间的相似度，并说清二者差异",
+      "解释 Swing 如何通过二部图结构过滤随机噪声，以及 Surprise 如何挖掘互补商品",
+      "说明 UserCF 与 ItemCF 在用户冷启动、可解释性上的取舍",
+      "描述 矩阵分解（FunkSVD / BiasSVD） 如何用低秩隐向量缓解数据稀疏性",
+      "完成 5 道分层练习题，巩固从共现到向量化的全链路"
+     ],
+     "key_terms": [
+      "余弦相似度",
+      "皮尔逊相关系数",
+      "统计共现",
+      "向量表示",
+      "余弦相似度 / 皮尔逊相关系数",
+      "Swing",
+      "Surprise",
+      "UserCF 与 ItemCF",
+      "矩阵分解（FunkSVD / BiasSVD）",
+      "基于物品（ItemCF）",
+      "基于用户（UserCF）",
+      "共现（co-occurrence）"
+     ]
+    },
+    {
+     "number": "2.2",
+     "title": "向量召回 (I2I)",
+     "source": "src/zh/part2-retrieval/vector-recall-i2i.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part2-retrieval/vector-recall-i2i.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "解释 Word2Vec Skip-Gram 的核心公式，以及 负采样 为何不可或缺",
+      "描述 Item2Vec 如何把「用户行为序列 = 句子」的映射用于 I2I 向量召回",
+      "说明 EGES 的商品特定注意力如何解决冷启动与稀疏性",
+      "分析 Airbnb 的全局上下文与同市场负采样如何把「预订转化」融入训练",
+      "完成 5 道分层练习题，巩固序列建模召回"
+     ],
+     "key_terms": [
+      "序列建模",
+      "Word2Vec 的序列建模思想",
+      "Word2Vec Skip-Gram",
+      "负采样",
+      "Item2Vec",
+      "EGES",
+      "Airbnb",
+      "Skip-Gram",
+      "CBOW",
+      "抬高",
+      "压低",
+      "集合"
+     ]
+    },
+    {
+     "number": "2.3",
+     "title": "双塔模型 (U2I)",
+     "source": "src/zh/part2-retrieval/two-tower.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part2-retrieval/two-tower.html",
+     "difficulty": "Advanced",
+     "read_minutes": 35,
+     "objectives": [
+      "推导 FM 二阶交互项 从  到  的化简，并说明它如何重组为双塔内积",
+      "解释 DSSM 的极端多分类训练、向量归一化与温度系数的作用",
+      "描述 YouTubeDNN 的「非对称双塔」与「时序分割」等工程技巧",
+      "用交互演示理解双塔召回的「离线建库 / 实时查用户」流程",
+      "完成 5 道分层练习题，巩固双塔的表示与检索"
+     ],
+     "key_terms": [
+      "用户-物品",
+      "I2I",
+      "用户表示",
+      "物品表示",
+      "双塔模型（Two-Tower）",
+      "离线预计算",
+      "实时计算",
+      "FM 二阶交互项",
+      "DSSM",
+      "YouTubeDNN",
+      "还没动作时",
+      "线性"
+     ]
+    },
+    {
+     "number": "2.4",
+     "title": "序列召回",
+     "source": "src/zh/part2-retrieval/sequence-recall.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part2-retrieval/sequence-recall.html",
+     "difficulty": "Advanced",
+     "read_minutes": 35,
+     "objectives": [
+      "描述 MIND 的动态路由（B2I）如何把行为软聚类成多个兴趣胶囊",
+      "解释 squash 函数 与 标签感知注意力 在 MIND 中的作用",
+      "说明 SDM 如何用 LSTM + 多头注意力建模短期、用特征维度注意力建模长期，并以门控融合",
+      "用交互演示理解「多兴趣向量分别检索再合并」的流程",
+      "完成 5 道分层练习题，巩固序列召回"
+     ],
+     "key_terms": [
+      "兴趣广度与时序动态",
+      "多元",
+      "动态演化",
+      "多个兴趣向量",
+      "长短期兴趣",
+      "MIND",
+      "squash 函数",
+      "标签感知注意力",
+      "SDM",
+      "广度",
+      "时序",
+      "胶囊网络"
+     ]
+    },
+    {
+     "number": "2.5",
+     "title": "流式索引召回",
+     "source": "src/zh/part2-retrieval/streaming-index.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part2-retrieval/streaming-index.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "解释 Trinity 的兴趣遗忘 问题与层次化聚类（VQ）解决方案",
+      "描述基于 统计直方图 的三种召回器（多元 / 长尾 / 长期）如何互补",
+      "说明 Streaming VQ 如何用  替代  实现可修复、自适应的索引",
+      "分析索引平衡性与归并排序服务策略的工程价值",
+      "完成 5 道分层练习题，巩固流式索引"
+     ],
+     "key_terms": [
+      "索引结构",
+      "索引层面",
+      "流式实时更新",
+      "Trinity 的兴趣遗忘",
+      "统计直方图",
+      "Streaming VQ",
+      "压缩",
+      "兴趣遗忘（Interest Amnesia）",
+      "长尾主题",
+      "向量量化（VQ）",
+      "指数移动平均（EMA）",
+      "时间无偏"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 3,
+   "title": "精准偏好预测",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "3.1",
+     "title": "Wide & Deep",
+     "source": "src/zh/part3-ranking/wide-and-deep.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part3-ranking/wide-and-deep.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "用 一句话 区分 记忆（Memorization） 与 泛化（Generalization） ，并各举一个推荐场景的例子",
+      "写出 Wide 部分 的线性公式，并说明 交叉特征（Cross-product Features） 如何体现记忆",
+      "解释 Deep 部分 如何通过 Embedding + DNN 实现泛化，以及与 Wide 的本质差异",
+      "复述 Wide & Deep 联合训练 的预测公式，并说明 Wide/Deep 为何常用不同优化器",
+      "完成 4 道分层练习题，巩固\"记忆 + 泛化\"的设计思想"
+     ],
+     "key_terms": [
+      "Wide 部分",
+      "Deep 部分",
+      "Deep（泛化）",
+      "自动",
+      "FTRL",
+      "AdaGrad / Adam",
+      "Part 2",
+      "联合训练",
+      "一句话",
+      "记忆（Memorization）",
+      "泛化（Generalization）",
+      "交叉特征（Cross-product Features）"
+     ]
+    },
+    {
+     "number": "3.2",
+     "title": "特征交叉",
+     "source": "src/zh/part3-ranking/feature-crossing.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part3-ranking/feature-crossing.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "解释 FM 如何用隐向量内积把  参数降到 ，并缓解稀疏问题",
+      "区分 AFM / NFM / PNN / FiBiNET 各自在 FM 基础上的增强点",
+      "说明 DeepFM 如何用\"共享 Embedding\"替代人工 Wide 部分，做到端到端",
+      "对比 DCN（元素级）/ xDeepFM（向量级）/ AutoInt（自适应） 三种高阶交叉的动机差异",
+      "完成 4 道分层练习题，并用交互演示理解高阶组合的生成"
+     ],
+     "key_terms": [
+      "DeepFM",
+      "DCN",
+      "xDeepFM",
+      "AutoInt",
+      "人工交叉特征",
+      "FM",
+      "AFM / NFM / PNN / FiBiNET",
+      "FM 的隐向量",
+      "参数共享",
+      "二阶",
+      "AFM（Attention FM）",
+      "NFM（Neural FM）"
+     ]
+    },
+    {
+     "number": "3.3",
+     "title": "序列建模",
+     "source": "src/zh/part3-ranking/sequence-modeling.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part3-ranking/sequence-modeling.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "解释 DIN 的局部激活 如何突破\"固定长度用户向量\"瓶颈，及为何注意力权重不做 Softmax",
+      "说明 DIEN 如何用辅助损失 + AUGRU 显式建模兴趣的时序演化",
+      "描述 DSIN 如何用\"会话\"作为基本单元做分层建模（会话内自注意力、会话间 Bi-LSTM）",
+      "用交互演示观察 DIN 如何根据候选广告动态激活不同历史行为",
+      "完成 4 道分层练习题，巩固序列建模的\"动态 / 序列 / 聚焦\"三要素"
+     ],
+     "key_terms": [
+      "DSIN",
+      "DIEN",
+      "时序依赖",
+      "AUGRU",
+      "时间维度",
+      "静态特征集合",
+      "时序性",
+      "动态演化",
+      "DIN / DIEN / DSIN",
+      "DIN 的局部激活",
+      "多样",
+      "一个固定长度向量"
+     ]
+    },
+    {
+     "number": "3.4",
+     "title": "多目标优化",
+     "source": "src/zh/part3-ranking/multi-objective.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part3-ranking/multi-objective.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "解释 Shared-Bottom 的\"负迁移 / 跷跷板\"问题，及其数学来源（梯度冲突）",
+      "说明 MMoE 如何用\"每任务专属门控\"实现梯度隔离，缓解冲突",
+      "描述 PLE（CGC） 如何显式分离共享专家与任务专家，进一步根除负迁移",
+      "用 ESMM 的\"全空间建模\"解释它如何化解 CVR 的样本选择偏差与数据稀疏",
+      "完成 4 道分层练习题，比较多目标结构与损失融合策略"
+     ],
+     "key_terms": [
+      "Shared-Bottom",
+      "MMoE",
+      "依赖关系",
+      "负迁移",
+      "错误",
+      "单一目标",
+      "PLE",
+      "ESMM / ESM2",
+      "融合优化",
+      "PLE（CGC）",
+      "ESMM",
+      "打架"
+     ]
+    },
+    {
+     "number": "3.5",
+     "title": "多场景建模",
+     "source": "src/zh/part3-ranking/multi-scenario.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part3-ranking/multi-scenario.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "区分 多任务（同场景多目标）与多场景（不同场景同目标）的本质差异",
+      "解释 HMoE 如何用多专家 + 多场景塔 + 跨场景融合（含 stop-gradient）建模共性",
+      "说明 STAR 如何用\"星型 FCN + 分区归一化 + 辅助网络\"同时建模共享与私有参数",
+      "描述 PEPNet 的 EPNet/PPNet 如何用动态门控（Gate NU）调制共享参数",
+      "完成 4 道分层练习题，比较多场景结构的\"物理隔离\"与\"动态调制\"两条路线"
+     ],
+     "key_terms": [
+      "同一个目标",
+      "多场景建模",
+      "PEPNet",
+      "多个不同目标",
+      "多塔结构",
+      "动态权重",
+      "分区归一化（PN）",
+      "辅助网络",
+      "多个场景",
+      "场景共性",
+      "场景特性",
+      "区分"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 4,
+   "title": "重排多样性建模",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "4.1",
+     "title": "基于贪心的重排",
+     "source": "src/zh/part4-rerank/greedy-rerank.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part4-rerank/greedy-rerank.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 32,
+     "objectives": [
+      "解释 排序输出的「同质化」现象，以及它造成的用户体验与生态效率两类代价",
+      "写出 MMR 的边际收益公式，并用贪心过程在给定相似度矩阵上手算出 top-k 列表",
+      "描述 DPP 如何用「行列式 = 体积」的几何直觉度量集合级多样性",
+      "推导 DPP 核矩阵 ，并说清相关性项与多样性项如何融合",
+      "辨析 MMR（启发式线性组合）与 DPP（行列式框架精确控制）的本质区别与适用场景",
+      "完成 4 道分层练习题，巩固两种算法的手算与代码实现"
+     ],
+     "key_terms": [
+      "排序输出同质化",
+      "用户体验恶化",
+      "系统效率损失",
+      "贪心局部最优",
+      "精确控制集合级多样性",
+      "不依赖复杂模型训练",
+      "解释",
+      "写出",
+      "描述",
+      "推导",
+      "辨析",
+      "同质化"
+     ]
+    },
+    {
+     "number": "4.2",
+     "title": "个性化重排",
+     "source": "src/zh/part4-rerank/personalized-rerank.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part4-rerank/personalized-rerank.html",
+     "difficulty": "Advanced",
+     "read_minutes": 36,
+     "objectives": [
+      "解释 PRM 为何标志着重排从规则/启发式走向数据驱动、端到端学习",
+      "描述 PRM 的输入层、编码层（Transformer）、输出层与 个性化向量 PV 的生成方式",
+      "写出 自注意力公式，并说明 Softmax 在 PRM 输出层如何隐式建模物品间相对关系",
+      "理解 排列变异影响（Permutation-Variant Influence），以及 PRS 为何要直接优化排列",
+      "描述 PRS 的两阶段解法：PMatch（FPSA 候选生成）与 PRank（DPWN 排列评估）",
+      "完成 4 道分层练习题，巩固 PRM/PRS 的核心机制"
+     ],
+     "key_terms": [
+      "解释",
+      "描述",
+      "复杂的物品间相互影响",
+      "深度个性化",
+      "手工设计",
+      "用户个性化信息",
+      "个性化向量 PV",
+      "写出",
+      "理解",
+      "同一个列表对不同用户的最优排列是不同的",
+      "总体",
+      "这个用户"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 5,
+   "title": "前沿趋势",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "5.1",
+     "title": "模型去偏",
+     "source": "src/zh/part5-trends/debiasing.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part5-trends/debiasing.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 28,
+     "objectives": [
+      "区分 数据偏差（选择/曝光/从众/位置）与结果偏差（流行度/不公平）两类来源",
+      "解释 反馈闭环如何把微小偏差放大成「推荐单一化」的马太效应",
+      "写出IPS 估计量，说清它为什么是真实风险的无偏估计，以及权重爆炸时如何截断",
+      "用 PAL 的双模块架构，在结构上把「看到」与「喜欢」解耦",
+      "完成 4 道分层练习题，巩固纠偏的数学与工程直觉"
+     ],
+     "key_terms": [
+      "PAL",
+      "反馈闭环",
+      "IPS",
+      "pCTR 模块",
+      "训练时",
+      "推理时",
+      "区分",
+      "解释",
+      "写出",
+      "用 PAL",
+      "数据偏差",
+      "数据收集阶段"
+     ]
+    },
+    {
+     "number": "5.2",
+     "title": "冷启动",
+     "source": "src/zh/part5-trends/cold-start.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part5-trends/cold-start.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "区分 内容冷启动与用户冷启动的根本差异",
+      "说明CB2CF 如何把内容特征映射到协同过滤表示，让新物品直接获得 CF 质量",
+      "写出MetaEmbedding 的双阶段元损失，理解它优化的是「可学习性」而非固定向量",
+      "解释MeLU 的参数分离与 POSO 的「个性化淹没」洞察，并对比二者思路",
+      "完成 4 道分层练习题，巩固冷启动的工程与数学直觉"
+     ],
+     "key_terms": [
+      "内容冷启动",
+      "用户冷启动",
+      "元学习",
+      "个性化门控",
+      "冷启动问题",
+      "区分",
+      "说明",
+      "写出",
+      "解释",
+      "借内容",
+      "借元知识/人群",
+      "新物品也能拿到协同过滤级别的表示"
+     ]
+    },
+    {
+     "number": "5.3",
+     "title": "生成式范式演进",
+     "source": "src/zh/part5-trends/generative-trend.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part5-trends/generative-trend.html",
+     "difficulty": "Advanced",
+     "read_minutes": 32,
+     "objectives": [
+      "串起「记忆·泛化 → 理解·推理」的能力跃迁，并对照 Part 1 的两种范式",
+      "解释HSTU 如何把异构信息统一为事件流、TIGER 如何用语义 ID 重塑输出",
+      "区分 生成式排序（GenRank / MTGR）与判别式排序的本质不同",
+      "描述OneRec 端到端生成的四项关键创新，尤其迭代偏好对齐（IPA）",
+      "完成 4 道分层练习题，巩固从范式到模型的映射"
+     ],
+     "key_terms": [
+      "HSTU",
+      "TIGER",
+      "生成式召回",
+      "生成式排序",
+      "端到端生成",
+      "奖励模型",
+      "生成式范式如何具体演进",
+      "输入如何组织",
+      "输出生成什么",
+      "目标与架构如何取舍",
+      "串起",
+      "解释"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 6,
+   "title": "生成式推荐范式基础",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "6.1",
+     "title": "生成式推荐范式",
+     "source": "src/zh/part6-gr-basic/gr-paradigm.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part6-gr-basic/gr-paradigm.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 30,
+     "objectives": [
+      "写出 判别式 与 生成式 的核心条件概率公式，并解释二者「问的问题」有何不同",
+      "列出判别式范式在 参数效率、语义建模、多阶段级联 三方面的固有局限",
+      "说明生成式的 自回归建模 如何天然捕捉序列依赖、并为端到端优化打开大门",
+      "从 目标函数、信息流动、模型架构 三个维度对比两种范式的本质差异",
+      "完成 4 道分层练习题，巩固「判别 vs 生成」的建模哲学"
+     ],
+     "key_terms": [
+      "判别式",
+      "生成式",
+      "择优",
+      "创造",
+      "自回归建模",
+      "条件概率分布",
+      "Embedding & MLP",
+      "提出的问题",
+      "原子单元（Atomic Unit）",
+      "冷启动",
+      "全局目标难以对齐",
+      "根本没有机会看到"
+     ]
+    },
+    {
+     "number": "6.2",
+     "title": "生成式推荐架构基础",
+     "source": "src/zh/part6-gr-basic/gr-architecture.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part6-gr-basic/gr-architecture.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "用「查询—匹配—聚合」解释 自注意力 的 Q/K/V 计算与多头机制",
+      "说明 位置编码 （绝对/相对、时间感知）为何对推荐序列不可或缺",
+      "对比 Encoder-Decoder 与 Decoder-Only 两类架构的优劣与适用场景",
+      "解释 因果掩码 如何实现自回归生成并支持训练并行",
+      "概述 Diffusion 的前向扩散/反向去噪及其在推荐中的应用",
+      "完成 5 道分层练习题，巩固生成式架构的关键机制"
+     ],
+     "key_terms": [
+      "Encoder-Decoder",
+      "纯噪声",
+      "迭代去噪",
+      "缺点",
+      "一次前向",
+      "直观理解",
+      "推荐场景适配",
+      "生成式架构（Generative Architecture）",
+      "Transformer",
+      "Diffusion 模型（扩散模型）",
+      "并非互斥",
+      "自注意力"
+     ]
+    },
+    {
+     "number": "6.3",
+     "title": "LLM 基础与推荐映射",
+     "source": "src/zh/part6-gr-basic/llm-foundation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part6-gr-basic/llm-foundation.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 40,
+     "objectives": [
+      "解释 LLM 三阶段范式（预训练/指令微调/偏好对齐）各自的目标与损失",
+      "区分 RLHF （含奖励模型与 PPO）与 DPO 的流程差异",
+      "说明 Scaling Law 与涌现能力对生成式推荐的启示",
+      "把三阶段范式 映射 到推荐场景，并指出物品 Token 化等特有挑战",
+      "完成 4 道分层练习题，巩固 LLM→推荐的知识链条"
+     ],
+     "key_terms": [
+      "物品 Token 化",
+      "训练范式的系统化",
+      "RLHF",
+      "DPO",
+      "Scaling Law",
+      "映射",
+      "Step 1（SFT）",
+      "Step 2（RM）",
+      "Step 3（PPO）",
+      "上岗培训",
+      "价值观校准",
+      "预训练（Pre-training）"
+     ]
+    },
+    {
+     "number": "6.4",
+     "title": "Codebook 量化与语义 ID",
+     "source": "src/zh/part6-gr-basic/codebook-quantization.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part6-gr-basic/codebook-quantization.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "对比 稀疏 ID / 文本 ID / 语义 ID 三种范式的优劣",
+      "说明语义 ID 的「可控词表、层次结构、从记忆到推理」三大价值",
+      "推导 VQ-VAE 的量化与三损失，理解 直通估计器（STE）",
+      "解释 RQ-VAE 的残差量化如何生成层次化语义 ID",
+      "了解 RQ-Kmeans / RQ-OPQ 等工业级解耦与混合方案",
+      "完成 5 道分层练习题，并用交互演示感受量化过程"
+     ],
+     "key_terms": [
+      "优势",
+      "物品 Token 化（Item Tokenization）",
+      "稀疏 ID / 文本 ID / 语义 ID",
+      "VQ-VAE",
+      "直通估计器（STE）",
+      "RQ-VAE",
+      "RQ-Kmeans / RQ-OPQ",
+      "三大根本困境",
+      "词表爆炸",
+      "存储与泛化的双重困境",
+      "原子 ID 正交",
+      "协同信号隐式依赖"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 7,
+   "title": "Scaling 生成式排序",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "7.1",
+     "title": "HSTU：Scaling Law 的基石",
+     "source": "src/zh/part7-scaling/hstu.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part7-scaling/hstu.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "说出传统 DLRM（Deep Learning Recommendation Model） 难以 Scaling 的三个根本性限制",
+      "解释 Generative Recommender（GR） 如何把行为历史当作「语言」来建模，并实现 `user-level` 的序列训练",
+      "描述 HSTU 针对推荐场景的三大架构创新（Pointwise Aggregation、相对时间偏置、门控前馈）",
+      "说明 Stochastic Length 与 M-FALCON 如何分别解决超长序列训练与多候选推理的工程难题",
+      "复述推荐界 Scaling Law 的实验结论 ，并理解其对推荐基础模型的启示",
+      "完成 4 道分层练习题，巩固从范式到工程的完整链条"
+     ],
+     "key_terms": [
+      "特征瓶颈",
+      "绝对强度",
+      "Generative Recommender（GR）",
+      "HSTU",
+      "Stochastic Length",
+      "M-FALCON",
+      "架构碎片化",
+      "训练范式限制",
+      "item-level（物品级）建模",
+      "线性增长",
+      "范式的转变",
+      "物品"
+     ]
+    },
+    {
+     "number": "7.2",
+     "title": "生成式排序范式",
+     "source": "src/zh/part7-scaling/generative-ranking.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part7-scaling/generative-ranking.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "下降",
+      "第一组",
+      "显著下降",
+      "第二组",
+      "用户兴趣演化的因果性",
+      "自回归机制是生成式推荐的本质特征",
+      "因果眼镜",
+      "防止作弊的正则化",
+      "实时特征依然重要",
+      "interleaving（交织）",
+      "行为反馈",
+      "序列长度减半"
+     ]
+    },
+    {
+     "number": "7.3",
+     "title": "MTGR：混合范式",
+     "source": "src/zh/part7-scaling/mtgr.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part7-scaling/mtgr.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "信息泄露",
+      "判别式任务",
+      "历史部分",
+      "候选部分",
+      "区分手段和目的",
+      "不同类型 token 处于不同语义空间",
+      "语义混淆",
+      "分布对齐",
+      "语义独立",
+      "Dynamic Masking（动态掩码）",
+      "动态生成",
+      "兼容性"
+     ]
+    },
+    {
+     "number": "7.4",
+     "title": "RankMixer：硬件高效架构",
+     "source": "src/zh/part7-scaling/rankmixer.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part7-scaling/rankmixer.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "memory-bound（访存受限）",
+      "高度碎片化",
+      "无法充分利用 Tensor Core",
+      "RankMixer",
+      "从硬件特性反推架构设计",
+      "Token Mixing",
+      "Per-Token FFN",
+      "Sparse MoE",
+      "在特征维度而非 token 维度混合",
+      "第一步 Multi-head decomposition",
+      "第二步 Token-wise mixing",
+      "多层堆叠"
+     ]
+    },
+    {
+     "number": "7.5",
+     "title": "OneTrans：统一 Transformer",
+     "source": "src/zh/part7-scaling/onetrans.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part7-scaling/onetrans.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [],
+     "key_terms": [
+      "信息流受限",
+      "执行碎片化",
+      "OneTrans",
+      "序列特征",
+      "非序列特征",
+      "Timestamp-aware",
+      "Timestamp-agnostic",
+      "Auto-Split Tokenizer",
+      "token 异质性",
+      "Mixed Parameterization（混合参数化）",
+      "Causal Attention Mask",
+      "S-side 因果依赖"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 8,
+   "title": "端到端生成式应用",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "8.1",
+     "title": "端到端生成式推荐",
+     "source": "src/zh/part8-e2e/e2e-recommendation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part8-e2e/e2e-recommendation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 40,
+     "objectives": [
+      "说明 语义 ID（Semantic ID） 如何解决「直接生成原子 ID 导致 Softmax 爆炸」的难题",
+      "描述 OneRec-V1 的四通路编码器与奖励系统设计，及其面对的两个瓶颈",
+      "解释 Lazy Decoder-Only 为何能把解码计算量降低 94%",
+      "复述 Scaling Law 在 OneRec-V2 上的验证与 GBPO 相比 ECPO 的改进",
+      "完成 5 道分层练习题，巩固语义 ID、架构与对齐算法"
+     ],
+     "key_terms": [
+      "Scaling Law",
+      "语义 ID（Semantic ID）",
+      "OneRec-V1",
+      "Lazy Decoder-Only",
+      "语义 ID",
+      "通信与存储",
+      "OneRec",
+      "端到端的生成式任务",
+      "GBPO",
+      "计算碎片化",
+      "优化目标冲突",
+      "与 AI 前沿脱节"
+     ]
+    },
+    {
+     "number": "8.2",
+     "title": "端到端生成式搜索",
+     "source": "src/zh/part8-e2e/e2e-search.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part8-e2e/e2e-search.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "说明 OneSug 如何把查询补全重定义为条件文本生成，并用 PRE 模块增强短前缀",
+      "描述 RWR 策略 如何用六级交互反馈把业务价值注入排序",
+      "解释 OneSearch 的 KHQE 如何用「3 层语义 + 2 层 OPQ」平衡语义层次与商品独特性",
+      "复述 Mu-Seq 的三视角用户建模与 PARS 的偏好感知奖励",
+      "完成 5 道分层练习题，巩固前缀增强、语义 ID 编码与约束解码"
+     ],
+     "key_terms": [
+      "封闭词表",
+      "OneSug",
+      "OneSearch",
+      "Mu-Seq",
+      "PARS",
+      "Beam Search",
+      "明确的文本查询",
+      "开放词表",
+      "RWR 策略",
+      "端到端的条件文本生成任务",
+      "RQ-VAE",
+      "不引入商品交互特征"
+     ]
+    },
+    {
+     "number": "8.3",
+     "title": "端到端生成式广告",
+     "source": "src/zh/part8-e2e/e2e-advertising.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part8-e2e/e2e-advertising.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "解释广告场景相对推荐/搜索的 三重约束 （IC/IR、POI+创意联合、分配支付解耦）",
+      "描述 EGA 的双模态语义 ID、概率分解生成与 Token 级竞价机制",
+      "说明 ex-post regret 与 Lagrangian 优化 如何近似保证激励相容",
+      "概述 GPR 的四类 Token、RQ-Kmeans+、异构层次化解码器与价值引导 Trie Beam Search",
+      "完成 5 道分层练习题，巩固竞价聚合、支付网络与层次化策略优化"
+     ],
+     "key_terms": [
+      "EGA",
+      "GPR",
+      "不满足",
+      "经济学约束",
+      "在线广告",
+      "如何把竞价机制深度融入生成过程",
+      "三重约束",
+      "ex-post regret",
+      "Lagrangian 优化",
+      "分配",
+      "支付",
+      "RQ-VAE"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 9,
+   "title": "推荐中的思考与推理",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "9.1",
+     "title": "协同语义与语言语义对齐",
+     "source": "src/zh/part9-thinking/semantic-alignment.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part9-thinking/semantic-alignment.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [
+      "用 一句话 说清协同语义与语言语义的鸿沟，并指出「标题替换 ID」的两个根本缺陷",
+      "描述LC-Rec 如何用层次化 RQ-VAE 构建语义索引，并解释「均匀语义映射」如何消解索引冲突",
+      "复述LC-Rec 三层对齐训练（序列预测 / 索引-语言对齐 / 推荐导向）如何把协同语义注入 LLM",
+      "说明PLUM 如何把这套思路推进到工业规模（多模态融合 + 持续预训练 + 任务微调）",
+      "完成 4 道分层练习题，巩固从学术原型到工业落地的语义对齐主线"
+     ],
+     "key_terms": [
+      "协同语义",
+      "语言语义",
+      "理解",
+      "一句话",
+      "描述",
+      "复述",
+      "说明",
+      "ID",
+      "协同模式",
+      "标题替换 ID",
+      "无法感知该物品在推荐系统中的协同特征",
+      "无法扩展到全库检索"
+     ]
+    },
+    {
+     "number": "9.2",
+     "title": "推理框架",
+     "source": "src/zh/part9-thinking/reasoning-framework.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part9-thinking/reasoning-framework.html",
+     "difficulty": "Advanced",
+     "read_minutes": 36,
+     "objectives": [
+      "描述OneRec-Think 的三阶段训练框架（物品对齐 → 推理激活 → 推理增强）",
+      "解释 推理脚手架如何用渐进任务「激活」模型的归纳/演绎/反事实推理",
+      "复述 推荐特定奖励如何应对「多有效性」挑战，以及 GRPO 的相对优势机制",
+      "说明Think-Ahead 架构如何把密集推理从在线关键路径剥离、满足实时延迟",
+      "完成 4 道分层练习题，巩固从对齐到增强的推理范式"
+     ],
+     "key_terms": [
+      "隐式的黑箱",
+      "Chain-of-Thought（思维链）",
+      "OneRec-Think",
+      "先思考再推荐",
+      "描述",
+      "解释",
+      "复述",
+      "说明",
+      "推理过程本身为决策提供了结构化思考路径",
+      "三阶段训练框架",
+      "分层表征融合",
+      "注意力加权"
+     ]
+    },
+    {
+     "number": "9.3",
+     "title": "自主推理探索",
+     "source": "src/zh/part9-thinking/autonomous-reasoning.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part9-thinking/autonomous-reasoning.html",
+     "difficulty": "Advanced",
+     "read_minutes": 38,
+     "objectives": [
+      "解释 为什么 OneRec-Think 属模仿学习，以及依赖人工模板的三大局限",
+      "描述RecZero 的纯强化学习方案：Think-before-Recommendation 模板 + 规则奖励 + GRPO",
+      "复述RecZero 涌现的分层推理、负面信号利用、跨领域迁移等能力",
+      "对比RecOne 混合范式：冷启动 SFT（含对齐/纠偏样本）+ RL 如何兼顾效率与性能上界",
+      "完成 4 道分层练习题，并体验本章结尾的「推理能力演进」交互演示"
+     ],
+     "key_terms": [
+      "摆脱这些人工设计",
+      "依赖人工设计",
+      "推理路径的局限性",
+      "教师模型的知识瓶颈",
+      "可扩展性的挑战",
+      "模仿学习（Imitation Learning）",
+      "探索学习（Exploratory Learning）",
+      "强化学习（RL）",
+      "解释",
+      "描述",
+      "复述",
+      "对比"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 10,
+   "title": "扩散模型推荐",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "10.1",
+     "title": "扩散模型基础",
+     "source": "src/zh/part10-diffusion/diffusion-basics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part10-diffusion/diffusion-basics.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [],
+     "key_terms": [
+      "DDPM",
+      "核心技术原理",
+      "特殊考量与设计选择",
+      "DiffRec",
+      "前向扩散",
+      "反向去噪",
+      "写出",
+      "区分",
+      "描述",
+      "解释",
+      "数据空间扩散（Pixel-Space Diffusion）",
+      "潜在表示空间"
+     ]
+    },
+    {
+     "number": "10.2",
+     "title": "扩散做数据增强",
+     "source": "src/zh/part10-diffusion/diffusion-augmentation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part10-diffusion/diffusion-augmentation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 32,
+     "objectives": [],
+     "key_terms": [
+      "数据稀疏性",
+      "预训练",
+      "扩散",
+      "分类",
+      "微调",
+      "DiffuASR",
+      "Diff-MSR",
+      "描述",
+      "解释",
+      "复述",
+      "对比",
+      "长尾用户问题"
+     ]
+    },
+    {
+     "number": "10.3",
+     "title": "扩散在推荐的应用",
+     "source": "src/zh/part10-diffusion/diffusion-application.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part10-diffusion/diffusion-application.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [],
+     "key_terms": [
+      "DMSG",
+      "特征增强",
+      "多样性优化",
+      "特征缺失",
+      "多样性不足",
+      "AsymDiffRec",
+      "描述",
+      "解释",
+      "复述",
+      "评析",
+      "离散",
+      "针对推荐实际痛点改造扩散过程"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 11,
+   "title": "生成式推荐系统实战",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "11.1",
+     "title": "项目引言与目标",
+     "source": "src/zh/part11-project/project-intro.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/project-intro.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 18,
+     "objectives": [
+      "描述离线评估与在线部署在六个维度上的本质差异",
+      "说明本项目的「功能完整 / 技术真实 / 算法落地 / 架构清晰」四大目标",
+      "列出后端与前端技术栈，并解释为何选 FastAPI + Vue + PostgreSQL + Redis + Elasticsearch",
+      "概述从系统架构到部署的五段式学习路径",
+      "完成 4 道分层练习题，巩固项目全貌认知"
+     ],
+     "key_terms": [
+      "离线实验与在线服务之间的差距",
+      "100 毫秒",
+      "如何立即影响",
+      "协同",
+      "推荐什么",
+      "系统层面",
+      "协同运转的系统",
+      "离线评估",
+      "端到端部署",
+      "必须处理",
+      "存储层",
+      "数据集"
+     ]
+    },
+    {
+     "number": "11.2",
+     "title": "系统架构设计",
+     "source": "src/zh/part11-project/project-architecture.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/project-architecture.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 22,
+     "objectives": [
+      "描述 离线系统 （生产）与 在线系统 （服务）的职责边界与解耦方式",
+      "指出版局架构图中数据存储层、离线流水线、在线流水线、前端四类组件",
+      "解释离线数据流（CSV → 特征/模型 → 共享目录 + Redis）与在线数据流（请求 → 召回 → 排序 → 重排 → 组装）",
+      "说清四个关键设计决策：漏斗架构、多路召回融合、冷启动处理、特征存储计算分离",
+      "完成 4 道分层练习题"
+     ],
+     "key_terms": [
+      "离线系统",
+      "在线系统",
+      "存储层解耦",
+      "PostgreSQL（业务数据库）",
+      "Redis（特征缓存）",
+      "共享文件目录",
+      "Elasticsearch（搜索引擎）",
+      "特征工程",
+      "召回模型训练",
+      "排序模型训练",
+      "模型部署",
+      "特征上线"
+     ]
+    },
+    {
+     "number": "11.3",
+     "title": "离线管线",
+     "source": "src/zh/part11-project/offline-pipeline.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/offline-pipeline.html",
+     "difficulty": "Advanced",
+     "read_minutes": 30,
+     "objectives": [
+      "描述离线目录结构与 `pipeline.py` 的模块化编排方式",
+      "用 滑动窗口 构建 YoutubeDNN 时序样本，并理解左填充与编码从 1 起始的细节",
+      "说明排序模型如何用「相对个人均值」定义点击标签、如何混合困难/随机负样本",
+      "写出 YoutubeDNN 训练后 物品向量预计算 + 归一化 的代码，并解释其意义",
+      "描述 Redis 特征写入（Hash/List + Pipeline）与模型部署（版本指针）的实现",
+      "完成 5 道分层练习题，巩固工程要点"
+     ],
+     "key_terms": [
+      "模型配置",
+      "训练流程",
+      "滑动窗口",
+      "物品向量预计算 + 归一化",
+      "类别特征编码",
+      "行为序列构建",
+      "序列填充",
+      "左填充",
+      "标签定义",
+      "负样本采样",
+      "困难负样本（Hard Negatives）",
+      "随机负样本（Random Negatives）"
+     ]
+    },
+    {
+     "number": "11.4",
+     "title": "在线管线",
+     "source": "src/zh/part11-project/online-pipeline.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/online-pipeline.html",
+     "difficulty": "Advanced",
+     "read_minutes": 34,
+     "objectives": [
+      "描述 `RecommendationPipeline` 与 `PipelineConfig` 如何串起全链路",
+      "解释冷启动检测阈值与 UCB 探索-利用公式，并写出分数计算与状态更新代码",
+      "描述三路召回（YoutubeDNN / I2I / 偏好类目）与 Snake Merge 融合",
+      "写出 DeepFM 批量排序、特征编码复用、异步执行与降级策略",
+      "解释连续打散（Consecutive Dispersion）如何保序地提升多样性",
+      "完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "Snake Merge",
+      "冷启动检测",
+      "5 次",
+      "三种策略",
+      "UCB 类型探索",
+      "利用",
+      "探索",
+      "偏好类型策略",
+      "为何多路召回",
+      "YoutubeDNN 向量召回",
+      "物品相似度召回（I2I）",
+      "用户偏好类目召回"
+     ]
+    },
+    {
+     "number": "11.5",
+     "title": "前端",
+     "source": "src/zh/part11-project/frontend.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/frontend.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 26,
+     "objectives": [
+      "列出前端技术栈（Vue 3 / Tailwind / Pinia / Vue Router / Axios）与五类核心页面",
+      "用路由 `meta` + `beforeEach` 守卫实现登录/游客权限控制",
+      "描述 MovieCard / MovieRow / StarRating 三个核心组件的设计要点",
+      "解释首页如何按登录状态条件渲染「For You」、登录后自动加载推荐",
+      "用 Pinia 集中管理认证状态、用防抖（debounce）控制搜索请求频率",
+      "说明注册页偏好类型如何驱动冷启动策略",
+      "完成 4 道分层练习题"
+     ],
+     "key_terms": [
+      "11.4",
+      "数据采集层",
+      "电影卡片 MovieCard",
+      "电影横向列表 MovieRow",
+      "评分组件 StarRating",
+      "API 服务封装",
+      "用户状态管理",
+      "持久化",
+      "响应式",
+      "集中",
+      "防抖（debounce）",
+      "11.1"
+     ]
+    },
+    {
+     "number": "11.6",
+     "title": "部署上线",
+     "source": "src/zh/part11-project/deployment.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part11-project/deployment.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 24,
+     "objectives": [
+      "解释为何用 Docker Compose（环境一致/快速启动/隔离/易扩展）",
+      "读懂 `docker-compose.yaml` 中五个服务的配置，理解容器间用服务名 DNS 通信",
+      "描述前端多阶段构建（Node 构建 + Nginx 服务）如何减小镜像",
+      "执行完整启动流程：启基础设施 → 跑离线 → 导数据 → 建索引 → 访问",
+      "用 `docker compose ps`、健康检查、`redis-cli` 排查常见问题",
+      "完成 4 道分层练习题"
+     ],
+     "key_terms": [
+      "Docker Compose",
+      "声明式 YAML",
+      "环境一致性",
+      "快速启动",
+      "隔离与安全",
+      "易于扩展",
+      "数据库 PostgreSQL",
+      "缓存 Redis",
+      "搜索 Elasticsearch",
+      "后端 FastAPI",
+      "服务名",
+      "前端（多阶段构建）"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "计算广告",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "计算广告全景与生态",
+     "source": "src/zh/part12-computational-advertising/advertising-panorama.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/advertising-panorama.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "说出广告定义的三要素与广告有效性模型的六个阶段，并区分品牌广告与效果广告",
+      "陈述计算广告的根本问题（ 三元匹配最大化 ROI），并解释它与推荐系统的三点本质差异",
+      "说出广告系统价值公式的四个因子，以及投放模式 1.0 → 3.0 演进中每一代解决了什么问题",
+      "描述程序化生态中 ADX / DSP / SSP / DMP / Trading Desk 各自的职责与 RTB 的两阶段流程",
+      "举例说明定向技术的三个阶段与广告形态演进的主线，并解释信息流广告为何是平衡效果与体验的正面典型",
+      "完成 5 道分层练习题，检验对广告生态全景的理解"
+     ],
+     "key_terms": [
+      "时延",
+      "隐私",
+      "新客推荐（Look-alike）",
+      "竞价",
+      "已确定的出资人（Sponsor）",
+      "受众（Audience）",
+      "非人员",
+      "出资人",
+      "媒介",
+      "受众",
+      "本质是完成较低成本的用户接触",
+      "品牌广告（Brand Awareness）"
+     ]
+    },
+    {
+     "number": "12.2",
+     "title": "计费模式与核心指标",
+     "source": "src/zh/part12-computational-advertising/billing-and-metrics.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/billing-and-metrics.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 40,
+     "objectives": [
+      "列举 CPT/CPD、CPM、CPC、CPA/CPS 各计费模式的计费公式、关键决策方与风险归属",
+      "用 CTR、CVR、ROI 三个指标刻画广告效果，并用  完成跨计费模式的排序计算",
+      "说明品牌广告与效果广告在计费方式与交易方式上的分野",
+      "描述 担保式投送（GD） 与 在线分配 的二部图结构及其求解思路",
+      "解释点击率预估为何是回归问题而非排序问题，以及冷启动 back-off 与 E&E 的应对策略",
+      "完成 5 道分层练习题，打通从指标换算到 GSP 支付的计算链路"
+     ],
+     "key_terms": [
+      "流量预测",
+      "计费模式（Billing Model）",
+      "核心指标（Metrics）",
+      "宪法",
+      "担保式投送（GD）",
+      "在线分配",
+      "广告主（Advertiser）",
+      "按最终效果反推单次广告的价值",
+      "媒体/供应方（Supply Side）",
+      "单位广告资源能产生多少收入",
+      "相关博弈",
+      "效果广告（Direct Response）"
+     ]
+    },
+    {
+     "number": "12.3",
+     "title": "竞价机制：从一价到二价",
+     "source": "src/zh/part12-computational-advertising/auction-mechanisms.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/auction-mechanisms.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "用 位置拍卖（Position Auction） 模型描述多坑位广告的分配与计价，写出期望价值  与 eCPM 排序规则",
+      "解释 广义第一高价（GFP） 为何不存在稳定的纯策略纳什均衡，并逐步推演两人出价的震荡循环",
+      "证明单坑位 二价拍卖（Vickrey Auction） 下如实出价是占优策略，并给出 激励兼容（IC） 与 个体理性（IR） 的形式化定义",
+      "手算 广义第二高价（GSP） 与 VCG 在多坑位下的支付与效用，说清二者在 truth-telling 与收费水平上的差异",
+      "用交互式模拟器亲手验证「虚报会发生什么」，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "位置拍卖（Position Auction）",
+      "一价拍卖（First-Price Auction）",
+      "甲（坑位 1）",
+      "乙（坑位 2）",
+      "IC/IR",
+      "竞价机制（Auction Mechanism）",
+      "广义第一高价（GFP）",
+      "二价拍卖（Vickrey Auction）",
+      "激励兼容（IC）",
+      "个体理性（IR）",
+      "广义第二高价（GSP）",
+      "VCG"
+     ]
+    },
+    {
+     "number": "12.4",
+     "title": "智能出价与预算控制",
+     "source": "src/zh/part12-computational-advertising/smart-bidding.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/smart-bidding.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "写出转化出价的核心公式 ，并解释 oCPM 如何把转化风险从广告主转移到平台",
+      "说明预算平滑消耗的动机与参照轨迹 ，对比概率节流与出价缩放两种实现",
+      "用 PID/PI 反馈控制的视角解释 pacing 乘子  的整定逻辑，说明工程上为何普遍砍掉 D 项",
+      "推导一价拍卖下期望 surplus 最大化  的逻辑，描述 Verizon DDN 如何用 log-normal 分布与黄金分割搜索毫秒级求出最优出价",
+      "画出一次 bid request 从定向到提交出价的完整决策链，指出误差如何在链路中传导，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "pacing 乘子",
+      "广告主目标",
+      "价值估计",
+      "预算约束",
+      "市场机制适配",
+      "每一次展示的具体出价由平台代管",
+      "预算平滑消耗（Budget Pacing）",
+      "参照轨迹（Reference Trajectory）",
+      "概率节流（Probabilistic Throttling）",
+      "出价缩放（Bid Scaling）",
+      "P（比例）",
+      "I（积分）"
+     ]
+    },
+    {
+     "number": "12.5",
+     "title": "广告系统中的偏差与校准",
+     "source": "src/zh/part12-computational-advertising/bias-and-calibration.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/bias-and-calibration.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "区分 校准（Calibration） 与 判别力（Discrimination） ，解释为何高 AUC 的模型可能给出完全不能用的 eCPM",
+      "用 examination 假设分解 位置偏差（Position Bias） ，对比「位置作特征 / IPW / PAL」三类去偏方案的适用与代价",
+      "定义 样本选择偏差（SSB） 与数据稀疏，写出 ESMM 的全空间建模目标与损失，说明 CVR 塔为何是「隐式学习」",
+      "描述 胜出偏差 与 延迟反馈 如何污染训练与校准标签，以及探索流量为何是无偏信号的来源",
+      "用 Platt scaling 与保序回归（PAVA）在独立验证集上做校准，用可靠性图、ECE、PCOC 评估校准质量",
+      "完成 5 道分层练习题，打通从 ECE 手算到 PAVA 拟合的完整链路"
+     ],
+     "key_terms": [
+      "校准（Calibration）",
+      "判别力（Discrimination）",
+      "位置偏差（Position Bias）",
+      "偏差（Bias）与校准（Calibration）",
+      "样本选择偏差（SSB）",
+      "胜出偏差",
+      "延迟反馈",
+      "单调变换不变",
+      "绝对值",
+      "过度自信（Overconfidence）",
+      "出价错",
+      "排序错"
+     ]
+    },
+    {
+     "number": "12.6",
+     "title": "开环广告与闭环广告",
+     "source": "src/zh/part12-computational-advertising/open-closed-loop.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/open-closed-loop.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "用「转化是否在平台可观测域内」这条标准，把任意一个广告场景归类为闭环或开环，并说清它影响的不是广告形式而是数据链路",
+      "解释闭环为何让平台能训练深度 pCVR 模型、做深度转化出价（付费/ROI/次留/7 日 ROI），以及「越投越准」的正向循环如何推高 eCPM",
+      "描述开环归因的完整流程（clickid 下发 → 回传 → ip+ua 兜底）与六种归因模型的分配规则，说清 MMP 为何能对抗重复计数",
+      "说明 ATT、SKAdNetwork、Android Privacy Sandbox 如何让确定性归因坍缩，以及开环场景下的混合归因策略",
+      "用一张对比表串联闭环 vs 开环在出价目标、数据可得性、延迟反馈、模型训练、归因确定性上的全面差异，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "闭环广告（Closed-loop Advertising）",
+      "开环广告（Open-loop Advertising）",
+      "半闭环",
+      "开环",
+      "数据可观测性",
+      "平台能观察到多少转化数据",
+      "转化行为是否发生在平台可观测的域内",
+      "交易结构",
+      "数据可观测性（Data Observability）",
+      "内循环",
+      "外循环",
+      "完整的转化标签"
+     ]
+    },
+    {
+     "number": "12.7",
+     "title": "在线分配与流量管理",
+     "source": "src/zh/part12-computational-advertising/online-allocation.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/online-allocation.html",
+     "difficulty": "Advanced",
+     "read_minutes": 55,
+     "objectives": [
+      "把「保量 + 优化收益」表述为供给/需求二部图上的带约束优化问题，写出需求约束、供给约束与目标函数",
+      "描述流量预测的反向索引方案，解释它为什么是「广告检索的对偶问题」",
+      "解释频次控制如何打破展示可分解性假设，以及客户端/服务端两种实现方案的取舍",
+      "说明为什么直接线性规划在大规模合约系统里不可解，紧凑分配方案如何用  级的对偶变量恢复  级的分配率",
+      "实现 HWM 离线规划与在线 serving 的完整流程，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "在线分配（Online Allocation）",
+      "竞价广告",
+      "合约广告",
+      "排期系统",
+      "防天窗广告",
+      "展示量合约",
+      "担保式投送（GD）系统",
+      "带约束的优化问题",
+      "在线分配模块",
+      "二部图（bipartite graph）",
+      "供给节点",
+      "需求节点"
+     ]
+    },
+    {
+     "number": "12.8",
+     "title": "受众定向技术",
+     "source": "src/zh/part12-computational-advertising/audience-targeting.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/audience-targeting.html",
+     "difficulty": "Advanced",
+     "read_minutes": 45,
+     "objectives": [
+      "按计算框架把定向技术归入 、、 三类，并解释「效果 × 规模」双指标为何是市场充分竞争的前提",
+      "设计上下文定向的半在线抓取系统，说明它为什么比搜索引擎爬虫轻量得多",
+      "用一句话讲清 LSA、PLSI、LDA 三代主题模型的演进逻辑与 word2vec 的工程设计",
+      "完整实现行为定向的特征生成（时间衰减累积）、打分决策（ 阈值）与 reach/CTR 评测",
+      "判断人口属性预测在什么数据条件下值得做，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "2026 现状注解",
+      "受众定向（Audience Targeting）",
+      "标签",
+      "效果",
+      "规模",
+      "规则归类",
+      "关键词提取",
+      "入链锚文本关键词",
+      "流量来源搜索词",
+      "主题模型映射",
+      "需求方驱动",
+      "半在线抓取系统"
+     ]
+    },
+    {
+     "number": "12.9",
+     "title": "广告检索与语义召回",
+     "source": "src/zh/part12-computational-advertising/ad-retrieval-semantic-recall.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/ad-retrieval-semantic-recall.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "解释广告检索与搜索引擎检索的两个本质差异：布尔表达式文档与超长查询",
+      "把广告定向条件分解为 DNF → Conjunction → Assignment 三层结构，并描述两层倒排索引与 size 分层剪枝的工作方式",
+      "描述 WAND 算法如何用「上界 + 堆阈值」在检索阶段完成 Top-K 剪枝",
+      "说明 DSSM/双塔模型如何把检索问题转化为向量空间中的最近邻查找，以及 LSH、向量量化、图索引三类 ANN 方案的直觉",
+      "看清检索漏斗全貌：召回 → 粗排 → 精排 → 竞价，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "多路召回",
+      "双塔模型",
+      "数以亿计",
+      "广告检索（ad retrieval）",
+      "留给检索的时间只有几毫秒",
+      "布尔表达式",
+      "计价是检索的下游",
+      "查询扩展（query expansion）",
+      "语义上",
+      "用户意图上",
+      "直接用优化目标（eCPM）来指导扩展",
+      "过分泛化会对相关性造成较大负面影响"
+     ]
+    },
+    {
+     "number": "12.10",
+     "title": "数据加工与交易",
+     "source": "src/zh/part12-computational-advertising/data-processing-and-trading.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/data-processing-and-trading.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "区分第一方、第二方、第三方数据，判断任意一条数据在广告交易中的归属与用途",
+      "按价值阶梯为各类用户行为数据排序，并说明两条价值规律背后的逻辑",
+      "对比第一方 DMP 与第三方 DMP 的职责、商业模式与产品案例",
+      "描述以 ADX 为中转的数据交易机制：CPM 计价、按实际成交交割，以及「数据价格向流量价格转移」的经济问题",
+      "掌握隐私保护的基本原则、准标识符与 K 匿名的思想，识别程序化交易中供需两侧的数据安全风险，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "现代注解（2026）",
+      "用户标签",
+      "第一方数据",
+      "第二方数据",
+      "第三方数据",
+      "灵魂",
+      "决策行为",
+      "主动行为",
+      "搜索是能大量获得的最主要主动行为",
+      "半主动行为",
+      "被动行为",
+      "潜在"
+     ]
+    },
+    {
+     "number": "12.11",
+     "title": "实验框架与反作弊",
+     "source": "src/zh/part12-computational-advertising/experiment-and-antifraud.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/experiment-and-antifraud.html",
+     "difficulty": "Advanced",
+     "read_minutes": 50,
+     "objectives": [
+      "说明创意优化与受众定向的本质区别，描述程序化创意与点击热力图的工作方式",
+      "设计分层实验框架：解释层内互斥、层间正交、按用户切分与发布层灰度，并用 AA 实验校准框架本身",
+      "描述第三方广告监测的原理与广告安全（品牌安全、可见性、反劫持）的关键技术",
+      "按主体、原理、手段三个维度对广告作弊分类，并为每类作弊手法匹配统计破绽与对抗思路",
+      "站在媒体、广告主、数据方三个角色的视角完成广告产品的选型决策，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "广告监测",
+      "非重叠测试域",
+      "归因作弊",
+      "流量劫持",
+      "快速衰减",
+      "度量可信",
+      "流量真实",
+      "反作弊（anti-fraud）",
+      "广告安全",
+      "创意优化不能混同于受众定向的效果",
+      "在基本诉求保持稳定的前提下调整创意以提高效果",
+      "程序化创意（programmatic creative）"
+     ]
+    },
+    {
+     "number": "12.12",
+     "title": "合约广告：产品形态与售卖模式",
+     "source": "src/zh/part12-computational-advertising/contract-advertising-products.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/contract-advertising-products.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 45,
+     "objectives": [
+      "区分合约广告的三种售卖形态（CPT 独占、CPD/轮替、CPM 展示量合约）及其各自适配的业务场景",
+      "解释「从卖位置到卖人群」演进的产品逻辑：数据如何开始直接参与售卖",
+      "说明为什么卖保量合约之前必须先做流量预测，以及「先分桶聚合再查」的预估思想",
+      "用保量/保价、排期/实时两对维度对比合约与竞价两种市场的产品逻辑",
+      "完成 4 道分层练习题"
+     ],
+     "key_terms": [
+      "广告排期系统",
+      "合约广告",
+      "位置",
+      "时间",
+      "技术复杂度全部压在了供给方（媒体）身上",
+      "合约广告是包销",
+      "竞价广告是现场售票",
+      "广告位合约",
+      "CPT",
+      "强曝光位的品牌冲击",
+      "竞品排他的高溢价",
+      "按广告位轮播售卖"
+     ]
+    },
+    {
+     "number": "12.13",
+     "title": "信息流与原生广告",
+     "source": "src/zh/part12-computational-advertising/feed-native-ads.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/feed-native-ads.html",
+     "difficulty": "Intermediate",
+     "read_minutes": 50,
+     "objectives": [
+      "陈述原生广告兴起的移动时代动因，以及移动广告相对 PC 的两大新机会与核心挑战",
+      "用两个关键条件准确定义信息流广告，并据此判定一个产品形态是否「信息流」",
+      "描述信息流广告的混排机制：多位置竞价队列与 / 参数的体验-收益权衡",
+      "区分表现原生与场景原生两种诉求，说清激励视频为什么是 eCPM 最高的原生形态",
+      "从产品侧描述 oCPX 转化追踪链路与三种出价表达模式，完成 5 道分层练习题"
+     ],
+     "key_terms": [
+      "统一生产或混合排序",
+      "原生广告（Native Ads）",
+      "信息流广告（Feed Ads）",
+      "原生广告",
+      "场景广告的可能性",
+      "大量潜在的本地化广告主",
+      "数据割裂",
+      "隐私与身份的限制",
+      "信息流广告",
+      "多位置且广告放置比较自由的竞价广告产品",
+      "竞价队列",
+      "广告在哪里出现"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "📖 术语表",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "📖 术语表",
+     "source": "src/zh/GLOSSARY.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/GLOSSARY.html",
+     "difficulty": null,
+     "read_minutes": null,
+     "objectives": [],
+     "key_terms": [
+      "流量预测（Traffic Forecasting）",
+      "位置偏差（Position Bias）",
+      "冷启动（Cold Start）",
+      "语义 ID（Semantic ID）",
+      "品牌广告（Brand Awareness）",
+      "效果广告（Direct Response）",
+      "信息流广告（Feed Ads）",
+      "在线分配（Online Allocation）",
+      "智能出价（Smart Bidding）",
+      "差分隐私（Differential Privacy）",
+      "第一方数据（First-party Data）",
+      "术语"
+     ]
+    }
+   ]
+  },
+  {
+   "part": 12,
+   "title": "Word2Vec 专题附录",
+   "path": "src/zh/",
+   "chapters": [
+    {
+     "number": "12.1",
+     "title": "Word2Vec 专题附录",
+     "source": "src/zh/appendix/word2vec.md",
+     "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/appendix/word2vec.html",
+     "difficulty": null,
+     "read_minutes": 25,
+     "objectives": [],
+     "key_terms": [
+      "分布假说",
+      "Skip-gram",
+      "Common Mistakes in Word2Vec",
+      "无序集合",
+      "大量无标注文本",
+      "低维稠密向量",
+      "向量运算",
+      "one-hot 编码",
+      "平均",
+      "极易误解的细节",
+      "并不在同一个向量空间里",
+      "两张"
+     ]
+    }
+   ]
+  }
+ ]
+}
