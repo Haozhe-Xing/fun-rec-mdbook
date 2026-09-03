@@ -44,9 +44,12 @@ h1, h2, h3, h4 {
   font-weight: 700;
   line-height: 1.35;
 }
-h1 { font-size: 2rem; margin-top: 0.2em; }
-h2 { font-size: 1.5rem; margin-top: 1.6em; }
-h3 { font-size: 1.2rem; margin-top: 1.4em; }
+/* 用 em 相对 body 16px：mdbook html 根字号是 12px，rem 会算成
+   1.2rem=14.4px 比 body 还小，h2/h3 看起来没字号差距。 */
+h1 { font-size: 2.4em; margin-top: 0.4em; }
+h2 { font-size: 1.7em; margin-top: 1.6em; }
+h3 { font-size: 1.3em; margin-top: 1.4em; }
+h4 { font-size: 1.1em; margin-top: 1.2em; }
 
 p { margin: 1em 0; }
 
