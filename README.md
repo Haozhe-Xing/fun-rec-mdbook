@@ -111,3 +111,5 @@ Requires `cargo install mdbook mdbook-katex`. Deployment to GitHub Pages is auto
 Much of the content of this knowledge base is rewritten and expanded from the Datawhale open-source project [fun-rec](https://github.com/datawhalechina/fun-rec) (《推荐系统实战》 by Datawhale). We are grateful to the original authors and the community of contributors. The rewrite restructures the material around the auto-research use case: bilingual full-text, machine-readable indexes, a glossary, worked examples with verified solutions, and new sections covering generative recommendation and computational advertising.
 
 本知识库的大量内容重写并扩展自 Datawhale 开源项目 [fun-rec](https://github.com/datawhalechina/fun-rec)。感谢原项目作者与社区贡献者。重写版围绕 auto research 场景重新组织:双语全文、机器可读索引、术语表、经过验算的例题与解答,并新增了生成式推荐与计算广告等章节。
+
+内容以 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 许可发布。
