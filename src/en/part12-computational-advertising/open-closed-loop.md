@@ -1,6 +1,6 @@
 <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
   <span style="background: #f0f4ff; color: #4A6CF7; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(74,108,247,0.2);">📖</span>
-  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~45 min read</span>
+  <span style="background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid rgba(22,163,74,0.2);">⏱️ ~60 min read</span>
   <span style="background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; border: 1px solid rgba(100,100,100,0.15);">🎯 Advanced</span>
 </div>
 
@@ -18,7 +18,8 @@ After reading this chapter, you will be able to:
 - Explain why closed-loop lets the platform train deep pCVR models, do deep conversion bidding (payment/ROI/next-day retention/7-day ROI), and how the "the more you bid, the more accurate" positive loop pushes eCPM higher
 - Describe the complete open-loop attribution flow (clickid issuance → postback → ip+ua fallback) and the allocation rules of six attribution models, and explain why MMPs can counter double counting
 - Explain how ATT, SKAdNetwork, and Android Privacy Sandbox collapse deterministic attribution, and the hybrid attribution strategies in open-loop scenarios
-- Use one comparison table to tie together the full differences between closed-loop and open-loop across bidding goals, data availability, delayed feedback, model training, and attribution certainty, and complete 5 tiered practice problems
+- Walk through the six-layer open-loop engineering stack — postback protocol (clickid/idempotency/out-of-order), MMP arbitration and anti-fraud, SKAN implementation (conversion-value encoding), modeling under sparse delayed labels (shallow proxy + deep correction), semi-closed-loop incentive design, and incrementality measurement (geo experiments/synthetic control/MMM)
+- Use one comparison table to tie together the full differences between closed-loop and open-loop across bidding goals, data availability, delayed feedback, model training, and attribution certainty, and complete the tiered practice problems
 
 ---
 
@@ -38,7 +39,7 @@ In the left closed-loop chain, all four steps are enclosed in the "platform doma
 
 > Closed-loop advertising is like running the cash register in your own store: every transaction is recorded in your own ledger — what sold today, who bought it, and what they bought next — just flip the ledger to find out. Open-loop advertising is like settling the bill in someone else's store: you can only watch the customer walk in (the click); whether they bought anything inside, and how much, you have to rely on the shop owner texting you afterward (the postback). Whoever holds the ledger decides how smartly you can restock the next day.
 
-This section establishes the criterion for this chapter. The next four sections unfold along the two ends of this axis. 12.6.1 explains why closed-loop is "the better end"; 12.6.2 and 12.6.3 cover the two classic headaches of the open-loop end — attribution and privacy; 12.6.4 lays the technical differences of the two ends into one panoramic table; 12.6.5 returns to the overall closing of Part 12.
+This section establishes the criterion for this chapter. The next four sections unfold along the two ends of this axis. 12.6.0 establishes the criterion; 12.6.1 explains why closed-loop is "the better end"; 12.6.2 and 12.6.3 cover the two classic headaches of the open-loop end — attribution and privacy; 12.6.4 lays the technical differences of the two ends into one panoramic table; 12.6.5 is the engineer-facing six-layer open-loop practice; 12.6.6 returns to the overall closing of Part 12.
 
 ---
 
@@ -135,7 +136,55 @@ Here is an engineering detail that is easy to overlook: the threshold for deep g
 
 ---
 
-## 12.6.5 The Final Closing of Part 12: Closed-Loop Is Not the Goal, Observability Is
+## 12.6.5 Open-Loop Engineering in Practice: Wiring the Broken Link Back, Engineering-Style
+
+The previous sections characterized the open-loop predicament at the conceptual and mechanism level. This section switches perspective: suppose you are the engineer at an open-loop advertising platform — the link is already broken, so **how do you build the infrastructure to wire it back as much as possible**? This engineering stack has six layers, bottom to top: the postback protocol, MMP arbitration, privacy-framework implementation, modeling under sparse labels, the semi-closed-loop compromise, and, at the top, incrementality measurement.
+
+### Layer 1: Postback Protocol and Touchpoint-Identifier Engineering
+
+A postback sounds like "the advertiser sends an HTTP request," but engineering-wise it is a full **protocol design**. On the touchpoint side, the parameters the media issues through the tracking URL when the user clicks/views form a tuple: **clickid** (a globally unique ID for this touchpoint), **ad id / creative id / campaign id** (which level the attribution lands on is decided by these fields), **ip + ua** (the fallback matching key when no device ID is available), and a **timestamp**. On the conversion side, the advertiser's postback payload must contain: the device identifier (IDFA/CAID on iOS, OAID/GAID on Android — note that in open-loop scenarios, what device identifiers the media can obtain directly decides the matching precision), the clickid passed back verbatim (if the landing-page parameters can be parsed inside the app), the conversion event type and level (the event stream activation → registration → first purchase → repeat purchase), and the amount and time.
+
+There are three design decisions that must be thought through. **First, the matching-key hierarchy**: clickid matching is deterministic (the same stamp), but it requires the "browser/landing-page context at click time" to be chained with the "app context at conversion time" — the Web→App crossing (click in the browser, activation in the app) breaks the clickid chain, which is why fingerprint-style schemes (the various proprietary clickid solutions of Alipay/WeChat and others) exist. **Second, postback timeliness and semantics**: real-time postback (seconds after the conversion) serves the platform's online learning and bid control; batch postback (hourly/daily) serves reconciliation. The fields can be identical, but the platform must distinguish the consumers. **Third, idempotency and out-of-order arrival**: network retries cause the same conversion to be posted back multiple times (duplicates), and cross-event-stream postbacks arrive out of order (payment reaching the platform before activation); the receiving end must dedupe by "device × event type × dedup key" and reorder the funnel by event timestamp (not arrival time).
+
+### Layer 2: The MMP's Arbitration Mechanism and Anti-Fraud
+
+As a neutral third party, the MMP's core asset is its **single vantage point over device identifiers**: the click and conversion logs of all the advertiser's channels (Douyin, Kuaishou, Apple Search Ads, Facebook, ...) are aggregated at the MMP, which credits conversions by a unified rule. The adjudication flow is a **multi-path match**: when an install event arrives, the MMP first checks whether the device ID appears in any channel's click log (deterministic matching, constrained by the attribution window — e.g., only installs within 7 days of a click are credited); if not found, it falls back to probabilistic matching (ip+ua+fuzzy fingerprint); if still not found, the install is recorded as organic. The **attribution window** is itself a protocol parameter: the click window (commonly 7 days) and the view window (commonly 1 day) are set separately — the longer the window, the more opportunity that channel has to "claim credit," a perennial source of cross-channel disputes.
+
+The MMP's anti-fraud duty is equally critical. It must verify the **authenticity of clicks** (click-density anomalies, click-to-install intervals suspiciously short — the hallmarks of click flooding), **impression hijacking and click injection** (the two classes of attribution fraud from 12.11 show up on the MMP side as abnormally concentrated attribution distributions), and **fabricated postbacks** (some channels forging device IDs to bulk-"claim" organic installs). Engineering countermeasures include device-fingerprint dedup, monitoring of the click-to-install time distribution, and reconciliation-difference monitoring against media-side logs.
+
+### Layer 3: SKAN Implementation Engineering
+
+SKAN's official protocol is only a few pages, but landing it in a delivery system is a substantial engineering effort. There are four hard constraints to handle: **the postback's recipient and signature verification** (SKAN postbacks go to the MMP or self-hosted endpoint the advertiser configured, and must be signature-verified against forgery); **the conversion-value encoding design** — SKAN 3.x has only 6 bits (64 values), SKAN 4.x has coarse (low/medium/high tiers) and fine (64 values) layers, and the advertiser must compress "the funnel progress they want to observe" into these few bits, a textbook **information-compression** problem (e.g., fence 1 uses fine to encode "retention + payment flags on days 0/1/2/3 after activation," and coarse to encode payment-amount tiers); **expectation management for the three postback windows** (0–2 / 3–7 / 8–35 days, with random delay stacked on top of the actual arrival time); and **the uncertainty of crowd anonymity** (when install volume is small, even the number of source-identifier digits shrinks). The implementation side has therefore evolved a **SKAN-side modeling pipeline**: train a mapping model from "SKAN aggregate distribution → true funnel" using the deterministic data of opt-in users in the same period (e.g., a small-sample-calibrated mixture model or Bayesian estimation), restoring the aggregated, noisy, delayed postback stream into an optimizable estimation signal. This technical stack of "reconstructing user-level estimates from aggregate data" belongs to the same family of problems as frequency estimation under differential privacy (noise removal).
+
+### Layer 4: Open-Loop Modeling Under Sparse, Delayed Labels
+
+The model engineer's real situation in open-loop is: **labels are sparse, delayed, and biased**. The three difficulties each have their countermeasures.
+
+**Delayed feedback**: payment/deep conversions happen days or even weeks after the click; waiting for labels to mature leaves the model forever lagging, while using them immediately mislabels "not yet converted" as "negative." There are three mainstream families of solutions — importance sampling (Zhang et al., CIKM 2016, treating "whether the label has matured" as a sampling mechanism and reweighting early observations), multi-task "fake-negative correction" (Chen et al., 2020, modeling the two processes of "will eventually convert" and "conversion already observed" separately), and data duplication/correction in streaming settings (real-time FTRL update frameworks under delayed feedback). The key selection criterion is the **shape of the delay distribution**: e-commerce orders are minute-scale, activation is same-day, payment/next-day retention is multi-day — the longer the delay, the less viable wait-based schemes become.
+
+**Sample selection bias**: an open-loop model's training data contains samples only from "advertisers who post back conversions," while at inference time it must serve all ads; moreover, the willingness to post back correlates with advertiser quality (those with good results are more willing to post back), so the direction of the bias is hard to know a priori. ESMM-style multi-task structures (12.5.2) mitigate the bias in the "click → conversion" segment, but the "whether they post back" segment requires modeling the postback behavior itself (propensity-score weighting) or simply transferring via an on-platform shallow goal as a proxy.
+
+**Label noise**: MMP mis-attribution, attribution-window switches, and channel credit-grabbing all make the conversion labels themselves noisy. The engineering floor is monitoring **attribution-caliber stability** (same-caliber daily conversion counts should not jump without cause) and using a robust loss (e.g., Huber) on the model side to reduce the influence of individual wrong labels.
+
+Connecting this layer back to 12.4: under open-loop, the platform's "deep conversion bidding" is really a **shallow-proxy + deep-correction** structure — the bid formula still uses pCTR × pCVR (shallow, label-abundant), and the postback deep data is then used to periodically calibrate the mapping between the shallow goal and the true deep goal ("at what activation cost does the payment cost most likely meet target"). This is the true form of the "payment bidding" product an open-loop platform can offer: not directly estimating payment, but approximating it through a proxy chain.
+
+### Layer 5: The Semi-Closed-Loop Compromise and Its Optimization Space
+
+The semi-closed-loop (advertiser posts back only some events) is the mainstream state of App download ads today, and its **optimization space** deserves its own treatment. Suppose the advertiser posts back "activation" but not "payment." The platform can directly optimize activation cost, but the correlation between activation cost and payment cost varies by advertiser — at the same activation cost, the users creative A attracts may pay at twice the rate of creative B's. The platform has three levers: **stratified payment-rate estimation by creative/audience dimension** (using the subsample of postback activations whose subsequent behavior is visible — if the platform can observe part of the back funnel through other products — to estimate "which kind of activation is more likely to pay"), **exploratory scaling and the bandit tradeoff** (for targeting combinations with uncertain payment signal, use E&E to decide whether to keep harvesting or explore), and **incentivized postback** (unlocking bidding depth for advertisers who post back in full — payment bidding only opens once payment events are posted back; this is the platform's "trading product capability for data" mechanism design). The last point turns the semi-closed-loop from a purely technical problem into a mechanism-design problem: **data postback itself can be priced and traded**, bordering the data-trading perspective of 12.10.
+
+### Layer 6: Incrementality Measurement: The End of Attribution Is "Did It Even Help"
+
+Attribution answers "who gets the credit"; incrementality measurement answers the more fundamental question: **if these ad budgets were not spent, would the conversions have happened anyway?** In open-loop scenarios, where the attribution chain is already full of holes, the standing of incrementality measurement rises instead. Three tiers of methods: **the experimental method** (geo experiments / audience holdout — split traffic by geography or audience, with the control group receiving no ads at all, and directly measure incremental conversions; causally the cleanest, at the cost of sacrificing control-group revenue); **synthetic control** (use similar unexposed geographies/periods to synthesize a "counterfactual baseline" and estimate the increment during the delivery period); and **marketing mix modeling (MMM)** (decompose sales volume into channel inputs via macro time-series regression, requiring no user-level data — hence its revival in the privacy era). Engineering-wise, the incrementality conclusions must be wired back into delivery: the **channel/creative-level incrementality coefficients** obtained from measurement can correct the "phantom credit" of the attribution caliber and guide budget reallocation across channels — exactly the division of labor of "attribution for accounting, incrementality for decisions."
+
+> **Analysis:** Stringing the six layers together, the engineering philosophy of open-loop advertising is **engineering approximation in a world lacking certainty**: the postback protocol solves "can we get the data," the MMP solves "is the data we got trustworthy," SKAN modeling solves "how to restore signal from aggregate noise," delayed/bias modeling solves "how to use incomplete labels," the semi-closed-loop mechanism solves "how to incentivize the data to become more complete," and incrementality measurement solves "what decision does this whole ledger actually point to." No layer is a perfect solution, but stacked together, an open-loop platform can support a complete delivery loop at 70%–80% precision — and the core competence of an open-loop advertising engineer is knowing the precision boundary and failure mode of each layer.
+
+### 🧠 Mental Model: The Archaeology Team
+
+> Closed-loop advertising is like a museum under surveillance: every exhibit's full provenance is on camera. Open-loop advertising is like an excavation site: the artifacts (conversions) are scattered in the soil outside the domain — you first need an excavation protocol (the postback spec), then a neutral appraiser (the MMP) to stop everyone from claiming they dug it up, plus carbon dating (SKAN modeling) to date things from aggregate fragments, probabilistic models (delayed-feedback modeling) to infer the missing parts, and incentive mechanisms (the semi-closed-loop) to make collectors willing to hand over their private holdings. The archaeology team will never get the surveillance footage, but a fully equipped team can reconstruct history well enough to guide today's decisions.
+
+---
+
+## 12.6.6 The Final Closing of Part 12: Closed-Loop Is Not the Goal, Observability Is
 
 Returning to the sentence at the beginning of this chapter, we can now say it in full. The reason closed-loop advertising "changes everything" is not that the word "closed-loop" itself has magic, but that it means **observability (Observability)**: whoever can get more complete conversion data can optimize more deeply. Closed-loop is only one way to achieve observability — pulling conversions into one's own domain. In open-loop scenarios, advertisers can also partially rebuild this observability with high-quality postbacks, the neutral arbitration of MMPs, and a first-party data strategy. So do not chase "closed-loop" as the goal; what you should chase is the thing behind it: **the completeness of the data link**.
 
@@ -172,6 +221,7 @@ The final trend judgment lands on three parallel migrations. First, **super-app 
 | Open-loop attribution | clickid issuance → conversion postback → ip+ua fallback; six attribution models are allocation rules, not objective facts | The same journey yields completely different conclusions under different models; choose the model by asking about chain and data first |
 | The value of MMP | Neutral third-party arbitration, countering self-attribution double counting | With multiple networks in parallel, reported install counts often reach 200%–300% of the true volume |
 | The privacy wave | ATT (opt-in ~25%) → SKAN (aggregated/random delay/crowd anonymity, SKAN 4.0 three postbacks 0-2/3-7/8-35 days) → Privacy Sandbox | Deterministic attribution collapses; can only mix SKAN + authorized determinism + modeling estimates |
+| Open-loop engineering, six layers | Postback protocol (clickid/idempotency/out-of-order) → MMP arbitration and anti-fraud → SKAN implementation (conversion-value encoding) → sparse delayed-label modeling (shallow proxy + deep correction) → semi-closed-loop incentivized postback → incrementality measurement | Wire the broken link back layer by layer, engineering-style; 70%–80% precision supports a complete delivery loop |
 | Part 12 closing | Advertising system = Mechanism (12.3) × Bidding (12.4) × Measurement (12.5) × Data observability (this chapter) | The decisive battleground shifts from "who can buy traffic" to "who can see conversions" |
 
 ### ❓ FAQ
@@ -184,6 +234,9 @@ The final trend judgment lands on three parallel migrations. First, **super-app 
 
 **Q3: What do SKAN's three postback windows mean? How should advertisers use them?**
 > A: SKAN 4.0 splits the postback into three windows of roughly 0–2 days, 3–7 days, and 8–35 days, meaning conversion data does not arrive all at once but flows back in batches with random delay as the conversion progresses. The right posture for advertisers is not "wait for one complete report," but to combine the three layers of signals — SKAN's aggregated postback, opt-in users' deterministic data, and the modeling estimates trained on both — accepting "blurry but compliant" measurement rather than pursuing the precision of the IDFA era.
+
+**Q4: For delayed-feedback modeling in open-loop, how should the three solution families (importance sampling / fake negatives / streaming FTRL) be chosen?**
+> A: Small data volume with tolerance for periodic retraining → importance sampling — model the delay distribution offline and reweight; simplest to implement. Online real-time training (data arriving as a time stream, samples learned as they arrive) → fake-negative correction — treat a conversion as negative until its postback arrives, then correct it, combined with FTRL updates. In between, a "delay window + periodic backfill" compromise works. The shared premise is that samples must be organized by event time (see Problem 12.6.5); otherwise all three families are correcting the wrong bias.
 
 ### 🔗 Connections to Other Chapters
 
@@ -299,7 +352,32 @@ An iOS mobile-game advertiser delivers 10,000 installs. Before ATT, deterministi
 
 ---
 
-**🏆 Problem 12.6.5 — Designing a Closed-Loop Deep Conversion Bidding Plan**
+**Problem 12.6.5 — Designing Postback Deduplication and Out-of-Order Handling** 🔴 Hard
+
+You are the postback-system engineer at an advertising platform. The advertiser's server asynchronously calls back the platform's conversion API after a successful payment, and production shows three kinds of dirty data: (1) the same payment is called back 3 times due to a retry mechanism; (2) an "activation" postback arrives 2 hours after the corresponding "payment" postback (network retry); (3) one postback's timestamp is mis-stamped 8 days in the past by the advertiser server's wrong clock.
+(a) Design the idempotency dedup key: which fields should it take, and why is "order number" alone not enough?
+(b) How do you recover the true ordering from the out-of-order event stream? Explain why offline training samples must be organized by true event time, not arrival time.
+(c) How do you detect and mitigate the clock error?
+
+<details>
+<summary>💡 Solution (click to reveal)</summary>
+
+**Approach:** The three essentials of a postback protocol: the idempotency key, timestamp reordering, and clock verification.
+
+- (a) The idempotency key = device identifier (clickid or a normalized device ID) × event type × business dedup key (e.g., order number). The order number alone is not enough because: different advertisers may use the same order-number format and even duplicate sequence numbers, and the same order may correspond to different event types ("payment succeeded" and "refund") — the event's ownership (which device, which ad's conversion) must be encoded into the key, and the server dedupes with set semantics on the key.
+- (b) Reorder by the **event-occurrence timestamp** carried in the postback body (not the arrival time), per (device, event chain). If offline training is organized by arrival time, the delayed "activation" would be sorted after "payment," creating negative-sample leakage and an inverted funnel ("payment before activation"); the model learns the postback system's delay distribution, not user behavior. The correct approach is to wait out a delay window (e.g., 1 hour to 1 day) before backfilling sample labels, or use delayed-feedback modeling (importance sampling / fake-negative correction) to correct the bias.
+- (c) Detection: compare against the platform's receive time; flag as anomalous if the deviation exceeds a threshold (e.g., the event timestamp is earlier than the corresponding click time, or later than the receive time). Mitigation: estimate a per-advertiser clock offset using the median difference between receive time and event time; samples outside the confidence interval go to a quarantine zone for manual/rule review rather than directly into the training stream.
+
+**Key points:**
+- The idempotency dedup dimensions are "device × event type × business key" — none can be missing.
+- Training samples are organized by event time and truncated by arrival time — the difference between the two is exactly the delayed-feedback problem itself.
+- Clock verification is the most easily overlooked source of dirty data in a postback protocol.
+
+</details>
+
+---
+
+**🏆 Problem 12.6.6 — Designing a Closed-Loop Deep Conversion Bidding Plan**
 
 You are an algorithm engineer at a super-app advertising platform that has built a complete e-commerce closed loop (on-platform impression→click→order→payment, fully observable). Design a deep conversion bidding plan for an "on-platform store product promotion" advertiser, with the following requirements:
 (a) Specify the bidding-goal choice: pick one from "payment-per-order bidding / payment ROI bidding / activation–next-day-retention dual bidding / 7-day ROI bidding," and explain the reasoning and the advertiser profile it suits.

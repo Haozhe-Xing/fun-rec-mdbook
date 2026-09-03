@@ -1419,17 +1419,20 @@
      "source": "src/zh/part12-computational-advertising/open-closed-loop.md",
      "url": "https://haozhe-xing.github.io/fun-rec-mdbook/zh/part12-computational-advertising/open-closed-loop.html",
      "difficulty": "Advanced",
-     "read_minutes": 45,
+     "read_minutes": 60,
      "objectives": [
       "用「转化是否在平台可观测域内」这条标准，把任意一个广告场景归类为闭环或开环，并说清它影响的不是广告形式而是数据链路",
       "解释闭环为何让平台能训练深度 pCVR 模型、做深度转化出价（付费/ROI/次留/7 日 ROI），以及「越投越准」的正向循环如何推高 eCPM",
       "描述开环归因的完整流程（clickid 下发 → 回传 → ip+ua 兜底）与六种归因模型的分配规则，说清 MMP 为何能对抗重复计数",
       "说明 ATT、SKAdNetwork、Android Privacy Sandbox 如何让确定性归因坍缩，以及开环场景下的混合归因策略",
-      "用一张对比表串联闭环 vs 开环在出价目标、数据可得性、延迟反馈、模型训练、归因确定性上的全面差异，完成 5 道分层练习题"
+      "描述开环工程实战的六层基础设施：回传协议设计（clickid/幂等/乱序）、MMP 多路匹配与反作弊、SKAN 落地（Conversion Value 编码/聚合建模）、延迟反馈与样本偏差的三族解法、半闭环的激励回传机制、增量测量（geo 实验/MMM）",
+      "用一张对比表串联闭环 vs 开环在出价目标、数据可得性、延迟反馈、模型训练、归因确定性上的全面差异，完成分层练习题"
      ],
      "key_terms": [
       "闭环广告（Closed-loop Advertising）",
       "开环广告（Open-loop Advertising）",
+      "clickid",
+      "延迟反馈",
       "半闭环",
       "开环",
       "数据可观测性",
@@ -1437,9 +1440,7 @@
       "转化行为是否发生在平台可观测的域内",
       "交易结构",
       "数据可观测性（Data Observability）",
-      "内循环",
-      "外循环",
-      "完整的转化标签"
+      "内循环"
      ]
     },
     {

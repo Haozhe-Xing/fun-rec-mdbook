@@ -1419,15 +1419,17 @@
      "source": "src/en/part12-computational-advertising/open-closed-loop.md",
      "url": "https://haozhe-xing.github.io/fun-rec-mdbook/en/part12-computational-advertising/open-closed-loop.html",
      "difficulty": "Advanced",
-     "read_minutes": 45,
+     "read_minutes": 60,
      "objectives": [
       "Use the criterion \"whether the conversion is inside the platform's observable domain\" to classify any advertising scenario as closed-loop or open-loop, and explain that what it affects is not the ad format but the data link",
       "Explain why closed-loop lets the platform train deep pCVR models, do deep conversion bidding (payment/ROI/next-day retention/7-day ROI), and how the \"the more you bid, the more accurate\" positive loop pushes eCPM higher",
       "Describe the complete open-loop attribution flow (clickid issuance → postback → ip+ua fallback) and the allocation rules of six attribution models, and explain why MMPs can counter double counting",
       "Explain how ATT, SKAdNetwork, and Android Privacy Sandbox collapse deterministic attribution, and the hybrid attribution strategies in open-loop scenarios",
-      "Use one comparison table to tie together the full differences between closed-loop and open-loop across bidding goals, data availability, delayed feedback, model training, and attribution certainty, and complete 5 tiered practice problems"
+      "Walk through the six-layer open-loop engineering stack — postback protocol (clickid/idempotency/out-of-order), MMP arbitration and anti-fraud, SKAN implementation (conversion-value encoding), modeling under sparse delayed labels (shallow proxy + deep correction), semi-closed-loop incentive design, and incrementality measurement (geo experiments/synthetic control/MMM)",
+      "Use one comparison table to tie together the full differences between closed-loop and open-loop across bidding goals, data availability, delayed feedback, model training, and attribution certainty, and complete the tiered practice problems"
      ],
      "key_terms": [
+      "clickid",
       "Open-loop",
       "data observability",
       ". Inside the domain is",
@@ -1438,8 +1440,7 @@
       "deep-funnel goals",
       "positive loop",
       "This is",
-      "postback",
-      "ad-touchpoint tracking"
+      "postback"
      ]
     },
     {

@@ -542,6 +542,21 @@
 - **Deterministic attribution / Probabilistic attribution** — precise attribution relying on a device-level unique identifier vs statistical attribution relying on aggregated/fuzzy signals; the privacy wave pushes the former to collapse into the latter.
 - **First-party Data** — data that an enterprise collects directly from and lawfully with its users; the strategic direction after cross-app tracking is restricted.
 - **Modeling-based Estimation** — the estimation method that trains a model on the observable portion (SKAN + authorized deterministic data) and extrapolates to fill the "unattributable" gap.
+- **Attribution Window** — the protocol parameter for how long after a touchpoint a conversion still earns credit; the click window is commonly 7 days and the view window 1 day; longer windows give the channel more opportunity to claim credit.
+- **Idempotent Deduplication** — deduplication with set semantics on "device × event type × dedup key" at the postback receiving end, preventing duplicate conversions from network retries.
+- **Event Time vs Arrival Time** — when the conversion actually happened (carried in the postback body) vs when the platform received it; the difference between the two is the delayed-feedback problem itself, and training samples must be organized by the former.
+- **Click Flooding** — an attribution-fraud scheme of mass fabricated/low-quality clicks that inflates the "probability of being credited"; hallmarks are anomalous click density and suspiciously short click-to-install intervals.
+- **Conversion Value Encoding** — the information-compression problem of squeezing the funnel progress you want to observe into SKAN's 64 fine values and three coarse tiers, e.g., fine encodes retention flags and coarse encodes payment-amount tiers.
+- **SKAN-side Modeling Pipeline** — the technical stack that trains an "aggregate distribution → true funnel" mapping model on concurrent opt-in deterministic data, restoring the noisy, delayed SKAN postbacks into an optimizable signal.
+- **Delayed-feedback Three Solution Families** — importance sampling (Zhang, CIKM 2016), fake-negative correction (Chen, 2020), and streaming FTRL data correction; the choice depends on the delay-distribution shape and training real-time-ness.
+- **Shallow Proxy + Deep Correction** — the true form of an open-loop platform's deep bidding: the bid formula uses a shallow goal (pCTR × pCVR), and postback deep data periodically calibrates the mapping from the shallow goal to the true deep goal.
+- **Propensity Score Weighting** — modeling and weighting the selection behavior of "whether to post back," mitigating the selection bias that open-loop training samples come only from advertisers who post back.
+- **Incentivized Postback** — the platform's "trading product capability for data" mechanism design: deep bidding abilities such as payment bidding unlock only once payment events are posted back.
+- **Incrementality Measurement** — the causal measurement answering "would conversions have happened anyway without the ads"; complementary to attribution (accounting), it governs budget decisions.
+- **Geo Experiment** — the experimental method that splits geographies into test/control with the control receiving no ads at all, directly measuring incremental conversions; causally the cleanest.
+- **Synthetic Control** — the quasi-experimental method that synthesizes a counterfactual baseline from similar unexposed geographies/periods to estimate the increment during delivery.
+- **Marketing Mix Modeling (MMM)** — the measurement method that decomposes sales into channel inputs via macro time-series regression, requiring no user-level data; enjoying a revival in the privacy era.
+- **"Attribution for accounting, incrementality for decisions"** — the division-of-labor principle: attribution settles cross-channel accounts, while incrementality measurement governs budget-reallocation decisions.
 
 
 ### 12.7
